@@ -1,0 +1,15 @@
+{
+    "name": "WhatsApp clone",
+    "currentVersion": "1.0",
+    "versions": [{
+        "number": "1.0",
+        "name": "React",
+        "revision": "commit-1",
+        "steps": [{
+            "id": "1",
+            "name": "First step",
+            "content": "# Step 1: Creating a server\n\nSomething [ExpressJS](http://expressjs.com/):\n\n    $ npm install hapi --save\n\nSomething something\n\n[{]: <helper> (diffStep 1.2)\n\n#### Step 1.2: Add server basis\n\n##### Added server.js\n```diff\n@@ -0,0 +1,2 @@\n+┊  ┊ 1┊console.log(window)\n+┊  ┊ 2┊🚫↵\n```\n\n[}]: #",
+            "revision": "commit-2"
+        }]
+    }]
+}

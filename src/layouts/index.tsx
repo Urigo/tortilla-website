@@ -5,26 +5,22 @@ import Helmet from 'react-helmet'
 import Header from '../components/Header'
 import './index.css'
 
+const links = [
+  {
+    href:
+      'https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800,800i',
+    rel: 'stylesheet',
+  },
+]
+const meta = [
+  { name: 'description', content: 'Sample' },
+  { name: 'keywords', content: 'sample, something' },
+]
+
 const TemplateWrapper = ({ children }) => (
   <div>
-    <Helmet
-      title="Tortilla"
-      meta={[
-        { name: 'description', content: 'Sample' },
-        { name: 'keywords', content: 'sample, something' },
-      ]}
-    />
-    <Header />
-    <div
-      style={{
-        margin: '0 auto',
-        maxWidth: 960,
-        padding: '0px 1.0875rem 1.45rem',
-        paddingTop: 0,
-      }}
-    >
-      {children()}
-    </div>
+    <Helmet title="Tortilla" meta={meta} link={links} />
+    <div>{children()}</div>
   </div>
 )
 

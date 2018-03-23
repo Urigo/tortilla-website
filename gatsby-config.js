@@ -1,6 +1,18 @@
+const resolveTutorials = {
+  resolve: `gatsby-source-filesystem`,
+  options: {
+    path: `${__dirname}/src/tutorials/`,
+    name: 'tutorial',
+  },
+}
+
 module.exports = {
   siteMetadata: {
     title: 'Tortilla',
   },
-  plugins: ['gatsby-plugin-react-helmet', 'gatsby-plugin-typescript'],
+  plugins: [
+    resolveTutorials,
+    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-typescript',
+  ],
 }

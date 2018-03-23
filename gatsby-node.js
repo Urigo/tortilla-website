@@ -4,4 +4,6 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
- // You can delete this file if you're not using it
+const transformTortilla = require('./plugins/gatsby-transform-tortilla/gatsby-node')
+
+module.exports = transformTortilla
