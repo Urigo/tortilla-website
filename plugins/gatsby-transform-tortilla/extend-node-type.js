@@ -2,6 +2,9 @@ const { GraphQLObjectType, GraphQLList, GraphQLString } = require('graphql')
 
 const { TypeName } = require('./config')
 
+const StepTypeName = TypeName + 'Step'
+const VersionTypeName = TypeName + 'Version'
+
 module.exports = (
   { type, store, pathPrefix, getNode, cache, reporter },
   pluginOptions
@@ -11,7 +14,7 @@ module.exports = (
   }
 
   const stepType = new GraphQLObjectType({
-    name: 'TortillaTutorialStep',
+    name: StepTypeName,
     fields: {
       id: {
         type: GraphQLString,
@@ -22,6 +25,9 @@ module.exports = (
       content: {
         type: GraphQLString,
       },
+      html: {
+        type: GraphQLString,
+      },
       revision: {
         type: GraphQLString,
       },
@@ -29,7 +35,7 @@ module.exports = (
   })
 
   const versionType = new GraphQLObjectType({
-    name: 'TortillaTutorialVersion',
+    name: VersionTypeName,
     fields: {
       number: {
         type: GraphQLString,

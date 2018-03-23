@@ -7,6 +7,7 @@
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
+    "fresh": "rm -rf .cache/ && yarn develop",
     "format": "prettier --write 'src/**/*.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,7 +25,8 @@
     "gatsby-plugin-typescript": "^1.4.18",
     "gatsby-source-filesystem": "^1.5.27",
     "graphql-tools": "^2.23.1",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "showdown": "^1.8.6"
   },
   "devDependencies": {
     "prettier": "^1.11.1"
