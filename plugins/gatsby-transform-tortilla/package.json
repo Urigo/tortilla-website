@@ -1,0 +1,11 @@
+{
+    "name": "gatsby-transform-tortilla",
+    "version": "1.0.0",
+    "description": "Gatsby plugin to transform Tortilla's outputs",
+    "author": "Kamil Kisiela <kamil.kisiela@gmail.com>",
+    "license": "MIT",
+    "main": "gatsby-node.js",
+    "dependencies": {
+        "showdown": "^1.8.6"
+    }
+}

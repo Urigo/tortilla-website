@@ -1,5 +1,5 @@
 const resolveTutorials = {
-  resolve: `gatsby-source-filesystem`,
+  resolve: 'gatsby-source-filesystem',
   options: {
     path: `${__dirname}/src/tutorials/`,
     name: 'tutorial',
@@ -12,6 +12,7 @@ module.exports = {
   },
   plugins: [
     resolveTutorials,
+    'gatsby-transform-tortilla',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-typescript',
   ],

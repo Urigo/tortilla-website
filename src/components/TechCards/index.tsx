@@ -8,6 +8,8 @@ const sampleText =
 const TechCards = () => (
   <div
     style={{
+      paddingBottom: '30px',
+      marginBottom: '30px',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'flex-start',

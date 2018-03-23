@@ -1,9 +1,3 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
+const createPages = require('./src/features/create-pages')
 
-const transformTortilla = require('./plugins/gatsby-transform-tortilla/gatsby-node')
-
-module.exports = transformTortilla
+exports.createPages = createPages
