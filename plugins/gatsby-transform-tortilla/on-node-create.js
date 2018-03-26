@@ -1,4 +1,4 @@
-const crypto = require(`crypto`)
+const crypto = require('crypto')
 const showdown = require('showdown')
 const converter = new showdown.Converter()
 

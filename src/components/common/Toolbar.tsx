@@ -25,6 +25,8 @@ const Right = styled.div`
   justify-content: flex-end;
 `
 
+const Item = styled.div``
+
 export interface Props {
   left: PropTypes.any // arrayOf(PropTypes.element),
   right: PropTypes.any
@@ -34,8 +36,12 @@ export default class Toolbar extends React.Component<Props> {
   render() {
     return (
       <Container>
-        <Left>{this.props.left}</Left>
-        <Right>{this.props.right}</Right>
+        <Left>
+          {this.props.left.map((elem, i) => <Item key={i}>{elem}</Item>)}
+        </Left>
+        <Right>
+          {this.props.right.map((elem, i) => <Item key={i}>{elem}</Item>)}
+        </Right>
       </Container>
     )
   }

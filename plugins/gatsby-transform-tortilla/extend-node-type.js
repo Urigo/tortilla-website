@@ -68,8 +68,22 @@ module.exports = (
     currentVersion: {
       type: GraphQLString,
     },
+    latestVersion: {
+      type: versionType,
+      resolve: tutorial => tutorial.versions[tutorial.versions.length - 1],
+    },
     versions: {
       type: new GraphQLList(versionType),
+      args: {
+        last: { type: GraphQLInt },
+      },
+      resolve: (tutorial, { last }) => {
+        if (last) {
+          return [...tutorial.versions].splice(tutorial.versions.length - last)
+        }
+
+        return tutorial.versions
+      },
     },
     versionsCount: {
       type: GraphQLInt,
