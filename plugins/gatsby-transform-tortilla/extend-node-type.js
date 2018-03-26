@@ -1,4 +1,9 @@
-const { GraphQLObjectType, GraphQLList, GraphQLString } = require('graphql')
+const {
+  GraphQLObjectType,
+  GraphQLList,
+  GraphQLString,
+  GraphQLInt,
+} = require('graphql')
 
 const { TypeName } = require('./config')
 
@@ -49,6 +54,10 @@ module.exports = (
       steps: {
         type: new GraphQLList(stepType),
       },
+      stepsCount: {
+        type: GraphQLInt,
+        resolve: version => version.steps.length || 0,
+      },
     },
   })
 
@@ -61,6 +70,10 @@ module.exports = (
     },
     versions: {
       type: new GraphQLList(versionType),
+    },
+    versionsCount: {
+      type: GraphQLInt,
+      resolve: tutorial => tutorial.versions.length || 0,
     },
   })
 }
