@@ -1,8 +1,6 @@
 const crypto = require(`crypto`)
 const showdown = require('showdown')
 const converter = new showdown.Converter()
-// text      = '#hello, markdown!',
-// html      = converter.makeHtml(text);
 
 const { TypeName } = require('./config')
 
