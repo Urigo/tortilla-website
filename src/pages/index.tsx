@@ -3,6 +3,8 @@ import * as PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Link from 'gatsby-link'
 
+import { stepRoute } from '../utils/routes'
+
 const Container = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -58,9 +60,7 @@ const TutorialContainer = styled.div`
 const Tutorial = props => {
   return (
     <TutorialContainer>
-      <Link to="/tutorial/whats-app-clone/react/1-first-step">
-        {props.title}
-      </Link>
+      <Link to={props.link}>{props.title}</Link>
       <div>{props.chaptersCount} Chapters</div>
     </TutorialContainer>
   )
@@ -79,13 +79,20 @@ class IndexPage extends React.Component {
           </Menu>
         </SideMenu>
         <Content>
-          {this.props.data.allTortillaTutorial.edges.map(({ node }, i) => (
-            <Tutorial
-              key={i}
-              title={node.title}
-              chaptersCount={node.latestVersion.stepsCount}
-            />
-          ))}
+          {this.props.data.allTortillaTutorial.edges.map(({ node }, i) => {
+            return node.versions.map((version, j) => (
+              <Tutorial
+                link={stepRoute({
+                  tutorialName: node.title,
+                  versionName: version.name,
+                  step: version.steps[0],
+                })}
+                key={`${i}-${j}`}
+                title={`${node.title}: ${version.name}`}
+                chaptersCount={version.stepsCount}
+              />
+            ))
+          })}
         </Content>
       </Container>
     )
@@ -98,8 +105,13 @@ export const query = graphql`
       edges {
         node {
           title: name
-          latestVersion {
+          versions {
+            name
             stepsCount
+            steps(first: 1) {
+              id
+              name
+            }
           }
         }
       }

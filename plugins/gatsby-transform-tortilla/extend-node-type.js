@@ -53,6 +53,16 @@ module.exports = (
       },
       steps: {
         type: new GraphQLList(stepType),
+        args: {
+          first: { type: GraphQLInt },
+        },
+        resolve: (version, { first }) => {
+          if (first) {
+            return [...version.steps].splice(0, first)
+          }
+
+          return version.steps
+        },
       },
       stepsCount: {
         type: GraphQLInt,

@@ -1,6 +1,8 @@
 const path = require('path')
 const { kebabCase } = require('lodash')
 
+const { stepRoute } = require('../utils/routes')
+
 const stepPageTemplate = path.resolve('src/templates/step-page.js')
 
 // tutorial/foo/1.0/bar/1.0/1-baz
@@ -26,18 +28,7 @@ const generatePath = ({
 }
 
 // tutorial/foo/bar/1-baz
-const generateLatestPath = ({ tutorialName, versionName, step }) => {
-  return [
-    // prefix
-    'tutorial',
-    // tutorial
-    kebabCase(tutorialName),
-    // version
-    kebabCase(versionName),
-    // step
-    step.id + '-' + kebabCase(step.name),
-  ].join('/')
-}
+const generateLatestPath = stepRoute
 
 module.exports = ({
   tutorialName,
@@ -59,7 +50,7 @@ module.exports = ({
 
   if (tutorialVersion === versionNumber) {
     paths.push(
-      generateLatestPath({
+      stepRoute({
         tutorialName,
         versionName,
         step,
