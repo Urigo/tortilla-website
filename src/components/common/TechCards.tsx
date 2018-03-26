@@ -1,21 +1,22 @@
 import * as React from 'react'
+import styled from 'styled-components'
 
-import TechCard from './TechCard'
+import TechCard from './TechCards/TechCard'
 
 const sampleText =
   'Donec facilisis tortor ut augue lacinia, at viverra est semper.'
 
+const Container = styled.div`
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+`
+
 const TechCards = () => (
-  <div
-    style={{
-      paddingBottom: '30px',
-      marginBottom: '30px',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'stretch',
-    }}
-  >
+  <Container>
     <TechCard
       colors={{
         from: '#a6f0e3',
@@ -46,7 +47,7 @@ const TechCards = () => (
       name="Ionic 3"
       text={sampleText}
     />
-  </div>
+  </Container>
 )
 
 export default TechCards

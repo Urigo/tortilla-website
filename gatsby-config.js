@@ -13,6 +13,7 @@ module.exports = {
   plugins: [
     resolveTutorials,
     'gatsby-transform-tortilla',
+    'gatsby-plugin-styled-components',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-typescript',
   ],

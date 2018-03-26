@@ -2,8 +2,9 @@ import * as React from 'react'
 import * as PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 
-import Header from '../components/Header'
-import TechCards from '../components/TechCards'
+import Header from '../components/common/Header'
+import TechCards from '../components/common/TechCards'
+
 import './index.css'
 
 const links = [
@@ -18,7 +19,7 @@ const meta = [
   { name: 'keywords', content: 'sample, something' },
 ]
 
-const TemplateWrapper = ({ children }) => (
+const TemplateWrapper = ({ children }: any) => (
   <div>
     <Helmet title="Tortilla" meta={meta} link={links} />
     <Header />
