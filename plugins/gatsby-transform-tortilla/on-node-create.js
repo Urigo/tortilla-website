@@ -25,6 +25,7 @@ module.exports = async function onCreateNode({
   // add `html` to each step
   parsedContent.versions.forEach(version => {
     version.steps.forEach(step => {
+      // TODO: use `markdown-diff` package
       step.html = converter.makeHtml(step.content)
     })
   })
