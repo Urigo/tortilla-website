@@ -1,8 +1,17 @@
+/// @ts-check
+
 const crypto = require('crypto')
-const showdown = require('showdown')
-const converter = new showdown.Converter()
+const remark = require('remark')
+const html = require('remark-html')
+const highlight = require('remark-highlight.js')
 
 const { TypeName } = require('./config')
+
+const processMd = doc =>
+  remark()
+    .use(highlight)
+    .use(html)
+    .process(doc)
 
 module.exports = async function onCreateNode({
   node,
@@ -21,12 +30,15 @@ module.exports = async function onCreateNode({
   const parsedContent = JSON.parse(content)
 
   // add `html` to each step
-  parsedContent.versions.forEach(version => {
-    version.steps.forEach(step => {
-      // TODO: use `markdown-diff` package
-      step.html = converter.makeHtml(step.content)
+  await Promise.all(
+    parsedContent.versions.map(async version => {
+      return Promise.all(
+        version.steps.map(async step => {
+          step.html = await processMd(step.content)
+        })
+      )
     })
-  })
+  )
 
   // create a tutorial node
   const tutorialNode = {
