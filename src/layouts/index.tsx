@@ -8,7 +8,9 @@ import TechCards from '../components/common/TechCards'
 
 import './index.css'
 
-Modal.setAppElement('#___gatsby')
+if (typeof window !== 'undefined') {
+  Modal.setAppElement('#___gatsby')
+}
 
 const links = [
   {
