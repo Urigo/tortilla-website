@@ -1,10 +1,14 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { withPrefix } from 'gatsby-link'
 
-import TechCard from './TechCards/TechCard'
+import TechCard from './TechCards/Card'
 
 const sampleText =
   'Donec facilisis tortor ut augue lacinia, at viverra est semper.'
+
+const image = (framework: string) =>
+  withPrefix(`img/tech-cards/${framework}.svg`)
 
 const Container = styled.div`
   padding-bottom: 30px;
@@ -25,6 +29,7 @@ const TechCards = () => (
         shadow: '#1e927d',
       }}
       name="Meteor"
+      image={image('meteor')}
       text={sampleText}
     />
     <TechCard
@@ -35,6 +40,7 @@ const TechCards = () => (
         shadow: '#b34957',
       }}
       name="Angular"
+      image={image('angular')}
       text={sampleText}
     />
     <TechCard
@@ -45,6 +51,7 @@ const TechCards = () => (
         shadow: '#4171aa',
       }}
       name="Ionic 3"
+      image={image('ionic')}
       text={sampleText}
     />
   </Container>

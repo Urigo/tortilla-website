@@ -1,3 +1,5 @@
+// @ts-check
+
 const { kebabCase } = require('lodash')
 
 exports.stepRoute = ({ step, tutorialName, versionName }) =>

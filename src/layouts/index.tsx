@@ -1,11 +1,14 @@
 import * as React from 'react'
 import * as PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
+import * as Modal from 'react-modal'
 
 import Header from '../components/common/Header'
 import TechCards from '../components/common/TechCards'
 
 import './index.css'
+
+Modal.setAppElement('#___gatsby')
 
 const links = [
   {

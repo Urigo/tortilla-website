@@ -41,12 +41,18 @@ const Block = styled.div`
   width: ${LEFT_SIZE}px;
   height: 100%;
   border-radius: ${SPACE_SIZE / 2}px;
-  background-image: linear-gradient(
-    149deg,
-    ${props => props.colors.from},
-    ${props => props.colors.to}
-  );
+  background: url(${props => props.image}) no-repeat center;
   box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.12);
+  text-align: center;
+`
+
+const FrameworkInfo = styled.div`
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  font-size: 25px;
+  font-weight: 800;
+  color: #ffffff;
 `
 
 const Title = styled.div`
@@ -76,7 +82,12 @@ const Button = styled.div`
 const TechCard = props => (
   <Container colors={props.colors}>
     <Left>
-      <Block colors={props.colors} />
+      <Block image={props.image}>
+        <FrameworkInfo>
+          <div>{props.name}</div>
+          <div>1.4</div>
+        </FrameworkInfo>
+      </Block>
     </Left>
     <Right>
       <div>
