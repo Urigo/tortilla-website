@@ -1,11 +1,16 @@
 import * as React from 'react'
+import * as PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Link from 'gatsby-link'
 
 import TutorialRate from './Tutorial/Rate'
 import TutorialHeads from './Tutorial/Heads'
-import TutorialInfo from './Tutorial/Info'
+import TutorialFrameworks from './Tutorial/Frameworks'
 import TutorialImage from './Tutorial/Image'
+import TutorialModal from './Tutorial/Modal'
+import TutorialTitle from './Tutorial/Title'
+import TutorialSubtitle from './Tutorial/Subtitle'
+import TutorialAuthor from './Tutorial/Author'
 import CornerMenu from '../common/CornerMenu'
 
 const Container = styled.div`
@@ -44,28 +49,74 @@ const Relative = styled.div`
   position: relative;
 `
 
-const Tutorial = props => {
-  return (
-    <Container>
-      <Main>
-        <div>
-          <TutorialImage />
-        </div>
-        <Relative>
-          <CornerMenu />
-          <TutorialInfo {...props} />
-        </Relative>
-      </Main>
-      <Footer>
-        <div>
-          <TutorialRate />
-        </div>
-        <div>
-          <TutorialHeads />
-        </div>
-      </Footer>
-    </Container>
-  )
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-right: 15px;
+`
+
+// TODO: tutorial modal should be outside this component and in one place
+
+class Tutorial extends React.Component {
+  static propTypes = {
+    link: PropTypes.string,
+    title: PropTypes.string,
+    chaptersCount: PropTypes.number,
+  }
+
+  state = {
+    isModalOpen: false,
+  }
+
+  openModal() {
+    this.setState({
+      isModalOpen: true,
+    })
+  }
+
+  closeModal() {
+    this.setState({
+      isModalOpen: false,
+    })
+  }
+
+  render() {
+    return (
+      <Container>
+        <Main>
+          <div>
+            <TutorialImage />
+          </div>
+          <Relative>
+            <CornerMenu />
+            <Info>
+              <TutorialTitle onClick={() => this.openModal()}>
+                {this.props.title}
+              </TutorialTitle>
+              <TutorialSubtitle>
+                {this.props.chaptersCount} Chapters
+              </TutorialSubtitle>
+              <TutorialAuthor>by author</TutorialAuthor>
+              <TutorialFrameworks />
+            </Info>
+          </Relative>
+        </Main>
+        <Footer>
+          <div>
+            <TutorialRate />
+          </div>
+          <div>
+            <TutorialHeads />
+          </div>
+        </Footer>
+        <TutorialModal
+          tutorial={this.props}
+          open={this.state.isModalOpen}
+          onClose={() => this.closeModal()}
+        />
+      </Container>
+    )
+  }
 }
 
 export default Tutorial
