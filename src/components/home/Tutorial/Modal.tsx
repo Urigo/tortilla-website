@@ -124,30 +124,32 @@ export default class Modal extends React.Component {
   }
 }
 
-const styles = {
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.84)',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  content: {
-    flex: '0 0 auto',
-    height: '70%',
-    overflow: 'auto',
-    borderRadius: 3,
-    boxShadow: '0 11px 22px 0 rgba(218, 218, 218, 0.34)',
-    backgroundColor: '#fff',
-    border: 'solid 1px #e6ecf4',
-    outline: 'none',
-    padding: 15,
-  },
-}
+if (typeof window !== 'undefined') {
+  const styles = {
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.84)',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    content: {
+      flex: '0 0 auto',
+      height: '70%',
+      overflow: 'auto',
+      borderRadius: 3,
+      boxShadow: '0 11px 22px 0 rgba(218, 218, 218, 0.34)',
+      backgroundColor: '#fff',
+      border: 'solid 1px #e6ecf4',
+      outline: 'none',
+      padding: 15,
+    },
+  }
 
-ReactModal.defaultStyles = styles
+  ReactModal.defaultStyles = styles
+}
