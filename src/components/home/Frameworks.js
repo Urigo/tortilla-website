@@ -1,19 +1,26 @@
 import React from 'react'
 import styled from 'styled-components'
+import { withPrefix } from 'gatsby-link'
 
 import Menu from './Menu'
-import ImagePlaceholder from './ImagePlaceholder'
 import List from '../common/List'
 import ListItem from '../common/List/Item'
 
-const FrameworkName = styled.div`
+const Image = styled.img`
+  margin: 0;
+  padding: 0;
+  width: 35px;
+  height: 35px;
+`
+
+const Name = styled.div`
   height: 18px;
   font-size: 14px;
   font-weight: normal;
   color: ${props => props.theme.grayBlue};
 `
 
-const FrameworkAuthor = styled.div`
+const Author = styled.div`
   font-size: 12px;
   font-weight: 300;
   color: ${props => props.theme.darkGray};
@@ -21,8 +28,8 @@ const FrameworkAuthor = styled.div`
 
 const Framework = props => (
   <div>
-    <FrameworkName>{props.name}</FrameworkName>
-    <FrameworkAuthor>by {props.author}</FrameworkAuthor>
+    <Name>{props.name}</Name>
+    <Author>by {props.author}</Author>
   </div>
 )
 
@@ -33,7 +40,9 @@ export default props => (
       renderItem={(framework, i) => (
         <ListItem
           key={i}
-          left={() => <ImagePlaceholder />}
+          left={() => (
+            <Image src={withPrefix(`img/logos/${framework.image}.svg`)} />
+          )}
           middle={() => (
             <Framework name={framework.name} author={framework.author} />
           )}

@@ -16,7 +16,7 @@ const Left = styled.div`
 
 const Middle = styled.div`
   flex: 1 1 auto;
-  padding: 0 10px;
+  padding: 0 15px;
 `
 
 const Right = Left

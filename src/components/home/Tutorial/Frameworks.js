@@ -1,26 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
+import { withPrefix } from 'gatsby-link'
 
-const FrameworkImagePlaceholder = styled.div`
+const Image = styled.img`
+  margin: 0;
+  padding: 0;
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background-color: ${props => props.theme.primaryGray};
-  box-shadow: ${props => props.theme.boxShadow};
 `
 
-const FrameworksContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: row;
 
   & > * {
-    margin-right: 5px;
+    margin-right: 10px;
   }
 `
 export default props => (
-  <FrameworksContainer>
-    <FrameworkImagePlaceholder />
-    <FrameworkImagePlaceholder />
-    <FrameworkImagePlaceholder />
-  </FrameworksContainer>
+  <Container>
+    <Image src={withPrefix(`img/logos/meteor.svg`)} />
+    <Image src={withPrefix(`img/logos/angular.svg`)} />
+    <Image src={withPrefix(`img/logos/ionic.svg`)} />
+  </Container>
 )

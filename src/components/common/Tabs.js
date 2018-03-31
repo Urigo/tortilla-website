@@ -14,6 +14,7 @@ export default class Tabs extends React.Component {
   static propTypes = {
     active: PropTypes.string,
     onSelect: PropTypes.func,
+    className: PropTypes.string,
   }
 
   constructor(props) {
@@ -56,6 +57,8 @@ export default class Tabs extends React.Component {
       })
     )
 
-    return <Container>{wrappedChildren}</Container>
+    return (
+      <Container className={this.props.className}>{wrappedChildren}</Container>
+    )
   }
 }

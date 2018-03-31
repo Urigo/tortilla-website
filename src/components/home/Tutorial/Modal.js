@@ -2,11 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withPrefix, navigateTo } from 'gatsby-link'
+import { faBookmark, faPencilAlt } from '@fortawesome/fontawesome-free-solid'
 
 import Theme from '../../../themes/home'
 import CommonModal from '../../common/Modal'
 import Tabs from '../../common/Tabs'
 import Tab from '../../common/Tabs/Tab'
+import OutlineButton from '../../common/OutlineButton'
 import ModalClose from './Modal/Close'
 import ModalPlay from './Modal/Play'
 import Image from './Image'
@@ -81,6 +83,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.lightGray};
 `
 
@@ -116,6 +119,27 @@ const FrameworkTab = props => (
     </TabContainer>
   </Tab>
 )
+
+const FrameworkTabs = styled(Tabs)`
+  & > * {
+    margin-right: 10px;
+  }
+`
+
+const Actions = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  & > * {
+    margin-left: 10px;
+  }
+`
+
+const ActionButton = styled(OutlineButton)`
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+`
 
 export default class Modal extends React.Component {
   static propTypes = {
@@ -189,7 +213,7 @@ export default class Modal extends React.Component {
               </Info>
               <Details>
                 <Header>
-                  <Tabs active="angular">
+                  <FrameworkTabs active="angular">
                     <FrameworkTab
                       name="meteor"
                       display="Meteor"
@@ -201,7 +225,17 @@ export default class Modal extends React.Component {
                       image="angular"
                     />
                     <FrameworkTab name="ionic" display="Ionic" image="ionic" />
-                  </Tabs>
+                  </FrameworkTabs>
+                  <Actions>
+                    <ActionButton
+                      onClick={() => console.log('edit')}
+                      icon={faPencilAlt}
+                    />
+                    <ActionButton
+                      onClick={() => console.log('bookmark')}
+                      icon={faBookmark}
+                    />
+                  </Actions>
                 </Header>
                 <OptionsContainer>
                   <Versions

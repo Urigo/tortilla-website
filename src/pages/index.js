@@ -38,22 +38,25 @@ const Header = styled.div`
 `
 
 class IndexPage extends React.Component {
-  frameworks: { name: string, author: string }[] = [
+  frameworks = [
     {
       name: 'Angular',
       author: 'Google',
+      image: 'angular',
     },
     {
       name: 'Meteor',
       author: 'Meteor Dev Group',
+      image: 'meteor',
     },
     {
       name: 'Ionic',
       author: 'Drifty',
+      image: 'ionic',
     },
   ]
 
-  authors: { name: string }[] = [
+  authors = [
     {
       name: 'Gregory Greene',
     },
@@ -62,7 +65,7 @@ class IndexPage extends React.Component {
     },
   ]
 
-  selectTab(tab: string) {}
+  selectTab(tab) {}
 
   render() {
     return (
