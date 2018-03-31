@@ -10,7 +10,7 @@ const Author = styled.div`
   font-size: 12px;
   font-weight: 300;
   font-style: italic;
-  color: #7f859b;
+  color: ${props => props.theme.darkGray};
 `
 
 export default props => (

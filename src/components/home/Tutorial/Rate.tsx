@@ -8,12 +8,12 @@ const EmptyStar = styled(FontAwesomeIcon).attrs({
   icon: faStar,
 })`
   font-size: 16px;
-  color: #e6ecf4;
+  color: ${props => props.theme.lightGray};
   margin-right: 2px;
 `
 
 const FullStar = EmptyStar.extend`
-  color: #f5b957;
+  color: ${props => props.theme.yellow};
 `
 
 const TutorialRateContainer = styled.div`
@@ -37,7 +37,7 @@ const Rates = props => (
 const Voters = styled.div`
   font-size: 10px;
   font-weight: 300;
-  color: #b6b8c2;
+  color: ${props => props.theme.darkGray};
 `
 
 export default props => (

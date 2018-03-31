@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types'
 import * as ReactModal from 'react-modal'
 import styled from 'styled-components'
 
+import Theme from '../../../themes/home'
 import ModalClose from './Modal/Close'
 import Image from './Image'
 import Title from './Title'
@@ -132,7 +133,7 @@ if (typeof window !== 'undefined') {
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(255, 255, 255, 0.84)',
+      backgroundColor: Theme.modalBackdrop,
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
@@ -144,8 +145,8 @@ if (typeof window !== 'undefined') {
       overflow: 'auto',
       borderRadius: 3,
       boxShadow: '0 11px 22px 0 rgba(218, 218, 218, 0.34)',
-      backgroundColor: '#fff',
-      border: 'solid 1px #e6ecf4',
+      backgroundColor: Theme.white,
+      border: `solid 1px ${Theme.lightGray}`,
       outline: 'none',
       padding: 15,
     },

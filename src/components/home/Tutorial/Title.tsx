@@ -6,10 +6,10 @@ import styled from 'styled-components'
 export default styled.div`
   font-size: 16px;
   font-weight: bold;
-  color: #182e3f;
+  color: ${props => props.theme.grayBlue};
 
   &:hover {
-    color: #4c84ff;
+    color: ${props => props.theme.primaryBlue};
     cursor: pointer;
   }
 `

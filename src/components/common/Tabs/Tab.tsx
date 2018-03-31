@@ -5,13 +5,13 @@ const Tab = styled.div`
   padding: 15px 10px;
   font-size: 14px;
   text-align: center;
-  color: #7f859b;
+  color: ${props => props.theme.darkGray};
   border-bottom: 3px solid transparent;
 `
 
 const ActiveTab = Tab.extend`
-  border-color: #4c84ff;
-  color: #182e3f;
+  border-color: ${props => props.theme.primaryBlue};
+  color: ${props => props.theme.grayBlue};
 `
 
 export default props => {

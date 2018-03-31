@@ -3,14 +3,14 @@ import * as PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const MenuContent = styled.div`
-  border-top: 1px solid #d2d5de;
+  border-top: 1px solid ${props => props.theme.primaryGray};
   padding-top: 15px;
   margin-top: 15px;
 `
 
 const MenuTitle = styled.div`
   font-size: 16px;
-  color: #7f859b;
+  color: ${props => props.theme.darkGray};
   font-weight: 600;
 `
 

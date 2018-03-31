@@ -5,8 +5,8 @@ const FrameworkImagePlaceholder = styled.div`
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background-color: #d2d5de;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  background-color: ${props => props.theme.primaryGray};
+  box-shadow: ${props => props.theme.boxShadow};
 `
 
 const FrameworksContainer = styled.div`

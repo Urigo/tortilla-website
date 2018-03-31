@@ -3,7 +3,7 @@ import * as FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import styled from 'styled-components'
 
 const FontIcon = styled(FontAwesomeIcon)`
-    color: #d2d5de
+    color: ${props => props.theme.primaryGray}
     margin-Right: 20px
 `
 

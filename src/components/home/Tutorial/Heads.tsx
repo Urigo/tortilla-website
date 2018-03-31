@@ -11,9 +11,9 @@ const Head = styled.div`
   margin-left: -7px;
   width: 22px;
   height: 22px;
-  border: solid 1px #ffffff;
+  border: solid 1px ${props => props.theme.white};
   border-radius: 50%;
-  background-color: #d2d5de;
+  background-color: ${props => props.theme.primaryGray};
 
   &:hover {
     z-index: 1;

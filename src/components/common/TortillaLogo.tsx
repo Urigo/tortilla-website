@@ -8,7 +8,7 @@ const TortillaLink = styled(Link)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  color: #162c5e;
+  color: ${props => props.theme.tortillaBlue};
   font-size: 18px;
   line-height: 18px;
   font-weight: 800;

@@ -18,8 +18,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 3px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 2px 0 #dadada;
+  background-color: ${props => props.theme.white};
+  box-shadow: 0 1px 2px 0 ${props => props.theme.primaryGray};
 `
 
 const Main = styled.div`
@@ -39,7 +39,7 @@ const Main = styled.div`
 
 const Footer = styled.div`
   padding: 10px;
-  border-top: 1px solid #f2f5f7;
+  border-top: 1px solid ${props => props.theme.lightGray};
   display: flex;
   flex-direction: row;
   justify-content: space-between;

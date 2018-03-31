@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { withPrefix } from 'gatsby-link'
 
+import Theme from '../../themes/home'
 import TechCard from './TechCards/Card'
 
 const sampleText =
@@ -23,10 +24,10 @@ const TechCards = () => (
   <Container>
     <TechCard
       colors={{
-        from: '#a6f0e3',
-        to: '#28d5b6',
-        link: '#28d5b6',
-        shadow: '#1e927d',
+        from: Theme.meteorGradientFrom,
+        to: Theme.meteorGradientTo,
+        link: Theme.meteorLink,
+        shadow: Theme.meteorShadow,
       }}
       name="Meteor"
       image={image('meteor')}
@@ -34,10 +35,10 @@ const TechCards = () => (
     />
     <TechCard
       colors={{
-        from: '#f798a4',
-        to: '#f76c7d',
-        link: '#f76c7d',
-        shadow: '#b34957',
+        from: Theme.angularGradientFrom,
+        to: Theme.angularGradientTo,
+        link: Theme.angularLink,
+        shadow: Theme.angularShadow,
       }}
       name="Angular"
       image={image('angular')}
@@ -45,10 +46,10 @@ const TechCards = () => (
     />
     <TechCard
       colors={{
-        from: '#84b5ef',
-        to: '#4a90e2',
-        link: '#4a90e2',
-        shadow: '#4171aa',
+        from: Theme.ionicGradientFrom,
+        to: Theme.ionicGradientTo,
+        link: Theme.ionicLink,
+        shadow: Theme.ionicShadow,
       }}
       name="Ionic 3"
       image={image('ionic')}

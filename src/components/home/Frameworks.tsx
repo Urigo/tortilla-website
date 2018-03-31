@@ -10,13 +10,13 @@ const FrameworkName = styled.div`
   height: 18px;
   font-size: 14px;
   font-weight: normal;
-  color: #23435a;
+  color: ${props => props.theme.grayBlue};
 `
 
 const FrameworkAuthor = styled.div`
   font-size: 12px;
   font-weight: 300;
-  color: #7f859b;
+  color: ${props => props.theme.darkGray};
 `
 
 const Framework = props => (

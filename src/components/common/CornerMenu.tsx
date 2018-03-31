@@ -11,5 +11,5 @@ export default styled(FontAwesomeIcon).attrs({
   display: none;
   visibility: hidden;
   font-size: 14px;
-  color: #c5c7d0;
+  color: ${props => props.theme.primaryGray};
 `

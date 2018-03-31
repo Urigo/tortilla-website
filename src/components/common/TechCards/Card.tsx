@@ -9,7 +9,7 @@ const LEFT_SIZE = 190
 const Container = styled.div`
   padding: 0 ${SPACE_SIZE}px;
   height: ${HEIGHT}px;
-  border: solid 1px #f2f5f7;
+  border: solid 1px ${props => props.theme.lightGray};
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -52,26 +52,26 @@ const FrameworkInfo = styled.div`
   width: 100%;
   font-size: 25px;
   font-weight: 800;
-  color: #ffffff;
+  color: ${props => props.theme.white};
 `
 
 const Title = styled.div`
   font-size: 20px;
   font-weight: 800;
-  color: #fff;
+  color: ${props => props.theme.white};
 `
 
 const Description = styled.div`
   font-size: 14px;
   font-weight: 300;
-  color: #fff;
+  color: ${props => props.theme.white};
 `
 
 const Button = styled.div`
   display: inline-block;
   padding: 10px 45px;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: ${props => props.theme.white};
   font-size: 14px;
   font-weight: 400;
   text-align: center;

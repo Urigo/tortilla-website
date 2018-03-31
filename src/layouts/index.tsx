@@ -2,9 +2,11 @@ import * as React from 'react'
 import * as PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import * as Modal from 'react-modal'
+import { ThemeProvider } from 'styled-components'
 
 import Header from '../components/common/Header'
 import TechCards from '../components/common/TechCards'
+import Theme from '../themes/home'
 
 import './index.css'
 
@@ -30,12 +32,14 @@ const meta = [
 const scripts = ['https://unpkg.com/highlight.js@9.12.0']
 
 const TemplateWrapper = ({ children }: any) => (
-  <div>
-    <Helmet title="Tortilla" meta={meta} link={links} />
-    <Header />
-    <TechCards />
-    <div>{children()}</div>
-  </div>
+  <ThemeProvider theme={Theme}>
+    <div>
+      <Helmet title="Tortilla" meta={meta} link={links} />
+      <Header />
+      <TechCards />
+      <div>{children()}</div>
+    </div>
+  </ThemeProvider>
 )
 
 TemplateWrapper.propTypes = {

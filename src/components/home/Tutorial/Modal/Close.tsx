@@ -6,7 +6,7 @@ import { faTimes } from '@fortawesome/fontawesome-free-solid'
 const Icon = styled(FontAwesomeIcon).attrs({
   icon: faTimes,
 })`
-  color: #c5c7d0;
+  color: ${props => props.theme.primaryGray};
 `
 
 const Button = styled.button`

@@ -9,6 +9,6 @@ export default styled.input.attrs({
   font-weight: 300;
   font-style: italic;
   border-radius: 3px;
-  border: solid 1px #d2d5de;
-  color: #c5c7d0;
+  border: solid 1px ${props => props.theme.primaryGray};
+  color: ${props => props.theme.primaryGray};
 `
