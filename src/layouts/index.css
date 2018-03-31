@@ -2,11 +2,19 @@ html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  height: 100%;
 }
 body {
+  height: inherit;
   margin: 0;
   background-color: #f2f5f7;
 }
+
+body,
+#___gatsby {
+  height: inherit;
+}
+
 article,
 aside,
 details,

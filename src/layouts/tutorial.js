@@ -27,11 +27,11 @@ const meta = [
 ]
 const scripts = ['https://unpkg.com/highlight.js@9.12.0']
 
-const TemplateWrapper = ({ children }: any) => (
+const TemplateWrapper = ({ children }) => (
   <ThemeProvider theme={Theme}>
-    <div>
+    <div style={{ height: 'inherit' }}>
       <Helmet title="Tortilla" meta={meta} link={links} />
-      <div>{children()}</div>
+      <div style={{ height: 'inherit' }}>{children()}</div>
     </div>
   </ThemeProvider>
 )
