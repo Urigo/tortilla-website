@@ -3,6 +3,7 @@ const {
   GraphQLList,
   GraphQLString,
   GraphQLInt,
+  GraphQLNonNull,
 } = require('graphql')
 
 const { TypeName } = require('./config')
@@ -93,6 +94,18 @@ module.exports = (
         }
 
         return tutorial.versions
+      },
+    },
+    version: {
+      type: versionType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        number: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (tutorial, { name, number }) => {
+        return tutorial.versions.find(
+          version => version.name === name && version.number === number
+        )
       },
     },
     versionsCount: {

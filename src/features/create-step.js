@@ -62,8 +62,12 @@ module.exports = ({
     createPage({
       path: pagePath,
       component: stepPageTemplate,
-      layout: 'index',
+      layout: 'tutorial',
       context: {
+        tutorialName,
+        tutorialVersion,
+        versionName,
+        versionNumber,
         step,
       },
     })
