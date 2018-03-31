@@ -62,6 +62,8 @@ class IndexPage extends React.Component {
     },
   ]
 
+  selectTab(tab: string) {}
+
   render() {
     return (
       <Container>
@@ -71,10 +73,10 @@ class IndexPage extends React.Component {
         </SideMenu>
         <Content>
           <Header>
-            <Tabs>
-              <Tab>All</Tab>
-              <Tab active={true}>Popular</Tab>
-              <Tab>Newest</Tab>
+            <Tabs active="popular" onSelect={tab => this.selectTab(tab)}>
+              <Tab name="all">All</Tab>
+              <Tab name="popular">Popular</Tab>
+              <Tab name="newest">Newest</Tab>
             </Tabs>
             <Button>Submit your tutorial</Button>
           </Header>

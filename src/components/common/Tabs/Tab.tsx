@@ -7,6 +7,7 @@ const Tab = styled.div`
   text-align: center;
   color: ${props => props.theme.darkGray};
   border-bottom: 3px solid transparent;
+  cursor: pointer;
 `
 
 const ActiveTab = Tab.extend`
@@ -16,8 +17,10 @@ const ActiveTab = Tab.extend`
 
 export default props => {
   if (props.active) {
-    return <ActiveTab>{props.children}</ActiveTab>
+    return (
+      <ActiveTab onClick={() => props.onClick()}>{props.children}</ActiveTab>
+    )
   }
 
-  return <Tab>{props.children}</Tab>
+  return <Tab onClick={() => props.onClick()}>{props.children}</Tab>
 }
