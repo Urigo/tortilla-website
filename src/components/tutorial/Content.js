@@ -49,9 +49,33 @@ const Right = styled.div`
 
 const Html = styled.div`
   padding: 25px;
+  color: #c5c7d0;
+  font-weight: normal;
+  font-size: 14px;
+
+  a {
+    font-style: italic;
+    text-decoration: none;
+    color: #e3465a;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  pre {
+    background-color: #f2f4f6;
+    color: #c5c7d0;
+  }
 
   h1 {
     font-size: 34px;
+    font-weight: 800;
+    color: #718696;
+  }
+
+  h4 {
+    font-size: 24px;
     font-weight: 800;
     color: #718696;
   }
