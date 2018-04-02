@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import Counter from './Counter'
+import Tags from './Tags'
+
 const Content = styled.div`
   flex: 1 0 auto;
   background-color: ${({ theme }) => theme.white};
@@ -21,6 +24,22 @@ const Header = styled.div`
 const Left = styled.div`
   display: flex;
   flex-direction: row;
+
+  & > * {
+    margin-right: 10px;
+  }
+`
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+
+const Title = styled.div`
+  font-size: 24px;
+  font-weight: 800;
+  color: #0e324c;
 `
 
 const Right = styled.div`
@@ -41,7 +60,22 @@ const Html = styled.div`
 export default props => (
   <Content>
     <Header>
-      <Left>{props.step.name}</Left>
+      <Left>
+        <Counter
+          current={props.step.id}
+          count={props.tutorial.version.steps.length}
+        />
+        <Info>
+          <Title>{props.step.name}</Title>
+          <Tags
+            tags={[
+              { color: 'blue', name: 'Webpack' },
+              { color: 'red', name: 'Angular 4.4.3' },
+              { color: 'red', name: 'Meteor 1.6' },
+            ]}
+          />
+        </Info>
+      </Left>
       <Right>right</Right>
     </Header>
     <Html dangerouslySetInnerHTML={{ __html: props.step.html }} />

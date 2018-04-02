@@ -15,7 +15,7 @@ Modal.setAppElement('#___gatsby')
 const links = [
   {
     href:
-      'https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800,800i',
+      'https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,700,800,800i',
     rel: 'stylesheet',
   },
   {
