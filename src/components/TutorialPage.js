@@ -16,6 +16,7 @@ import {
 import Menu from './tutorial/Menu'
 import StepsMenu from './tutorial/StepsMenu'
 import Content from './tutorial/Content'
+import ImproveButton from './tutorial/ImproveButton'
 
 const Container = styled.div`
   height: inherit;
@@ -49,6 +50,17 @@ const TortillaLogo = styled.div`
   background-color: ${({ theme }) => theme.primaryGray};
 `
 
+const SubMenuContent = styled.div`
+  flex: 1 1 auto;
+  overflow-x: auto;
+`
+
+const ImproveTutorial = styled.div`
+  padding: 25px;
+  background-color: #1d4866;
+  box-shadow: inset 0 1px 0 0 #0e324c;
+`
+
 export default class TutorialPage extends React.Component {
   menu = [
     { name: 'timeline', icon: faCompass },
@@ -70,19 +82,11 @@ export default class TutorialPage extends React.Component {
     })
   }
 
-  renderSubMenu() {
+  renderSubMenuContent() {
     switch (this.state.active) {
       case 'sections':
         return (
-          <SubMenu>
-            <SubMenuHeader>
-              <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
-              <SubMenuHeaderSubtitle>
-                {this.props.tutorial.name}
-              </SubMenuHeaderSubtitle>
-            </SubMenuHeader>
-            <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />
-          </SubMenu>
+          <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />
         )
     }
   }
@@ -100,7 +104,18 @@ export default class TutorialPage extends React.Component {
               <TortillaLogo />
             </TortillaLink>
           </Menu>
-          {this.renderSubMenu()}
+          <SubMenu>
+            <SubMenuHeader>
+              <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
+              <SubMenuHeaderSubtitle>
+                {this.props.tutorial.name}
+              </SubMenuHeaderSubtitle>
+            </SubMenuHeader>
+            <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
+            <ImproveTutorial>
+              <ImproveButton />
+            </ImproveTutorial>
+          </SubMenu>
         </Aside>
         <Content {...this.props} />
       </Container>
