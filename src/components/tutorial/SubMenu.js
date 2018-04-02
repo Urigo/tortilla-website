@@ -9,6 +9,7 @@ export const SubMenu = Container.extend`
 
 export const SubMenuHeader = styled.div`
   padding: 0 25px;
+  border-bottom: 1px solid #0e324c;
 `
 
 export const SubMenuHeaderTitle = styled.div`

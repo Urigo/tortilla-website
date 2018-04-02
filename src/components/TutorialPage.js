@@ -15,6 +15,7 @@ import {
 } from './tutorial/SubMenu'
 import Menu from './tutorial/Menu'
 import StepsMenu from './tutorial/StepsMenu'
+import Content from './tutorial/Content'
 
 const Container = styled.div`
   height: inherit;
@@ -46,11 +47,6 @@ const TortillaLogo = styled.div`
   height: 47px;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.primaryGray};
-`
-
-const Content = styled.div`
-  flex: 1 0 auto;
-  background-color: ${({ theme }) => theme.white};
 `
 
 export default class TutorialPage extends React.Component {
@@ -91,15 +87,6 @@ export default class TutorialPage extends React.Component {
     }
   }
 
-  renderContent() {
-    switch (this.state.active) {
-      case 'sections':
-        return (
-          <Content dangerouslySetInnerHTML={{ __html: this.props.step.html }} />
-        )
-    }
-  }
-
   render() {
     return (
       <Container>
@@ -115,7 +102,7 @@ export default class TutorialPage extends React.Component {
           </Menu>
           {this.renderSubMenu()}
         </Aside>
-        {this.renderContent()}
+        <Content {...this.props} />
       </Container>
     )
   }

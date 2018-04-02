@@ -7,6 +7,10 @@ import { stepRoute } from '../../utils/routes'
 export const Steps = styled.div`
   display: flex;
   flex-direction: column;
+
+  & > *:first-child {
+    border-top: 0 none;
+  }
 `
 
 const Number = styled.div`
@@ -34,7 +38,7 @@ const Step = styled(Link)`
   flex-direction: row;
   align-items: center;
   background-color: #2a5f85;
-  border: solid 1px #0e324c;
+  border-top: solid 1px #0e324c;
   text-decoration: none;
 `
 
