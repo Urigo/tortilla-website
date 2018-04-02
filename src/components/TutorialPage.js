@@ -1,19 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'gatsby-link'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { faCompass, faCube, faListUl } from '@fortawesome/fontawesome-free-solid'
+import {
+  faCompass,
+  faCube,
+  faListUl,
+} from '@fortawesome/fontawesome-free-solid'
 
-import { stepRoute } from '../utils/routes'
+import {
+  SubMenu,
+  SubMenuHeader,
+  SubMenuHeaderTitle,
+  SubMenuHeaderSubtitle,
+} from './tutorial/SubMenu'
+import Menu from './tutorial/Menu'
+import StepsMenu from './tutorial/StepsMenu'
 
-const Container = styled.div `
+const Container = styled.div`
   height: inherit;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
 `
 
-const Aside = styled.aside `
+const Aside = styled.aside`
   flex: 0 0 auto;
   background: #0e324c;
   align-self: stretch;
@@ -21,12 +31,6 @@ const Aside = styled.aside `
   flex-direction: row;
   justify-content: flex-start;
   align-items: stretch;
-`
-
-const Menu = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: strech;
 `
 
 const TortillaLink = styled(Link)`
@@ -41,163 +45,78 @@ const TortillaLogo = styled.div`
   width: 42px;
   height: 47px;
   border-radius: 10px;
-  background-color: ${({theme}) => theme.primaryGray};
+  background-color: ${({ theme }) => theme.primaryGray};
 `
 
-const MenuSeparator = styled.div`
-  margin: 0 auto 15px auto;
-  width: 70%;
-  height: 1px;
-  background-color: rgba(113, 134, 150, 0.37);
-`
-
-const MenuItemIcon = styled(FontAwesomeIcon)`
-  font-size: 24px;
-`
-
-const MenuItem = styled.div`
-  margin: 15px 0;
-  padding: 5px 0;
-  display: block;
-  position: relative;
-  text-align: center;
-  cursor: pointer;
-
-  ${MenuItemIcon} {
-    color: ${(props) => props.active ? props.theme.white : '#718696'};
-  }
-
-  &:hover ${MenuItemIcon} {
-    color: ${({theme}) => theme.white};
-  }
-`
-
-const MenuItemBorder = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 6px;
-  border-radius: 0 6px 6px 0;
-  background-color: ${({theme}) => theme.primaryBlue};
-`
-
-
-const Content = styled.div `
+const Content = styled.div`
   flex: 1 0 auto;
-  background-color: ${({theme}) => theme.white};
+  background-color: ${({ theme }) => theme.white};
 `
 
-const Sections = styled.div`
-  display: flex;
-  flex-direction: column;
-`
+export default class TutorialPage extends React.Component {
+  menu = [
+    { name: 'timeline', icon: faCompass },
+    { name: 'sections', icon: faListUl },
+    { name: 'todo', icon: faCube },
+  ]
 
-const SubMenu = Menu.extend`
-  width: 270px;
-  background-color: #1d4866;
-`
+  constructor(props) {
+    super(props)
 
-const Steps = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-const StepNumber = styled.div`
-  width: 30px;
-  font-size: 17px;
-  font-weight: 800;
-  line-height: 30px;
-  text-align: center;
-  border-radius: 3px;
-`
-
-const StepName = styled.div`
-  margin-left: 15px;
-  font-size: 12px;
-  font-weight: normal;
-`
-
-const Step = styled(Link)`
-  padding: 15px 0 15px 25px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: #2a5f85;
-  border: solid 1px #0e324c;
-  text-decoration: none;
-
-  ${StepNumber} {
-    color: ${({theme, active}) => active ? theme.primaryBlue : '#0e324c'};
-    background-color: ${({theme, active}) => active ? '#0e324c' : '#1d4866'};
-    border: solid 1px ${({theme, active}) => active ? theme.white : '#0e324c'};
+    this.state = {
+      active: 'sections',
+    }
   }
 
-  ${StepName} {
-    color: ${({theme, active}) => active ? theme.white : '#0e324c'};
+  select(itemName) {
+    this.setState({
+      active: itemName,
+    })
   }
-`
 
-const Header = styled.div`
-  padding: 0 25px;
-`
+  renderSubMenu() {
+    switch (this.state.active) {
+      case 'sections':
+        return (
+          <SubMenu>
+            <SubMenuHeader>
+              <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
+              <SubMenuHeaderSubtitle>
+                {this.props.tutorial.name}
+              </SubMenuHeaderSubtitle>
+            </SubMenuHeader>
+            <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />
+          </SubMenu>
+        )
+    }
+  }
 
-const HeaderTitle = styled.div`
-  margin: 10px 0;
-  font-size: 24px;
-  font-weight: 800;
-  color: #092133;
-  text-transform: uppercase;
-`
+  renderContent() {
+    switch (this.state.active) {
+      case 'sections':
+        return (
+          <Content dangerouslySetInnerHTML={{ __html: this.props.step.html }} />
+        )
+    }
+  }
 
-const TutorialName = styled.div`
-  margin: 10px 0;
-  font-size: 16px;
-  font-weight: 800;
-  color: ${({theme}) => theme.white};
-`
-
-const propsToLink = (props, step) => stepRoute({
-  tutorialName: props.tutorial.name,
-  versionName: props.tutorial.version.name,
-  step,
-})
-
-export default props => {
-  return (
-    <Container>
-      <Aside>
-        <Menu>
-          <TortillaLink>
-            <TortillaLogo />
-          </TortillaLink>
-          <MenuSeparator />
-          <MenuItem active>
-            <MenuItemBorder />
-            <MenuItemIcon icon={faCompass} />
-          </MenuItem>
-          <MenuItem>
-            <MenuItemIcon icon={faListUl} />
-          </MenuItem>
-          <MenuItem>
-            <MenuItemIcon icon={faCube} />
-          </MenuItem>
-        </Menu>
-        <SubMenu>
-          <Header>
-            <HeaderTitle>Sections</HeaderTitle>
-            <TutorialName>{props.tutorial.name}</TutorialName>
-          </Header>
-          <Steps>
-            {props.tutorial.version.steps.map((step) => (
-              <Step key={step.id} active={step.id === props.step.id} to={propsToLink(props, step)}>
-                <StepNumber>{step.id}</StepNumber>
-                <StepName>{step.name}</StepName>
-              </Step>
-            ))}
-          </Steps>
-        </SubMenu>
-      </Aside>
-      <Content dangerouslySetInnerHTML={{ __html: props.step.html }} />
-    </Container>
-  )
+  render() {
+    return (
+      <Container>
+        <Aside>
+          <Menu
+            menu={this.menu}
+            active={this.state.active}
+            onSelect={itemName => this.select(itemName)}
+          >
+            <TortillaLink to="/">
+              <TortillaLogo />
+            </TortillaLink>
+          </Menu>
+          {this.renderSubMenu()}
+        </Aside>
+        {this.renderContent()}
+      </Container>
+    )
+  }
 }
