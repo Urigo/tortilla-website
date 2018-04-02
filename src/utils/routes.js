@@ -5,7 +5,7 @@ const { kebabCase } = require('lodash')
 exports.stepRoute = ({ step, tutorialName, versionName }) =>
   [
     // prefix
-    'tutorial',
+    '/tutorial',
     // tutorial
     kebabCase(tutorialName),
     // version

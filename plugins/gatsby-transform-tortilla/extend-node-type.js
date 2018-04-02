@@ -23,7 +23,8 @@ module.exports = (
     name: StepTypeName,
     fields: {
       id: {
-        type: GraphQLString,
+        type: GraphQLInt,
+        resolve: step => parseInt(step.id),
       },
       name: {
         type: GraphQLString,

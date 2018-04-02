@@ -19,6 +19,7 @@ export const tutorialPageQuery = graphql`
       name
       currentVersion
       version(name: $versionName, number: $versionNumber) {
+        name
         steps {
           id
           name
