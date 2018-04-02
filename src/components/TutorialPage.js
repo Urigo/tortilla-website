@@ -137,6 +137,25 @@ const Step = styled(Link)`
   }
 `
 
+const Header = styled.div`
+  padding: 0 25px;
+`
+
+const HeaderTitle = styled.div`
+  margin: 10px 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #092133;
+  text-transform: uppercase;
+`
+
+const TutorialName = styled.div`
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: ${({theme}) => theme.white};
+`
+
 const propsToLink = (props, step) => stepRoute({
   tutorialName: props.tutorial.name,
   versionName: props.tutorial.version.name,
@@ -164,6 +183,10 @@ export default props => {
           </MenuItem>
         </Menu>
         <SubMenu>
+          <Header>
+            <HeaderTitle>Sections</HeaderTitle>
+            <TutorialName>{props.tutorial.name}</TutorialName>
+          </Header>
           <Steps>
             {props.tutorial.version.steps.map((step) => (
               <Step key={step.id} active={step.id === props.step.id} to={propsToLink(props, step)}>
