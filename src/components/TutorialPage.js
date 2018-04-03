@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Link from 'gatsby-link'
 import {
@@ -63,6 +64,11 @@ const ImproveTutorial = styled.div`
 `
 
 export default class TutorialPage extends React.Component {
+  static propTypes = {
+    tutorial: PropTypes.any.isRequired,
+    step: PropTypes.any.isRequired,
+  }
+
   menu = [
     { name: 'timeline', icon: faCompass },
     { name: 'sections', icon: faListUl },
@@ -101,6 +107,10 @@ export default class TutorialPage extends React.Component {
 
   constructor(props) {
     super(props)
+
+    // TODO: if use was in `sections`, clicked on a step
+    // and has been redirected to that step
+    // it should set `sections` as `state.active`, it also applies to others
 
     this.state = {
       active: 'timeline',
