@@ -15,6 +15,7 @@ import {
 } from './tutorial/SubMenu'
 import Menu from './tutorial/Menu'
 import StepsMenu from './tutorial/StepsMenu'
+import Timeline from './tutorial/Timeline'
 import Content from './tutorial/Content'
 import ImproveButton from './tutorial/ImproveButton'
 
@@ -68,6 +69,33 @@ export default class TutorialPage extends React.Component {
     { name: 'todo', icon: faCube },
   ]
 
+  events = [
+    {
+      date: 'November 27, 2017',
+      name: 'Angular 4.4.3 + Meteor 1.6',
+      author: {
+        name: 'Nathan Fisher',
+      },
+      versions: [],
+    },
+    {
+      date: 'November 27, 2017',
+      name: 'Ionic 3',
+      author: {
+        name: 'Terry Andrews',
+      },
+      versions: [],
+    },
+    {
+      date: 'November 27, 2017',
+      name: 'Socially Merge Version',
+      author: {
+        name: 'Judith Lawrence',
+      },
+      versions: [],
+    },
+  ]
+
   constructor(props) {
     super(props)
 
@@ -88,6 +116,8 @@ export default class TutorialPage extends React.Component {
         return (
           <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />
         )
+      case 'timeline':
+        return <Timeline events={this.events} />
     }
   }
 
