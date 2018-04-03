@@ -71,6 +71,7 @@ export default class TutorialPage extends React.Component {
 
   events = [
     {
+      id: 1,
       date: 'November 27, 2017',
       name: 'Angular 4.4.3 + Meteor 1.6',
       author: {
@@ -79,6 +80,7 @@ export default class TutorialPage extends React.Component {
       versions: [],
     },
     {
+      id: 2,
       date: 'November 27, 2017',
       name: 'Ionic 3',
       author: {
@@ -87,6 +89,7 @@ export default class TutorialPage extends React.Component {
       versions: [],
     },
     {
+      id: 3,
       date: 'November 27, 2017',
       name: 'Socially Merge Version',
       author: {
@@ -100,7 +103,7 @@ export default class TutorialPage extends React.Component {
     super(props)
 
     this.state = {
-      active: 'sections',
+      active: 'timeline',
     }
   }
 
@@ -117,7 +120,13 @@ export default class TutorialPage extends React.Component {
           <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />
         )
       case 'timeline':
-        return <Timeline events={this.events} />
+        return (
+          <Timeline
+            events={this.events}
+            active={1}
+            onSelect={event => console.log('event selected', event)}
+          />
+        )
     }
   }
 

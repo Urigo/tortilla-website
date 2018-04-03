@@ -1,7 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
-const Event = styled.div``
 
 const Point = styled.div`
   position: absolute;
@@ -9,8 +8,6 @@ const Point = styled.div`
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: ${({ theme, active }) =>
-    active ? theme.primaryBlue : '#1d4866'};
   border: solid 1px #0e324c;
 `
 
@@ -44,7 +41,6 @@ const AuthorImage = styled.div`
   width: 20px;
   height: 20px;
   background-color: #718696;
-  border: 1px solid ${({ theme }) => theme.white};
   border-radius: 50%;
 `
 
@@ -67,18 +63,31 @@ const Name = styled.div`
 const EventBlock = styled.div`
   display: flex;
   flex-direction: column;
+  border-radius: 3px;
 `
 
 const EventMain = Line.extend`
   position: relative;
   padding-bottom: 35px;
+`
 
-  & > ${EventBlock} {
-    border-radius: 3px;
+const Event = styled.div`
+  ${EventBlock} {
     background-color: ${({ theme, active }) =>
       active ? '#0e324c' : '#1d4866'};
     border: solid 1px
       ${({ theme, active }) => (active ? theme.primaryBlue : '#0e324c')};
+  }
+
+  ${Point} {
+    background-color: ${({ theme, active }) =>
+      active ? theme.primaryBlue : '#1d4866'};
+  }
+
+  ${AuthorImage} {
+    border: 1px solid
+      ${({ theme, active }) =>
+        active ? theme.white : 'rgba(210, 213, 222, 0.37)'};
   }
 `
 
@@ -95,35 +104,47 @@ const Container = styled.div`
     border-left: 0 none;
   }
 `
+export default class Timeline extends React.Component {
+  static propTypes = {
+    events: PropTypes.arrayOf(PropTypes.any),
+    active: PropTypes.any,
+    onSelect: PropTypes.func,
+  }
 
-const events = [
-  {
-    date: 'November 27, 2017',
-    name: 'Angular 4.4.3 + Meteor 1.6',
-    author: 'Nathan Fisher',
-    versions: [],
-  },
-  {
-    date: 'November 27, 2017',
-    name: 'Ionic 3',
-    author: 'Terry Andrews',
-    versions: [],
-  },
-  {
-    date: 'November 27, 2017',
-    name: 'Socially Merge Version',
-    author: 'Judith Lawrence',
-    versions: [],
-  },
-]
+  constructor(props) {
+    super(props)
 
-export default props => (
-  <Container>
-    {props.events.map((event, i) => (
-      <Event key={i} active={i === 0}>
+    this.state = {
+      active: props.active,
+    }
+  }
+
+  select(event) {
+    if (this.isActive(event)) {
+      return
+    }
+
+    this.setState({
+      active: event.id,
+    })
+
+    if (this.props.onSelect) {
+      this.props.onSelect(event)
+    }
+  }
+
+  isActive(event) {
+    return event.id === this.state.active
+  }
+
+  renderEvent(event) {
+    const active = this.isActive(event)
+
+    return (
+      <Event key={event.id} active={active} onClick={() => this.select(event)}>
         <EventDate>{event.date}</EventDate>
-        <EventMain active={i === 0}>
-          <Point active={i === 0} />
+        <EventMain>
+          <Point />
           <EventBlock>
             <Details>
               <Author>
@@ -135,6 +156,14 @@ export default props => (
           </EventBlock>
         </EventMain>
       </Event>
-    ))}
-  </Container>
-)
+    )
+  }
+
+  render() {
+    return (
+      <Container>
+        {this.props.events.map(event => this.renderEvent(event))}
+      </Container>
+    )
+  }
+}
