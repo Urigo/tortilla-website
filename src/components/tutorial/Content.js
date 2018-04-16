@@ -5,16 +5,18 @@ import Counter from './Counter'
 import Tags from './Tags'
 
 const Content = styled.div`
-  flex: 1 0 auto;
+  flex: 1 0 0;
   background-color: ${({ theme }) => theme.white};
   display: flex;
   flex-direction: column;
+  align-self: stretch;
 `
 
 const Header = styled.div`
   padding: 25px;
   box-shadow: inset 0 -1px 0 0 #e8e8e8;
   display: flex;
+  flex: 0 0 auto;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -52,6 +54,8 @@ const Html = styled.div`
   color: #c5c7d0;
   font-weight: normal;
   font-size: 14px;
+  flex: 0 1 auto;
+  overflow-y: auto;
 
   a {
     font-style: italic;
