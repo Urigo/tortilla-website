@@ -1,8 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import { navigateTo } from 'gatsby-link'
 
 import Counter from './Counter'
 import Tags from './Tags'
+import Stepper from '../common/Stepper'
+import { stepRoute } from '../../utils/routes'
 
 const Content = styled.div`
   flex: 1 0 0;
@@ -85,27 +88,68 @@ const Html = styled.div`
   }
 `
 
-export default props => (
-  <Content>
-    <Header>
-      <Left>
-        <Counter
-          current={props.step.id}
-          count={props.tutorial.version.steps.length}
-        />
-        <Info>
-          <Title>{props.step.name}</Title>
-          <Tags
-            tags={[
-              { color: 'blue', name: 'Webpack' },
-              { color: 'red', name: 'Angular 4.4.3' },
-              { color: 'red', name: 'Meteor 1.6' },
-            ]}
-          />
-        </Info>
-      </Left>
-      <Right>right</Right>
-    </Header>
-    <Html dangerouslySetInnerHTML={{ __html: props.step.html }} />
-  </Content>
-)
+export default class extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.navigationTimer = null;
+    this.state = {
+      stepId: this.props.step.id,
+    }
+  }
+
+  changeStep(id) {
+    if (this.navigationTimer) {
+      clearTimeout(this.navigationTimer);
+    }
+
+    this.setState({
+      stepId: id,
+    })
+
+    this.navigationTimer = setTimeout(() => {
+      const route = stepRoute({
+        tutorialName: this.props.tutorial.name,
+        versionName: this.props.tutorial.version.name,
+        step: this.getStep(),
+      });
+
+      navigateTo(route);
+    }, 1000);
+  }
+
+  getStep() {
+    return this.props.tutorial.version.steps.find(({ id }) => id === this.state.stepId);
+  }
+
+  render() {
+    const step = this.getStep();
+
+    return (
+      <Content>
+        <Header>
+          <Left>
+            <Counter
+              current={step.id}
+              count={this.props.tutorial.version.steps.length}
+            />
+            <Info>
+              <Title>{step.name}</Title>
+              <Tags
+                tags={[
+                  { color: 'blue', name: 'Webpack' },
+                  { color: 'red', name: 'Angular 4.4.3' },
+                  { color: 'red', name: 'Meteor 1.6' },
+                ]}
+              />
+            </Info>
+          </Left>
+          <Right>
+            <Stepper limit={this.props.tutorial.version.steps.length} current={this.state.stepId - 1} onChange={i => this.changeStep(i + 1)} />
+          </Right>
+        </Header>
+        <Html dangerouslySetInnerHTML={{ __html: this.props.step.html }} />
+      </Content>
+    );
+  }
+}
