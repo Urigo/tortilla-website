@@ -21,6 +21,7 @@ if (isBrowser) {
     content: {
       flex: '0 0 auto',
       height: '70%',
+      maxWidth: '960px',
       overflow: 'hidden',
       borderRadius: 3,
       boxShadow: '0 11px 22px 0 rgba(218, 218, 218, 0.34)',
@@ -35,7 +36,13 @@ if (isBrowser) {
 }
 
 function FakedModal() {
-  return <div style={{ display: 'none', visibility: 'hidden' }} />
+  return <div style = {
+    {
+      display: 'none',
+      visibility: 'hidden'
+    }
+  }
+  />
 }
 
 FakedModal.setAppElement = () => {}
