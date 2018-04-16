@@ -32,7 +32,9 @@ const Name = styled.div`
   color: #0e324c;
 `
 
-const Step = styled(Link)`
+const Step = styled(Link).attrs({
+  innerRef: props => props.activeRef,
+}) `
   padding: 15px 0 15px 25px;
   display: flex;
   flex-direction: row;
@@ -61,26 +63,44 @@ const propsToLink = (props, step) =>
     step,
   })
 
-export default props => (
-  <Steps>
-    {props.tutorial.version.steps.map(step => {
-      const active = step.id === props.step.id
-      const link = propsToLink(props, step)
+export default class extends React.Component {
+  constructor(props) {
+    super();
 
-      if (active) {
+    this.activeRef = null;
+    this.setActiveRef = el => this.activeRef = el;
+  }
+
+  componentDidMount() {
+    this.scrollToActive();
+  }
+
+  scrollToActive() {
+    // XXX: We can change this behaviour later
+    this.activeRef.scrollIntoView(false);
+  }
+
+  render() {
+    return <Steps>
+      {this.props.tutorial.version.steps.map(step => {
+        const active = step.id === this.props.step.id
+        const link = propsToLink(this.props, step)
+
+        if (active) {
+          return (
+            <ActiveStep key={step.id} to={link} activeRef={this.setActiveRef}>
+              <Number>{step.id}</Number>
+              <Name>{step.name}</Name>
+            </ActiveStep>
+          )
+        }
         return (
-          <ActiveStep key={step.id} to={link}>
+          <Step key={step.id} to={link}>
             <Number>{step.id}</Number>
             <Name>{step.name}</Name>
-          </ActiveStep>
+          </Step>
         )
-      }
-      return (
-        <Step key={step.id} to={link}>
-          <Number>{step.id}</Number>
-          <Name>{step.name}</Name>
-        </Step>
-      )
-    })}
-  </Steps>
-)
+      })}
+    </Steps>;
+  }
+}
