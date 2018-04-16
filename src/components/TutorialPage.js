@@ -13,6 +13,7 @@ import {
   SubMenuHeader,
   SubMenuHeaderTitle,
   SubMenuHeaderSubtitle,
+  SubMenuHeaderClose,
 } from './tutorial/SubMenu'
 import Menu from './tutorial/Menu'
 import StepsMenu from './tutorial/StepsMenu'
@@ -37,7 +38,7 @@ const Aside = styled.aside`
   align-items: stretch;
 `
 
-const TortillaLink = styled(Link)`
+const TortillaLink = styled(Link) `
   padding: 0;
   margin: 30px 15px;
   text-align: center;
@@ -114,13 +115,21 @@ export default class TutorialPage extends React.Component {
 
     this.state = {
       active: 'sections',
+      isOpen: true,
     }
   }
 
   select(itemName) {
     this.setState({
       active: itemName,
+      isOpen: true,
     })
+  }
+
+  close() {
+    this.setState({
+      isOpen: false,
+    });
   }
 
   renderSubMenuContent() {
@@ -153,18 +162,19 @@ export default class TutorialPage extends React.Component {
               <TortillaLogo />
             </TortillaLink>
           </Menu>
-          <SubMenu>
+          {this.state.isOpen ? <SubMenu>
             <SubMenuHeader>
               <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
               <SubMenuHeaderSubtitle>
                 {this.props.tutorial.name}
               </SubMenuHeaderSubtitle>
+              <SubMenuHeaderClose onClick={() => this.close()} />
             </SubMenuHeader>
             <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
             <ImproveTutorial>
               <ImproveButton />
             </ImproveTutorial>
-          </SubMenu>
+          </SubMenu> : null}
         </Aside>
         <Content {...this.props} />
       </Container>

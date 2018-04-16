@@ -15,7 +15,7 @@ const Separator = styled.div`
   background-color: rgba(113, 134, 150, 0.37);
 `
 
-const ItemIcon = styled(FontAwesomeIcon)`
+const ItemIcon = styled(FontAwesomeIcon) `
   font-size: 24px;
 `
 
@@ -55,14 +55,12 @@ export default class Menu extends React.Component {
   }
 
   select(item, i) {
-    if (!this.isActive(item, i)) {
-      this.setState({
-        active: item.name,
-      })
+    this.setState({
+      active: item.name,
+    })
 
-      if (this.props.onSelect) {
-        this.props.onSelect(item.name)
-      }
+    if (this.props.onSelect) {
+      this.props.onSelect(item.name)
     }
   }
 
