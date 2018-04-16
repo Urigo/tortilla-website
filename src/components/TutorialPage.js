@@ -113,7 +113,7 @@ export default class TutorialPage extends React.Component {
     // it should set `sections` as `state.active`, it also applies to others
 
     this.state = {
-      active: 'timeline',
+      active: 'sections',
     }
   }
 
