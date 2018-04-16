@@ -5,20 +5,25 @@ const remark = require('remark')
 const html = require('remark-html')
 const highlight = require('remark-highlight.js')
 
-const { TypeName } = require('./config')
+const {
+  TypeName
+} = require('./config')
 
 const processMd = doc =>
   remark()
-    .use(highlight)
-    .use(html)
-    .process(doc)
+  .use(highlight)
+  .use(html)
+  .process(doc)
 
 module.exports = async function onCreateNode({
   node,
   loadNodeContent,
   boundActionCreators,
 }) {
-  const { createNode, createParentChildLink } = boundActionCreators
+  const {
+    createNode,
+    createParentChildLink
+  } = boundActionCreators
 
   // accept only json files
   if (node.internal.mediaType !== 'application/json') {
@@ -28,10 +33,11 @@ module.exports = async function onCreateNode({
   // load content and parse it
   const content = await loadNodeContent(node)
   const parsedContent = JSON.parse(content)
+  const tutorial = parseTutorial(parsedContent);
 
   // add `html` to each step
   await Promise.all(
-    parsedContent.versions.map(async version => {
+    tutorial.versions.map(async version => {
       return Promise.all(
         version.steps.map(async step => {
           step.html = await processMd(step.content)
@@ -49,7 +55,7 @@ module.exports = async function onCreateNode({
       content,
       type: TypeName,
     },
-    ...parsedContent,
+    ...tutorial,
   }
 
   tutorialNode.internal.contentDigest = crypto
@@ -58,5 +64,55 @@ module.exports = async function onCreateNode({
     .digest(`hex`)
 
   createNode(tutorialNode)
-  createParentChildLink({ parent: node, child: tutorialNode })
+  createParentChildLink({
+    parent: node,
+    child: tutorialNode
+  })
+}
+
+
+function getSteps(release) {
+  return release.manuals
+    .filter((m, i) => i > 0)
+    .map((manual, i) => ({
+      id: i + 1,
+      name: manual.manualTitle.replace(/step [0-9]+\:/i, ''),
+      content: manual.manualView,
+      revision: manual.stepRevision,
+    }));
+}
+
+function getVersions(doc) {
+  return doc.releases.map(release => ({
+    number: release.releaseVersion,
+    name: release.manuals[0].manualTitle.substr(0, 45),
+    revision: release.tagRevision,
+    steps: getSteps(release),
+  }));
+}
+
+function getTutorialName(doc) {
+  return doc.releases[0].manuals[0].manualTitle.substr(0, 45);
+}
+
+function getCurrentVersion(doc) {
+  return doc.releases[0].releaseVersion;
+}
+
+function fromDumpToTutorial(doc) {
+  const versions = getVersions(doc);
+  const name = getTutorialName(doc);
+  const currentVersion = getCurrentVersion(doc);
+
+  return {
+    name,
+    currentVersion,
+    versions
+  };
+}
+
+function parseTutorial(doc) {
+  // depends if was generated using the old structure or proposed one
+  // TODO: we should include tortilla's version here so we can match it with dump's structure
+  return doc && doc.length ? fromDumpToTutorial(doc[0]) : doc
 }
