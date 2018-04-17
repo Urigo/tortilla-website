@@ -1,0 +1,11 @@
+{
+  "name": "remark-github",
+  "version": "1.0.0",
+  "description": "remark plugin to transform github related sources",
+  "author": "Kamil Kisiela <kamil.kisiela@gmail.com>",
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "unist-util-select": "^1.5.0"
+  }
+}

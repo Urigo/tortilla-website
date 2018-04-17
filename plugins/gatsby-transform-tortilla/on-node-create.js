@@ -4,14 +4,16 @@ const crypto = require('crypto')
 const remark = require('remark')
 const html = require('remark-html')
 const highlight = require('remark-highlight.js')
+const remarkGitHub = require('../remark-github');
 
 const {
   TypeName
 } = require('./config')
 
-const processMd = doc =>
+const processMd = (doc, options = {}) =>
   remark()
   .use(highlight)
+  .use(remarkGitHub, options)
   .use(html)
   .process(doc)
 
@@ -34,13 +36,21 @@ module.exports = async function onCreateNode({
   const content = await loadNodeContent(node)
   const parsedContent = JSON.parse(content)
   const tutorial = parseTutorial(parsedContent);
+  // TODO: get it from `tutorial`
+  const githubOrg = 'Urigo'
+  const githubName = 'whatsapp-textrepo-angularcli-express'
+  const branch = 'master';
 
   // add `html` to each step
   await Promise.all(
     tutorial.versions.map(async version => {
       return Promise.all(
         version.steps.map(async step => {
-          step.html = await processMd(step.content)
+          step.html = await processMd(step.content, {
+            org: githubOrg,
+            name: githubName,
+            branch,
+          })
         })
       )
     })
