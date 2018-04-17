@@ -2,7 +2,7 @@ import React from 'react'
 
 import HomePage from '../components/HomePage'
 
-export const query = graphql`
+export const query = graphql `
   query AllTortillaTutorial {
     allTortillaTutorial {
       edges {
@@ -11,7 +11,7 @@ export const query = graphql`
           versions {
             name
             stepsCount
-            steps(first: 1) {
+            steps {
               id
               name
             }
@@ -22,6 +22,9 @@ export const query = graphql`
   }
 `
 
-export default props => (
-  <HomePage tutorials={props.data.allTortillaTutorial.edges} />
+export default props => ( <
+  HomePage tutorials = {
+    props.data.allTortillaTutorial.edges
+  }
+  />
 )

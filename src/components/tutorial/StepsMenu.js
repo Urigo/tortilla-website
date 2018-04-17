@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Link from 'gatsby-link'
+import Link, { navigateTo } from 'gatsby-link'
 
 import { stepRoute } from '../../utils/routes'
 
@@ -32,9 +32,8 @@ const Name = styled.div`
   color: #0e324c;
 `
 
-const Step = styled(Link).attrs({
-  innerRef: props => props.activeRef,
-}) `
+const Step = styled.a`
+  display: block;
   padding: 15px 0 15px 25px;
   display: flex;
   flex-direction: row;
@@ -42,6 +41,7 @@ const Step = styled(Link).attrs({
   background-color: #2a5f85;
   border-top: solid 1px #0e324c;
   text-decoration: none;
+  cursor: pointer;
 `
 
 const ActiveStep = Step.extend`
@@ -69,6 +69,9 @@ export default class extends React.Component {
 
     this.activeRef = null;
     this.setActiveRef = el => this.activeRef = el;
+
+    this.containerRef = null;
+    this.setContainerRef = el => this.containerRef = el;
   }
 
   componentDidMount() {
@@ -77,25 +80,48 @@ export default class extends React.Component {
 
   scrollToActive() {
     // XXX: We can change this behaviour later
-    this.activeRef.scrollIntoView(false);
+    const pos = this.read();
+
+    if (pos) {
+      this.containerRef.parentElement.scrollTop = pos;
+    } else {
+      this.activeRef.scrollIntoView(false);
+    }
+  }
+
+  navigateTo(link) {
+    this.save();
+    navigateTo(link);
+  }
+
+  save() {
+    localStorage.setItem('steps-menu-position', this.containerRef.parentElement.scrollTop)
+  }
+
+  read() {
+    const pos = localStorage.getItem('steps-menu-position');
+    
+    localStorage.removeItem('steps-menu-position');
+    
+    return pos;
   }
 
   render() {
-    return <Steps>
+    return <Steps innerRef={this.setContainerRef}>
       {this.props.tutorial.version.steps.map(step => {
         const active = step.id === this.props.step.id
         const link = propsToLink(this.props, step)
 
         if (active) {
           return (
-            <ActiveStep key={step.id} to={link} activeRef={this.setActiveRef}>
+            <ActiveStep key={step.id} onClick={() => this.navigateTo(link)} innerRef={this.setActiveRef}>
               <Number>{step.id}</Number>
               <Name>{step.name}</Name>
             </ActiveStep>
           )
         }
         return (
-          <Step key={step.id} to={link}>
+          <Step key={step.id} onClick={() => this.navigateTo(link)}>
             <Number>{step.id}</Number>
             <Name>{step.name}</Name>
           </Step>

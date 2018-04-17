@@ -76,7 +76,7 @@ function getSteps(release) {
     .filter((m, i) => i > 0)
     .map((manual, i) => ({
       id: i + 1,
-      name: manual.manualTitle.replace(/step [0-9]+\:/i, ''),
+      name: manual.manualTitle.replace(/step [0-9]+\:[\ ]*/i, ''),
       content: manual.manualView,
       revision: manual.stepRevision,
     }));

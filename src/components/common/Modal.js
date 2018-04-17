@@ -20,7 +20,8 @@ if (isBrowser) {
     },
     content: {
       flex: '0 0 auto',
-      height: '70%',
+      display: 'flex',
+      maxHeight: '70%',
       maxWidth: '960px',
       overflow: 'hidden',
       borderRadius: 3,

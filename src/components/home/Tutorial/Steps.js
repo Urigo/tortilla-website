@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Steps = styled.div`
-  flex: 1 1 auto;
+const Steps = styled.div `
+  flex: 1 1 100%;
+  height: 100%;
   border-radius: 3px;
   border: solid 1px ${({ theme }) => theme.lightGray};
 `
 
-const Step = styled.div`
+const Step = styled.div `
   padding: 5px 15px;
   font-size: 12px;
   font-weight: normal;
@@ -26,12 +27,16 @@ const Step = styled.div`
   }
 `
 
-export default props => (
-  <Steps>
-    {props.steps.map((name, i) => (
-      <Step>
-        <div>{i}.</div> {name}
-      </Step>
-    ))}
-  </Steps>
+export default props => ( <
+  Steps > {
+    props.steps.map((name, i) => ( <
+      Step >
+      <
+      div > {
+        i + 1
+      }. < /div> {name} <
+      /Step>
+    ))
+  } <
+  /Steps>
 )

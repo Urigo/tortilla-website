@@ -34,8 +34,8 @@ const PlaySpace = styled.div`
 
 const Relative = styled.div`
   position: relative;
+  display: flex;
   width: 100%;
-  height: 100%;
 `
 
 const Container = styled.div`
@@ -70,6 +70,8 @@ const RigthContainer = styled.div`
 `
 
 const Details = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   margin-top: 15px;
 `
@@ -84,6 +86,7 @@ const Header = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex: 0 0 auto;
   border-bottom: 1px solid ${({ theme }) => theme.lightGray};
 `
 
@@ -246,12 +249,7 @@ export default class Modal extends React.Component {
                     ]}
                   />
                   <Steps
-                    steps={[
-                      'Bootstrapping',
-                      'Chats page',
-                      'RxJS',
-                      'Realtime Meteor Server',
-                    ]}
+                    steps={this.props.tutorial.steps.map(({ name }) => name)}
                   />
                 </OptionsContainer>
               </Details>

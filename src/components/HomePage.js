@@ -96,6 +96,7 @@ class HomePage extends React.Component {
                     versionName: version.name,
                     step: version.steps[0],
                   })}
+                  steps={version.steps}
                   key={`${i}-${j}`}
                   title={`${node.title}: ${version.name}`}
                   chaptersCount={version.stepsCount}
