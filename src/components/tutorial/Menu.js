@@ -28,7 +28,7 @@ const Item = styled.div`
   cursor: pointer;
 
   ${ItemIcon} {
-    color: ${props => (props.active ? props.theme.white : '#718696')};
+    color: ${props => (props.active ? props.theme.white : props.theme.blueGray)};
   }
 
   &:hover ${ItemIcon} {

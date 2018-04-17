@@ -54,7 +54,7 @@ const Right = styled.div`
 
 const Html = styled.div`
   padding: 25px;
-  color: #c5c7d0;
+  color: ${({theme}) => theme.lightBlack};
   font-weight: normal;
   font-size: 14px;
   flex: 0 1 auto;
@@ -78,13 +78,13 @@ const Html = styled.div`
   h1 {
     font-size: 34px;
     font-weight: 800;
-    color: #718696;
+    color: ${({theme}) => theme.blueGray};
   }
 
   h4 {
     font-size: 24px;
     font-weight: 800;
-    color: #718696;
+    color: ${({theme}) => theme.blueGray};
   }
 `
 

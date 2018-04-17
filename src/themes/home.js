@@ -3,6 +3,9 @@ export default {
   primaryGray: '#d2d5de',
   darkGray: '#7f859b',
   lightGray: '#e6ecf4',
+  blueGray: '#718696',
+
+  lightBlack: '#505050',
 
   primaryBlue: '#4c84ff',
   grayBlue: '#182e3f',

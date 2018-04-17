@@ -20,7 +20,7 @@ const EventDate = Line.extend`
   font-size: 10px;
   font-weight: 300;
   font-style: italic;
-  color: #718696;
+  color: ${({theme}) => theme.blueGray};
 `
 
 const Author = styled.div`
@@ -40,7 +40,7 @@ const AuthorImage = styled.div`
   margin: 0;
   width: 20px;
   height: 20px;
-  background-color: #718696;
+  background-color: ${({theme}) => theme.blueGray};
   border-radius: 50%;
 `
 

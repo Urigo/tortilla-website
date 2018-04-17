@@ -13,7 +13,7 @@ const Current = styled.div`
   padding: 3px 15px;
   font-size: 24px;
   font-weight: 800;
-  color: ${({ theme }) => theme.primaryGray};
+  color: ${({ theme }) => theme.blueGray};
 `
 
 const Count = styled.div`
@@ -21,10 +21,6 @@ const Count = styled.div`
   font-size: 14px;
   font-weight: normal;
   color: ${({ theme }) => theme.primaryGray};
-
-  /* &:before {
-    content: '/';
-  } */
 `
 
 export default props => (
