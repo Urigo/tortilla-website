@@ -8,6 +8,7 @@ import {
   faListUl,
 } from '@fortawesome/fontawesome-free-solid'
 
+import storage from '../utils/storage';
 import {
   SubMenu,
   SubMenuHeader,
@@ -116,7 +117,7 @@ export default class TutorialPage extends React.Component {
 
     this.state = {
       active: 'sections',
-      isOpen: JSON.parse(localStorage.getItem('tortilla:tutorial:menu') || true),
+      isOpen: JSON.parse(storage.getItem('tortilla:tutorial:menu') || true),
     }
   }
 
@@ -133,11 +134,11 @@ export default class TutorialPage extends React.Component {
       isOpen: false,
     });
 
-    localStorage.setItem('tortilla:tutorial:menu', JSON.stringify(false))
+    storage.setItem('tortilla:tutorial:menu', JSON.stringify(false))
   }
 
   open() {
-    localStorage.setItem('tortilla:tutorial:menu', JSON.stringify(true))
+    storage.setItem('tortilla:tutorial:menu', JSON.stringify(true))
     
     this.setState({
       isOpen: true

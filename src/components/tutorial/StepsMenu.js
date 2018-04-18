@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Link, { navigateTo } from 'gatsby-link'
 
 import { stepRoute } from '../../utils/routes'
+import storage from '../../utils/storage';
 
 export const Steps = styled.div`
   display: flex;
@@ -95,13 +96,13 @@ export default class extends React.Component {
   }
 
   save() {
-    localStorage.setItem('steps-menu-position', this.containerRef.parentElement.scrollTop)
+    storage.setItem('steps-menu-position', this.containerRef.parentElement.scrollTop)
   }
 
   read() {
-    const pos = localStorage.getItem('steps-menu-position');
+    const pos = storage.getItem('steps-menu-position');
     
-    localStorage.removeItem('steps-menu-position');
+    storage.removeItem('steps-menu-position');
     
     return pos;
   }
