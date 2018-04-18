@@ -27,16 +27,13 @@ const Step = styled.div `
   }
 `
 
-export default props => ( <
-  Steps > {
-    props.steps.map((name, i) => ( <
-      Step >
-      <
-      div > {
-        i + 1
-      }. < /div> {name} <
-      /Step>
-    ))
-  } <
-  /Steps>
+export default props => (
+<Steps>
+  {props.steps.map((name, i) => (
+    <Step key={i + 1}>
+      <div>{i + 1}.</div>
+      {name} 
+    </Step>
+  ))}
+</Steps>
 )
