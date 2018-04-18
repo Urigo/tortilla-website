@@ -13,6 +13,7 @@ import {
   SubMenuHeader,
   SubMenuHeaderTitle,
   SubMenuHeaderSubtitle,
+  SubMenuHeaderGithub,
   SubMenuHeaderClose,
 } from './tutorial/SubMenu'
 import Menu from './tutorial/Menu'
@@ -179,6 +180,7 @@ export default class TutorialPage extends React.Component {
               <SubMenuHeaderSubtitle>
                 {this.props.tutorial.name}
               </SubMenuHeaderSubtitle>
+              <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
               <SubMenuHeaderClose onClick={() => this.close()} />
             </SubMenuHeader>
             <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>

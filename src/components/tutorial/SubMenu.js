@@ -1,6 +1,8 @@
+import React from 'react'
 import styled from 'styled-components'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/fontawesome-free-solid';
+import { faGithubSquare } from '@fortawesome/fontawesome-free-brands';
 
 import { Container } from './Menu'
 
@@ -24,11 +26,49 @@ export const SubMenuHeaderTitle = styled.div`
 `
 
 export const SubMenuHeaderSubtitle = styled.div`
-  margin: 10px 0;
+  height: 26px;
+  margin: 10px 0 0 0;
   font-size: 16px;
   font-weight: 800;
   color: ${({ theme }) => theme.white};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
+
+const GithubLogo = styled(FontAwesomeIcon).attrs({
+  icon: faGithubSquare,
+})`
+  flex: 0 0 auto;
+  color: #0e324c;
+`
+
+const GithubLink = styled.a`
+  display: block;
+  margin-left: 10px;
+  flex: 1 1 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 300;
+  font-style: italic;
+  text-decoration: none;
+  color: ${({theme}) => theme.primaryBlue};
+`
+
+const GithubContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`
+
+export const SubMenuHeaderGithub = (props) => (
+  <GithubContainer>
+    <GithubLogo />
+    <GithubLink href={props.link} target="_BLANK">{props.link}</GithubLink>
+  </GithubContainer>
+)
 
 export const SubMenuHeaderClose = styled(FontAwesomeIcon).attrs({
   icon: faTimes,

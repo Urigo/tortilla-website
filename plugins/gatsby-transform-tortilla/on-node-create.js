@@ -41,6 +41,11 @@ module.exports = async function onCreateNode({
   const githubName = 'whatsapp-textrepo-angularcli-express'
   const branch = 'master';
 
+  tutorial.github = {
+    org: githubOrg,
+    name: githubName,
+  }
+
   // add `html` to each step
   await Promise.all(
     tutorial.versions.map(async version => {
