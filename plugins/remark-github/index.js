@@ -7,7 +7,7 @@ function remarkGithubImages(options) {
   return (ast) => {
     select(ast, 'image').forEach((node) => {
       if (isRelativeUrlRegex.test(node.url)) {
-        node.url = path.join(`https://raw.githubusercontent.com/${options.org}/${options.name}/${options.branch}/.tortilla/manuals/views`, node.url);
+        node.url = 'https://raw.githubusercontent.com/' + path.join(`${options.org}/${options.name}/${options.branch}/.tortilla/manuals/views`, node.url);
       }
     })
   }
