@@ -17,8 +17,9 @@ export default props => (
   <Menu title="Author of week">
     <List
       data={props.authors}
-      renderItem={author => (
+      renderItem={(author, i) => (
         <ListItem
+          key={i}
           left={() => <ImagePlaceholder />}
           middle={() => <Author>{author.name}</Author>}
         />
