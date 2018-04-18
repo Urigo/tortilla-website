@@ -115,21 +115,32 @@ export default class TutorialPage extends React.Component {
 
     this.state = {
       active: 'sections',
-      isOpen: true,
+      isOpen: JSON.parse(localStorage.getItem('tortilla:tutorial:menu') || true),
     }
   }
 
   select(itemName) {
     this.setState({
       active: itemName,
-      isOpen: true,
     })
+    
+    this.open();
   }
 
   close() {
     this.setState({
       isOpen: false,
     });
+
+    localStorage.setItem('tortilla:tutorial:menu', JSON.stringify(false))
+  }
+
+  open() {
+    localStorage.setItem('tortilla:tutorial:menu', JSON.stringify(true))
+    
+    this.setState({
+      isOpen: true
+    })
   }
 
   renderSubMenuContent() {
