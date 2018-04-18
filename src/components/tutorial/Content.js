@@ -73,6 +73,10 @@ const Html = styled.div`
   pre {
     background-color: #f2f4f6;
     color: #c5c7d0;
+
+    code {
+      font-size: 12px;
+    }
   }
 
   h1 {
