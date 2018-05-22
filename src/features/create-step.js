@@ -27,9 +27,6 @@ const generatePath = ({
   ].join('/')
 }
 
-// tutorial/foo/bar/1-baz
-const generateLatestPath = stepRoute
-
 module.exports = ({
   tutorialName,
   tutorialVersion,

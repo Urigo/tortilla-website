@@ -1,16 +1,16 @@
 import React from 'react'
 
-import TutorialPage from '../components/TutorialPage'
+import StepPage from '../components/StepPage'
 
 export default props => (
-  <TutorialPage
+  <StepPage
     step={props.pathContext.step}
     tutorial={props.data.tortillaTutorial}
   />
 )
 
-export const tutorialPageQuery = graphql`
-  query tutorialPage(
+export const stepPageQuery = graphql`
+  query stepPage(
     $tutorialName: String!
     $versionName: String!
     $versionNumber: String!

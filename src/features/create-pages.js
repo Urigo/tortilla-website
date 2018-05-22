@@ -16,6 +16,7 @@ module.exports = async ({ graphql, boundActionCreators }) => {
               name
               number
               revision
+              diff
               steps {
                 id
                 name

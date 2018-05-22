@@ -66,7 +66,7 @@ const ImproveTutorial = styled.div`
   box-shadow: inset 0 1px 0 0 #0e324c;
 `
 
-export default class TutorialPage extends React.Component {
+export default class StepPage extends React.Component {
   static propTypes = {
     tutorial: PropTypes.any.isRequired,
     step: PropTypes.any.isRequired,
