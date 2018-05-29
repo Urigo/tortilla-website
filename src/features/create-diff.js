@@ -1,5 +1,6 @@
 const path = require('path')
 const { kebabCase } = require('lodash')
+const { Dump } = require('tortilla/dist/dump')
 const diffPageTemplate = path.resolve('src/templates/diff-page.js')
 
 // tutorial/tutorial-name/diff/0_1_0/1_0_0
@@ -23,9 +24,9 @@ const generatePath = ({
 
 module.exports = ({
   tutorialName,
+  tutorialChunk,
   srcVersionNumber,
   destVersionNumber,
-  allVersionsDiffs,
   createPage,
 }) => {
   const diffPath = generatePath({
@@ -34,9 +35,11 @@ module.exports = ({
     destVersionNumber,
   })
 
-  // TODO: Replace with Tortilla dump diff
-  // We will take the most recent diff as a placeholder
-  const versionsDiff = allVersionsDiffs[0]
+  const versionsDiff = Dump.diffReleases(
+    tutorialChunk,
+    srcVersionNumber,
+    destVersionNumber,
+  )
 
   createPage({
     path: diffPath,

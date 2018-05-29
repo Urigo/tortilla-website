@@ -32,6 +32,7 @@ module.exports = ({
   tutorialVersion,
   versionName,
   versionNumber,
+  otherVersionsNumbers,
   step,
   createPage,
 }) => {
@@ -65,6 +66,7 @@ module.exports = ({
         tutorialVersion,
         versionName,
         versionNumber,
+        otherVersionsNumbers,
         step,
       },
     })

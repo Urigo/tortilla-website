@@ -5,6 +5,7 @@ import StepPage from '../components/StepPage'
 export default props => (
   <StepPage
     step={props.pathContext.step}
+    otherVersions={props.pathContext.otherVersionsNumbers}
     tutorial={props.data.tortillaTutorial}
   />
 )

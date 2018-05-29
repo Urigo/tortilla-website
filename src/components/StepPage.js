@@ -5,6 +5,7 @@ import Link from 'gatsby-link'
 import {
   faCompass,
   faCube,
+  faHistory,
   faListUl,
 } from '@fortawesome/fontawesome-free-solid'
 
@@ -19,6 +20,7 @@ import {
 } from './tutorial/SubMenu'
 import Menu from './tutorial/Menu'
 import StepsMenu from './tutorial/StepsMenu'
+import DiffsMenu from './tutorial/DiffsMenu'
 import Timeline from './tutorial/Timeline'
 import Content from './tutorial/Content'
 import ImproveButton from './tutorial/ImproveButton'
@@ -69,12 +71,14 @@ const ImproveTutorial = styled.div`
 export default class StepPage extends React.Component {
   static propTypes = {
     tutorial: PropTypes.any.isRequired,
+    otherVersions: PropTypes.any.isRequired,
     step: PropTypes.any.isRequired,
   }
 
   menu = [
     { name: 'timeline', icon: faCompass },
     { name: 'sections', icon: faListUl },
+    { name: 'diffs', icon: faHistory },
     { name: 'todo', icon: faCube },
   ]
 
@@ -147,6 +151,14 @@ export default class StepPage extends React.Component {
 
   renderSubMenuContent() {
     switch (this.state.active) {
+      case 'diffs':
+        return (
+          <DiffsMenu
+            tutorialName={this.props.tutorial.name}
+            srcVersion={this.props.tutorial.currentVersion}
+            destVersions={this.props.otherVersions}
+          />
+        )
       case 'sections':
         return (
           <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />

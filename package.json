@@ -27,10 +27,14 @@
     "react-modal": "^3.3.2",
     "react-rating": "^1.1.1",
     "styled-components": "^3.2.3",
+    "tortilla": "0.0.1-alpha.32",
     "typescript-styled-plugin": "^0.6.0"
   },
   "devDependencies": {
     "prettier": "^1.11.1"
   },
-  "workspaces": ["plugins/gatsby-transform-tortilla", "plugins/remark-github"]
+  "workspaces": [
+    "plugins/gatsby-transform-tortilla",
+    "plugins/remark-github"
+  ]
 }
