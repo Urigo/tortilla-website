@@ -113,8 +113,8 @@ export default class extends React.Component {
 
     this.navigationTimer = setTimeout(() => {
       const route = stepRoute({
-        tutorialName: this.props.tutorial.name,
-        versionName: this.props.tutorial.version.name,
+        tutorialName: this.props.tutorialName,
+        versionName: this.props.tutorialVersion.name,
         step: this.getStep(),
       });
 
@@ -123,7 +123,7 @@ export default class extends React.Component {
   }
 
   getStep() {
-    return this.props.tutorial.version.steps.find(({ id }) => id === this.state.stepId);
+    return this.props.tutorialVersion.steps.find(({ id }) => id === this.state.stepId);
   }
 
   render() {
@@ -135,7 +135,7 @@ export default class extends React.Component {
           <Left>
             <Counter
               current={step.id}
-              count={this.props.tutorial.version.steps.length}
+              count={this.props.tutorialVersion.steps.length}
             />
             <Info>
               <Title>{step.name}</Title>
@@ -149,7 +149,7 @@ export default class extends React.Component {
             </Info>
           </Left>
           <Right>
-            <Stepper limit={this.props.tutorial.version.steps.length} current={this.state.stepId - 1} onChange={i => this.changeStep(i + 1)} />
+            <Stepper limit={this.props.tutorialVersion.steps.length} current={this.state.stepId - 1} onChange={i => this.changeStep(i + 1)} />
           </Right>
         </Header>
         <Html dangerouslySetInnerHTML={{ __html: this.props.step.html }} />

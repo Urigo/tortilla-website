@@ -3,7 +3,7 @@ const { kebabCase } = require('lodash')
 
 const { stepRoute } = require('../utils/routes')
 
-const stepPageTemplate = path.resolve('src/templates/step-page.js')
+const tutorialTemplate = path.resolve('src/templates/tutorial-page.js')
 
 // tutorial/foo/1.0/bar/1.0/1-baz
 const generatePath = ({
@@ -50,7 +50,6 @@ module.exports = ({
     paths.push(
       stepRoute({
         tutorialName,
-        versionName,
         step,
       })
     )
@@ -59,9 +58,10 @@ module.exports = ({
   paths.forEach(pagePath => {
     createPage({
       path: pagePath,
-      component: stepPageTemplate,
+      component: tutorialTemplate,
       layout: 'tutorial',
       context: {
+        activeContent: 'steps',
         tutorialName,
         tutorialVersion,
         versionName,

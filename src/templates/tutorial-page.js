@@ -1,19 +1,17 @@
 import React from 'react'
 
-import StepPage from '../components/StepPage'
+import TutorialPage from '../components/TutorialPage'
 
 export default props => (
-  <StepPage
-    step={props.pathContext.step}
-    otherVersions={props.pathContext.otherVersionsNumbers}
-    tutorial={props.data.tortillaTutorial}
+  <TutorialPage
+    pathData={props.pathContext}
+    tutorialData={props.data.tortillaTutorial}
   />
 )
 
 export const stepPageQuery = graphql`
   query stepPage(
     $tutorialName: String!
-    $versionName: String!
     $versionNumber: String!
   ) {
     tortillaTutorial(name: { eq: $tutorialName }) {
@@ -22,7 +20,7 @@ export const stepPageQuery = graphql`
       github {
         link
       }
-      version(name: $versionName, number: $versionNumber) {
+      version(number: $versionNumber) {
         name
         steps {
           id

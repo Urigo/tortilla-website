@@ -48,7 +48,7 @@ const Diff = styled.a`
 `
 
 const ActiveDiff = Diff.extend`
-  ${Name} {
+  ${SrcName}, ${DestName}, ${Icon} {
     color: ${({ theme }) => theme.white};
   }
 `
@@ -71,6 +71,21 @@ export default class extends React.Component {
     this.setContainerRef = el => this.containerRef = el;
   }
 
+  componentDidMount() {
+    this.scrollToActive();
+  }
+
+  scrollToActive() {
+    // XXX: We can change this behaviour later
+    const pos = this.read();
+
+    if (this.activeRef) {
+      this.activeRef.scrollIntoView(false);
+    } else {
+      this.containerRef.parentElement.scrollTop = pos;
+    }
+  }
+
   navigateTo(link) {
     this.save();
     navigateTo(link);
@@ -82,17 +97,28 @@ export default class extends React.Component {
 
   read() {
     const pos = storage.getItem('diffs-menu-position');
-    
+
     storage.removeItem('diffs-menu-position');
-    
-    return pos;
+
+    return pos || 0;
   }
 
   render() {
     return <Diffs innerRef={this.setContainerRef}>
       {this.props.destVersions.map(destVersion => {
+        const active = this.props.activeVersion &&
+          destVersion === this.props.activeVersion
         const link = propsToLink(this.props, destVersion)
 
+        if (active) {
+          return (
+            <ActiveDiff key={destVersion} innerRef={this.setActiveRef}>
+              <SrcName>{this.props.srcVersion}</SrcName>
+              <Icon icon={faArrowRight} />
+              <DestName>{destVersion}</DestName>
+            </ActiveDiff>
+          )
+        }
         return (
           <Diff key={destVersion} onClick={() => this.navigateTo(link)}>
             <SrcName>{this.props.srcVersion}</SrcName>

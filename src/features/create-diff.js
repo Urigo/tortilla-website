@@ -1,7 +1,7 @@
 const path = require('path')
 const { kebabCase } = require('lodash')
 const { Dump } = require('tortilla/dist/dump')
-const diffPageTemplate = path.resolve('src/templates/diff-page.js')
+const tutorialTemplate = path.resolve('src/templates/tutorial-page.js')
 
 // tutorial/tutorial-name/diff/0_1_0/1_0_0
 const generatePath = ({
@@ -27,6 +27,7 @@ module.exports = ({
   tutorialChunk,
   srcVersionNumber,
   destVersionNumber,
+  otherVersionsNumbers,
   createPage,
 }) => {
   const diffPath = generatePath({
@@ -43,12 +44,14 @@ module.exports = ({
 
   createPage({
     path: diffPath,
-    component: diffPageTemplate,
+    component: tutorialTemplate,
     layout: 'tutorial',
     context: {
+      activeContent: 'diffs',
+      versionNumber: srcVersionNumber,
       tutorialName,
-      srcVersionNumber,
       destVersionNumber,
+      otherVersionsNumbers,
       versionsDiff,
     }
   })

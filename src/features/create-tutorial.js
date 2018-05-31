@@ -35,6 +35,7 @@ module.exports = ({ tutorial, createPage }) => {
       createDiff({
         srcVersionNumber: versionNumber,
         destVersionNumber,
+        otherVersionsNumbers,
         tutorialChunk,
         tutorialName,
         createPage,

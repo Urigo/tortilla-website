@@ -21,7 +21,7 @@ import {
   SubMenuHeaderGithub,
   SubMenuHeaderClose,
 } from './tutorial/Menus'
-import { StepContent } from './tutorial/Contents'
+import { DiffContent, StepContent } from './tutorial/Contents'
 import Timeline from './tutorial/Timeline'
 import ImproveButton from './tutorial/ImproveButton'
 
@@ -68,11 +68,10 @@ const ImproveTutorial = styled.div`
   box-shadow: inset 0 1px 0 0 #0e324c;
 `
 
-export default class StepPage extends React.Component {
+export default class TutorialPage extends React.Component {
   static propTypes = {
-    tutorial: PropTypes.any.isRequired,
-    otherVersions: PropTypes.any.isRequired,
-    step: PropTypes.any.isRequired,
+    pathData: PropTypes.object.isRequired,
+    tutorialData: PropTypes.object.isRequired,
   }
 
   menu = [
@@ -120,7 +119,7 @@ export default class StepPage extends React.Component {
     // it should set `steps` as `state.activeTab`, it also applies to others
 
     this.state = {
-      activeTab: 'steps',
+      activeTab: props.pathData.activeContent,
       isSubMenuOpen: JSON.parse(storage.getItem('tortilla:tutorial:menu') || true),
     }
   }
@@ -154,14 +153,19 @@ export default class StepPage extends React.Component {
       case 'diffs':
         return (
           <DiffsMenu
-            tutorialName={this.props.tutorial.name}
-            srcVersion={this.props.tutorial.currentVersion}
-            destVersions={this.props.otherVersions}
+            tutorialName={this.props.tutorialData.name}
+            srcVersion={this.props.tutorialData.currentVersion}
+            destVersions={this.props.pathData.otherVersionsNumbers}
+            activeVersion={this.props.pathData.destVersionNumber}
           />
         )
       case 'steps':
         return (
-          <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />
+          <StepsMenu
+            tutorialName={this.props.tutorialData.name}
+            tutorialVersion={this.props.tutorialData.version}
+            activeStep={this.props.pathData.step}
+          />
         )
       case 'timeline':
         return (
@@ -169,6 +173,28 @@ export default class StepPage extends React.Component {
             events={this.events}
             active={1}
             onSelect={event => console.log('event selected', event)}
+          />
+        )
+    }
+  }
+
+  renderContent() {
+    switch (this.props.pathData.activeContent) {
+      case 'diffs':
+        return (
+          <DiffContent
+            tutorialName={this.props.tutorialData.name}
+            srcVersion={this.props.pathData.versionNumber}
+            destVersion={this.props.pathData.destVersionNumber}
+            diff={this.props.pathData.versionsDiff}
+          />
+        )
+      case 'steps':
+        return (
+          <StepContent
+            step={this.props.pathData.step}
+            tutorialName={this.props.tutorialData.name}
+            tutorialVersion={this.props.tutorialData.version}
           />
         )
     }
@@ -186,14 +212,14 @@ export default class StepPage extends React.Component {
             <TortillaLink to="/">
               <TortillaLogo />
             </TortillaLink>
-          </Menu>
+          </Menu>`
           {this.state.isSubMenuOpen ? <SubMenu>
             <SubMenuHeader>
               <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
               <SubMenuHeaderSubtitle>
-                {this.props.tutorial.name}
+                {this.props.tutorialData.name}
               </SubMenuHeaderSubtitle>
-              <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
+              <SubMenuHeaderGithub link={this.props.tutorialData.github.link}/>
               <SubMenuHeaderClose onClick={() => this.close()} />
             </SubMenuHeader>
             <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
@@ -202,7 +228,7 @@ export default class StepPage extends React.Component {
             </ImproveTutorial>
           </SubMenu> : null}
         </Aside>
-        <StepContent {...this.props} />
+        {this.renderContent()}
       </Container>
     )
   }
