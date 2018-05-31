@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import Link, { navigateTo } from 'gatsby-link'
 
-import { stepRoute } from '../../utils/routes'
-import storage from '../../utils/storage';
+import { stepRoute } from '../../../utils/routes'
+import storage from '../../../utils/storage';
 
 export const Steps = styled.div`
   display: flex;

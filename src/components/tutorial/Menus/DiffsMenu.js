@@ -4,8 +4,8 @@ import Link, { navigateTo } from 'gatsby-link'
 import { faArrowRight } from '@fortawesome/fontawesome-free-solid'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
-import { diffRoute } from '../../utils/routes'
-import storage from '../../utils/storage';
+import { diffRoute } from '../../../utils/routes'
+import storage from '../../../utils/storage';
 
 export const Diffs = styled.div`
   display: flex;

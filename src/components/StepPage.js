@@ -11,18 +11,18 @@ import {
 
 import storage from '../utils/storage';
 import {
+  Menu,
+  StepsMenu,
+  DiffsMenu,
   SubMenu,
   SubMenuHeader,
   SubMenuHeaderTitle,
   SubMenuHeaderSubtitle,
   SubMenuHeaderGithub,
   SubMenuHeaderClose,
-} from './tutorial/SubMenu'
-import Menu from './tutorial/Menu'
-import StepsMenu from './tutorial/StepsMenu'
-import DiffsMenu from './tutorial/DiffsMenu'
+} from './tutorial/Menus'
+import { StepContent } from './tutorial/Contents'
 import Timeline from './tutorial/Timeline'
-import Content from './tutorial/Content'
 import ImproveButton from './tutorial/ImproveButton'
 
 const Container = styled.div`
@@ -77,7 +77,7 @@ export default class StepPage extends React.Component {
 
   menu = [
     { name: 'timeline', icon: faCompass },
-    { name: 'sections', icon: faListUl },
+    { name: 'steps', icon: faListUl },
     { name: 'diffs', icon: faHistory },
     { name: 'todo', icon: faCube },
   ]
@@ -115,27 +115,27 @@ export default class StepPage extends React.Component {
   constructor(props) {
     super(props)
 
-    // TODO: if use was in `sections`, clicked on a step
+    // TODO: if use was in `steps`, clicked on a step
     // and has been redirected to that step
-    // it should set `sections` as `state.active`, it also applies to others
+    // it should set `steps` as `state.activeTab`, it also applies to others
 
     this.state = {
-      active: 'sections',
-      isOpen: JSON.parse(storage.getItem('tortilla:tutorial:menu') || true),
+      activeTab: 'steps',
+      isSubMenuOpen: JSON.parse(storage.getItem('tortilla:tutorial:menu') || true),
     }
   }
 
   select(itemName) {
     this.setState({
-      active: itemName,
+      activeTab: itemName,
     })
-    
+
     this.open();
   }
 
   close() {
     this.setState({
-      isOpen: false,
+      isSubMenuOpen: false,
     });
 
     storage.setItem('tortilla:tutorial:menu', JSON.stringify(false))
@@ -143,14 +143,14 @@ export default class StepPage extends React.Component {
 
   open() {
     storage.setItem('tortilla:tutorial:menu', JSON.stringify(true))
-    
+
     this.setState({
-      isOpen: true
+      isSubMenuOpen: true
     })
   }
 
   renderSubMenuContent() {
-    switch (this.state.active) {
+    switch (this.state.activeTab) {
       case 'diffs':
         return (
           <DiffsMenu
@@ -159,7 +159,7 @@ export default class StepPage extends React.Component {
             destVersions={this.props.otherVersions}
           />
         )
-      case 'sections':
+      case 'steps':
         return (
           <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />
         )
@@ -180,14 +180,14 @@ export default class StepPage extends React.Component {
         <Aside>
           <Menu
             menu={this.menu}
-            active={this.state.active}
+            active={this.state.activeTab}
             onSelect={itemName => this.select(itemName)}
           >
             <TortillaLink to="/">
               <TortillaLogo />
             </TortillaLink>
           </Menu>
-          {this.state.isOpen ? <SubMenu>
+          {this.state.isSubMenuOpen ? <SubMenu>
             <SubMenuHeader>
               <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
               <SubMenuHeaderSubtitle>
@@ -202,7 +202,7 @@ export default class StepPage extends React.Component {
             </ImproveTutorial>
           </SubMenu> : null}
         </Aside>
-        <Content {...this.props} />
+        <StepContent {...this.props} />
       </Container>
     )
   }

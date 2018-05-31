@@ -4,8 +4,8 @@ import { navigateTo } from 'gatsby-link'
 
 import Counter from './Counter'
 import Tags from './Tags'
-import Stepper from '../common/Stepper'
-import { stepRoute } from '../../utils/routes'
+import Stepper from '../../common/Stepper'
+import { stepRoute } from '../../../utils/routes'
 
 const Content = styled.div`
   flex: 1 0 0;
