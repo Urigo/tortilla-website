@@ -23,6 +23,7 @@
     "gatsby-plugin-styled-components": "^2.0.10",
     "gatsby-plugin-typescript": "^1.4.18",
     "gatsby-source-filesystem": "^1.5.27",
+    "react-diff-view": "^1.5.0",
     "react-helmet": "^5.2.0",
     "react-modal": "^3.3.2",
     "react-rating": "^1.1.1",

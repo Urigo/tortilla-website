@@ -48,7 +48,9 @@ const Diff = styled.a`
 `
 
 const ActiveDiff = Diff.extend`
-  ${SrcName}, ${DestName}, ${Icon} {
+  color: ${({ theme }) => theme.white};
+
+  ${SrcName}, ${DestName} {
     color: ${({ theme }) => theme.white};
   }
 `
@@ -114,7 +116,7 @@ export default class extends React.Component {
           return (
             <ActiveDiff key={destVersion} innerRef={this.setActiveRef}>
               <SrcName>{this.props.srcVersion}</SrcName>
-              <Icon icon={faArrowRight} />
+              →
               <DestName>{destVersion}</DestName>
             </ActiveDiff>
           )
@@ -122,7 +124,7 @@ export default class extends React.Component {
         return (
           <Diff key={destVersion} onClick={() => this.navigateTo(link)}>
             <SrcName>{this.props.srcVersion}</SrcName>
-            <Icon icon={faArrowRight} />
+            →
             <DestName>{destVersion}</DestName>
           </Diff>
         )
