@@ -24,6 +24,14 @@ module.exports = ({ tutorial, createPage }) => {
       .map(otherVersion => otherVersion.number)
       .filter(otherVersionNumber => otherVersionNumber !== versionNumber)
 
+    const common = {
+      tutorialName,
+      tutorialVersion,
+      versionNumber,
+      versionName,
+      otherVersionsNumbers,
+    }
+
     // TODO: Create and cache on request
     // Create diff page with every possible versions combination
     tutorial.versions.forEach((destVersion, destIndex) => {
@@ -33,25 +41,22 @@ module.exports = ({ tutorial, createPage }) => {
       if (destIndex == index) return
 
       createDiff({
-        srcVersionNumber: versionNumber,
-        destVersionNumber,
-        otherVersionsNumbers,
-        tutorialChunk,
-        tutorialName,
         createPage,
+        common,
+        params: {
+          srcVersionNumber: versionNumber,
+          destVersionNumber,
+          tutorialChunk,
+        }
       })
     })
 
     // Create step page for each step
     version.steps.forEach(step => {
       createStep({
-        tutorialName,
-        tutorialVersion,
-        versionName,
-        versionNumber,
-        otherVersionsNumbers,
-        step,
         createPage,
+        common,
+        params: { step }
       })
     })
   })

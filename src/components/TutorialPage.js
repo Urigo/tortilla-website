@@ -70,8 +70,10 @@ const ImproveTutorial = styled.div`
 
 export default class TutorialPage extends React.Component {
   static propTypes = {
-    pathData: PropTypes.object.isRequired,
-    tutorialData: PropTypes.object.isRequired,
+    common: PropTypes.object.isRequired,
+    contentType: PropTypes.object.isRequired,
+    contentData: PropTypes.object.isRequired,
+    tutorial: PropTypes.object.isRequired,
   }
 
   menu = [
@@ -119,7 +121,7 @@ export default class TutorialPage extends React.Component {
     // it should set `steps` as `state.activeTab`, it also applies to others
 
     this.state = {
-      activeTab: props.pathData.activeContent,
+      activeTab: props.contentType,
       isSubMenuOpen: JSON.parse(storage.getItem('tortilla:tutorial:menu') || true),
     }
   }
@@ -153,18 +155,18 @@ export default class TutorialPage extends React.Component {
       case 'diffs':
         return (
           <DiffsMenu
-            tutorialName={this.props.tutorialData.name}
-            srcVersion={this.props.tutorialData.currentVersion}
-            destVersions={this.props.pathData.otherVersionsNumbers}
-            activeVersion={this.props.pathData.destVersionNumber}
+            tutorialName={this.props.tutorial.name}
+            srcVersion={this.props.tutorial.currentVersion}
+            destVersions={this.props.common.otherVersionsNumbers}
+            activeVersion={this.props.params.destVersionNumber}
           />
         )
       case 'steps':
         return (
           <StepsMenu
-            tutorialName={this.props.tutorialData.name}
-            tutorialVersion={this.props.tutorialData.version}
-            activeStep={this.props.pathData.step}
+            tutorialName={this.props.tutorial.name}
+            tutorialVersion={this.props.tutorial.version}
+            activeStep={this.props.params.step}
           />
         )
       case 'timeline':
@@ -179,22 +181,22 @@ export default class TutorialPage extends React.Component {
   }
 
   renderContent() {
-    switch (this.props.pathData.activeContent) {
+    switch (this.props.contentType) {
       case 'diffs':
         return (
           <DiffContent
-            tutorialName={this.props.tutorialData.name}
-            srcVersion={this.props.pathData.versionNumber}
-            destVersion={this.props.pathData.destVersionNumber}
-            diff={this.props.pathData.versionsDiff}
+            tutorialName={this.props.tutorial.name}
+            srcVersion={this.props.params.srcVersionNumber}
+            destVersion={this.props.params.destVersionNumber}
+            diff={this.props.params.versionsDiff}
           />
         )
       case 'steps':
         return (
           <StepContent
-            step={this.props.pathData.step}
-            tutorialName={this.props.tutorialData.name}
-            tutorialVersion={this.props.tutorialData.version}
+            step={this.props.params.step}
+            tutorialName={this.props.tutorial.name}
+            tutorialVersion={this.props.tutorial.version}
           />
         )
     }
@@ -217,9 +219,9 @@ export default class TutorialPage extends React.Component {
             <SubMenuHeader>
               <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
               <SubMenuHeaderSubtitle>
-                {this.props.tutorialData.name}
+                {this.props.tutorial.name}
               </SubMenuHeaderSubtitle>
-              <SubMenuHeaderGithub link={this.props.tutorialData.github.link}/>
+              <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
               <SubMenuHeaderClose onClick={() => this.close()} />
             </SubMenuHeader>
             <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>

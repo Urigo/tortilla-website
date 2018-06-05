@@ -23,15 +23,16 @@ const generatePath = ({
 }
 
 module.exports = ({
-  tutorialName,
-  tutorialChunk,
-  srcVersionNumber,
-  destVersionNumber,
-  otherVersionsNumbers,
   createPage,
+  common,
+  params: {
+    srcVersionNumber,
+    destVersionNumber,
+    tutorialChunk,
+  },
 }) => {
   const diffPath = generatePath({
-    tutorialName,
+    tutorialName: common.tutorialName,
     srcVersionNumber,
     destVersionNumber,
   })
@@ -47,12 +48,14 @@ module.exports = ({
     component: tutorialTemplate,
     layout: 'tutorial',
     context: {
-      activeContent: 'diffs',
-      versionNumber: srcVersionNumber,
-      tutorialName,
-      destVersionNumber,
-      otherVersionsNumbers,
-      versionsDiff,
+      ...common,
+      common,
+      contentType: 'diffs',
+      contentData: {
+        srcVersionNumber,
+        destVersionNumber,
+        versionsDiff,
+      },
     }
   })
 }

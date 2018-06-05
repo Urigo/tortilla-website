@@ -28,28 +28,24 @@ const generatePath = ({
 }
 
 module.exports = ({
-  tutorialName,
-  tutorialVersion,
-  versionName,
-  versionNumber,
-  otherVersionsNumbers,
-  step,
   createPage,
+  common,
+  params: { step },
 }) => {
   const paths = [
     generatePath({
-      tutorialName,
-      tutorialVersion,
-      versionName,
-      versionNumber,
+      tutorialName: common.tutorialName,
+      tutorialVersion: common.tutorialVersion,
+      versionName: common.versionName,
+      versionNumber: common.versionNumber,
       step,
     }),
   ]
 
-  if (tutorialVersion === versionNumber) {
+  if (common.tutorialVersion == common.versionNumber) {
     paths.push(
       stepRoute({
-        tutorialName,
+        tutorialName: common.tutorialName,
         step,
       })
     )
@@ -61,13 +57,10 @@ module.exports = ({
       component: tutorialTemplate,
       layout: 'tutorial',
       context: {
-        activeContent: 'steps',
-        tutorialName,
-        tutorialVersion,
-        versionName,
-        versionNumber,
-        otherVersionsNumbers,
-        step,
+        ...common,
+        common,
+        contentType: 'steps',
+        contentData: { step },
       },
     })
   })
