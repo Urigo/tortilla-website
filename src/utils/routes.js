@@ -11,7 +11,7 @@ exports.stepRoute = ({ step, tutorialName }) =>
     // prefix
     'step',
     // step
-    step.id + '-' + kebabCase(step.name),
+    step.id,
   ].join('/')
 
 exports.diffRoute = ({ tutorialName, srcVersion, destVersion }) =>

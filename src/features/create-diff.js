@@ -2,25 +2,7 @@ const path = require('path')
 const { kebabCase } = require('lodash')
 const { Dump } = require('tortilla/dist/dump')
 const tutorialTemplate = path.resolve('src/templates/tutorial-page.js')
-
-// tutorial/tutorial-name/diff/0_1_0/1_0_0
-const generatePath = ({
-  tutorialName,
-  srcVersionNumber,
-  destVersionNumber,
-}) => {
-  return [
-    // prefix
-    'tutorial',
-    // tutorial
-    kebabCase(tutorialName),
-    // prefix
-    'diff',
-    // versions
-    srcVersionNumber.replace(/\./g, '_'),
-    destVersionNumber.replace(/\./g, '_'),
-  ].join('/')
-}
+const { diffRoute } = require('../utils/routes')
 
 module.exports = ({
   createPage,
@@ -31,10 +13,10 @@ module.exports = ({
     tutorialChunk,
   },
 }) => {
-  const diffPath = generatePath({
+  const diffPath = diffRoute({
     tutorialName: common.tutorialName,
-    srcVersionNumber,
-    destVersionNumber,
+    srcVersion: srcVersionNumber,
+    destVersion: destVersionNumber,
   })
 
   const versionsDiff = Dump.diffReleases(
