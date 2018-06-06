@@ -1,6 +1,5 @@
 const path = require('path')
 const { kebabCase } = require('lodash')
-
 const { stepRoute } = require('../utils/routes')
 
 const tutorialTemplate = path.resolve('src/templates/tutorial-page.js')
