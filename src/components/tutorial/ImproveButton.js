@@ -10,7 +10,7 @@ const IconContainer = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 3px;
-  background-color: #3b71e8;
+  background-color: ${({ theme }) => theme.primaryBlue};
   line-height: 30px;
   color: ${({ theme }) => theme.white};
 `
@@ -22,6 +22,7 @@ const Text = styled.div`
   flex: 1 1 auto;
   line-height: 30px;
   text-align: center;
+  margin-right: 10px;
 `
 
 const ImproveButton = Button.extend`

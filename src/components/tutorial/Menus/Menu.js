@@ -19,6 +19,12 @@ const ItemIcon = styled(FontAwesomeIcon) `
   font-size: 24px;
 `
 
+const ItemUnicode = styled.div`
+  font-weight: bolder;
+  font-size: 30px;
+  color: #718696;
+`
+
 const Item = styled.div`
   margin: 15px 0;
   padding: 5px 0;
@@ -27,11 +33,11 @@ const Item = styled.div`
   text-align: center;
   cursor: pointer;
 
-  ${ItemIcon} {
+  ${ItemIcon}, ${ItemUnicode} {
     color: ${props => (props.active ? props.theme.white : props.theme.blueGray)};
   }
 
-  &:hover ${ItemIcon} {
+  &:hover ${ItemIcon}, &:hover ${ItemUnicode} {
     color: ${({ theme }) => theme.white};
   }
 `
@@ -54,6 +60,18 @@ export default class Menu extends React.Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    const state = {}
+
+    if (props.active !== this.props.active) {
+      state.active = props.active
+    }
+
+    if (Object.keys(state).length) {
+      this.setState(state)
+    }
+  }
+
   select(item, i) {
     this.setState({
       active: item.name,
@@ -64,19 +82,21 @@ export default class Menu extends React.Component {
     }
   }
 
-  isActive(item, i) {
-    return this.state.active === item.name || (!this.props.active && i === 0)
+  isActive(item) {
+    return this.state.active === item.name
   }
 
   renderItem(item, i) {
     return (
       <Item
         key={i}
-        active={this.isActive(item, i)}
+        active={this.isActive(item)}
         onClick={() => this.select(item, i)}
       >
         {this.isActive(item, i) ? <ItemBorder /> : null}
-        <ItemIcon icon={item.icon} />
+        {typeof item.icon == 'string' ?
+          <ItemUnicode>{item.icon}</ItemUnicode> :
+          <ItemIcon icon={item.icon} />}
       </Item>
     )
   }

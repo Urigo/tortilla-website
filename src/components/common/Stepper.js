@@ -8,8 +8,7 @@ import OutlineIconButton from './OutlineIconButton'
 const Button = styled(OutlineIconButton) `
     background-color: ${({ theme, disabled }) => disabled ? theme.primaryGray : theme.primaryBlue};
     border: 0 none;
-    margin-left: 10px;
-    
+
     & > * {
       color: ${({ theme }) => theme.white} !important;
     }
@@ -69,6 +68,7 @@ export default class extends React.Component {
         return (
             <div>
                 <Button icon={faChevronLeft} disabled={!this.hasPrev()} onClick={() => this.prev()} />
+                {'\u00A0\u00A0'}
                 <Button icon={faChevronRight} disabled={!this.hasNext()} onClick={() => this.next()} />
             </div>
         );

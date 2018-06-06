@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Link from 'gatsby-link'
+import Link, { withPrefix } from 'gatsby-link'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import {
-  faCompass,
-  faCube,
   faHistory,
   faListUl,
 } from '@fortawesome/fontawesome-free-solid'
@@ -23,23 +22,28 @@ import {
 } from './tutorial/Menus'
 import { DiffContent, StepContent } from './tutorial/Contents'
 import Timeline from './tutorial/Timeline'
-import ImproveButton from './tutorial/ImproveButton'
 
 const Container = styled.div`
-  height: inherit;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  height: 100%;
+  width: 100%;
 `
 
 const Aside = styled.aside`
   flex: 0 0 auto;
+  display: flex;
   background: #0e324c;
   align-self: stretch;
-  display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: stretch;
+`
+
+const Display = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
 `
 
 const TortillaLink = styled(Link) `
@@ -48,13 +52,11 @@ const TortillaLink = styled(Link) `
   text-align: center;
 `
 
-const TortillaLogo = styled.div`
+const TortillaLogo = styled.img`
   margin: 0;
   padding: 0;
   width: 42px;
   height: 47px;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.primaryGray};
 `
 
 const SubMenuContent = styled.div`
@@ -62,25 +64,46 @@ const SubMenuContent = styled.div`
   overflow-x: auto;
 `
 
-const ImproveTutorial = styled.div`
-  padding: 25px;
-  background-color: #1d4866;
-  box-shadow: inset 0 1px 0 0 #0e324c;
+const TopBar = styled.div`
+  border-bottom: 1px solid #e8e8e8;
+  padding: 20px 20px 0 20px;
+  height: 120px;
+  margin: 0;
+`
+
+const TopBarTitle = styled.h1`
+  margin: 0;
+  margin-bottom: 10px;
+`
+
+const TopBarSubTitle = styled.h3`
+  margin: 0;
+  color: gray;
+  margin-bottom: 10px;
+  display: inline-block;
+`
+
+const MainContentContainer = styled.div`
+  display: block;
+  overflow: auto;
+`
+
+const MainContent = styled.div`
+  clear: both;
 `
 
 export default class TutorialPage extends React.Component {
   static propTypes = {
     common: PropTypes.object.isRequired,
-    contentType: PropTypes.object.isRequired,
-    contentData: PropTypes.object.isRequired,
+    contentType: PropTypes.string.isRequired,
+    params: PropTypes.object.isRequired,
     tutorial: PropTypes.object.isRequired,
   }
 
   menu = [
-    { name: 'timeline', icon: faCompass },
-    { name: 'steps', icon: faListUl },
-    { name: 'diffs', icon: faHistory },
-    { name: 'todo', icon: faCube },
+    { name: 'releases', icon: faHistory },
+    { name: 'steps', icon: '👣' },
+    { name: 'diffs', icon: faListUl },
   ]
 
   events = [
@@ -121,7 +144,7 @@ export default class TutorialPage extends React.Component {
     // it should set `steps` as `state.activeTab`, it also applies to others
 
     this.state = {
-      activeTab: props.contentType,
+      activeTab: storage.getItem('tortilla:tutorial:menu') && props.contentType,
       isSubMenuOpen: JSON.parse(storage.getItem('tortilla:tutorial:menu') || true),
     }
   }
@@ -136,6 +159,7 @@ export default class TutorialPage extends React.Component {
 
   close() {
     this.setState({
+      activeTab: null,
       isSubMenuOpen: false,
     });
 
@@ -169,7 +193,7 @@ export default class TutorialPage extends React.Component {
             activeStep={this.props.params.step}
           />
         )
-      case 'timeline':
+      case 'releases':
         return (
           <Timeline
             events={this.events}
@@ -212,25 +236,37 @@ export default class TutorialPage extends React.Component {
             onSelect={itemName => this.select(itemName)}
           >
             <TortillaLink to="/">
-              <TortillaLogo />
+              <TortillaLogo src={withPrefix('img/logo.png')} alt="Tortilla Logo" />
             </TortillaLink>
-          </Menu>`
+          </Menu>
           {this.state.isSubMenuOpen ? <SubMenu>
             <SubMenuHeader>
-              <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
+              <SubMenuHeaderClose onClick={() => this.close()} />
+              <SubMenuHeaderTitle>
+                {this.state.activeTab}
+              </SubMenuHeaderTitle>
+              {/*<SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
               <SubMenuHeaderSubtitle>
                 {this.props.tutorial.name}
               </SubMenuHeaderSubtitle>
               <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
-              <SubMenuHeaderClose onClick={() => this.close()} />
+              <SubMenuHeaderClose onClick={() => this.close()} />*/}
             </SubMenuHeader>
             <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
-            <ImproveTutorial>
-              <ImproveButton />
-            </ImproveTutorial>
           </SubMenu> : null}
         </Aside>
-        {this.renderContent()}
+        <Display>
+          <MainContentContainer>
+            <TopBar>
+              <TopBarTitle>{this.props.tutorial.name}</TopBarTitle>
+              <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
+              <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
+            </TopBar>
+            <MainContent>
+              {this.renderContent()}
+            </MainContent>
+          </MainContentContainer>
+        </Display>
       </Container>
     )
   }

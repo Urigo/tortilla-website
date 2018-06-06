@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import { navigateTo } from 'gatsby-link'
 
 import Counter from './Counter'
-import Tags from './Tags'
 import Stepper from '../../common/Stepper'
+import ImproveButton from '../ImproveButton'
 import { stepRoute } from '../../../utils/routes'
 
 const Content = styled.div`
-  flex: 1 0 0;
+  height: 100%;
   background-color: ${({ theme }) => theme.white};
   display: flex;
   flex-direction: column;
@@ -17,13 +17,17 @@ const Content = styled.div`
 
 const Header = styled.div`
   padding: 25px;
-  box-shadow: inset 0 -1px 0 0 #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   text-align: left;
+`
+
+const Footer = Header.extend`
+  border-top: 1px solid #e8e8e8;
 `
 
 const Left = styled.div`
@@ -131,29 +135,30 @@ export default class extends React.Component {
 
     return (
       <Content>
-        <Header>
-          <Left>
-            <Counter
-              current={step.id}
-              count={this.props.tutorialVersion.steps.length}
-            />
-            <Info>
-              <Title>{step.name}</Title>
-              <Tags
-                tags={[
-                  { color: 'blue', name: 'Webpack' },
-                  { color: 'red', name: 'Angular 4.4.3' },
-                  { color: 'red', name: 'Meteor 1.6' },
-                ]}
-              />
-            </Info>
-          </Left>
-          <Right>
-            <Stepper limit={this.props.tutorialVersion.steps.length} current={this.state.stepId - 1} onChange={i => this.changeStep(i + 1)} />
-          </Right>
-        </Header>
+        {this.renderBar(Header, step)}
         <Html dangerouslySetInnerHTML={{ __html: this.props.step.html }} />
+        {this.renderBar(Footer, step)}
       </Content>
     );
+  }
+
+  renderBar(BarType, step) {
+    return (
+      <BarType>
+        <Left>
+          <Counter
+            current={step.id}
+            count={this.props.tutorialVersion.steps.length}
+          />
+          <Info>
+            <Title>{step.name}</Title>
+            <Stepper limit={this.props.tutorialVersion.steps.length} current={this.state.stepId - 1} onChange={i => this.changeStep(i + 1)} />
+          </Info>
+        </Left>
+        <Right>
+          <ImproveButton />
+        </Right>
+      </BarType>
+    )
   }
 }
