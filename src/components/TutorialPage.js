@@ -5,22 +5,24 @@ import Link from 'gatsby-link'
 import {
   faCompass,
   faCube,
+  faHistory,
   faListUl,
 } from '@fortawesome/fontawesome-free-solid'
 
 import storage from '../utils/storage';
 import {
+  Menu,
+  StepsMenu,
+  DiffsMenu,
   SubMenu,
   SubMenuHeader,
   SubMenuHeaderTitle,
   SubMenuHeaderSubtitle,
   SubMenuHeaderGithub,
   SubMenuHeaderClose,
-} from './tutorial/SubMenu'
-import Menu from './tutorial/Menu'
-import StepsMenu from './tutorial/StepsMenu'
+} from './tutorial/Menus'
+import { DiffContent, StepContent } from './tutorial/Contents'
 import Timeline from './tutorial/Timeline'
-import Content from './tutorial/Content'
 import ImproveButton from './tutorial/ImproveButton'
 
 const Container = styled.div`
@@ -68,13 +70,16 @@ const ImproveTutorial = styled.div`
 
 export default class TutorialPage extends React.Component {
   static propTypes = {
-    tutorial: PropTypes.any.isRequired,
-    step: PropTypes.any.isRequired,
+    common: PropTypes.object.isRequired,
+    contentType: PropTypes.object.isRequired,
+    contentData: PropTypes.object.isRequired,
+    tutorial: PropTypes.object.isRequired,
   }
 
   menu = [
     { name: 'timeline', icon: faCompass },
-    { name: 'sections', icon: faListUl },
+    { name: 'steps', icon: faListUl },
+    { name: 'diffs', icon: faHistory },
     { name: 'todo', icon: faCube },
   ]
 
@@ -111,27 +116,27 @@ export default class TutorialPage extends React.Component {
   constructor(props) {
     super(props)
 
-    // TODO: if use was in `sections`, clicked on a step
+    // TODO: if use was in `steps`, clicked on a step
     // and has been redirected to that step
-    // it should set `sections` as `state.active`, it also applies to others
+    // it should set `steps` as `state.activeTab`, it also applies to others
 
     this.state = {
-      active: 'sections',
-      isOpen: JSON.parse(storage.getItem('tortilla:tutorial:menu') || true),
+      activeTab: props.contentType,
+      isSubMenuOpen: JSON.parse(storage.getItem('tortilla:tutorial:menu') || true),
     }
   }
 
   select(itemName) {
     this.setState({
-      active: itemName,
+      activeTab: itemName,
     })
-    
+
     this.open();
   }
 
   close() {
     this.setState({
-      isOpen: false,
+      isSubMenuOpen: false,
     });
 
     storage.setItem('tortilla:tutorial:menu', JSON.stringify(false))
@@ -139,17 +144,30 @@ export default class TutorialPage extends React.Component {
 
   open() {
     storage.setItem('tortilla:tutorial:menu', JSON.stringify(true))
-    
+
     this.setState({
-      isOpen: true
+      isSubMenuOpen: true
     })
   }
 
   renderSubMenuContent() {
-    switch (this.state.active) {
-      case 'sections':
+    switch (this.state.activeTab) {
+      case 'diffs':
         return (
-          <StepsMenu tutorial={this.props.tutorial} step={this.props.step} />
+          <DiffsMenu
+            tutorialName={this.props.tutorial.name}
+            srcVersion={this.props.tutorial.currentVersion}
+            destVersions={this.props.common.otherVersionsNumbers}
+            activeVersion={this.props.params.destVersionNumber}
+          />
+        )
+      case 'steps':
+        return (
+          <StepsMenu
+            tutorialName={this.props.tutorial.name}
+            tutorialVersion={this.props.tutorial.version}
+            activeStep={this.props.params.step}
+          />
         )
       case 'timeline':
         return (
@@ -162,20 +180,42 @@ export default class TutorialPage extends React.Component {
     }
   }
 
+  renderContent() {
+    switch (this.props.contentType) {
+      case 'diffs':
+        return (
+          <DiffContent
+            tutorialName={this.props.tutorial.name}
+            srcVersion={this.props.params.srcVersionNumber}
+            destVersion={this.props.params.destVersionNumber}
+            diff={this.props.params.versionsDiff}
+          />
+        )
+      case 'steps':
+        return (
+          <StepContent
+            step={this.props.params.step}
+            tutorialName={this.props.tutorial.name}
+            tutorialVersion={this.props.tutorial.version}
+          />
+        )
+    }
+  }
+
   render() {
     return (
       <Container>
         <Aside>
           <Menu
             menu={this.menu}
-            active={this.state.active}
+            active={this.state.activeTab}
             onSelect={itemName => this.select(itemName)}
           >
             <TortillaLink to="/">
               <TortillaLogo />
             </TortillaLink>
-          </Menu>
-          {this.state.isOpen ? <SubMenu>
+          </Menu>`
+          {this.state.isSubMenuOpen ? <SubMenu>
             <SubMenuHeader>
               <SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
               <SubMenuHeaderSubtitle>
@@ -190,7 +230,7 @@ export default class TutorialPage extends React.Component {
             </ImproveTutorial>
           </SubMenu> : null}
         </Aside>
-        <Content {...this.props} />
+        {this.renderContent()}
       </Container>
     )
   }

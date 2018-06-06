@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import Link, { navigateTo } from 'gatsby-link'
 
-import { stepRoute } from '../../utils/routes'
-import storage from '../../utils/storage';
+import { stepRoute } from '../../../utils/routes'
+import storage from '../../../utils/storage';
 
 export const Steps = styled.div`
   display: flex;
@@ -59,8 +59,8 @@ const ActiveStep = Step.extend`
 
 const propsToLink = (props, step) =>
   stepRoute({
-    tutorialName: props.tutorial.name,
-    versionName: props.tutorial.version.name,
+    tutorialName: props.tutorialName,
+    versionName: props.tutorialVersion.name,
     step,
   })
 
@@ -83,10 +83,10 @@ export default class extends React.Component {
     // XXX: We can change this behaviour later
     const pos = this.read();
 
-    if (pos) {
-      this.containerRef.parentElement.scrollTop = pos;
-    } else {
+    if (this.activeRef) {
       this.activeRef.scrollIntoView(false);
+    } else {
+      this.containerRef.parentElement.scrollTop = pos;
     }
   }
 
@@ -101,21 +101,22 @@ export default class extends React.Component {
 
   read() {
     const pos = storage.getItem('steps-menu-position');
-    
+
     storage.removeItem('steps-menu-position');
-    
-    return pos;
+
+    return pos || 0;
   }
 
   render() {
     return <Steps innerRef={this.setContainerRef}>
-      {this.props.tutorial.version.steps.map(step => {
-        const active = step.id === this.props.step.id
+      {this.props.tutorialVersion.steps.map(step => {
+        const active = this.props.activeStep &&
+          step.id === this.props.activeStep.id
         const link = propsToLink(this.props, step)
 
         if (active) {
           return (
-            <ActiveStep key={step.id} onClick={() => this.navigateTo(link)} innerRef={this.setActiveRef}>
+            <ActiveStep key={step.id} innerRef={this.setActiveRef}>
               <Number>{step.id}</Number>
               <Name>{step.name}</Name>
             </ActiveStep>

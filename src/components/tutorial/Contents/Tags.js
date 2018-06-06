@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Link from 'gatsby-link'
 
-import Theme from '../../themes/home'
+import Theme from '../../../themes/home'
 
 const colorTag = color => {
   switch (color) {

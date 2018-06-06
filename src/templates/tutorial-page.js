@@ -4,7 +4,9 @@ import TutorialPage from '../components/TutorialPage'
 
 export default props => (
   <TutorialPage
-    step={props.pathContext.step}
+    common={props.pathContext.common}
+    contentType={props.pathContext.contentType}
+    params={props.pathContext.contentData}
     tutorial={props.data.tortillaTutorial}
   />
 )
@@ -12,7 +14,6 @@ export default props => (
 export const tutorialPageQuery = graphql`
   query tutorialPage(
     $tutorialName: String!
-    $versionName: String!
     $versionNumber: String!
   ) {
     tortillaTutorial(name: { eq: $tutorialName }) {
@@ -21,7 +22,7 @@ export const tutorialPageQuery = graphql`
       github {
         link
       }
-      version(name: $versionName, number: $versionNumber) {
+      version(number: $versionNumber) {
         name
         steps {
           id

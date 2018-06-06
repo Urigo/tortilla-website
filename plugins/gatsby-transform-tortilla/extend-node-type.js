@@ -55,6 +55,9 @@ module.exports = (
       revision: {
         type: GraphQLString,
       },
+      diff: {
+        type: GraphQLString
+      },
       steps: {
         type: new GraphQLList(stepType),
         args: {
@@ -128,12 +131,11 @@ module.exports = (
     version: {
       type: versionType,
       args: {
-        name: { type: new GraphQLNonNull(GraphQLString) },
         number: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (tutorial, { name, number }) => {
         return tutorial.versions.find(
-          version => version.name === name && version.number === number
+          version => version.number === number
         )
       },
     },
