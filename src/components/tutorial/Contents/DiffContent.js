@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { parseDiff, Diff as ReactDiffView } from 'react-diff-view'
+import { parseDiff, Diff as ReactDiffView } from '../../../libs/react-diff-view'
 import 'react-diff-view/index.css'
 
 const Content = styled.div`
