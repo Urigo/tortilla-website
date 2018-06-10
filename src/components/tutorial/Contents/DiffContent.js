@@ -89,7 +89,7 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
-        <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
+        <Title>$ tortilla release diff {this.props.destVersion} {this.props.srcVersion}</Title>
 
         {this.renderDiff()}
       </Content>

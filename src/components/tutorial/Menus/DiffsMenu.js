@@ -28,11 +28,11 @@ const Name = styled.div`
 `
 
 const SrcName = Name.extend`
-  margin-right: 15px;
+  margin-left: 15px;
 `
 
 const DestName = Name.extend`
-  margin-left: 15px;
+  margin-right: 15px;
 `
 
 const Diff = styled.a`
@@ -115,17 +115,17 @@ export default class extends React.Component {
         if (active) {
           return (
             <ActiveDiff key={destVersion} innerRef={this.setActiveRef}>
-              <SrcName>{this.props.srcVersion}</SrcName>
-              →
               <DestName>{destVersion}</DestName>
+              →
+              <SrcName>{this.props.srcVersion}</SrcName>
             </ActiveDiff>
           )
         }
         return (
           <Diff key={destVersion} onClick={() => this.navigateTo(link)}>
-            <SrcName>{this.props.srcVersion}</SrcName>
-            →
             <DestName>{destVersion}</DestName>
+            →
+            <SrcName>{this.props.srcVersion}</SrcName>
           </Diff>
         )
       })}
