@@ -20,7 +20,8 @@ export const tutorialPageQuery = graphql`
       name
       currentVersion
       github {
-        link
+        link,
+        branch
       }
       version(number: $versionNumber) {
         name

@@ -13,7 +13,7 @@ export const SubMenu = Container.extend`
 
 export const SubMenuHeader = styled.div`
   position: relative;
-  padding: 0 25px;
+  padding: 0 15px;
   border-bottom: 1px solid #0e324c;
 `
 
@@ -41,6 +41,7 @@ const GithubLogo = styled(FontAwesomeIcon).attrs({
 })`
   flex: 0 0 auto;
   color: #0e324c;
+  margin-left: 10px;
 `
 
 const GithubLink = styled.a`
@@ -61,12 +62,13 @@ const GithubContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  float: right;
 `
 
 export const SubMenuHeaderGithub = (props) => (
   <GithubContainer>
-    <GithubLogo />
     <GithubLink href={props.link} target="_BLANK">{props.link}</GithubLink>
+    <GithubLogo />
   </GithubContainer>
 )
 

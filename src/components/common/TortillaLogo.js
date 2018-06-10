@@ -27,6 +27,9 @@ export default class TortillaLogo extends React.Component {
   static propTypes = {
     to: PropTypes.string,
   }
+  static defaultProps = {
+    to: withPrefix('/'),
+  }
   render() {
     return (
       <TortillaLink to={this.props.to}>

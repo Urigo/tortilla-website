@@ -4,6 +4,10 @@ import { parseDiff, Diff as ReactDiffView } from '../../../libs/react-diff-view'
 import 'react-diff-view/index.css'
 
 const Content = styled.div`
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: ${({theme}) => theme.white};
   color: ${({theme}) => theme.lightBlack};
   font-weight: normal;
   font-size: 14px;
@@ -11,18 +15,10 @@ const Content = styled.div`
   height: 100%;
 `
 
-const Title = styled.h1`
-  margin: 10px;
-  font-size: 34px;
-  font-weight: 800;
-  color: #718696;
-`
-
-const SubTitle = styled.h3`
-  margin: 10px;
-  font-size: 23px;
-  font-weight: 800;
-  color: #718696;
+const Title = styled.div`
+  margin: 40px;
+  font-size: 24px;
+  font-family: monospace;
 `
 
 const Diff = styled.div`
@@ -93,8 +89,7 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
-        <Title>{this.props.tutorialName}</Title>
-        <SubTitle>{this.props.srcVersion} → {this.props.destVersion}</SubTitle>
+        <Title>$ tortilla release diff {this.props.destVersion} {this.props.srcVersion}</Title>
 
         {this.renderDiff()}
       </Content>

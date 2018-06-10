@@ -10,7 +10,7 @@ const IconContainer = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 3px;
-  background-color: #3b71e8;
+  background-color: ${({ theme }) => theme.primaryBlue};
   line-height: 30px;
   color: ${({ theme }) => theme.white};
 `
@@ -18,10 +18,13 @@ const Icon = styled(FontAwesomeIcon).attrs({
   icon: faPencilAlt,
 })``
 
-const Text = styled.div`
+const Text = styled.a`
+  color: inherit;
+  text-decoration: inherit;
   flex: 1 1 auto;
   line-height: 30px;
   text-align: center;
+  margin-right: 10px;
 `
 
 const ImproveButton = Button.extend`
@@ -37,20 +40,20 @@ const ImproveButton = Button.extend`
   text-align: center;
   color: ${({ theme }) => theme.white};
 
-  &:hover ${IconContainer} {
-    background-color: ${({ theme }) => theme.primaryBlue};
-  }
-
-  &:hover {
+  &:hover, &:hover ${IconContainer} {
     background-color: #3b71e8;
   }
 `
+
+const getEditHref = ({ link, branch, step }) => (
+  `${link}/edit/${branch}/.tortilla/manuals/templates/step${step}.tmpl`
+)
 
 export default props => (
   <ImproveButton>
     <IconContainer>
       <Icon />
     </IconContainer>
-    <Text>Improve Tutorial</Text>
+    <Text href={getEditHref(props)}>Suggest Changes</Text>
   </ImproveButton>
 )

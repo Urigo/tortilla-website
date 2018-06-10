@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import Link, { navigateTo } from 'gatsby-link'
 import { faArrowRight } from '@fortawesome/fontawesome-free-solid'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import { diffRoute } from '../../../utils/routes'
 import storage from '../../../utils/storage';
@@ -16,11 +15,6 @@ export const Diffs = styled.div`
   }
 `
 
-const Icon = styled(FontAwesomeIcon) `
-  color: #0e324c;
-  font-size: 24px;
-`
-
 const Name = styled.div`
   font-size: 12px;
   font-weight: normal;
@@ -28,11 +22,11 @@ const Name = styled.div`
 `
 
 const SrcName = Name.extend`
-  margin-right: 15px;
+  margin-left: 15px;
 `
 
 const DestName = Name.extend`
-  margin-left: 15px;
+  margin-right: 15px;
 `
 
 const Diff = styled.a`
@@ -115,20 +109,20 @@ export default class extends React.Component {
         if (active) {
           return (
             <ActiveDiff key={destVersion} innerRef={this.setActiveRef}>
-              <SrcName>{this.props.srcVersion}</SrcName>
-              →
               <DestName>{destVersion}</DestName>
+              →
+              <SrcName>{this.props.srcVersion}</SrcName>
             </ActiveDiff>
           )
         }
         return (
           <Diff key={destVersion} onClick={() => this.navigateTo(link)}>
-            <SrcName>{this.props.srcVersion}</SrcName>
-            →
             <DestName>{destVersion}</DestName>
+            →
+            <SrcName>{this.props.srcVersion}</SrcName>
           </Diff>
         )
       })}
-    </Diffs>;
+    </Diffs>
   }
 }
