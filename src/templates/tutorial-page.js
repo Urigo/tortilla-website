@@ -25,6 +25,7 @@ export const tutorialPageQuery = graphql`
       }
       version(number: $versionNumber) {
         name
+        number
         steps {
           id
           name

@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { navigateTo } from 'gatsby-link'
 
-import { diffRoute } from '../../../utils/routes'
+import { diffRoute, isVersionSpecific } from '../../../utils/routes'
 import storage from '../../../utils/storage';
 
 export const Diffs = styled.div`
@@ -50,7 +51,7 @@ const ActiveDiff = Diff.extend`
 const propsToLink = (props, destVersion) =>
   diffRoute({
     tutorialName: props.tutorialName,
-    srcVersion: props.srcVersion,
+    srcVersion: isVersionSpecific() && props.srcVersion,
     destVersion: destVersion,
   })
 

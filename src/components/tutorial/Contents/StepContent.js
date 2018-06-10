@@ -5,7 +5,7 @@ import { navigateTo } from 'gatsby-link'
 import Counter from './Counter'
 import Stepper from '../../common/Stepper'
 import ImproveButton from '../ImproveButton'
-import { stepRoute } from '../../../utils/routes'
+import { stepRoute, isVersionSpecific } from '../../../utils/routes'
 
 const Content = styled.div`
   height: 100%;
@@ -118,8 +118,8 @@ export default class extends React.Component {
     this.navigationTimer = setTimeout(() => {
       const route = stepRoute({
         tutorialName: this.props.tutorialName,
-        versionName: this.props.tutorialVersion.name,
-        step: this.getStep(),
+        versionName: isVersionSpecific() && this.props.tutorialVersion.number,
+        step: this.getStep().id,
       });
 
       navigateTo(route);
