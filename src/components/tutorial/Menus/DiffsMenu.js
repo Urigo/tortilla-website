@@ -1,7 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Link, { navigateTo } from 'gatsby-link'
-import { faArrowRight } from '@fortawesome/fontawesome-free-solid'
 
 import { diffRoute } from '../../../utils/routes'
 import storage from '../../../utils/storage';

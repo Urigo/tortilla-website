@@ -13,6 +13,7 @@ import {
   Menu,
   StepsMenu,
   DiffsMenu,
+  VersionsMenu,
   SubMenu,
   SubMenuHeader,
   SubMenuHeaderTitle,
@@ -21,7 +22,6 @@ import {
   SubMenuHeaderClose,
 } from './tutorial/Menus'
 import { DiffContent, StepContent } from './tutorial/Contents'
-import Timeline from './tutorial/Timeline'
 
 const Container = styled.div`
   display: flex;
@@ -101,39 +101,9 @@ export default class TutorialPage extends React.Component {
   }
 
   menu = [
-    { name: 'releases', icon: faHistory },
+    { name: 'versions', icon: faHistory },
     { name: 'steps', icon: '👣' },
     { name: 'diffs', icon: faListUl },
-  ]
-
-  events = [
-    {
-      id: 1,
-      date: 'November 27, 2017',
-      name: 'Angular 4.4.3 + Meteor 1.6',
-      author: {
-        name: 'Nathan Fisher',
-      },
-      versions: [],
-    },
-    {
-      id: 2,
-      date: 'November 27, 2017',
-      name: 'Ionic 3',
-      author: {
-        name: 'Terry Andrews',
-      },
-      versions: [],
-    },
-    {
-      id: 3,
-      date: 'November 27, 2017',
-      name: 'Socially Merge Version',
-      author: {
-        name: 'Judith Lawrence',
-      },
-      versions: [],
-    },
   ]
 
   constructor(props) {
@@ -193,12 +163,14 @@ export default class TutorialPage extends React.Component {
             activeStep={this.props.params.step}
           />
         )
-      case 'releases':
+      case 'versions':
         return (
-          <Timeline
-            events={this.events}
-            active={1}
-            onSelect={event => console.log('event selected', event)}
+          <VersionsMenu
+            tutorialName={this.props.tutorial.name}
+            activeVersion={this.props.common.tutorialVersion}
+            allVersions={
+              [this.props.common.tutorialVersion].concat(this.props.common.otherVersionsNumbers)
+            }
           />
         )
     }
