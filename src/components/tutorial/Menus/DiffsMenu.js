@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import Link, { navigateTo } from 'gatsby-link'
 import { faArrowRight } from '@fortawesome/fontawesome-free-solid'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import { diffRoute } from '../../../utils/routes'
 import storage from '../../../utils/storage';
@@ -14,11 +13,6 @@ export const Diffs = styled.div`
   & > *:first-child {
     border-top: 0 none;
   }
-`
-
-const Icon = styled(FontAwesomeIcon) `
-  color: #0e324c;
-  font-size: 24px;
 `
 
 const Name = styled.div`
@@ -129,6 +123,6 @@ export default class extends React.Component {
           </Diff>
         )
       })}
-    </Diffs>;
+    </Diffs>
   }
 }
