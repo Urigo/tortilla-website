@@ -156,7 +156,11 @@ export default class extends React.Component {
           </Info>
         </Left>
         <Right>
-          <ImproveButton />
+          <ImproveButton
+            step={step.id}
+            link={this.props.tutorialLink}
+            branch={this.props.tutorialBranch}
+          />
         </Right>
       </BarType>
     )

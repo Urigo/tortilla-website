@@ -221,6 +221,8 @@ export default class TutorialPage extends React.Component {
             step={this.props.params.step}
             tutorialName={this.props.tutorial.name}
             tutorialVersion={this.props.tutorial.version}
+            tutorialLink={this.props.tutorial.github.link}
+            tutorialBranch={this.props.tutorial.github.branch}
           />
         )
     }

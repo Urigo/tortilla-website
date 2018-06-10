@@ -18,7 +18,9 @@ const Icon = styled(FontAwesomeIcon).attrs({
   icon: faPencilAlt,
 })``
 
-const Text = styled.div`
+const Text = styled.a`
+  color: inherit;
+  text-decoration: inherit;
   flex: 1 1 auto;
   line-height: 30px;
   text-align: center;
@@ -38,20 +40,20 @@ const ImproveButton = Button.extend`
   text-align: center;
   color: ${({ theme }) => theme.white};
 
-  &:hover ${IconContainer} {
-    background-color: ${({ theme }) => theme.primaryBlue};
-  }
-
-  &:hover {
+  &:hover, &:hover ${IconContainer} {
     background-color: #3b71e8;
   }
 `
+
+const getEditHref = ({ link, branch, step }) => (
+  `${link}/edit/${branch}/.tortilla/manuals/templates/step${step}.tmpl`
+)
 
 export default props => (
   <ImproveButton>
     <IconContainer>
       <Icon />
     </IconContainer>
-    <Text>Improve Tutorial</Text>
+    <Text href={getEditHref(props)}>Suggest Changes</Text>
   </ImproveButton>
 )

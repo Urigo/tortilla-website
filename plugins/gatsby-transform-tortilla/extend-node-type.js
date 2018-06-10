@@ -89,6 +89,9 @@ module.exports = (
       name: {
         type: GraphQLString,
       },
+      branch: {
+        type: GraphQLString,
+      },
       link: {
         type: GraphQLString,
         resolve: githubToLink,
