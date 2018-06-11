@@ -9,21 +9,24 @@ module.exports = ({
   common,
   params: { step },
 }) => {
-  if (common.tutorialVersion != common.versionNumber) return
-
   const paths = [
     // With version prefix
     stepRoute({
       tutorialName: common.tutorialName,
       version: common.versionNumber,
       step: step.id,
-    }),
-    // Without version prefix
-    stepRoute({
-      tutorialName: common.tutorialName,
-      step: step.id,
-    }),
+    })
   ]
+
+  if (common.tutorialVersion == common.versionNumber) {
+    // Without version prefix - most recent one
+    paths.push(
+      stepRoute({
+        tutorialName: common.tutorialName,
+        step: step.id,
+      })
+    )
+  }
 
   paths.forEach((path) => {
     createPage({

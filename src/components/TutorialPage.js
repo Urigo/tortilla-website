@@ -227,7 +227,7 @@ export default class TutorialPage extends React.Component {
           <MainContentContainer>
             <TopBar>
               <TopBarTitle>{this.props.tutorial.name}</TopBarTitle>
-              <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
+              <TopBarSubTitle>Version {this.props.common.tutorialVersion}</TopBarSubTitle>
               <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
             </TopBar>
             <MainContent>
