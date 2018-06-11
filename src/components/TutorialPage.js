@@ -147,11 +147,15 @@ export default class TutorialPage extends React.Component {
   renderSubMenuContent() {
     switch (this.state.activeTab) {
       case 'diffs':
+        const destVersions = this.props.common.allVersionsNumbers.filter(version =>
+          version != this.props.common.versionNumber
+        )
+
         return (
           <DiffsMenu
             tutorialName={this.props.tutorial.name}
-            srcVersion={this.props.tutorial.currentVersion}
-            destVersions={this.props.common.otherVersionsNumbers}
+            srcVersion={this.props.common.versionNumber}
+            destVersions={destVersions}
             activeVersion={this.props.params.destVersionNumber}
           />
         )
@@ -167,10 +171,8 @@ export default class TutorialPage extends React.Component {
         return (
           <VersionsMenu
             tutorialName={this.props.tutorial.name}
-            activeVersion={this.props.common.tutorialVersion}
-            allVersions={
-              [this.props.common.tutorialVersion].concat(this.props.common.otherVersionsNumbers)
-            }
+            activeVersion={this.props.common.versionNumber}
+            allVersions={this.props.common.allVersionsNumbers}
           />
         )
     }
@@ -227,7 +229,7 @@ export default class TutorialPage extends React.Component {
           <MainContentContainer>
             <TopBar>
               <TopBarTitle>{this.props.tutorial.name}</TopBarTitle>
-              <TopBarSubTitle>Version {this.props.common.tutorialVersion}</TopBarSubTitle>
+              <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
               <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
             </TopBar>
             <MainContent>
