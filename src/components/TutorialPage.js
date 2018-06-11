@@ -219,12 +219,6 @@ export default class TutorialPage extends React.Component {
               <SubMenuHeaderTitle>
                 {this.state.activeTab}
               </SubMenuHeaderTitle>
-              {/*<SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
-              <SubMenuHeaderSubtitle>
-                {this.props.tutorial.name}
-              </SubMenuHeaderSubtitle>
-              <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
-              <SubMenuHeaderClose onClick={() => this.close()} />*/}
             </SubMenuHeader>
             <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
           </SubMenu> : null}

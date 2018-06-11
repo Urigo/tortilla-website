@@ -1,7 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import { navigateTo } from 'gatsby-link'
+import { kebabCase } from 'lodash'
 
 import storage from '../../../utils/storage';
+import { stepRoute } from '../../../utils/routes';
 
 export const Versions = styled.div`
   display: flex;
@@ -64,6 +67,18 @@ export default class extends React.Component {
     }
   }
 
+  navigateToVersion(version) {
+    this.save();
+
+    const link = stepRoute({
+      tutorialName: this.props.tutorialName,
+      step: 1,
+      version,
+    })
+
+    navigateTo(link);
+  }
+
   save() {
     storage.setItem('versions-menu-position', this.containerRef.parentElement.scrollTop)
   }
@@ -89,7 +104,7 @@ export default class extends React.Component {
           )
         }
         return (
-          <Version key={version} onClick={() => console.log(`TODO: Switch to version ${version}`)}>
+          <Version key={version} onClick={() => this.navigateToVersion(version)}>
             <Name>{version}</Name>
           </Version>
         )
