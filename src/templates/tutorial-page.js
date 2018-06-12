@@ -4,6 +4,7 @@ import TutorialPage from '../components/TutorialPage'
 
 export default props => (
   <TutorialPage
+    location={props.location}
     common={props.pathContext.common}
     contentType={props.pathContext.contentType}
     params={props.pathContext.contentData}

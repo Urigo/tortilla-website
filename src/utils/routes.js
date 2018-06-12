@@ -41,6 +41,6 @@ exports.diffRoute = ({ tutorialName, srcVersion, destVersion }) =>
   ].join('/'), srcVersion)
 
 // /tutorial/my-tutorial/1.1.1(/sub-route) -> true
-exports.isVersionSpecific = (pathname = location.pathname) => (
+exports.isVersionSpecific = (pathname) => (
   /\/version\/\d+-\d+-\d+/.test(pathname)
 )

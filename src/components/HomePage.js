@@ -72,6 +72,8 @@ class HomePage extends React.Component {
   selectTab(tab) {}
 
   render() {
+    const { pathname } = this.props.location
+
     return (
       <Container>
         <SideMenu>
@@ -93,7 +95,7 @@ class HomePage extends React.Component {
                 <Tutorial
                   link={stepRoute({
                     tutorialName: node.title,
-                    version: isVersionSpecific() && version.name,
+                    version: isVersionSpecific(pathname) && version.name,
                     step: version.steps[0].id,
                   })}
                   steps={version.steps}

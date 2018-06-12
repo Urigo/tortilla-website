@@ -152,6 +152,7 @@ export default class TutorialPage extends React.Component {
 
         return (
           <DiffsMenu
+            pathname={this.props.location.pathname}
             tutorialName={this.props.tutorial.name}
             srcVersion={this.props.common.versionNumber}
             destVersions={destVersions}
@@ -161,6 +162,7 @@ export default class TutorialPage extends React.Component {
       case 'steps':
         return (
           <StepsMenu
+            pathname={this.props.location.pathname}
             tutorialName={this.props.tutorial.name}
             tutorialVersion={this.props.tutorial.version}
             activeStep={this.props.params.step}
@@ -193,6 +195,7 @@ export default class TutorialPage extends React.Component {
         return (
           <StepContent
             step={this.props.params.step}
+            pathname={this.props.location.pathname}
             tutorialName={this.props.tutorial.name}
             tutorialVersion={this.props.tutorial.version}
             tutorialLink={this.props.tutorial.github.link}

@@ -51,7 +51,7 @@ const ActiveDiff = Diff.extend`
 const propsToLink = (props, destVersion) =>
   diffRoute({
     tutorialName: props.tutorialName,
-    srcVersion: isVersionSpecific() && props.srcVersion,
+    srcVersion: isVersionSpecific(props.pathname) && props.srcVersion,
     destVersion: destVersion,
   })
 

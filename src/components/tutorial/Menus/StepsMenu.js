@@ -60,7 +60,7 @@ const ActiveStep = Step.extend`
 const propsToLink = (props, step) =>
   stepRoute({
     tutorialName: props.tutorialName,
-    version: isVersionSpecific() && props.tutorialVersion.number,
+    version: isVersionSpecific(props.pathname) && props.tutorialVersion.number,
     step: step.id,
   })
 
