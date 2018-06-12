@@ -13,6 +13,7 @@ import {
   Menu,
   StepsMenu,
   DiffsMenu,
+  VersionsMenu,
   SubMenu,
   SubMenuHeader,
   SubMenuHeaderTitle,
@@ -21,7 +22,6 @@ import {
   SubMenuHeaderClose,
 } from './tutorial/Menus'
 import { DiffContent, StepContent } from './tutorial/Contents'
-import Timeline from './tutorial/Timeline'
 
 const Container = styled.div`
   display: flex;
@@ -67,7 +67,6 @@ const SubMenuContent = styled.div`
 const TopBar = styled.div`
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 20px 0 20px;
-  height: 120px;
   margin: 0;
 `
 
@@ -101,39 +100,9 @@ export default class TutorialPage extends React.Component {
   }
 
   menu = [
-    { name: 'releases', icon: faHistory },
+    { name: 'versions', icon: faHistory },
     { name: 'steps', icon: '👣' },
     { name: 'diffs', icon: faListUl },
-  ]
-
-  events = [
-    {
-      id: 1,
-      date: 'November 27, 2017',
-      name: 'Angular 4.4.3 + Meteor 1.6',
-      author: {
-        name: 'Nathan Fisher',
-      },
-      versions: [],
-    },
-    {
-      id: 2,
-      date: 'November 27, 2017',
-      name: 'Ionic 3',
-      author: {
-        name: 'Terry Andrews',
-      },
-      versions: [],
-    },
-    {
-      id: 3,
-      date: 'November 27, 2017',
-      name: 'Socially Merge Version',
-      author: {
-        name: 'Judith Lawrence',
-      },
-      versions: [],
-    },
   ]
 
   constructor(props) {
@@ -177,11 +146,15 @@ export default class TutorialPage extends React.Component {
   renderSubMenuContent() {
     switch (this.state.activeTab) {
       case 'diffs':
+        const destVersions = this.props.common.allVersionsNumbers.filter(version =>
+          version != this.props.common.versionNumber
+        )
+
         return (
           <DiffsMenu
             tutorialName={this.props.tutorial.name}
-            srcVersion={this.props.tutorial.currentVersion}
-            destVersions={this.props.common.otherVersionsNumbers}
+            srcVersion={this.props.common.versionNumber}
+            destVersions={destVersions}
             activeVersion={this.props.params.destVersionNumber}
           />
         )
@@ -193,12 +166,13 @@ export default class TutorialPage extends React.Component {
             activeStep={this.props.params.step}
           />
         )
-      case 'releases':
+      case 'versions':
         return (
-          <Timeline
-            events={this.events}
-            active={1}
-            onSelect={event => console.log('event selected', event)}
+          <VersionsMenu
+            tutorialName={this.props.tutorial.name}
+            activeVersion={this.props.common.versionNumber}
+            allVersions={this.props.common.allVersionsNumbers}
+            latestVersion={this.props.common.tutorialVersion}
           />
         )
     }
@@ -247,12 +221,6 @@ export default class TutorialPage extends React.Component {
               <SubMenuHeaderTitle>
                 {this.state.activeTab}
               </SubMenuHeaderTitle>
-              {/*<SubMenuHeaderTitle>Sections</SubMenuHeaderTitle>
-              <SubMenuHeaderSubtitle>
-                {this.props.tutorial.name}
-              </SubMenuHeaderSubtitle>
-              <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
-              <SubMenuHeaderClose onClick={() => this.close()} />*/}
             </SubMenuHeader>
             <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
           </SubMenu> : null}

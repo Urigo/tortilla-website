@@ -1,6 +1,6 @@
 const createDiff = require('./create-diff')
 const createStep = require('./create-step')
-const { map } = require('lodash');
+const { map } = require('lodash')
 
 module.exports = ({ tutorial, createPage }) => {
   // Will be used later on to compose diff between versions.
@@ -18,18 +18,14 @@ module.exports = ({ tutorial, createPage }) => {
     const tutorialVersion = tutorial.currentVersion
     const versionName = version.name
     const versionNumber = version.number
-
-    // Will be used to generate diff links in the client
-    const otherVersionsNumbers = tutorial.versions
-      .map(otherVersion => otherVersion.number)
-      .filter(otherVersionNumber => otherVersionNumber !== versionNumber)
+    const allVersionsNumbers = tutorial.versions.map(({ number }) => number)
 
     const common = {
       tutorialName,
       tutorialVersion,
       versionNumber,
       versionName,
-      otherVersionsNumbers,
+      allVersionsNumbers,
     }
 
     // TODO: Create and cache on request

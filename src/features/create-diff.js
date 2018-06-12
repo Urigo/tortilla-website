@@ -16,6 +16,20 @@ module.exports = ({
     tutorialChunk,
   },
 }) => {
+  const paths = [
+    // Source version prefix
+    diffRoute({
+      tutorialName: common.tutorialName,
+      srcVersion: srcVersionNumber,
+      destVersion: destVersionNumber,
+    }),
+    // No version prefix
+    diffRoute({
+      tutorialName: common.tutorialName,
+      destVersion: destVersionNumber,
+    }),
+  ]
+
   const diffPath = diffRoute({
     tutorialName: common.tutorialName,
     srcVersion: srcVersionNumber,
@@ -28,19 +42,21 @@ module.exports = ({
     destVersionNumber,
   )
 
-  createPage({
-    path: diffPath,
-    component: tutorialTemplate,
-    layout: 'tutorial',
-    context: {
-      ...common,
-      common,
-      contentType: 'diffs',
-      contentData: {
-        srcVersionNumber,
-        destVersionNumber,
-        versionsDiff,
-      },
-    }
+  paths.forEach((path) => {
+    createPage({
+      path,
+      component: tutorialTemplate,
+      layout: 'tutorial',
+      context: {
+        ...common,
+        common,
+        contentType: 'diffs',
+        contentData: {
+          srcVersionNumber,
+          destVersionNumber,
+          versionsDiff,
+        },
+      }
+    })
   })
 }

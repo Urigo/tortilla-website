@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import Link, { navigateTo } from 'gatsby-link'
+import { navigateTo } from 'gatsby-link'
 
-import { stepRoute } from '../../../utils/routes'
+import { stepRoute, isVersionSpecific } from '../../../utils/routes'
 import storage from '../../../utils/storage';
 
 export const Steps = styled.div`
@@ -60,8 +60,8 @@ const ActiveStep = Step.extend`
 const propsToLink = (props, step) =>
   stepRoute({
     tutorialName: props.tutorialName,
-    versionName: props.tutorialVersion.name,
-    step,
+    version: isVersionSpecific() && props.tutorialVersion.number,
+    step: step.id,
   })
 
 export default class extends React.Component {

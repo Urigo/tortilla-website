@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Link from 'gatsby-link'
 
-import { stepRoute } from '../utils/routes'
+import { stepRoute, isVersionSpecific } from '../utils/routes'
 import List from '../components/common/List'
 import ListItem from '../components/common/List/Item'
 import Tutorial from '../components/home/Tutorial'
@@ -93,8 +93,8 @@ class HomePage extends React.Component {
                 <Tutorial
                   link={stepRoute({
                     tutorialName: node.title,
-                    versionName: version.name,
-                    step: version.steps[0],
+                    version: isVersionSpecific() && version.name,
+                    step: version.steps[0].id,
                   })}
                   steps={version.steps}
                   key={`${i}-${j}`}

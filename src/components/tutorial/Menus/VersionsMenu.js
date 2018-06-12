@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { navigateTo } from 'gatsby-link'
+import { kebabCase } from 'lodash'
 
-import { diffRoute, isVersionSpecific } from '../../../utils/routes'
 import storage from '../../../utils/storage';
+import { stepRoute } from '../../../utils/routes';
 
-export const Diffs = styled.div`
+export const Versions = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -20,15 +21,7 @@ const Name = styled.div`
   color: #0e324c;
 `
 
-const SrcName = Name.extend`
-  margin-left: 15px;
-`
-
-const DestName = Name.extend`
-  margin-right: 15px;
-`
-
-const Diff = styled.a`
+const Version = styled.a`
   display: block;
   padding: 15px 0 15px 25px;
   display: flex;
@@ -40,20 +33,13 @@ const Diff = styled.a`
   cursor: pointer;
 `
 
-const ActiveDiff = Diff.extend`
+const ActiveVersion = Version.extend`
   color: ${({ theme }) => theme.white};
 
-  ${SrcName}, ${DestName} {
+  ${Name} {
     color: ${({ theme }) => theme.white};
   }
 `
-
-const propsToLink = (props, destVersion) =>
-  diffRoute({
-    tutorialName: props.tutorialName,
-    srcVersion: isVersionSpecific() && props.srcVersion,
-    destVersion: destVersion,
-  })
 
 export default class extends React.Component {
   constructor(props) {
@@ -81,47 +67,53 @@ export default class extends React.Component {
     }
   }
 
-  navigateTo(link) {
+  navigateToVersion(version) {
     this.save();
+
+    const link = stepRoute({
+      tutorialName: this.props.tutorialName,
+      version: version != this.props.latestVersion && version,
+      step: 1,
+    })
+
     navigateTo(link);
   }
 
   save() {
-    storage.setItem('diffs-menu-position', this.containerRef.parentElement.scrollTop)
+    storage.setItem('versions-menu-position', this.containerRef.parentElement.scrollTop)
   }
 
   read() {
-    const pos = storage.getItem('diffs-menu-position');
+    const pos = storage.getItem('versions-menu-position');
 
-    storage.removeItem('diffs-menu-position');
+    storage.removeItem('versions-menu-position');
 
     return pos || 0;
   }
 
   render() {
-    return <Diffs innerRef={this.setContainerRef}>
-      {this.props.destVersions.map(destVersion => {
-        const active = this.props.activeVersion &&
-          destVersion === this.props.activeVersion
-        const link = propsToLink(this.props, destVersion)
+    return <Versions innerRef={this.setContainerRef}>
+      {this.props.allVersions.map(version => {
+        const active = version == this.props.activeVersion
+        let title = version
+
+        if (version == this.props.latestVersion) {
+          title += ' (latest)'
+        }
 
         if (active) {
           return (
-            <ActiveDiff key={destVersion} innerRef={this.setActiveRef}>
-              <DestName>{destVersion}</DestName>
-              →
-              <SrcName>{this.props.srcVersion}</SrcName>
-            </ActiveDiff>
+            <ActiveVersion key={version} innerRef={this.setActiveRef}>
+              <Name>{title}</Name>
+            </ActiveVersion>
           )
         }
         return (
-          <Diff key={destVersion} onClick={() => this.navigateTo(link)}>
-            <DestName>{destVersion}</DestName>
-            →
-            <SrcName>{this.props.srcVersion}</SrcName>
-          </Diff>
+          <Version key={version} onClick={() => this.navigateToVersion(version)}>
+            <Name>{title}</Name>
+          </Version>
         )
       })}
-    </Diffs>
+    </Versions>
   }
 }
