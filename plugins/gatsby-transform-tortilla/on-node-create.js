@@ -102,7 +102,7 @@ function getSteps(release) {
 function getVersions(doc) {
   return doc.releases.map(release => ({
     number: release.releaseVersion,
-    name: release.manuals[0].manualTitle.substr(0, 45),
+    name: release.manuals[0].manualTitle,
     revision: release.tagRevision,
     diff: release.changesDiff,
     steps: getSteps(release),
@@ -110,7 +110,7 @@ function getVersions(doc) {
 }
 
 function getTutorialName(doc) {
-  return doc.releases[0].manuals[0].manualTitle.substr(0, 45);
+  return doc.releases[0].manuals[0].manualTitle;
 }
 
 function getCurrentVersion(doc) {

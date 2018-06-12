@@ -67,7 +67,6 @@ const SubMenuContent = styled.div`
 const TopBar = styled.div`
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 20px 0 20px;
-  height: 120px;
   margin: 0;
 `
 
