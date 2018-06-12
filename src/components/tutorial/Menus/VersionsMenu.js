@@ -72,8 +72,8 @@ export default class extends React.Component {
 
     const link = stepRoute({
       tutorialName: this.props.tutorialName,
+      version: version != this.props.latestVersion && version,
       step: 1,
-      version,
     })
 
     navigateTo(link);
@@ -95,17 +95,22 @@ export default class extends React.Component {
     return <Versions innerRef={this.setContainerRef}>
       {this.props.allVersions.map(version => {
         const active = version == this.props.activeVersion
+        let title = version
+
+        if (version == this.props.latestVersion) {
+          title += ' (latest)'
+        }
 
         if (active) {
           return (
             <ActiveVersion key={version} innerRef={this.setActiveRef}>
-              <Name>{version}</Name>
+              <Name>{title}</Name>
             </ActiveVersion>
           )
         }
         return (
           <Version key={version} onClick={() => this.navigateToVersion(version)}>
-            <Name>{version}</Name>
+            <Name>{title}</Name>
           </Version>
         )
       })}

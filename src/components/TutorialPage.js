@@ -173,6 +173,7 @@ export default class TutorialPage extends React.Component {
             tutorialName={this.props.tutorial.name}
             activeVersion={this.props.common.versionNumber}
             allVersions={this.props.common.allVersionsNumbers}
+            latestVersion={this.props.common.tutorialVersion}
           />
         )
     }

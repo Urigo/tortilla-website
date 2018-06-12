@@ -1,6 +1,6 @@
 const createDiff = require('./create-diff')
 const createStep = require('./create-step')
-const { map } = require('lodash');
+const { map } = require('lodash')
 
 module.exports = ({ tutorial, createPage }) => {
   // Will be used later on to compose diff between versions.
