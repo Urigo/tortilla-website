@@ -142,6 +142,7 @@ export default class extends React.Component {
 
     this.state.diffViewType = diffViewType
     this.resetViewTypeParams()
+    this.parseDiff()
   }
 
   componentWillUpdate(props, state) {
@@ -165,6 +166,34 @@ export default class extends React.Component {
     }
   }
 
+  parseDiff(diff = this.props.diff) {
+    const fixedDiff = diff.replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
+
+    this.files = parseDiff(fixedDiff)
+
+    this.maxLineNums = this.files.map((file) => {
+      return file.hunks.reduce((maxLineNum, hunk) => {
+        return Math.max(
+          2,
+          (maxLineNum).toString().length,
+          (hunk.newStart + hunk.newLines).toString().length,
+          (hunk.oldStart + hunk.oldLines).toString().length,
+        )
+      }, 0)
+    })
+
+    this.maxLineLengths = this.files.map((file) => {
+      const hunkContentLengths = file.hunks.map((hunk => hunk.content.length))
+      const maxHunkContentLength = Math.max(...hunkContentLengths)
+
+      return file.hunks.reduce((maxContentLength, hunk) => {
+        return hunk.changes.reduce((maxContentLength, change) => {
+          return Math.max(maxContentLength, change.content.length)
+        }, maxContentLength)
+      }, maxHunkContentLength)
+    })
+  }
+
   toggleDiffViewType = () => {
     this.setState({
       diffViewType: this.oppositeViewType
@@ -177,9 +206,7 @@ export default class extends React.Component {
     return (
       <Content>
         <Title>$ tortilla release diff {this.props.destVersion} {this.props.srcVersion}</Title>
-        <ViewTypeButton onClick={this.toggleDiffViewType}>
-          {this.viewTypeAction}
-        </ViewTypeButton>
+        <ViewTypeButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ViewTypeButton>
 
         {this.renderDiff()}
       </Content>
@@ -187,34 +214,9 @@ export default class extends React.Component {
   }
 
   renderDiff() {
-    const diff = this.props.diff.replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
-    const files = parseDiff(diff)
-
-    const maxLineNums = files.map((file) => {
-      return file.hunks.reduce((maxLineNum, hunk) => {
-        return Math.max(
-          2,
-          (maxLineNum).toString().length,
-          (hunk.newStart + hunk.newLines).toString().length,
-          (hunk.oldStart + hunk.oldLines).toString().length,
-        )
-      }, 0)
-    })
-
-    const maxLineLengths = files.map((file) => {
-      const hunkContentLengths = file.hunks.map((hunk => hunk.content.length))
-      const maxHunkContentLength = Math.max(...hunkContentLengths)
-
-      return file.hunks.reduce((maxContentLength, hunk) => {
-        return hunk.changes.reduce((maxContentLength, change) => {
-          return Math.max(maxContentLength, change.content.length)
-        }, maxContentLength)
-      }, maxHunkContentLength)
-    })
-
     return (
       <Diff>
-        {files.map(({ oldPath, newPath, hunks }, i) => {
+        {this.files.map(({ oldPath, newPath, hunks }, i) => {
           const paths = []
 
           if (oldPath != '/dev/null') {
@@ -228,8 +230,8 @@ export default class extends React.Component {
           const header = paths.join('→')
 
           /* Adding 2 for padding of 1ch in each side */
-          const gutterWidth = maxLineNums[i] + 2;
-          const lineWidth = maxLineLengths[i] + 1;
+          const gutterWidth = this.maxLineNums[i] + 2;
+          const lineWidth = this.maxLineLengths[i] + 1;
 
           const Container = styled.span`
             margin: 20px;
