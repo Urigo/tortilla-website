@@ -186,8 +186,11 @@ export default class TutorialPage extends React.Component {
         return (
           <DiffContent
             tutorialName={this.props.tutorial.name}
+            tutorialUrl={this.props.tutorial.github.link}
             srcVersion={this.props.params.srcVersionNumber}
+            srcTag={this.props.params.srcVersionTag}
             destVersion={this.props.params.destVersionNumber}
+            destTag={this.props.params.destVersionTag}
             diff={this.props.params.versionsDiff}
           />
         )

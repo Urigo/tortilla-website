@@ -127,6 +127,16 @@ const ViewTypeButton = Button.extend`
   }
 `
 
+const Path = styled.a`
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    color: ${({ theme }) => theme.primaryBlue};
+    text-decoration: underline;
+  }
+`
+
 export default class extends React.Component {
   constructor(props) {
     super(props)
@@ -141,6 +151,10 @@ export default class extends React.Component {
     }
 
     this.state.diffViewType = diffViewType
+
+    this.srcBaseUrl = `${props.tutorialUrl}/tree/${props.srcTag}`
+    this.destBaseUrl = `${props.tutorialUrl}/tree/${props.destTag}`
+
     this.resetViewTypeParams()
     this.parseDiff()
   }
@@ -217,17 +231,23 @@ export default class extends React.Component {
     return (
       <Diff>
         {this.files.map(({ oldPath, newPath, hunks }, i) => {
-          const paths = []
+          const header = []
 
           if (oldPath != '/dev/null') {
-            paths.push(oldPath)
+            header.push(
+              <Path href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
+            )
           }
 
           if (newPath != '/dev/null' && newPath != oldPath) {
-            paths.push(newPath)
+            header.push(
+              <Path href={`${this.destBaseUrl}/${newPath}`}>{newPath}</Path>
+            )
           }
 
-          const header = paths.join('→')
+          if (header.length == 2) {
+            header.splice(1, 0, <span>→</span>)
+          }
 
           /* Adding 2 for padding of 1ch in each side */
           const gutterWidth = this.maxLineNums[i] + 2;

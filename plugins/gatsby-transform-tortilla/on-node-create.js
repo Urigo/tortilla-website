@@ -103,6 +103,7 @@ function getVersions(doc) {
   return doc.releases.map(release => ({
     number: release.releaseVersion,
     name: release.manuals[0].manualTitle,
+    tag: release.tagName,
     revision: release.tagRevision,
     diff: release.changesDiff,
     steps: getSteps(release),

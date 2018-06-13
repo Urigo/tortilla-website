@@ -14,6 +14,7 @@ module.exports = async ({ graphql, boundActionCreators }) => {
             currentVersion
             versions {
               name
+              tag
               number
               revision
               diff
