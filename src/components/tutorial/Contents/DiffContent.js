@@ -1,7 +1,11 @@
+import 'react-diff-view/index.css'
+
 import React from 'react'
 import styled from 'styled-components'
+
 import { parseDiff, Diff as ReactDiffView } from '../../../libs/react-diff-view'
-import 'react-diff-view/index.css'
+import storage from '../../../utils/storage';
+import Button from '../../common/Button';
 
 const Content = styled.div`
   display: block;
@@ -19,9 +23,12 @@ const Title = styled.div`
   margin: 40px;
   font-size: 24px;
   font-family: monospace;
+  float: left;
 `
 
 const Diff = styled.div`
+  clear: both;
+
   .diff {
     font-size: 1em;
     display: block;
@@ -69,6 +76,25 @@ const Diff = styled.div`
     border: none;
     height: 1.5em;
     color: gray;
+
+    $:not(.diff-gutter-delete):not(.diff-gutter-add) {
+      background-color: #fafbfc;
+    }
+  }
+
+  .diff-gutter-omit:empty {
+    padding: 0;
+  }
+
+  .diff-code-omit:empty {
+    background-color: #fafbfc;
+    height: 21px;
+  }
+
+  .diff-gutter-omit::before {
+    width: 100%;
+    margin-left: 0;
+    background-color: #fafbfc;
   }
 
   .diff-code {
@@ -85,11 +111,75 @@ const DiffHeader = styled.div`
   width: 100%;
 `
 
+const ViewTypeButton = Button.extend`
+  width: 120px;
+  height: 50px;
+  color: ${({ theme }) => theme.primaryBlue};
+  background-color: ${({ theme }) => theme.white};
+  padding: 10px;
+  border-radius: 5px;
+  float: right;
+  margin: 25px 20px;
+  outline: none;
+
+  &:hover {
+    background-color: #e8e8e8;
+  }
+`
+
 export default class extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {}
+
+    let diffViewType = storage.getItem('diff-view-type')
+
+    if (!diffViewType) {
+      diffViewType = 'unified'
+      storage.setItem('diff-view-type', diffViewType)
+    }
+
+    this.state.diffViewType = diffViewType
+    this.resetViewTypeParams()
+  }
+
+  componentWillUpdate(props, state) {
+    this.resetViewTypeParams(state)
+  }
+
+  resetViewTypeParams(state = this.state) {
+    switch (state.diffViewType) {
+      case 'split':
+        this.diffHunkWidth = 50
+        this.oppositeViewType = 'unified'
+        this.viewTypeAction = 'unify'
+        this.gutterProduct = 1
+        break
+      case 'unified':
+        this.diffHunkWidth = 100
+        this.oppositeViewType = 'split'
+        this.viewTypeAction = 'split'
+        this.gutterProduct = 2
+        break
+    }
+  }
+
+  toggleDiffViewType = () => {
+    this.setState({
+      diffViewType: this.oppositeViewType
+    }, () => {
+      storage.setItem('diff-view-type', this.state.diffViewType)
+    })
+  }
+
   render() {
     return (
       <Content>
         <Title>$ tortilla release diff {this.props.destVersion} {this.props.srcVersion}</Title>
+        <ViewTypeButton onClick={this.toggleDiffViewType}>
+          {this.viewTypeAction}
+        </ViewTypeButton>
 
         {this.renderDiff()}
       </Content>
@@ -147,8 +237,16 @@ export default class extends React.Component {
             border: 1px solid silver;
             border-radius: 3px;
 
+            .diff-hunk {
+              width: ${this.diffHunkWidth}%;
+            }
+
             .diff-hunk-header-gutter {
-              width: ${gutterWidth * 2 - 0.8}ch;
+              width: ${gutterWidth * this.gutterProduct - (0.4 * this.gutterProduct)}ch;
+            }
+
+            .diff-hunk-header {
+              width: ${this.state.diffViewType == 'split' && '200%'};
             }
 
             .diff-gutter {
@@ -156,15 +254,19 @@ export default class extends React.Component {
             }
 
             .diff-code, .diff-hunk-header-content {
-              min-width: calc(100% - ${gutterWidth * 2}ch);
+              min-width: calc(100% - ${gutterWidth * this.gutterProduct}ch);
               width: ${lineWidth}ch;
+            }
+
+            .diff-hunk-header-content {
+              width: ${lineWidth * (2 / this.gutterProduct) + gutterWidth}ch;
             }
           `
 
           return (
             <Container key={i}>
               <DiffHeader>{header}</DiffHeader>
-              <ReactDiffView hunks={hunks} viewType="unified" />
+              <ReactDiffView hunks={hunks} viewType={this.state.diffViewType} />
             </Container>
           )
         })}
