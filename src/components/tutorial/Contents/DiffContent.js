@@ -152,8 +152,8 @@ export default class extends React.Component {
 
     this.state.diffViewType = diffViewType
 
-    this.srcBaseUrl = `${props.tutorialUrl}/tree/${props.srcTag}`
-    this.destBaseUrl = `${props.tutorialUrl}/tree/${props.destTag}`
+    this.srcBaseUrl = `${props.tutorialUrl}/tree/${props.srcHistory}`
+    this.destBaseUrl = `${props.tutorialUrl}/tree/${props.destHistory}`
 
     this.resetViewTypeParams()
     this.parseDiff()
@@ -231,18 +231,27 @@ export default class extends React.Component {
     return (
       <Diff>
         {this.files.map(({ oldPath, newPath, hunks }, i) => {
-          const header = []
+          let header = []
 
+          // File removed
           if (oldPath != '/dev/null') {
             header.push(
-              <Path href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
+              <Path href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
             )
           }
 
-          if (newPath != '/dev/null' && newPath != oldPath) {
-            header.push(
-              <Path href={`${this.destBaseUrl}/${newPath}`}>{newPath}</Path>
-            )
+          if (newPath != '/dev/null') {
+            // File changed
+            if (newPath == oldPath) {
+              header = [
+                <Path href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
+              ]
+            // File renamed or added
+            } else {
+              header.push(
+                <Path href={`${this.srcBaseUrl}/${newPath}`}>{newPath}</Path>
+              )
+            }
           }
 
           if (header.length == 2) {

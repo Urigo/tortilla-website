@@ -18,7 +18,7 @@ module.exports = ({ tutorial, createPage }) => {
     const tutorialVersion = tutorial.currentVersion
     const versionName = version.name
     const versionNumber = version.number
-    const versionTag = version.tag
+    const versionHistory = version.history
     const allVersionsNumbers = tutorial.versions.map(({ number }) => number)
 
     const common = {
@@ -33,7 +33,7 @@ module.exports = ({ tutorial, createPage }) => {
     // Create diff page with every possible versions combination
     tutorial.versions.forEach((destVersion, destIndex) => {
       const destVersionNumber = destVersion.number
-      const destVersionTag = destVersion.tag
+      const destVersionHistory = destVersion.history
 
       if (destVersionNumber == versionNumber) return
       if (destIndex == index) return
@@ -43,9 +43,9 @@ module.exports = ({ tutorial, createPage }) => {
         common,
         params: {
           srcVersionNumber: versionNumber,
-          srcVersionTag: versionTag,
+          srcVersionHistory: versionHistory,
           destVersionNumber,
-          destVersionTag,
+          destVersionHistory,
           tutorialChunk,
         }
       })

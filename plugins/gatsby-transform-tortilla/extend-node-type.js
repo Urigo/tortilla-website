@@ -52,7 +52,7 @@ module.exports = (
       name: {
         type: GraphQLString,
       },
-      tag: {
+      history: {
         type: GraphQLString,
       },
       revision: {

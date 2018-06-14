@@ -12,9 +12,9 @@ module.exports = ({
   common,
   params: {
     srcVersionNumber,
-    srcVersionTag,
+    srcVersionHistory,
     destVersionNumber,
-    destVersionTag,
+    destVersionHistory,
     tutorialChunk,
   },
 }) => {
@@ -55,9 +55,9 @@ module.exports = ({
         contentType: 'diffs',
         contentData: {
           srcVersionNumber,
-          srcVersionTag,
+          srcVersionHistory,
           destVersionNumber,
-          destVersionTag,
+          destVersionHistory,
           versionsDiff,
         },
       }

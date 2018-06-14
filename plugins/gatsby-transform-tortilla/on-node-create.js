@@ -105,6 +105,7 @@ function getVersions(doc) {
     name: release.manuals[0].manualTitle,
     tag: release.tagName,
     revision: release.tagRevision,
+    history: release.historyRevision,
     diff: release.changesDiff,
     steps: getSteps(release),
   }));
