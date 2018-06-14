@@ -100,30 +100,19 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
 
-    this.navigationTimer = null;
     this.state = {
       stepId: this.props.step.id,
     }
   }
 
   changeStep(id) {
-    if (this.navigationTimer) {
-      clearTimeout(this.navigationTimer);
-    }
+    const route = stepRoute({
+      tutorialName: this.props.tutorialName,
+      versionName: isVersionSpecific() && this.props.tutorialVersion.number,
+      step: id,
+    });
 
-    this.setState({
-      stepId: id,
-    })
-
-    this.navigationTimer = setTimeout(() => {
-      const route = stepRoute({
-        tutorialName: this.props.tutorialName,
-        versionName: isVersionSpecific() && this.props.tutorialVersion.number,
-        step: this.getStep().id,
-      });
-
-      navigateTo(route);
-    }, 1000);
+    navigateTo(route);
   }
 
   getStep() {
