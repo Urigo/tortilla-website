@@ -186,7 +186,7 @@ export default class TutorialPage extends React.Component {
         return (
           <DiffContent
             tutorialName={this.props.tutorial.name}
-            tutorialUrl={this.props.tutorial.github.link}
+            tutorialRepo={this.props.tutorial.repoUrl}
             srcVersion={this.props.params.srcVersionNumber}
             srcHistory={this.props.params.srcVersionHistory}
             destVersion={this.props.params.destVersionNumber}
@@ -200,9 +200,9 @@ export default class TutorialPage extends React.Component {
             step={this.props.params.step}
             pathname={this.props.location.pathname}
             tutorialName={this.props.tutorial.name}
+            tutorialRepo={this.props.tutorial.repoUrl}
+            tutorialBranch={this.props.tutorial.branch}
             tutorialVersion={this.props.tutorial.version}
-            tutorialLink={this.props.tutorial.github.link}
-            tutorialBranch={this.props.tutorial.github.branch}
           />
         )
     }
@@ -236,7 +236,7 @@ export default class TutorialPage extends React.Component {
             <TopBar>
               <TopBarTitle>{this.props.tutorial.name}</TopBarTitle>
               <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
-              <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
+              <SubMenuHeaderGithub link={this.props.tutorial.repoUrl}/>
             </TopBar>
             <MainContent>
               {this.renderContent()}

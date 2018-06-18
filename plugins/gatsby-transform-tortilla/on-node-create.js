@@ -35,29 +35,15 @@ module.exports = async function onCreateNode({
   // load content and parse it
   const content = await loadNodeContent(node)
   const parsedContent = JSON.parse(content)
-  const tutorial = parseTutorial(parsedContent);
-  // TODO: get it from `tutorial`
-  const githubOrg = 'Urigo'
-  const githubName = 'whatsapp-textrepo-angularcli-express'
-  const branch = 'master';
-
-  // TODO: Not GitHub specific???
-  tutorial.github = {
-    org: githubOrg,
-    name: githubName,
-    branch,
-  }
+  const tutorial = parseTutorial(parsedContent)
+  const stepScope = createStepScope(tutorial)
 
   // add `html` to each step
   await Promise.all(
     tutorial.versions.map(async version => {
       return Promise.all(
         version.steps.map(async step => {
-          step.html = await processMd(step.content, {
-            org: githubOrg,
-            name: githubName,
-            branch,
-          })
+          step.html = await processMd(step.content, stepScope)
         })
       )
     })
@@ -87,6 +73,14 @@ module.exports = async function onCreateNode({
   })
 }
 
+function createStepScope(tutorial) {
+  const branch = tutorial.branch
+  const [org, name] = tutorial.repoUrl
+    ? tutorial.repoUrl.split('/').slice(-2)
+    : ['', '']
+
+  return { branch, org, name }
+}
 
 function getSteps(release) {
   return release.manuals
@@ -111,6 +105,14 @@ function getVersions(doc) {
   }));
 }
 
+function getTutorialRepoUrl(doc) {
+  return doc.repoUrl;
+}
+
+function getTutorialBranch(doc) {
+  return doc.branchName;
+}
+
 function getTutorialName(doc) {
   return doc.releases[0].manuals[0].manualTitle;
 }
@@ -120,11 +122,15 @@ function getCurrentVersion(doc) {
 }
 
 function fromDumpToTutorial(doc) {
+  const repoUrl = getTutorialRepoUrl(doc);
+  const branch = getTutorialBranch(doc);
   const versions = getVersions(doc);
   const name = getTutorialName(doc);
   const currentVersion = getCurrentVersion(doc);
 
   return {
+    repoUrl,
+    branch,
     name,
     currentVersion,
     versions

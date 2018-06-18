@@ -6,7 +6,6 @@
   "license": "MIT",
   "main": "gatsby-node.js",
   "dependencies": {
-    "gitio": "^2.3.0",
     "remark": "^9.0.0",
     "remark-highlight.js": "^5.0.0",
     "remark-html": "^7.0.0"

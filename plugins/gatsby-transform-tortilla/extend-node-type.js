@@ -5,13 +5,11 @@ const {
   GraphQLInt,
   GraphQLNonNull,
 } = require('graphql')
-const gitIo = require('gitio');
 
 const { TypeName } = require('./config')
 
 const StepTypeName = TypeName + 'Step'
 const VersionTypeName = TypeName + 'Version'
-const GithubTypeName = TypeName + 'Github'
 
 module.exports = (
   { type, store, pathPrefix, getNode, cache, reporter },
@@ -81,38 +79,15 @@ module.exports = (
     },
   })
 
-  const githubToLink = github => github.org && github.name ? `https://github.com/${github.org}/${github.name}` : null
-
-  const githubType = new GraphQLObjectType({
-    name: GithubTypeName,
-    fields: {
-      org: {
-        type: GraphQLString,
-      },
-      name: {
-        type: GraphQLString,
-      },
-      branch: {
-        type: GraphQLString,
-      },
-      link: {
-        type: GraphQLString,
-        resolve: githubToLink,
-      },
-      // use caching
-      shortLink: {
-        type: GraphQLString,
-        resolve: github => gitIo(githubToLink(github)),
-      }
-    },
-  })
-
   return Promise.resolve({
     name: {
       type: GraphQLString,
     },
-    github: {
-      type: githubType,
+    repoUrl: {
+      type: GraphQLString,
+    },
+    branch: {
+      type: GraphQLString,
     },
     currentVersion: {
       type: GraphQLString,

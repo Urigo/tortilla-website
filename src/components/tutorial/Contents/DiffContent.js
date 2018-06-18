@@ -137,6 +137,11 @@ const Path = styled.a`
   }
 `
 
+const NullPath = styled.div`
+  color: inherit;
+  text-decoration: none;
+`
+
 export default class extends React.Component {
   constructor(props) {
     super(props)
@@ -152,8 +157,11 @@ export default class extends React.Component {
 
     this.state.diffViewType = diffViewType
 
-    this.srcBaseUrl = `${props.tutorialUrl}/tree/${props.srcHistory}`
-    this.destBaseUrl = `${props.tutorialUrl}/tree/${props.destHistory}`
+    // In case git URL is not defined in package.json
+    if (props.tutorialRepo) {
+      this.srcBaseUrl = `${props.tutorialRepo}/tree/${props.srcHistory}`
+      this.destBaseUrl = `${props.tutorialRepo}/tree/${props.destHistory}`
+    }
 
     this.resetViewTypeParams()
     this.parseDiff()
@@ -235,27 +243,30 @@ export default class extends React.Component {
 
           // File removed
           if (oldPath != '/dev/null') {
-            header.push(
-              <Path href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
+            header.push(this.destBaseUrl
+              ? <Path key={0} href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
+              : <NullPath key={0}>{oldPath}</NullPath>
             )
           }
 
           if (newPath != '/dev/null') {
             // File changed
             if (newPath == oldPath) {
-              header = [
-                <Path href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
+              header = [this.srcBaseUrl
+                ? <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
+                : <NullPath key={0}>{oldPath}</NullPath>
               ]
             // File renamed or added
             } else {
-              header.push(
-                <Path href={`${this.srcBaseUrl}/${newPath}`}>{newPath}</Path>
+              header.push(this.srcBaseUrl
+                ? <Path key={header.length} href={`${this.srcBaseUrl}/${newPath}`}>{newPath}</Path>
+                : <NullPath key={header.length}>{newPath}</NullPath>
               )
             }
           }
 
           if (header.length == 2) {
-            header.splice(1, 0, <span>→</span>)
+            header.splice(1, 0, <span key={0.5}>→</span>)
           }
 
           /* Adding 2 for padding of 1ch in each side */
