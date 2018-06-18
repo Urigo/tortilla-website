@@ -230,7 +230,7 @@ export default class extends React.Component {
   renderDiff() {
     return (
       <Diff>
-        {this.files.map(({ oldPath, newPath, hunks }, i) => {
+        {this.files.map(({ oldPath, newPath, hunks, isBinary }, i) => {
           let header = []
 
           // File removed
@@ -289,6 +289,13 @@ export default class extends React.Component {
               width: ${lineWidth}ch;
             }
 
+            .diff-binary {
+              width: 100%;
+              padding: 0;
+              text-align: center;
+              font-weight: bold;
+            }
+
             .diff-hunk-header-content {
               width: ${lineWidth * (2 / this.gutterProduct) + gutterWidth}ch;
             }
@@ -297,7 +304,13 @@ export default class extends React.Component {
           return (
             <Container key={i}>
               <DiffHeader>{header}</DiffHeader>
-              <ReactDiffView hunks={hunks} viewType={this.state.diffViewType} />
+              {isBinary ? (
+                <div className={`diff-binary ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
+                  BINARY
+                </div>
+              ) : (
+                <ReactDiffView hunks={hunks} viewType={this.state.diffViewType} />
+              )}
             </Container>
           )
         })}
