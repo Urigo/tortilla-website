@@ -165,7 +165,6 @@ export default class extends React.Component {
     }
 
     this.resetViewTypeParams()
-    this.parseDiff()
   }
 
   componentDidMount() {
@@ -193,34 +192,6 @@ export default class extends React.Component {
     }
   }
 
-  parseDiff(diff = this.props.diff) {
-    const fixedDiff = diff.replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
-
-    this.files = parseDiff(fixedDiff)
-
-    this.maxLineNums = this.files.map((file) => {
-      return file.hunks.reduce((maxLineNum, hunk) => {
-        return Math.max(
-          2,
-          (maxLineNum).toString().length,
-          (hunk.newStart + hunk.newLines).toString().length,
-          (hunk.oldStart + hunk.oldLines).toString().length,
-        )
-      }, 0)
-    })
-
-    this.maxLineLengths = this.files.map((file) => {
-      const hunkContentLengths = file.hunks.map((hunk => hunk.content.length))
-      const maxHunkContentLength = Math.max(...hunkContentLengths)
-
-      return file.hunks.reduce((maxContentLength, hunk) => {
-        return hunk.changes.reduce((maxContentLength, change) => {
-          return Math.max(maxContentLength, change.content.length)
-        }, maxContentLength)
-      }, maxHunkContentLength)
-    })
-  }
-
   toggleDiffViewType = () => {
     this.setState({
       diffViewType: this.oppositeViewType
@@ -243,23 +214,48 @@ export default class extends React.Component {
     // DOM node not found
     if (!this.diffContainer) return
 
-    // Rendering file diffs parallely
-    const renderings = this.files.map((file, i) => new Promise(resolve => {
-      ReactDOM.render(
-        this.renderDiffFile(file, i, resolve),
-        document.createElement('span'),
-      )
-    }))
+    const fileDiffs = this.props.diff
+      .replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
+      .split('\ndiff --git')
+      .map((fileDiff, i) => {
+        return i ? '\ndiff --git' + fileDiff : fileDiff
+      })
 
-    // Appending each one at a time in series
-    renderings.reduce((rendered, rendering) => rendered.then(ref => {
-      this.diffContainer.appendChild(ref)
+    fileDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
+      const fileDiff = fileDiffs[i]
+      const file = parseDiff(fileDiffs[i])[0]
 
-      return rendering
-    }))
+      return new Promise(resolve => setTimeout(() => {
+        const diffFileView = document.createElement('span')
+
+        ReactDOM.render(this.renderDiffFile(file), diffFileView, () => {
+          this.diffContainer.appendChild(diffFileView)
+
+          resolve()
+        })
+      }))
+    }), Promise.resolve())
   }
 
-  renderDiffFile({ oldPath, newPath, hunks, isBinary }, i, callback) {
+  renderDiffFile({ oldPath, newPath, hunks, isBinary }) {
+    const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
+      return Math.max(
+        2,
+        (maxLineNum).toString().length,
+        (hunk.newStart + hunk.newLines).toString().length,
+        (hunk.oldStart + hunk.oldLines).toString().length,
+      )
+    }, 0)
+
+    const hunkContentLengths = hunks.map((hunk => hunk.content.length))
+    const maxHunkContentLength = Math.max(...hunkContentLengths)
+
+    const maxLineLength = hunks.reduce((maxContentLength, hunk) => {
+      return hunk.changes.reduce((maxContentLength, change) => {
+        return Math.max(maxContentLength, change.content.length)
+      }, maxContentLength)
+    }, maxHunkContentLength)
+
     let header = []
 
     // File removed
@@ -291,8 +287,8 @@ export default class extends React.Component {
     }
 
     /* Adding 2 for padding of 1ch in each side */
-    const gutterWidth = this.maxLineNums[i] + 2;
-    const lineWidth = this.maxLineLengths[i] + 1;
+    const gutterWidth = maxLineNum + 2;
+    const lineWidth = maxLineLength + 1;
 
     const Container = styled.span`
       margin: 20px;
@@ -334,7 +330,7 @@ export default class extends React.Component {
     `
 
     return (
-      <Container ref={ref => callback(ReactDOM.findDOMNode(ref))}>
+      <Container>
         <DiffHeader>{header}</DiffHeader>
         {isBinary ? (
           <div className={`diff-binary ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
