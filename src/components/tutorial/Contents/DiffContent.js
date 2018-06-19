@@ -197,6 +197,8 @@ export default class extends React.Component {
       diffViewType: this.oppositeViewType
     }, () => {
       storage.setItem('diff-view-type', this.state.diffViewType)
+
+      this.buildDiff()
     })
   }
 
@@ -214,22 +216,39 @@ export default class extends React.Component {
     // DOM node not found
     if (!this.diffContainer) return
 
-    const fileDiffs = this.props.diff
+    this.fileDiffs = this.fileDiffs || this.props.diff
       .replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
       .split('\ndiff --git')
       .map((fileDiff, i) => {
         return i ? '\ndiff --git' + fileDiff : fileDiff
       })
 
-    fileDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
-      const fileDiff = fileDiffs[i]
-      const file = parseDiff(fileDiffs[i])[0]
+    // Cache
+    this.files = this.files || []
+
+    this.fileDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
+      const fileDiff = this.fileDiffs[i]
+      let file = this.files[i]
+
+      if (!file) {
+        file = parseDiff(fileDiff)[0]
+        this.files.push(file)
+      }
 
       return new Promise(resolve => setTimeout(() => {
-        const diffFileView = document.createElement('span')
+        let diffFileView = this.diffContainer.childNodes[i]
 
-        ReactDOM.render(this.renderDiffFile(file), diffFileView, () => {
+        if (!diffFileView) {
+          diffFileView = document.createElement('span')
+
           this.diffContainer.appendChild(diffFileView)
+        }
+
+        let buffer = document.createElement('span')
+
+        ReactDOM.render(this.renderDiffFile(file), buffer, () => {
+          diffFileView.innerHTML = buffer.innerHTML
+          buffer = null
 
           resolve()
         })
