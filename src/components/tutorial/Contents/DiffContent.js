@@ -1,3 +1,4 @@
+import 'setimmediate'
 import 'react-diff-view/index.css'
 
 import React from 'react'
@@ -175,6 +176,10 @@ export default class extends React.Component {
     this.resetViewTypeParams(state)
   }
 
+  componentWillUnmount() {
+    this.stopBuildingDiff()
+  }
+
   resetViewTypeParams(state = this.state) {
     switch (state.diffViewType) {
       case 'split':
@@ -213,47 +218,55 @@ export default class extends React.Component {
   }
 
   buildDiff() {
-    // DOM node not found
-    if (!this.diffContainer) return
+    this.stopBuildingDiff()
+    // Rebuilding view completely as it's the most efficient way
+    this.diffContainer.innerHTML = ''
 
+    // Split diff into file-specific diffs
+    // Use cache
     this.fileDiffs = this.fileDiffs || this.props.diff
+      // Fix inline hunks
       .replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
       .split('\ndiff --git')
       .map((fileDiff, i) => {
         return i ? '\ndiff --git' + fileDiff : fileDiff
       })
 
-    // Cache
+    // Use cache
     this.files = this.files || []
 
+    // Parse and render diff views in series
     this.fileDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
       const fileDiff = this.fileDiffs[i]
       let file = this.files[i]
 
+      // If cache not exist
       if (!file) {
         file = parseDiff(fileDiff)[0]
         this.files.push(file)
       }
 
-      return new Promise(resolve => setTimeout(() => {
-        let diffFileView = this.diffContainer.childNodes[i]
+      return new Promise(resolve => {
+        // We use setImmediate for 2 reasons
+        // 1. Between 2 executions the DOM will render and so this way we can
+        //    see the progress
+        // 2. We can store the most recent build process and stop the series
+        //    of executions when needed
+        this.currentDiffBuildProcess = setImmediate(() => {
+          const diffFileView = document.createElement('span')
 
-        if (!diffFileView) {
-          diffFileView = document.createElement('span')
+          ReactDOM.render(this.renderDiffFile(file), diffFileView, () => {
+            this.diffContainer.appendChild(diffFileView)
 
-          this.diffContainer.appendChild(diffFileView)
-        }
-
-        let buffer = document.createElement('span')
-
-        ReactDOM.render(this.renderDiffFile(file), buffer, () => {
-          diffFileView.innerHTML = buffer.innerHTML
-          buffer = null
-
-          resolve()
+            resolve()
+          })
         })
-      }))
+      })
     }), Promise.resolve())
+  }
+
+  stopBuildingDiff() {
+    clearImmediate(this.currentDiffBuildProcess)
   }
 
   renderDiffFile({ oldPath, newPath, hunks, isBinary }) {
