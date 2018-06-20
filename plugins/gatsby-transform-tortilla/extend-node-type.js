@@ -83,6 +83,9 @@ module.exports = (
     name: {
       type: GraphQLString,
     },
+    title: {
+      type: GraphQLString,
+    },
     repoUrl: {
       type: GraphQLString,
     },

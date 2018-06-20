@@ -15,6 +15,7 @@ module.exports = ({ tutorial, createPage }) => {
 
   tutorial.versions.forEach((version, index) => {
     const tutorialName = tutorial.name
+    const tutorialTitle = tutorial.title
     const tutorialVersion = tutorial.currentVersion
     const versionName = version.name
     const versionNumber = version.number
@@ -23,6 +24,7 @@ module.exports = ({ tutorial, createPage }) => {
 
     const common = {
       tutorialName,
+      tutorialTitle,
       tutorialVersion,
       versionNumber,
       versionName,

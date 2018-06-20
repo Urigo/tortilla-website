@@ -35,7 +35,7 @@ module.exports = async function onCreateNode({
   // load content and parse it
   const content = await loadNodeContent(node)
   const parsedContent = JSON.parse(content)
-  const tutorial = parseTutorial(parsedContent)
+  const tutorial = parseTutorial(parsedContent, node)
   const stepScope = createStepScope(tutorial)
 
   // add `html` to each step
@@ -113,7 +113,7 @@ function getTutorialBranch(doc) {
   return doc.branchName;
 }
 
-function getTutorialName(doc) {
+function getTutorialTitle(doc) {
   return doc.releases[0].manuals[0].manualTitle;
 }
 
@@ -121,24 +121,25 @@ function getCurrentVersion(doc) {
   return doc.releases[0].releaseVersion;
 }
 
-function fromDumpToTutorial(doc) {
+function fromDumpToTutorial(doc, node) {
   const repoUrl = getTutorialRepoUrl(doc);
   const branch = getTutorialBranch(doc);
   const versions = getVersions(doc);
-  const name = getTutorialName(doc);
+  const title = getTutorialTitle(doc);
   const currentVersion = getCurrentVersion(doc);
 
   return {
+    name: node.name,
     repoUrl,
     branch,
-    name,
+    title,
     currentVersion,
     versions
   };
 }
 
-function parseTutorial(doc) {
+function parseTutorial(doc, node) {
   // depends if was generated using the old structure or proposed one
   // TODO: we should include tortilla's version here so we can match it with dump's structure
-  return doc && doc.length ? fromDumpToTutorial(doc[0]) : doc
+  return doc && doc.length ? fromDumpToTutorial(doc[0], node) : doc
 }

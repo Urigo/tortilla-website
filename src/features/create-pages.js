@@ -11,6 +11,7 @@ module.exports = async ({ graphql, boundActionCreators }) => {
         edges {
           node {
             name
+            title
             repoUrl
             branch
             currentVersion
