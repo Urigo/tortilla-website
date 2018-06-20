@@ -269,7 +269,14 @@ export default class extends React.Component {
     clearImmediate(this.currentDiffBuildProcess)
   }
 
-  renderDiffFile({ oldPath, newPath, hunks, isBinary }) {
+  renderDiffFile({
+    oldPath,
+    newPath,
+    newRevision,
+    oldRevision,
+    hunks,
+    isBinary,
+  }) {
     const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
       return Math.max(
         2,
@@ -291,21 +298,21 @@ export default class extends React.Component {
     let header = []
 
     // File removed
-    if (oldPath != '/dev/null') {
+    if (Number(oldRevision) !== 0) {
       header.push(this.destBaseUrl
         ? <Path key={0} href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
         : <NullPath key={0}>{oldPath}</NullPath>
       )
     }
 
-    if (newPath != '/dev/null') {
+    if (Number(newRevision) !== 0) {
       // File changed
       if (newPath == oldPath) {
         header = [this.srcBaseUrl
           ? <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
           : <NullPath key={0}>{oldPath}</NullPath>
         ]
-      // File renamed or added
+      // File renamed, moved or added
       } else {
         header.push(this.srcBaseUrl
           ? <Path key={header.length} href={`${this.srcBaseUrl}/${newPath}`}>{newPath}</Path>
