@@ -28,11 +28,11 @@ module.exports = ({
   ]
 
   // No version prefix
-  if (srcVersionNumber == common.tutorialVersion) {
+  if (destVersionNumber == common.tutorialVersion) {
     paths.push(
       diffRoute({
         tutorialName: common.tutorialName,
-        destVersion: destVersionNumber,
+        srcVersion: srcVersionNumber,
       })
     )
   }

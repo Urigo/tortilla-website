@@ -150,7 +150,7 @@ export default class TutorialPage extends React.Component {
   renderSubMenuContent() {
     switch (this.state.activeTab) {
       case 'diffs':
-        const destVersions = this.props.common.allVersionsNumbers.filter(version =>
+        const srcVersions = this.props.common.allVersionsNumbers.filter(version =>
           version != this.props.common.versionNumber
         )
 
@@ -158,9 +158,9 @@ export default class TutorialPage extends React.Component {
           <DiffsMenu
             pathname={this.props.location.pathname}
             tutorialName={this.props.tutorial.name}
-            srcVersion={this.props.common.versionNumber}
-            destVersions={destVersions}
-            activeVersion={this.props.params.destVersionNumber}
+            destVersion={this.props.common.versionNumber}
+            srcVersions={srcVersions}
+            activeVersion={this.props.params.srcVersionNumber}
           />
         )
       case 'steps':

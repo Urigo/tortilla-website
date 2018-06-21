@@ -21,11 +21,11 @@ const Name = styled.div`
 `
 
 const SrcName = Name.extend`
-  margin-left: 15px;
+  margin-right: 15px;
 `
 
 const DestName = Name.extend`
-  margin-right: 15px;
+  margin-left: 15px;
 `
 
 const Diff = styled.a`
@@ -48,11 +48,11 @@ const ActiveDiff = Diff.extend`
   }
 `
 
-const propsToLink = (props, destVersion) =>
+const propsToLink = (props, srcVersion) =>
   diffRoute({
     tutorialName: props.tutorialName,
-    srcVersion: isVersionSpecific(props.pathname) && props.srcVersion,
-    destVersion: destVersion,
+    destVersion: isVersionSpecific(props.pathname) && props.destVersion,
+    srcVersion: srcVersion,
   })
 
 export default class extends React.Component {
@@ -100,25 +100,25 @@ export default class extends React.Component {
 
   render() {
     return <Diffs innerRef={this.setContainerRef}>
-      {this.props.destVersions.map(destVersion => {
+      {this.props.srcVersions.map(srcVersion => {
         const active = this.props.activeVersion &&
-          destVersion === this.props.activeVersion
-        const link = propsToLink(this.props, destVersion)
+          srcVersion === this.props.activeVersion
+        const link = propsToLink(this.props, srcVersion)
 
         if (active) {
           return (
-            <ActiveDiff key={destVersion} innerRef={this.setActiveRef}>
-              <DestName>{destVersion}</DestName>
+            <ActiveDiff key={srcVersion} innerRef={this.setActiveRef}>
+              <SrcName>{srcVersion}</SrcName>
               →
-              <SrcName>{this.props.srcVersion}</SrcName>
+              <DestName>{this.props.destVersion}</DestName>
             </ActiveDiff>
           )
         }
         return (
-          <Diff key={destVersion} onClick={() => this.navigateTo(link)}>
-            <DestName>{destVersion}</DestName>
+          <Diff key={srcVersion} onClick={() => this.navigateTo(link)}>
+            <SrcName>{srcVersion}</SrcName>
             →
-            <SrcName>{this.props.srcVersion}</SrcName>
+            <DestName>{this.props.destVersion}</DestName>
           </Diff>
         )
       })}

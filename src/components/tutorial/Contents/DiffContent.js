@@ -217,7 +217,7 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
-        <Title>$ tortilla release diff {this.props.destVersion} {this.props.srcVersion}</Title>
+        <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
         {this.props.diff ? (
           <span>
             <ViewTypeButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ViewTypeButton>
@@ -315,8 +315,8 @@ export default class extends React.Component {
 
     // File removed
     if (Number(oldRevision) !== 0) {
-      header.push(this.destBaseUrl
-        ? <Path key={0} href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
+      header.push(this.srcBaseUrl
+        ? <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
         : <NullPath key={0}>{oldPath}</NullPath>
       )
     }
@@ -324,14 +324,14 @@ export default class extends React.Component {
     if (Number(newRevision) !== 0) {
       // File changed
       if (newPath == oldPath) {
-        header = [this.srcBaseUrl
-          ? <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
+        header = [this.destBaseUrl
+          ? <Path key={0} href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
           : <NullPath key={0}>{oldPath}</NullPath>
         ]
       // File renamed, moved or added
       } else {
-        header.push(this.srcBaseUrl
-          ? <Path key={header.length} href={`${this.srcBaseUrl}/${newPath}`}>{newPath}</Path>
+        header.push(this.destBaseUrl
+          ? <Path key={header.length} href={`${this.destBaseUrl}/${newPath}`}>{newPath}</Path>
           : <NullPath key={header.length}>{newPath}</NullPath>
         )
       }
