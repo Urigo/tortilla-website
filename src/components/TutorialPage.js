@@ -40,6 +40,7 @@ const Aside = styled.aside`
 `
 
 const Display = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -65,6 +66,7 @@ const SubMenuContent = styled.div`
 `
 
 const TopBar = styled.div`
+  background-color: #f2f5f7;
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 20px 0 20px;
   margin: 0;
@@ -83,8 +85,10 @@ const TopBarSubTitle = styled.h3`
 `
 
 const MainContentContainer = styled.div`
+  height: 100%;
   display: block;
   overflow: auto;
+  background-color: ${({ theme }) => theme.white};
 `
 
 const MainContent = styled.div`

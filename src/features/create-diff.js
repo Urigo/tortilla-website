@@ -24,19 +24,18 @@ module.exports = ({
       tutorialName: common.tutorialName,
       srcVersion: srcVersionNumber,
       destVersion: destVersionNumber,
-    }),
-    // No version prefix
-    diffRoute({
-      tutorialName: common.tutorialName,
-      destVersion: destVersionNumber,
-    }),
+    })
   ]
 
-  const diffPath = diffRoute({
-    tutorialName: common.tutorialName,
-    srcVersion: srcVersionNumber,
-    destVersion: destVersionNumber,
-  })
+  // No version prefix
+  if (srcVersionNumber == common.tutorialVersion) {
+    paths.push(
+      diffRoute({
+        tutorialName: common.tutorialName,
+        destVersion: destVersionNumber,
+      })
+    )
+  }
 
   const versionsDiff = diffReleases(
     tutorialChunk,

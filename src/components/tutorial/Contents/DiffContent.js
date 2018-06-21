@@ -18,7 +18,6 @@ const Content = styled.div`
   font-weight: normal;
   font-size: 14px;
   overflow-y: auto;
-  height: 100%;
 `
 
 const Title = styled.div`
@@ -26,6 +25,14 @@ const Title = styled.div`
   font-size: 24px;
   font-family: monospace;
   float: left;
+`
+
+const NoDiff = styled.div`
+  width: 100%;
+  height: 200px;
+  line-height: 200px;
+  clear: both;
+  text-align: center;
 `
 
 const Diff = styled.div`
@@ -211,13 +218,22 @@ export default class extends React.Component {
     return (
       <Content>
         <Title>$ tortilla release diff {this.props.destVersion} {this.props.srcVersion}</Title>
-        <ViewTypeButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ViewTypeButton>
-        <Diff ref={ref => this.diffContainer = ReactDOM.findDOMNode(ref)} />
+        {this.props.diff ? (
+          <span>
+            <ViewTypeButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ViewTypeButton>
+            <Diff ref={ref => this.diffContainer = ReactDOM.findDOMNode(ref)} />
+          </span>
+        ) : (
+          <NoDiff>There are no visible changes between the versions :-)</NoDiff>
+        )}
       </Content>
     )
   }
 
   buildDiff() {
+    // Sometimes there might be no visible changes between versions
+    if (!this.props.diff) return
+
     this.stopBuildingDiff()
     // Rebuilding view completely as it's the most efficient way
     this.diffContainer.innerHTML = ''
