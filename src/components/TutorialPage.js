@@ -40,6 +40,7 @@ const Aside = styled.aside`
 `
 
 const Display = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -65,6 +66,7 @@ const SubMenuContent = styled.div`
 `
 
 const TopBar = styled.div`
+  background-color: #f2f5f7;
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 20px 0 20px;
   margin: 0;
@@ -83,8 +85,10 @@ const TopBarSubTitle = styled.h3`
 `
 
 const MainContentContainer = styled.div`
+  height: 100%;
   display: block;
   overflow: auto;
+  background-color: ${({ theme }) => theme.white};
 `
 
 const MainContent = styled.div`
@@ -146,7 +150,7 @@ export default class TutorialPage extends React.Component {
   renderSubMenuContent() {
     switch (this.state.activeTab) {
       case 'diffs':
-        const destVersions = this.props.common.allVersionsNumbers.filter(version =>
+        const srcVersions = this.props.common.allVersionsNumbers.filter(version =>
           version != this.props.common.versionNumber
         )
 
@@ -154,9 +158,9 @@ export default class TutorialPage extends React.Component {
           <DiffsMenu
             pathname={this.props.location.pathname}
             tutorialName={this.props.tutorial.name}
-            srcVersion={this.props.common.versionNumber}
-            destVersions={destVersions}
-            activeVersion={this.props.params.destVersionNumber}
+            destVersion={this.props.common.versionNumber}
+            srcVersions={srcVersions}
+            activeVersion={this.props.params.srcVersionNumber}
           />
         )
       case 'steps':
@@ -186,8 +190,11 @@ export default class TutorialPage extends React.Component {
         return (
           <DiffContent
             tutorialName={this.props.tutorial.name}
+            tutorialRepo={this.props.tutorial.repoUrl}
             srcVersion={this.props.params.srcVersionNumber}
+            srcHistory={this.props.params.srcVersionHistory}
             destVersion={this.props.params.destVersionNumber}
+            destHistory={this.props.params.destVersionHistory}
             diff={this.props.params.versionsDiff}
           />
         )
@@ -197,9 +204,9 @@ export default class TutorialPage extends React.Component {
             step={this.props.params.step}
             pathname={this.props.location.pathname}
             tutorialName={this.props.tutorial.name}
+            tutorialRepo={this.props.tutorial.repoUrl}
+            tutorialBranch={this.props.tutorial.branch}
             tutorialVersion={this.props.tutorial.version}
-            tutorialLink={this.props.tutorial.github.link}
-            tutorialBranch={this.props.tutorial.github.branch}
           />
         )
     }
@@ -231,9 +238,9 @@ export default class TutorialPage extends React.Component {
         <Display>
           <MainContentContainer>
             <TopBar>
-              <TopBarTitle>{this.props.tutorial.name}</TopBarTitle>
+              <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
               <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
-              <SubMenuHeaderGithub link={this.props.tutorial.github.link}/>
+              <SubMenuHeaderGithub link={this.props.tutorial.repoUrl}/>
             </TopBar>
             <MainContent>
               {this.renderContent()}

@@ -35,29 +35,15 @@ module.exports = async function onCreateNode({
   // load content and parse it
   const content = await loadNodeContent(node)
   const parsedContent = JSON.parse(content)
-  const tutorial = parseTutorial(parsedContent);
-  // TODO: get it from `tutorial`
-  const githubOrg = 'Urigo'
-  const githubName = 'whatsapp-textrepo-angularcli-express'
-  const branch = 'master';
-
-  // TODO: Not GitHub specific???
-  tutorial.github = {
-    org: githubOrg,
-    name: githubName,
-    branch,
-  }
+  const tutorial = parseTutorial(parsedContent, node)
+  const stepScope = createStepScope(tutorial)
 
   // add `html` to each step
   await Promise.all(
     tutorial.versions.map(async version => {
       return Promise.all(
         version.steps.map(async step => {
-          step.html = await processMd(step.content, {
-            org: githubOrg,
-            name: githubName,
-            branch,
-          })
+          step.html = await processMd(step.content, stepScope)
         })
       )
     })
@@ -87,6 +73,14 @@ module.exports = async function onCreateNode({
   })
 }
 
+function createStepScope(tutorial) {
+  const branch = tutorial.branch
+  const [org, name] = tutorial.repoUrl
+    ? tutorial.repoUrl.split('/').slice(-2)
+    : ['', '']
+
+  return { branch, org, name }
+}
 
 function getSteps(release) {
   return release.manuals
@@ -103,13 +97,23 @@ function getVersions(doc) {
   return doc.releases.map(release => ({
     number: release.releaseVersion,
     name: release.manuals[0].manualTitle,
+    tag: release.tagName,
     revision: release.tagRevision,
+    history: release.historyRevision,
     diff: release.changesDiff,
     steps: getSteps(release),
   }));
 }
 
-function getTutorialName(doc) {
+function getTutorialRepoUrl(doc) {
+  return doc.repoUrl;
+}
+
+function getTutorialBranch(doc) {
+  return doc.branchName;
+}
+
+function getTutorialTitle(doc) {
   return doc.releases[0].manuals[0].manualTitle;
 }
 
@@ -117,20 +121,25 @@ function getCurrentVersion(doc) {
   return doc.releases[0].releaseVersion;
 }
 
-function fromDumpToTutorial(doc) {
+function fromDumpToTutorial(doc, node) {
+  const repoUrl = getTutorialRepoUrl(doc);
+  const branch = getTutorialBranch(doc);
   const versions = getVersions(doc);
-  const name = getTutorialName(doc);
+  const title = getTutorialTitle(doc);
   const currentVersion = getCurrentVersion(doc);
 
   return {
-    name,
+    name: node.name,
+    repoUrl,
+    branch,
+    title,
     currentVersion,
     versions
   };
 }
 
-function parseTutorial(doc) {
+function parseTutorial(doc, node) {
   // depends if was generated using the old structure or proposed one
   // TODO: we should include tortilla's version here so we can match it with dump's structure
-  return doc && doc.length ? fromDumpToTutorial(doc[0]) : doc
+  return doc && doc.length ? fromDumpToTutorial(doc[0], node) : doc
 }

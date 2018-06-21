@@ -19,11 +19,10 @@ export const tutorialPageQuery = graphql`
   ) {
     tortillaTutorial(name: { eq: $tutorialName }) {
       name
+      title
       currentVersion
-      github {
-        link,
-        branch
-      }
+      repoUrl
+      branch
       version(number: $versionNumber) {
         name
         number

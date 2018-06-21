@@ -37,8 +37,8 @@ exports.diffRoute = ({ tutorialName, srcVersion, destVersion }) =>
     // prefix
     'diff',
     // destination version
-    kebabCase(destVersion),
-  ].join('/'), srcVersion)
+    kebabCase(srcVersion),
+  ].join('/'), destVersion)
 
 // /tutorial/my-tutorial/1.1.1(/sub-route) -> true
 exports.isVersionSpecific = (pathname) => (

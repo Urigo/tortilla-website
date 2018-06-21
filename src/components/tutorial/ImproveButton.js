@@ -45,8 +45,8 @@ const ImproveButton = Button.extend`
   }
 `
 
-const getEditHref = ({ link, branch, step }) => (
-  `${link}/edit/${branch}/.tortilla/manuals/templates/step${step}.tmpl`
+const getEditHref = ({ url, branch, step }) => (
+  `${url}/edit/${branch}/.tortilla/manuals/templates/step${step}.tmpl`
 )
 
 export default props => (

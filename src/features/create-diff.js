@@ -12,7 +12,9 @@ module.exports = ({
   common,
   params: {
     srcVersionNumber,
+    srcVersionHistory,
     destVersionNumber,
+    destVersionHistory,
     tutorialChunk,
   },
 }) => {
@@ -22,19 +24,18 @@ module.exports = ({
       tutorialName: common.tutorialName,
       srcVersion: srcVersionNumber,
       destVersion: destVersionNumber,
-    }),
-    // No version prefix
-    diffRoute({
-      tutorialName: common.tutorialName,
-      destVersion: destVersionNumber,
-    }),
+    })
   ]
 
-  const diffPath = diffRoute({
-    tutorialName: common.tutorialName,
-    srcVersion: srcVersionNumber,
-    destVersion: destVersionNumber,
-  })
+  // No version prefix
+  if (destVersionNumber == common.tutorialVersion) {
+    paths.push(
+      diffRoute({
+        tutorialName: common.tutorialName,
+        srcVersion: srcVersionNumber,
+      })
+    )
+  }
 
   const versionsDiff = diffReleases(
     tutorialChunk,
@@ -53,7 +54,9 @@ module.exports = ({
         contentType: 'diffs',
         contentData: {
           srcVersionNumber,
+          srcVersionHistory,
           destVersionNumber,
+          destVersionHistory,
           versionsDiff,
         },
       }
