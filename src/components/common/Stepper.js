@@ -6,71 +6,71 @@ import { faChevronRight, faChevronLeft } from '@fortawesome/fontawesome-free-sol
 import OutlineIconButton from './OutlineIconButton'
 
 const Button = styled(OutlineIconButton) `
-    background-color: ${({ theme, disabled }) => disabled ? theme.primaryGray : theme.primaryBlue};
-    border: 0 none;
+  background-color: ${({ theme, disabled }) => disabled ? theme.primaryGray : theme.primaryBlue} !important;
+  border: 0 none !important;
 
-    & > * {
-      color: ${({ theme }) => theme.white} !important;
-    }
+  & > * {
+    color: ${({ theme }) => theme.white} !important;
+  }
 
-    &:hover {
-        border: 0 none;
-    }
+  &:hover {
+    border: 0 none !important;
   }
 `
 
 export default class extends React.Component {
-    static propTypes = {
-        current: PropTypes.number,
-        limit: PropTypes.number.isRequired,
-        onChange: PropTypes.func.isRequired,
+  static propTypes = {
+    current: PropTypes.number,
+    limit: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      current: props.current || 0,
+    }
+  }
+
+  set(i) {
+    if (i >= this.props.limit) {
+      i = this.props.limit - 1;
+    } else if (i < 0) {
+      i = 0;
     }
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            current: props.current || 0,
-        }
+    if (this.state.current !== i) {
+      this.props.onChange(i);
     }
 
-    set(i) {
-        if (i >= this.props.limit) {
-            i = this.props.limit - 1;
-        } else if (i < 0) {
-            i = 0;
-        }
+    this.setState({
+      current: i,
+    });
+  }
 
-        if (this.state.current !== i) {
-            this.props.onChange(i);
-        }
+  hasPrev() {
+    return this.state.current - 1 >= 0
+  }
 
-        this.setState({
-            current: i,
-        });
-    }
+  prev() {
+    this.set(this.state.current - 1);
+  }
 
-    hasPrev() {
-        return this.state.current - 1 >= 0
-    }
-    prev() {
-        this.set(this.state.current - 1);
-    }
+  hasNext() {
+    return this.state.current + 1 < this.props.limit
+  }
+  next() {
+    this.set(this.state.current + 1);
+  }
 
-    hasNext() {
-        return this.state.current + 1 < this.props.limit
-    }
-    next() {
-        this.set(this.state.current + 1);
-    }
-
-    render() {
-        return (
-            <div>
-                <Button icon={faChevronLeft} disabled={!this.hasPrev()} onClick={() => this.prev()} />
-                {'\u00A0\u00A0'}
-                <Button icon={faChevronRight} disabled={!this.hasNext()} onClick={() => this.next()} />
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <Button icon={faChevronLeft} disabled={!this.hasPrev()} onClick={() => this.prev()} />
+        {'\u00A0\u00A0'}
+        <Button icon={faChevronRight} disabled={!this.hasNext()} onClick={() => this.next()} />
+      </div>
+    );
+  }
 }
