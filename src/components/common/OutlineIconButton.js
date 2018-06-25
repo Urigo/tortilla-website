@@ -18,7 +18,6 @@ const Button = styled.button`
   padding: 0;
   width: ${SIZE}px;
   height: ${SIZE}px;
-  font-size: 16px;
   line-height: ${SIZE}px;
   border-radius: 3px;
   border: solid 1px ${({ theme }) => theme.primaryGray};
@@ -36,6 +35,6 @@ const Button = styled.button`
 
 export default props => (
   <Button {...props}>
-    <Icon icon={props.icon} />
+    <Icon icon={props.icon} size={16} />
   </Button>
 )
