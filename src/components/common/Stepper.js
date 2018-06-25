@@ -3,18 +3,25 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { faChevronRight, faChevronLeft } from '@fortawesome/fontawesome-free-solid'
 
-import OutlineIconButton from './OutlineIconButton'
+import Button from './OutlineIconButton'
 
-const Button = styled(OutlineIconButton) `
-  background-color: ${({ theme, disabled }) => disabled ? theme.primaryGray : theme.primaryBlue} !important;
-  border: 0 none !important;
+const Container = styled.div`
+  .nav-button {
+    background-color: ${({ theme }) => theme.primaryBlue};
+    border: 0 none;
 
-  & > * {
-    color: ${({ theme }) => theme.white} !important;
-  }
+    & > * {
+      color: ${({ theme }) => theme.white};
+    }
 
-  &:hover {
-    border: 0 none !important;
+    &[disabled] {
+      background-color: ${({ theme }) => theme.primaryGray};
+      cursor: default;
+    }
+
+    &:hover > * {
+      color: ${({ theme }) => theme.white};
+    }
   }
 `
 
@@ -66,11 +73,19 @@ export default class extends React.Component {
 
   render() {
     return (
-      <div>
-        <Button icon={faChevronLeft} disabled={!this.hasPrev()} onClick={() => this.prev()} />
+      <Container>
+        <Button
+          className="nav-button"
+          icon={faChevronLeft}
+          disabled={!this.hasPrev()}
+          onClick={() => this.prev()} />
         {'\u00A0\u00A0'}
-        <Button icon={faChevronRight} disabled={!this.hasNext()} onClick={() => this.next()} />
-      </div>
+        <Button
+          className="nav-button"
+          icon={faChevronRight}
+          disabled={!this.hasNext()}
+          onClick={() => this.next()} />
+      </Container>
     );
   }
 }
