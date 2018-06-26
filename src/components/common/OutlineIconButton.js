@@ -1,12 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import FaIcon from './FaIcon'
 
 import Theme from '../../themes/home'
 
 import OutlineButton from './OutlineButton'
 
-const Icon = styled(FontAwesomeIcon)`
+const Icon = styled(FaIcon).attrs({
+  size: 16
+}) `
   color: ${({ theme }) => theme.primaryGray};
 `
 
@@ -18,7 +20,6 @@ const Button = styled.button`
   padding: 0;
   width: ${SIZE}px;
   height: ${SIZE}px;
-  line-height: ${SIZE}px;
   border-radius: 3px;
   border: solid 1px ${({ theme }) => theme.primaryGray};
   background: transparent;
@@ -35,6 +36,6 @@ const Button = styled.button`
 
 export default props => (
   <Button {...props}>
-    <Icon icon={props.icon} size={16} />
+    <Icon icon={props.icon} />
   </Button>
 )

@@ -6,6 +6,9 @@ import { faChevronRight, faChevronLeft } from '@fortawesome/fontawesome-free-sol
 import Button from './OutlineIconButton'
 
 const Container = styled.div`
+  // Note that specifically here there is a problem with wrapping a styled component
+  // in production so instead I've used an inlined class. The issue is that the parent's
+  // style is prioritized higher than the child component
   .nav-button {
     background-color: ${({ theme }) => theme.primaryBlue};
     border: 0 none;
@@ -19,8 +22,12 @@ const Container = styled.div`
       cursor: default;
     }
 
+    &:not([disabled]):hover {
+      background-color: #3b71e8;
+    }
+
     &:hover > * {
-      color: ${({ theme }) => theme.white};
+      color: ${({ theme }) => theme.white} !important;
     }
   }
 `
