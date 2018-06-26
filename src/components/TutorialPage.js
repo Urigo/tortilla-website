@@ -75,6 +75,7 @@ const TopBar = styled.div`
 const TopBarTitle = styled.h1`
   margin: 0;
   margin-bottom: 10px;
+  height: 47px;
 `
 
 const TopBarSubTitle = styled.h3`

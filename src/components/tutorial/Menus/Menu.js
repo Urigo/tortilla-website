@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import FaIcon from '../../common/FaIcon'
 
 export const Container = styled.div`
   display: flex;
@@ -15,9 +15,9 @@ const Separator = styled.div`
   background-color: rgba(113, 134, 150, 0.37);
 `
 
-const ItemIcon = styled(FontAwesomeIcon) `
-  font-size: 24px;
-`
+const ItemIcon = styled(FaIcon).attrs({
+  size: 24
+})``
 
 const ItemUnicode = styled.div`
   font-weight: bolder;

@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faPencilAlt } from '@fortawesome/fontawesome-free-solid'
 
 import Button from '../common/Button'
+import FaIcon from '../common/FaIcon'
+
+const FONT_SIZE = 14;
 
 const IconContainer = styled.div`
   flex: 0 0 30px;
@@ -14,9 +16,10 @@ const IconContainer = styled.div`
   line-height: 30px;
   color: ${({ theme }) => theme.white};
 `
-const Icon = styled(FontAwesomeIcon).attrs({
+const Icon = styled(FaIcon).attrs({
   icon: faPencilAlt,
-})``
+  size: 14,
+}) ``
 
 const Text = styled.a`
   color: inherit;
@@ -36,7 +39,6 @@ const ImproveButton = Button.extend`
   border-radius: 5px;
   border: 0 none;
   background-color: ${({ theme }) => theme.primaryBlue};
-  font-size: 14px;
   text-align: center;
   color: ${({ theme }) => theme.white};
 
