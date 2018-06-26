@@ -1,28 +1,27 @@
 import React from 'react'
-
-import Toolbar from './Toolbar'
-import BurgerMenu from './BurgerMenu'
+import styled from 'styled-components'
 import TortillaLogo from './TortillaLogo'
-import Bookmaks from './Bookmarks'
-import Notifications from './Notifications'
-import ToolbarSeparator from './Toolbar/Separator'
-import Avatar from './Avatar'
-import Search from './Search'
+
+const FeatureBar = styled.div `
+  background: #34363F;
+  border-top: 1px solid #3F414B;
+  border-bottom: 10px solid #30323a;
+  color: white;
+  line-height: 48px;
+  display: block;
+  width: 100%;
+  height: 48px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
+  text-align: center;
+`
 
 export default class Header extends React.Component {
-  renderLeft() {
-    return [
-      <BurgerMenu />,
-      <TortillaLogo to="/" />,
-      <Search placeholder="Search..." />,
-    ]
-  }
-
-  renderRight() {
-    return [<Bookmaks />, <Notifications />, <ToolbarSeparator />, <Avatar />]
-  }
-
   render() {
-    return <Toolbar left={this.renderLeft()} right={this.renderRight()} />
+    return (
+      <span>
+        <TortillaLogo />
+        <FeatureBar>FEATURED</FeatureBar>
+      </span>
+    )
   }
 }
