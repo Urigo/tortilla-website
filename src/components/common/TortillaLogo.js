@@ -4,33 +4,49 @@ import { withPrefix } from 'gatsby-link'
 
 const Container = styled.div`
   display: block;
-  align-items: center;
-  color: ${props => props.theme.tortillaBlue};
-  font-size: 18px;
-  line-height: 18px;
-  font-weight: 800;
-  font-style: italic;
-  text-transform: lowercase;
-  text-decoration: none;
   width: 100%;
-  text-align: center;
-  line-height: 50%;
   background: linear-gradient(to right, #0e324c, #2a5f85, #1d4866);
 `
 
-const TortillaImg = styled.img`
-  margin: 0;
-  height: 40px;
+const Spaceholder = styled.div`
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  min-width: 250px;
-  width: 40%;
-  height: auto;
+  width: 100%;
+  height: calc(100vh - 100px);
+  padding-top: calc(35vh - 50px);
+  text-align: center;
+  margin: 0;
+`
+
+const PreTitle = styled.div`
+  color: ${({ theme }) => theme.white};
+  font-size: calc(1.5vw + 3vh);
+  text-transform: uppercase;
+  margin-bottom: calc(2vw + 2.5vh);
+`
+
+const Title = styled.div`
+  color: ${({ theme }) => theme.white};
+  text-align: center;
+  font-weight: 800;
+  font-size: calc(5vw + 5vh);
+  text-transform: uppercase;
+  margin-bottom: calc(2vw + 2.5vh);
+`
+
+const SubTitle = styled.div`
+  color: ${({ theme }) => theme.white};
+  text-align: center;
+  font-size: calc(1vw + 2vh);
 `
 
 export default () => (
   <Container>
-    <TortillaImg src={withPrefix('img/logo.png')} alt="Tortilla Logo" />
+    <Spaceholder>
+      <PreTitle>THE INCREDIBLE</PreTitle>
+      <br />
+      <Title>TORTILLA</Title>
+      <br />
+      <SubTitle>The ultimate tutorials-base for JS devs</SubTitle>
+    </Spaceholder>
   </Container>
 )

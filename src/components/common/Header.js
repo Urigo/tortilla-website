@@ -5,7 +5,7 @@ import TortillaLogo from './TortillaLogo'
 const FeatureBar = styled.div `
   background: #34363F;
   border-top: 1px solid #3F414B;
-  border-bottom: 10px solid #30323a;
+  border-bottom: 24px solid #30323a;
   color: white;
   line-height: 48px;
   display: block;
@@ -13,6 +13,7 @@ const FeatureBar = styled.div `
   height: 48px;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
   text-align: center;
+  text-transform: uppercase;
 `
 
 export default class Header extends React.Component {
