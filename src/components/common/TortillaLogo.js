@@ -48,7 +48,7 @@ const OuterGlowContainer = styled.div`
 const OuterGlow = styled.div`
   position: absolute;
   width: calc(100% + 200px);
-  height: calc(100% + 100%);
+  height: calc(100% + 100px);
   right: -100px;
   bottom: 0;
   box-shadow:

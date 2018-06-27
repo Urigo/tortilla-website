@@ -19,6 +19,7 @@ const Container = styled.div`
     ${props => props.colors.from},
     ${props => props.colors.to}
   );
+  z-index: 1;
 `
 
 const Left = styled.div`
