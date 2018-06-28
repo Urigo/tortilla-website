@@ -10,6 +10,10 @@ const sampleText =
 
 const image = framework => withPrefix(`img/feature-cards/${framework}.svg`)
 
+const Container = styled.div`
+  background: linear-gradient(to right, #121212, #131313, #121212);
+`
+
 const CardsContainer = styled.div`
   display: block;
   width: 100%;
@@ -52,7 +56,7 @@ const GlowOverlay = styled.div`
   width: 100%;
   height: 300px;
   bottom: -50px;
-  background: radial-gradient(rgba(242, 245, 247, 1), rgba(242, 245, 247, 0) 100%);
+  background: radial-gradient(#121212, rgba(242, 245, 247, 0) 100%);
 `
 
 const SubmitButton = styled.div`
@@ -79,7 +83,7 @@ const SubmitButton = styled.div`
 `
 
 const FeatureCards = () => (
-  <div>
+  <Container>
     <CardsContainer>
       <FeatureCard
         colors={{
@@ -120,7 +124,7 @@ const FeatureCards = () => (
       <GlowOverlay />
       <SubmitButton>Submit your tutorial</SubmitButton>
     </GlowContainer>
-  </div>
+  </Container>
 )
 
 export default FeatureCards
