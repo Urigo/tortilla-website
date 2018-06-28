@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'gatsby-link'
+import { stepRoute } from '../../../utils/routes'
 
 const SPACE_SIZE = 30
 const TOP_SPACE = 20
@@ -9,7 +11,9 @@ const LEFT_SIZE = 190
 const Container = styled.div`
   padding: 0 ${SPACE_SIZE}px;
   height: ${HEIGHT}px;
-  border-bottom: 1px solid rgba(0, 0, 0, .5);
+  border-right: 0.5px solid rgba(0, 0, 0, .2);
+  border-left: 0.5px solid rgba(0, 0, 0, .2);
+  border-bottom: 1px solid rgba(0, 0, 0, .3);
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -88,6 +92,11 @@ const Button = styled.div`
   }
 `
 
+const NoDecorLink = styled(Link)`
+  text-decoration: inherit;
+  color: inherit;
+`
+
 const FeatureCard = props => (
   <Container colors={props.colors}>
     <Left>
@@ -103,10 +112,21 @@ const FeatureCard = props => (
       </div>
       <Description>{props.description}</Description>
       <div>
-        <Button colors={props.colors}>Begin Tutorial</Button>
+        <Button colors={props.colors}>
+          <NoDecorLink to={getTutorialLink(props)}>
+            Begin Tutorial
+          </NoDecorLink>
+        </Button>
       </div>
     </Right>
   </Container>
 )
+
+function getTutorialLink(props) {
+  return stepRoute({
+    tutorialName: props.name,
+    step: 1,
+  })
+}
 
 export default FeatureCard

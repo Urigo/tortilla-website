@@ -46,14 +46,6 @@ const Glow = styled.div`
       10px 0 160px #0ff;         /* outer right cyan */
 `
 
-const GlowOverlay = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 300px;
-  bottom: -50px;
-  background: radial-gradient(rgba(18, 18, 18, 0.6), rgba(242, 245, 247, 0) 400%);
-`
-
 const SubmitButton = styled.div`
   position: absolute;
   display: block;
@@ -102,19 +94,19 @@ class FeatureCards extends React.Component {
         </CardsContainer>
         <GlowContainer>
           <Glow />
-          <SubmitButton onClick={this.submitTutorial.bind(this)}>
+          <SubmitButton onClick={submitTutorial}>
             Submit your tutorial
           </SubmitButton>
         </GlowContainer>
       </Container>
     );
   }
+}
 
-  submitTutorial() {
-    // Send an email to Uri for now...
-    // Later on we should have a more proper solution
-    window.open('mailto:uri.goldshtein@gmail.com');
-  }
+function submitTutorial() {
+  // Send an email to Uri for now...
+  // Later on we should have a more proper solution
+  window.open('mailto:uri.goldshtein@gmail.com');
 }
 
 export default FeatureCards
