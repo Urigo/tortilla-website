@@ -47,7 +47,6 @@ module.exports = ({
     createPage({
       path,
       component: tutorialTemplate,
-      layout: 'tutorial',
       context: {
         ...common,
         common,

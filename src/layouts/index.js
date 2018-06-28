@@ -4,8 +4,6 @@ import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 
 import Modal from '../components/common/Modal'
-import Header from '../components/common/Header'
-import TechCards from '../components/common/TechCards'
 import Theme from '../themes/home'
 
 import './index.css'
@@ -33,8 +31,6 @@ const TemplateWrapper = ({ children }: any) => (
   <ThemeProvider theme={Theme}>
     <div>
       <Helmet title="Tortilla" meta={meta} link={links} />
-      <Header />
-      <TechCards />
       <div>{children()}</div>
     </div>
   </ThemeProvider>

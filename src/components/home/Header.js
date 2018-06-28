@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import TortillaLogo from './TortillaLogo'
+import FeatureCards from './FeatureCards'
 
 const FeatureBar = styled.div `
   background: #34363F;
@@ -22,6 +23,7 @@ export default class Header extends React.Component {
       <span>
         <TortillaLogo />
         <FeatureBar>FEATURED</FeatureBar>
+        <FeatureCards />
       </span>
     )
   }

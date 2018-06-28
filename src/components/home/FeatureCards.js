@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import { withPrefix } from 'gatsby-link'
 
 import Theme from '../../themes/home'
-import TechCard from './TechCards/Card'
+import FeatureCard from './FeatureCards/Card'
 
 const sampleText =
   'Donec facilisis tortor ut augue lacinia, at viverra est semper.'
 
-const image = framework => withPrefix(`img/tech-cards/${framework}.svg`)
+const image = framework => withPrefix(`img/feature-cards/${framework}.svg`)
 
 const CardsContainer = styled.div`
   display: block;
@@ -78,10 +78,10 @@ const SubmitButton = styled.div`
   }
 `
 
-const TechCards = () => (
+const FeatureCards = () => (
   <div>
     <CardsContainer>
-      <TechCard
+      <FeatureCard
         colors={{
           from: Theme.meteorGradientFrom,
           to: Theme.meteorGradientTo,
@@ -92,7 +92,7 @@ const TechCards = () => (
         image={image('meteor')}
         text={sampleText}
       />
-      <TechCard
+      <FeatureCard
         colors={{
           from: Theme.angularGradientFrom,
           to: Theme.angularGradientTo,
@@ -103,7 +103,7 @@ const TechCards = () => (
         image={image('angular')}
         text={sampleText}
       />
-      <TechCard
+      <FeatureCard
         colors={{
           from: Theme.ionicGradientFrom,
           to: Theme.ionicGradientTo,
@@ -123,4 +123,4 @@ const TechCards = () => (
   </div>
 )
 
-export default TechCards
+export default FeatureCards

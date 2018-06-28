@@ -80,7 +80,7 @@ const Button = styled.div`
   box-shadow: ${props => props.colors.shadow} 0px 10px 15px;
 `
 
-const TechCard = props => (
+const FeatureCard = props => (
   <Container colors={props.colors}>
     <Left>
       <Block image={props.image}>
@@ -103,4 +103,4 @@ const TechCard = props => (
   </Container>
 )
 
-export default TechCard
+export default FeatureCard
