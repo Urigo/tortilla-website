@@ -19,7 +19,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <Container>
-        <Header />
+        <Header tutorials={this.props.tutorials} />
         <Footer>© 2018 Uri Goldstein</Footer>
       </Container>
     )

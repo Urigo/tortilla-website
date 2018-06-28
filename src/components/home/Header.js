@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import TortillaLogo from './TortillaLogo'
+import PropTypes from 'prop-types'
 import FeatureCards from './FeatureCards'
 
 const FeatureBar = styled.div `
@@ -18,12 +19,16 @@ const FeatureBar = styled.div `
 `
 
 export default class Header extends React.Component {
+  static propTypes = {
+    tutorials: PropTypes.arrayOf(PropTypes.any),
+  }
+
   render() {
     return (
       <span>
         <TortillaLogo />
         <FeatureBar>FEATURED</FeatureBar>
-        <FeatureCards />
+        <FeatureCards tutorials={this.props.tutorials} />
       </span>
     )
   }

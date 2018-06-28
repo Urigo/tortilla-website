@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { withPrefix } from 'gatsby-link'
+import PropTypes from 'prop-types'
 
 import Theme from '../../themes/home'
 import FeatureCard from './FeatureCards/Card'
@@ -82,49 +83,79 @@ const SubmitButton = styled.div`
   }
 `
 
-const FeatureCards = () => (
-  <Container>
-    <CardsContainer>
-      <FeatureCard
-        colors={{
-          from: Theme.meteorGradientFrom,
-          to: Theme.meteorGradientTo,
-          link: Theme.meteorLink,
-          shadow: Theme.meteorShadow,
-        }}
-        name="Meteor"
-        image={image('meteor')}
-        text={sampleText}
-      />
-      <FeatureCard
-        colors={{
-          from: Theme.angularGradientFrom,
-          to: Theme.angularGradientTo,
-          link: Theme.angularLink,
-          shadow: Theme.angularShadow,
-        }}
-        name="Angular"
-        image={image('angular')}
-        text={sampleText}
-      />
-      <FeatureCard
-        colors={{
-          from: Theme.ionicGradientFrom,
-          to: Theme.ionicGradientTo,
-          link: Theme.ionicLink,
-          shadow: Theme.ionicShadow,
-        }}
-        name="Ionic 3"
-        image={image('ionic')}
-        text={sampleText}
-      />
-    </CardsContainer>
-    <GlowContainer>
-      <Glow />
-      <GlowOverlay />
-      <SubmitButton>Submit your tutorial</SubmitButton>
-    </GlowContainer>
-  </Container>
-)
+const featured = {
+  "whatsapp": {
+    iconUrl: '',
+  },
+  "radial-snake": {
+    iconUrl: '',
+  },
+  "chatty": {
+    iconUrl: '',
+  },
+};
+
+class FeatureCards extends React.Component {
+  static propTypes = {
+    tutorials: PropTypes.arrayOf(PropTypes.any),
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.tutorials = Object.keys(featured).reduce((tutorials, tutorialName) => {
+      const tutorial = this.props.tutorials.find(candi => candi.name === tutorialName);
+      tutorials[tutorialName] = { ...tutorial, ...featured[tutorialName] };
+      return tutorials;
+    }, {});
+  }
+
+  render() {
+    return (
+      <Container>
+        <CardsContainer>
+          <FeatureCard
+            colors={{
+              from: Theme.meteorGradientFrom,
+              to: Theme.meteorGradientTo,
+              link: Theme.meteorLink,
+              shadow: Theme.meteorShadow,
+            }}
+            name="Meteor"
+            image={image('meteor')}
+            text={sampleText}
+          />
+          <FeatureCard
+            colors={{
+              from: Theme.angularGradientFrom,
+              to: Theme.angularGradientTo,
+              link: Theme.angularLink,
+              shadow: Theme.angularShadow,
+            }}
+            name="Angular"
+            image={image('angular')}
+            text={sampleText}
+          />
+          <FeatureCard
+            colors={{
+              from: Theme.ionicGradientFrom,
+              to: Theme.ionicGradientTo,
+              link: Theme.ionicLink,
+              shadow: Theme.ionicShadow,
+            }}
+            name="Ionic 3"
+            image={image('ionic')}
+            text={sampleText}
+          />
+        </CardsContainer>
+        <GlowContainer>
+          <Glow />
+          <GlowOverlay />
+          <SubmitButton>Submit your tutorial</SubmitButton>
+        </GlowContainer>
+      </Container>
+    );
+  }
+}
 
 export default FeatureCards
