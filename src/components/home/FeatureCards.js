@@ -102,10 +102,18 @@ class FeatureCards extends React.Component {
         </CardsContainer>
         <GlowContainer>
           <Glow />
-          <SubmitButton>Submit your tutorial</SubmitButton>
+          <SubmitButton onClick={this.submitTutorial.bind(this)}>
+            Submit your tutorial
+          </SubmitButton>
         </GlowContainer>
       </Container>
     );
+  }
+
+  submitTutorial() {
+    // Send an email to Uri for now...
+    // Later on we should have a more proper solution
+    window.open('mailto:uri.goldshtein@gmail.com');
   }
 }
 
