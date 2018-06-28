@@ -1,4 +1,4 @@
-const createPages = require('./src/features/create-pages')
+const createPages = require('./src/startup/create-pages')
 
 exports.createPages = createPages
 

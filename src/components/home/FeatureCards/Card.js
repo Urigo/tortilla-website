@@ -9,7 +9,7 @@ const LEFT_SIZE = 190
 const Container = styled.div`
   padding: 0 ${SPACE_SIZE}px;
   height: ${HEIGHT}px;
-  border: solid 1px ${props => props.theme.lightGray};
+  border-bottom: 1px solid rgba(0, 0, 0, .5);
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -56,6 +56,10 @@ const FrameworkInfo = styled.div`
   color: ${props => props.theme.white};
 `
 
+const Name = styled.div`
+  text-transform: uppercase;
+`
+
 const Title = styled.div`
   font-size: 20px;
   font-weight: 800;
@@ -78,6 +82,10 @@ const Button = styled.div`
   text-align: center;
   color: ${props => props.colors.link};
   box-shadow: ${props => props.colors.shadow} 0px 10px 15px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 const FeatureCard = props => (
@@ -85,19 +93,17 @@ const FeatureCard = props => (
     <Left>
       <Block image={props.image}>
         <FrameworkInfo>
-          <div>{props.name}</div>
-          <div>1.4</div>
+          <Name>{props.name}</Name>
         </FrameworkInfo>
       </Block>
     </Left>
     <Right>
       <div>
-        <Title>Get Started with</Title>
-        <Title>{props.name}</Title>
+        <Title>{props.title}</Title>
       </div>
-      <Description>{props.text}</Description>
+      <Description>{props.description}</Description>
       <div>
-        <Button colors={props.colors}>Install Meteor</Button>
+        <Button colors={props.colors}>Begin Tutorial</Button>
       </div>
     </Right>
   </Container>

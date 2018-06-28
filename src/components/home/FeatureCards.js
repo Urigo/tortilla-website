@@ -1,15 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { withPrefix } from 'gatsby-link'
 import PropTypes from 'prop-types'
 
-import Theme from '../../themes/home'
+import featured from '../../featured'
 import FeatureCard from './FeatureCards/Card'
-
-const sampleText =
-  'Donec facilisis tortor ut augue lacinia, at viverra est semper.'
-
-const image = framework => withPrefix(`img/feature-cards/${framework}.svg`)
 
 const Container = styled.div`
   background: linear-gradient(to right, #121212, #131313, #121212);
@@ -57,7 +51,7 @@ const GlowOverlay = styled.div`
   width: 100%;
   height: 300px;
   bottom: -50px;
-  background: radial-gradient(#121212, rgba(242, 245, 247, 0) 100%);
+  background: radial-gradient(rgba(18, 18, 18, 0.6), rgba(242, 245, 247, 0) 400%);
 `
 
 const SubmitButton = styled.div`
@@ -83,18 +77,6 @@ const SubmitButton = styled.div`
   }
 `
 
-const featured = {
-  "whatsapp": {
-    iconUrl: '',
-  },
-  "radial-snake": {
-    iconUrl: '',
-  },
-  "chatty": {
-    iconUrl: '',
-  },
-};
-
 class FeatureCards extends React.Component {
   static propTypes = {
     tutorials: PropTypes.arrayOf(PropTypes.any),
@@ -114,43 +96,12 @@ class FeatureCards extends React.Component {
     return (
       <Container>
         <CardsContainer>
-          <FeatureCard
-            colors={{
-              from: Theme.meteorGradientFrom,
-              to: Theme.meteorGradientTo,
-              link: Theme.meteorLink,
-              shadow: Theme.meteorShadow,
-            }}
-            name="Meteor"
-            image={image('meteor')}
-            text={sampleText}
-          />
-          <FeatureCard
-            colors={{
-              from: Theme.angularGradientFrom,
-              to: Theme.angularGradientTo,
-              link: Theme.angularLink,
-              shadow: Theme.angularShadow,
-            }}
-            name="Angular"
-            image={image('angular')}
-            text={sampleText}
-          />
-          <FeatureCard
-            colors={{
-              from: Theme.ionicGradientFrom,
-              to: Theme.ionicGradientTo,
-              link: Theme.ionicLink,
-              shadow: Theme.ionicShadow,
-            }}
-            name="Ionic 3"
-            image={image('ionic')}
-            text={sampleText}
-          />
+          {Object.keys(this.tutorials).map(name => (
+            <FeatureCard key={name} {...this.tutorials[name]} />
+          ))}
         </CardsContainer>
         <GlowContainer>
           <Glow />
-          <GlowOverlay />
           <SubmitButton>Submit your tutorial</SubmitButton>
         </GlowContainer>
       </Container>
