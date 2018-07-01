@@ -5,7 +5,7 @@ const { Git } = require('tortilla/dist/git')
 const { diffReleases } = require('../libs/tortilla')
 const { diffRoute } = require('../utils/routes')
 
-const tutorialTemplate = path.resolve('src/pages/tutorial.js')
+const tutorialTemplate = path.resolve('src/templates/tutorial.js')
 
 module.exports = ({
   createPage,
