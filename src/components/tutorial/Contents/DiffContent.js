@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { parseDiff, Diff as ReactDiffView } from '../../../libs/react-diff-view'
 import storage from '../../../utils/storage';
 import Button from '../../common/Button';
+import FSTree from '../../common/FSTree';
 
 const Content = styled.div`
   display: block;
@@ -217,6 +218,10 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
+        <div style={{ display: 'block', width: 500, height: 1000 }}>
+          <FSTree tree={[{ title: 'hello', children: [{ title: 'world' }] }]} />
+        </div>
+
         <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
         {this.props.diff ? (
           <span>
