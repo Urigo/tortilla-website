@@ -111,7 +111,8 @@ const NullPath = styled.div`
 class DiffsList extends React.Component {
   static propTypes = {
     baseUrl: PropTypes.string,
-    historyObject: PropTypes.string,
+    srcHistoryObject: PropTypes.string,
+    destHistoryObject: PropTypes.string,
     diffType: PropTypes.oneOf(['unified', 'split']),
     sortCb: PropTypes.func,
     paths: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -134,14 +135,17 @@ class DiffsList extends React.Component {
       app state doesn't exist (at least in the context of React.Component)
      */
 
-    if (props.tutorialRepo) {
-      this.srcBaseUrl = `${props.tutorialRepo}/tree/${props.srcHistory}`
-      this.destBaseUrl = `${props.tutorialRepo}/tree/${props.destHistory}`
+    if (props.baseUrl) {
+      this.srcBaseUrl = `${props.baseUrl}/tree/${props.srcHistoryObject}`
+      this.destBaseUrl = `${props.baseUrl}/tree/${props.destHistoryObject}`
     }
 
     // Cache
+    this.allPaths = []
     this.parsedFilesDiffs = []
-    this.recentDiffBuildProcess = Promise.resolve()
+
+    // The thread which will be used to execute tasks in series
+    this.thread = Promise.resolve()
 
     // Split diff into file-specific diffs
     this.rawFilesDiffs = !props.diff ? [] : props.diff
@@ -152,7 +156,7 @@ class DiffsList extends React.Component {
         return i ? '\ndiff --git' + fileDiff : fileDiff
       })
 
-    this.resetViewTypeParams()
+    this.resetDiffTypeParams()
   }
 
   componentWillReceiveProps(props) {
@@ -160,19 +164,23 @@ class DiffsList extends React.Component {
     let oldPaths
     let newPaths
 
-    if (props.hasOwnProperty('diffType') && props.diffType != this.props.diffTypes) {
-      this.resetViewTypeParams(props)
+    if (props.hasOwnProperty('diffType') && props.diffType != this.props.diffType) {
+      this.resetDiffTypeParams(props)
       reset = true
     }
 
     if (props.hasOwnProperty('paths')) {
-      oldPaths = !reset && this.props.paths.filter((path) =>
+      oldPaths = !reset && this.allPaths.filter((path) =>
         !props.paths.includes(path)
       )
 
       newPaths = props.paths.filter((path) =>
-        !this.props.paths.includes(path)
-      ).sort(this.props.sortCb)
+        !this.allPaths.includes(path)
+      )
+    }
+
+    if (reset) {
+      newPaths = newPaths ? this.allPaths.concat(newPaths) : this.allPaths
     }
 
     this.disposeFilesDiffs(oldPaths)
@@ -183,8 +191,8 @@ class DiffsList extends React.Component {
     this.stopBuildingFileDiff()
   }
 
-  resetViewTypeParams(props = this.props) {
-    switch (props.diffViewType) {
+  resetDiffTypeParams(props = this.props) {
+    switch (props.diffType) {
       case 'split':
         this.diffHunkWidth = 50
         this.oppositeViewType = 'unified'
@@ -200,6 +208,11 @@ class DiffsList extends React.Component {
     }
   }
 
+  // paths - Paths we would like to get rid of
+  disposeFilesDiffs(paths) {
+    // TODO: Implement
+  }
+
   // paths - Paths we would like to build
   // reset - If true, will reset the view
   buildFilesDiffs(paths, reset) {
@@ -212,11 +225,11 @@ class DiffsList extends React.Component {
     }
 
     if (reset) {
-      this.stopBuildingDiff()
+      this.stopBuildingFileDiff()
       // Rebuilding view completely as it's the most efficient way
       this.diffContainer.innerHTML = ''
       // Move build process cursor
-      this.recentDiffBuildProcess = Promise.resolve()
+      this.thread = Promise.resolve()
     }
 
     // If no paths provided, no need to continue
@@ -238,6 +251,7 @@ class DiffsList extends React.Component {
     // Parse and render diff views in series
     this.recentBuildProcess =
     rawFilesDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
+      const path = paths[i]
       const rawFileDiff = rawFilesDiffs[i]
       let parsedFileDiff = this.parsedFilesDiffs.find(parsedFileDiff =>
         [parsedFileDiff.oldPath, parsedFileDiff.newPath].includes(paths[i])
@@ -258,19 +272,21 @@ class DiffsList extends React.Component {
         this.activeFileDiffBuildProcess = setImmediate(() => {
           const diffFileView = document.createElement('span')
           const diffFileReactEl = this.renderDiffFile(parsedFileDiff)
-          const filePath = diffFileReactEl.props.filePath
 
           ReactDOM.render(this.renderDiffFile(parsedFileDiff), diffFileView, () => {
             // Insert view in the right order
-            const nextDiffFileIndex = this.paths.indexOf(filePath)
+            this.allPaths = this.allPaths.concat(path).sort(this.props.sortCb)
+
+            const nextDiffFileIndex = this.allPaths.indexOf(path)
             const nextDiffFileView = this.diffContainer.children[nextDiffFileIndex]
+
             this.diffContainer.insertBefore(diffFileView, nextDiffFileView)
 
             resolve()
           })
         })
       })
-    }), this.recentDiffBuildProcess)
+    }), this.thread)
   }
 
   stopBuildingFileDiff() {
@@ -365,7 +381,7 @@ class DiffsList extends React.Component {
       }
 
       .diff-hunk-header {
-        width: ${this.state.diffViewType == 'split' && '200%'};
+        width: ${this.props.diffType == 'split' && '200%'};
       }
 
       .diff-gutter {
@@ -391,14 +407,14 @@ class DiffsList extends React.Component {
 
     // We attach the filePath as an additional metadata for the returned value
     return (
-      <Container filePath={filePath}>
+      <Container>
         <DiffHeader>{header}</DiffHeader>
         {isBinary ? (
           <div className={`diff-binary ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
             BINARY
           </div>
         ) : (
-          <ReactDiffView hunks={hunks} viewType={this.state.diffViewType} />
+          <ReactDiffView hunks={hunks} viewType={this.props.diffType} />
         )}
       </Container>
     )
