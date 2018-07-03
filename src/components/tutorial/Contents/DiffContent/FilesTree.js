@@ -15,7 +15,7 @@ const diffDecorators = {
   }
 }
 
-class DiffNode extends React.Component {
+class FileTree extends React.Component {
   static propTypes = {
     diff: PropTypes.string.isRequired,
     addFile: PropTypes.func.isRequired,
@@ -88,4 +88,4 @@ function onToggle(node, toggled) {
   this.forceUpdate();
 }
 
-export default DiffNode;
+export default FileTree;
