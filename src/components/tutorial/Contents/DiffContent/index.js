@@ -10,6 +10,9 @@ import storage from '../../../../utils/storage';
 import Button from '../../../common/Button';
 import DiffNode from './DiffNode';
 
+// Will be used to attach private metadata for internal use
+const internal = Symbol('diff_internal')
+
 const Content = styled.div`
   display: block;
   width: 100%;
@@ -157,6 +160,21 @@ export default class extends React.Component {
     super(props)
 
     this.state = {}
+    // Parsed file-diffs cache
+    this.parsedFilesDiffs = []
+    // Paths of diffs that we would like to render
+    this.paths = new Set()
+    // Will be used to build diffs in series
+    this.recentDiffBuildProcess = Promise.resolve()
+
+    // Split diff into file-specific diffs
+    this.rawFilesDiffs = !props.diff ? [] : props.diff
+      // Fix inline hunks
+      .replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
+      .split('\ndiff --git')
+      .map((fileDiff, i) => {
+        return i ? '\ndiff --git' + fileDiff : fileDiff
+      })
 
     let diffViewType = storage.getItem('diff-view-type')
 
@@ -174,10 +192,6 @@ export default class extends React.Component {
     }
 
     this.resetViewTypeParams()
-  }
-
-  componentDidMount() {
-    this.buildDiff()
   }
 
   componentWillUpdate(props, state) {
@@ -218,7 +232,7 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
-        <DiffNode diff={this.props.diff} />
+        <DiffNode diff={this.props.diff} addFile={this.buildDiff.bind(this)} removeFile={() => {}} />
 
         <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
         {this.props.diff ? (
@@ -233,36 +247,76 @@ export default class extends React.Component {
     )
   }
 
-  buildDiff() {
+  // Given paths represent paths that we would like to add
+  // If no paths were provided, all the diffs would be rendered
+  // The reset flag indicates whether given paths should be added or completely replace
+  // the existing rendered diffs
+  buildDiff(paths, reset) {
     // Sometimes there might be no visible changes between versions
     if (!this.props.diff) return
 
-    this.stopBuildingDiff()
-    // Rebuilding view completely as it's the most efficient way
-    this.diffContainer.innerHTML = ''
+    if (typeof paths == 'boolean') {
+      reset = paths
+      paths = null
+    }
 
-    // Split diff into file-specific diffs
-    // Use cache
-    this.fileDiffs = this.fileDiffs || this.props.diff
-      // Fix inline hunks
-      .replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
-      .split('\ndiff --git')
-      .map((fileDiff, i) => {
-        return i ? '\ndiff --git' + fileDiff : fileDiff
+    if (paths) {
+      paths = [].concat(paths)
+    }
+
+    // Accumulate paths so they would be remembered in the next reset
+    if (reset) {
+      this.paths = new Set()
+
+      if (paths) {
+        this.paths.add(...paths)
+      }
+    } else if (paths) {
+      // Only take paths that have yet to be rendered
+      paths = paths.filter(path => !this.paths.has(path))
+
+      this.paths.add(...paths)
+    }
+
+    let rawFilesDiffs
+
+    // If specific paths were not provided, reset the entire view
+    if (paths) {
+      rawFilesDiffs = this.rawFilesDiffs.filter((fileDiff) => {
+        // Gotta match because of the way we split the file diffs
+        const [oldPath, newPath] = fileDiff
+          .match(/diff --git ([^\s]+) ([^\s]+)/)
+          .slice(1)
+
+        return paths.includes(oldPath) || paths.includes(newPath)
       })
+    } else {
+      // Include all file diffs
+      // WARNING! This is gonna be overwhelming, thus, don't call this method with no
+      // paths unless you REALLY wanna render anything
+      rawFilesDiffs = []
+    }
 
-    // Use cache
-    this.files = this.files || []
+    if (!paths || reset) {
+      this.stopBuildingDiff()
+      // Rebuilding view completely as it's the most efficient way
+      this.diffContainer.innerHTML = ''
+      // Move build process cursor
+      this.recentDiffBuildProcess = Promise.resolve()
+    }
 
     // Parse and render diff views in series
-    this.fileDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
-      const fileDiff = this.fileDiffs[i]
-      let file = this.files[i]
+    this.recentBuildProcess =
+    rawFilesDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
+      const rawFileDiff = rawFilesDiffs[i]
+      let parsedFileDiff = this.parsedFilesDiffs.find(parsedFileDiff =>
+        [parsedFileDiff.oldPath, parsedFileDiff.newPath].includes(paths[i])
+      )
 
       // If cache not exist
-      if (!file) {
-        file = parseDiff(fileDiff)[0]
-        this.files.push(file)
+      if (!parsedFileDiff) {
+        parsedFileDiff = parseDiff(rawFileDiff)[0]
+        this.parsedFilesDiffs.push(parsedFileDiff)
       }
 
       return new Promise(resolve => {
@@ -273,15 +327,22 @@ export default class extends React.Component {
         //    of executions when needed
         this.currentDiffBuildProcess = setImmediate(() => {
           const diffFileView = document.createElement('span')
+          const diffFileReactEl = this.renderDiffFile(parsedFileDiff)
+          const filePath = diffFileReactEl.props.filePath
 
-          ReactDOM.render(this.renderDiffFile(file), diffFileView, () => {
-            this.diffContainer.appendChild(diffFileView)
+          ReactDOM.render(this.renderDiffFile(parsedFileDiff), diffFileView, () => {
+            // Insert the new view in the right order
+            const refNode = Array.from(this.diffContainer.childNodes).find(childNode =>
+              childNode[internal].filePath > filePath
+            )
+            diffFileView[internal] = { filePath }
+            this.diffContainer.insertBefore(diffFileView, refNode)
 
             resolve()
           })
         })
       })
-    }), Promise.resolve())
+    }), this.recentDiffBuildProcess)
   }
 
   stopBuildingDiff() {
@@ -314,10 +375,15 @@ export default class extends React.Component {
       }, maxContentLength)
     }, maxHunkContentLength)
 
+    // Will store the view's header
     let header = []
+    // Will store the new file path for external use
+    let filePath
 
     // File removed
     if (Number(oldRevision) !== 0) {
+      filePath = oldPath
+
       header.push(this.srcBaseUrl
         ? <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
         : <NullPath key={0}>{oldPath}</NullPath>
@@ -327,12 +393,16 @@ export default class extends React.Component {
     if (Number(newRevision) !== 0) {
       // File changed
       if (newPath == oldPath) {
+        filePath = oldPath
+
         header = [this.destBaseUrl
           ? <Path key={0} href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
           : <NullPath key={0}>{oldPath}</NullPath>
         ]
       // File renamed, moved or added
       } else {
+        filePath = newPath
+
         header.push(this.destBaseUrl
           ? <Path key={header.length} href={`${this.destBaseUrl}/${newPath}`}>{newPath}</Path>
           : <NullPath key={header.length}>{newPath}</NullPath>
@@ -387,8 +457,9 @@ export default class extends React.Component {
       }
     `
 
+    // We attach the filePath as an additional metadata for the returned value
     return (
-      <Container>
+      <Container filePath={filePath}>
         <DiffHeader>{header}</DiffHeader>
         {isBinary ? (
           <div className={`diff-binary ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>

@@ -18,6 +18,8 @@ const diffDecorators = {
 class DiffNode extends React.Component {
   static propTypes = {
     diff: PropTypes.string.isRequired,
+    addFile: PropTypes.func.isRequired,
+    removeFile: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -41,7 +43,7 @@ class DiffNode extends React.Component {
           });
 
           if (!childNode) {
-            childNode = { name };
+            childNode = { name, path };
 
             node.children.push(childNode);
 
@@ -72,8 +74,12 @@ function onToggle(node, toggled) {
     node.toggled = toggled;
   } else if (node.active) {
     delete node.active;
+
+    this.props.removeFile(node.path);
   } else {
     node.active = true;
+
+    this.props.addFile(node.path);
   }
 
   this.forceUpdate();
