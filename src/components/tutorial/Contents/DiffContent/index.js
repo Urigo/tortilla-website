@@ -10,9 +10,6 @@ import storage from '../../../../utils/storage';
 import Button from '../../../common/Button';
 import DiffNode from './DiffNode';
 
-// Will be used to attach private metadata for internal use
-const internal = Symbol('diff_internal')
-
 const Content = styled.div`
   display: block;
   width: 100%;
@@ -163,7 +160,7 @@ export default class extends React.Component {
     // Parsed file-diffs cache
     this.parsedFilesDiffs = []
     // Paths of diffs that we would like to render
-    this.paths = new Set()
+    this.paths = []
     // Will be used to build diffs in series
     this.recentDiffBuildProcess = Promise.resolve()
 
@@ -266,16 +263,18 @@ export default class extends React.Component {
 
     // Accumulate paths so they would be remembered in the next reset
     if (reset) {
-      this.paths = new Set()
+      this.paths = []
 
       if (paths) {
-        this.paths.add(...paths)
+        this.paths.push(...paths)
+        this.paths.sort()
       }
     } else if (paths) {
       // Only take paths that have yet to be rendered
-      paths = paths.filter(path => !this.paths.has(path))
+      paths = paths.filter(path => !this.paths.includes(path))
 
-      this.paths.add(...paths)
+      this.paths.push(...paths)
+      this.paths.sort()
     }
 
     let rawFilesDiffs
@@ -287,6 +286,8 @@ export default class extends React.Component {
         const [oldPath, newPath] = fileDiff
           .match(/diff --git ([^\s]+) ([^\s]+)/)
           .slice(1)
+          // Remove /a /b
+          .map(path => path.split('/').slice(1).join('/'))
 
         return paths.includes(oldPath) || paths.includes(newPath)
       })
@@ -331,12 +332,10 @@ export default class extends React.Component {
           const filePath = diffFileReactEl.props.filePath
 
           ReactDOM.render(this.renderDiffFile(parsedFileDiff), diffFileView, () => {
-            // Insert the new view in the right order
-            const refNode = Array.from(this.diffContainer.childNodes).find(childNode =>
-              childNode[internal].filePath > filePath
-            )
-            diffFileView[internal] = { filePath }
-            this.diffContainer.insertBefore(diffFileView, refNode)
+            // Insert view in the right order
+            const nextDiffFileIndex = this.paths.indexOf(filePath)
+            const nextDiffFileView = this.diffContainer.children[nextDiffFileIndex]
+            this.diffContainer.insertBefore(diffFileView, nextDiffFileView)
 
             resolve()
           })

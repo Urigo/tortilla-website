@@ -32,8 +32,11 @@ class DiffNode extends React.Component {
       header.split(' ').slice(-2).forEach((path) => {
         if (path == '/dev/null') return;
 
+        const names = path.split('/').slice(1)
+        path = names.join('/')
+
         // Slice initial /a /b parts
-        path.split('/').slice(1).reduce((node, name, index, split) => {
+        names.slice(1).reduce((node, name, index, split) => {
           if (!node.children) {
             node.children = [];
           }
