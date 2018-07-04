@@ -14,8 +14,6 @@ const filesTreeBarHeight = '45px';
 const filesTreeWidth = '280px';
 
 const Container = styled.div`
-  display: block;
-  position: absolute;
   width: 100%;
   height: 100%;
   background-color: ${({theme}) => theme.white};
@@ -26,8 +24,6 @@ const Container = styled.div`
 
 const Content = styled.div`
   float: left;
-  min-width: calc(100% - ${filesTreeWidth});
-  max-width: 100%;
   height: 100%;
   overflow-y: overlay;
   overflow-x: hidden;
@@ -49,10 +45,10 @@ const FaFile = styled(FaIcon).attrs({
 `
 
 const FilesTreeContainer = styled.div `
-  float: left;
+  position: fixed;
   width: ${filesTreeWidth};
-  height: 100%;
   overflow: overlay;
+  bottom: 0;
 
   // 'react-treebeard' is not set in a way that its classes or style can be modified
   // else wise
@@ -130,8 +126,18 @@ export default class extends React.Component {
     this.resetDiffTypeParams()
   }
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.resetFilesTreeDimensions, true)
+
+    this.resetFilesTreeDimensions()
+  }
+
   componentWillUpdate(props, state) {
     this.resetDiffTypeParams(state)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.resetFilesTreeDimensions, true)
   }
 
   resetDiffTypeParams(state = this.state) {
@@ -160,14 +166,16 @@ export default class extends React.Component {
 
     if (this.state.pickingFiles) {
       contentStyle.width = `calc(100% - ${filesTreeWidth})`
+      contentStyle.marginLeft = filesTreeWidth;
     } else {
       contentStyle.width = '100%'
+      contentStyle.marginLeft = 0;
     }
 
     return (
-      <Container>
+      <Container ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
         {this.state.pickingFiles && (
-          <FilesTreeContainer>
+          <FilesTreeContainer ref={ref => this.filesTreeContainer = ReactDOM.findDOMNode(ref)}>
             <FilesTreeBar>
               <div style={{ float: 'left' }}>
                 Pick Files
@@ -231,6 +239,19 @@ export default class extends React.Component {
   toggleFilePicking() {
     this.setState({
       pickingFiles: !this.state.pickingFiles
+    }, () => {
+      if (this.state.pickingFiles) {
+        this.resetFilesTreeDimensions();
+      }
     })
+  }
+
+  resetFilesTreeDimensions = (e) => {
+    if (!this.container) return
+    if (!this.filesTreeContainer) return
+    if (e && !e.target.contains(this.filesTreeContainer)) return
+
+    const { top } = this.container.getBoundingClientRect()
+    this.filesTreeContainer.style.top = Math.max(top, 0) + 'px'
   }
 }
