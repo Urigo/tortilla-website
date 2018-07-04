@@ -99,7 +99,7 @@ const MainContent = styled.div`
   position: relative;
   display: block;
   clear: both;
-  height: calc(100% - ${topBarHeight});
+  min-height: calc(100% - ${topBarHeight});
 `
 
 export default class TutorialPage extends React.Component {

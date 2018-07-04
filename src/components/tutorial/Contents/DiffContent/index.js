@@ -11,16 +11,26 @@ import FilesTree from './FilesTree';
 
 const filesTreeBarFontSize = 15;
 const filesTreeBarHeight = '45px';
+const filesTreeWidth = '280px';
 
-const Content = styled.div`
+const Container = styled.div`
   display: block;
+  position: absolute;
   width: 100%;
   height: 100%;
   background-color: ${({theme}) => theme.white};
   color: ${({theme}) => theme.lightBlack};
   font-weight: normal;
   font-size: 14px;
-  overflow-y: auto;
+`
+
+const Content = styled.div`
+  float: left;
+  min-width: calc(100% - ${filesTreeWidth});
+  max-width: 100%;
+  height: 100%;
+  overflow-y: overlay;
+  overflow-x: hidden;
 `
 
 const FaClose = styled(FaIcon).attrs({
@@ -39,13 +49,10 @@ const FaFile = styled(FaIcon).attrs({
 `
 
 const FilesTreeContainer = styled.div `
-  position: absolute;
   float: left;
-  width: 280px;
+  width: ${filesTreeWidth};
   height: 100%;
   overflow: overlay;
-  top: 0;
-  left: 0;
 
   // 'react-treebeard' is not set in a way that its classes or style can be modified
   // else wise
@@ -149,8 +156,16 @@ export default class extends React.Component {
   }
 
   render() {
+    const contentStyle = {}
+
+    if (this.state.pickingFiles) {
+      contentStyle.width = `calc(100% - ${filesTreeWidth})`
+    } else {
+      contentStyle.width = '100%'
+    }
+
     return (
-      <Content>
+      <Container>
         {this.state.pickingFiles && (
           <FilesTreeContainer>
             <FilesTreeBar>
@@ -165,32 +180,34 @@ export default class extends React.Component {
           </FilesTreeContainer>
         )}
 
-        <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
+        <Content style={contentStyle}>
+          <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
 
-        <ActionButtons>
-          {this.props.diff && (
-            <ActionButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ActionButton>
-          )}
-          {!this.state.pickingFiles && (
-            <ActionButton onClick={this.toggleFilePicking.bind(this)}>pick</ActionButton>
-          )}
-        </ActionButtons>
+          <ActionButtons>
+            {this.props.diff && (
+              <ActionButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ActionButton>
+            )}
+            {!this.state.pickingFiles && (
+              <ActionButton onClick={this.toggleFilePicking.bind(this)}>pick</ActionButton>
+            )}
+          </ActionButtons>
 
-        {this.props.diff ? (
-          <span>
-            <DiffsList
-              diff={this.props.diff}
-              diffType={this.state.diffViewType}
-              paths={this.state.diffPaths}
-              baseUrl={this.props.tutorialRepo}
-              srcHistoryObject={this.props.srcHistory}
-              destHistoryObject={this.props.destHistory}
-            />
-          </span>
-        ) : (
-          <NoDiff>There are no visible changes between the versions :-)</NoDiff>
-        )}
-      </Content>
+          {this.props.diff ? (
+            <span>
+              <DiffsList
+                diff={this.props.diff}
+                diffType={this.state.diffViewType}
+                paths={this.state.diffPaths}
+                baseUrl={this.props.tutorialRepo}
+                srcHistoryObject={this.props.srcHistory}
+                destHistoryObject={this.props.destHistory}
+              />
+            </span>
+          ) : (
+            <NoDiff>There are no visible changes between the versions :-)</NoDiff>
+          )}
+        </Content>
+      </Container>
     )
   }
 
