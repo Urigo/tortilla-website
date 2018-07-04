@@ -23,9 +23,11 @@ import {
 } from './tutorial/Menus'
 import { DiffContent, StepContent } from './tutorial/Contents'
 
+const topBarHeight = '112.5px';
+
 const Container = styled.div`
   display: flex;
-  height: 100%;
+  height: 100vh;
   width: 100%;
 `
 
@@ -69,12 +71,14 @@ const TopBar = styled.div`
   background-color: #f2f5f7;
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 20px 0 20px;
+  height: ${topBarHeight};
   margin: 0;
 `
 
 const TopBarTitle = styled.h1`
   margin: 0;
   margin-bottom: 10px;
+  text-overflow: ellipsis;
 `
 
 const TopBarSubTitle = styled.h3`
@@ -92,7 +96,10 @@ const MainContentContainer = styled.div`
 `
 
 const MainContent = styled.div`
+  position: relative;
+  display: block;
   clear: both;
+  height: calc(100% - ${topBarHeight});
 `
 
 export default class TutorialPage extends React.Component {

@@ -1,11 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
+import { faTimes, faFile } from '@fortawesome/fontawesome-free-solid'
 
 import storage from '../../../../utils/storage';
 import Button from '../../../common/Button';
-import FilesTree from './FilesTree';
+import FaIcon from '../../../common/FaIcon'
 import DiffsList from './DiffsList';
+import FilesTree from './FilesTree';
+
+const filesTreeBarFontSize = 15;
+const filesTreeBarHeight = '45px';
 
 const Content = styled.div`
   display: block;
@@ -16,6 +21,50 @@ const Content = styled.div`
   font-weight: normal;
   font-size: 14px;
   overflow-y: auto;
+`
+
+const FaClose = styled(FaIcon).attrs({
+  icon: faTimes,
+  size: filesTreeBarFontSize,
+}) `
+  color: black;
+  cursor: pointer;
+`
+
+const FaFile = styled(FaIcon).attrs({
+  icon: faFile,
+  size: 25,
+}) `
+  color: black;
+`
+
+const FilesTreeContainer = styled.div `
+  position: absolute;
+  float: left;
+  width: 280px;
+  height: 100%;
+  overflow: overlay;
+  top: 0;
+  left: 0;
+
+  // 'react-treebeard' is not set in a way that its classes or style can be modified
+  // else wise
+  & > ul {
+    height: calc(100% - ${filesTreeBarHeight});
+    padding-top: 10px !important;
+    overflow: overlay;
+    clear: both;
+  }
+`
+
+const FilesTreeBar = styled.div`
+  width: 100%;
+  height: ${filesTreeBarHeight};
+  background-color: #2f353e;
+  font-size: ${filesTreeBarFontSize}px;
+  line-height: ${filesTreeBarHeight};
+  color: white;
+  padding: 0 10px;
 `
 
 const Title = styled.div`
@@ -33,7 +82,11 @@ const NoDiff = styled.div`
   text-align: center;
 `
 
-const ViewTypeButton = Button.extend`
+const ActionButtons = styled.div`
+  margin: 25px 15px;
+`
+
+const ActionButton = Button.extend`
   width: 120px;
   height: 50px;
   color: ${({ theme }) => theme.primaryBlue};
@@ -41,7 +94,7 @@ const ViewTypeButton = Button.extend`
   padding: 10px;
   border-radius: 5px;
   float: right;
-  margin: 25px 20px;
+  margin: 0px 5px;
   outline: none;
 
   &:hover {
@@ -54,7 +107,8 @@ export default class extends React.Component {
     super(props)
 
     this.state = {
-      diffPaths: []
+      diffPaths: [],
+      pickingFiles: true,
     }
 
     let diffViewType = storage.getItem('diff-view-type')
@@ -97,12 +151,33 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
-        <FilesTree diff={this.props.diff} addFile={this.addFileDiff} removeFile={this.removeFileDiff} />
+        {this.state.pickingFiles && (
+          <FilesTreeContainer>
+            <FilesTreeBar>
+              <div style={{ float: 'left' }}>
+                Pick Files
+              </div>
+              <div style={{ float: 'right' }}>
+                <FaClose onClick={this.toggleFilePicking.bind(this)} />
+              </div>
+            </FilesTreeBar>
+            <FilesTree cache={this} diff={this.props.diff} addFile={this.addFileDiff} removeFile={this.removeFileDiff} />
+          </FilesTreeContainer>
+        )}
 
         <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
+
+        <ActionButtons>
+          {this.props.diff && (
+            <ActionButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ActionButton>
+          )}
+          {!this.state.pickingFiles && (
+            <ActionButton onClick={this.toggleFilePicking.bind(this)}>pick</ActionButton>
+          )}
+        </ActionButtons>
+
         {this.props.diff ? (
           <span>
-            <ViewTypeButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ViewTypeButton>
             <DiffsList
               diff={this.props.diff}
               diffType={this.state.diffViewType}
@@ -134,5 +209,11 @@ export default class extends React.Component {
       this.state.diffPaths.splice(index, 1)
       this.forceUpdate()
     }
+  }
+
+  toggleFilePicking() {
+    this.setState({
+      pickingFiles: !this.state.pickingFiles
+    })
   }
 }

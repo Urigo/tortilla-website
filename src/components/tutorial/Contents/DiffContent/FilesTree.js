@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Treebeard, decorators } from 'react-treebeard';
 
+// Will be used to store hidden properties
+const internal = Symbol('files_tree_internal')
+
 const diffDecorators = {
   ...decorators,
 
@@ -20,15 +23,43 @@ class FileTree extends React.Component {
     diff: PropTypes.string.isRequired,
     addFile: PropTypes.func.isRequired,
     removeFile: PropTypes.func.isRequired,
+    cache: PropTypes.object,
+  }
+
+  static defaultProps = {
+    // Will be used to persist data in case component is unmounted
+    cache: {}
   }
 
   constructor(props) {
     super(props);
 
-    this.children = [];
+    this.constructChildren();
+  }
+
+  render() {
+    return (
+      <Treebeard
+        data={this.children}
+        decorators={diffDecorators}
+        onToggle={onToggle.bind(this)}
+      />
+    );
+  }
+
+  constructChildren() {
+    if (this.props.cache[internal]) {
+      this.children = this.props.cache[internal].children;
+
+      return;
+    }
+
+    this.props.cache[internal] = {
+      children: this.children = []
+    };
 
     // Compose children out of given diff, assuming the schema is correct
-    props.diff.match(/^diff --git [^\s]+ [^\s]+/mg).forEach((header) => {
+    this.props.diff.match(/^diff --git [^\s]+ [^\s]+/mg).forEach((header) => {
       header.split(' ').slice(-2).forEach((path) => {
         if (path == '/dev/null') return;
 
@@ -59,16 +90,6 @@ class FileTree extends React.Component {
         }, this);
       })
     })
-  }
-
-  render() {
-    return (
-      <Treebeard
-        data={this.children}
-        decorators={diffDecorators}
-        onToggle={onToggle.bind(this)}
-      />
-    );
   }
 }
 
