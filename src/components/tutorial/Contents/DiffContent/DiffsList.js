@@ -243,15 +243,19 @@ class DiffsList extends React.Component {
 
     if (reset) {
       this.stopThread()
-      // Rebuilding view completely as it's the most efficient way
-      this.diffContainer.innerHTML = ''
       // Move build process cursor
       this.process = Promise.resolve()
     }
 
     // If no paths provided, no need to continue
-    if (!paths) return
-    if (!paths.length) return
+    if (!paths || !paths.length) {
+      if (reset) {
+        this.diffContainer.innerHTML = ''
+        this.allPaths = []
+      }
+
+      return
+    }
 
     // Takes diffs which match the paths
     const rawFilesDiffs = this.rawFilesDiffs.filter((fileDiff) => {
@@ -291,6 +295,14 @@ class DiffsList extends React.Component {
           const diffFileReactEl = this.renderDiffFile(parsedFileDiff)
 
           ReactDOM.render(this.renderDiffFile(parsedFileDiff), diffFileView, () => {
+            if (reset) {
+              reset = false
+              // Reset the view itself only after building the first diff so we won't see
+              // a stutter side effect
+              this.diffContainer.innerHTML = ''
+              this.allPaths = []
+            }
+
             // Insert view in the right order
             this.allPaths = this.allPaths.concat(path).sort(this.props.sortCb)
 
