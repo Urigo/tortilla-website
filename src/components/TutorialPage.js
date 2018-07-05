@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Link, { withPrefix } from 'gatsby-link'
@@ -192,7 +193,17 @@ export default class TutorialPage extends React.Component {
   }
 
   renderContent() {
-    switch (this.props.contentType) {
+    const contentType = this.props.contentType
+
+    // An insurance mechanism that will reset the .style object any time we change
+    // the content
+    if (this.recentContentType !== contentType && this.contentStyle) {
+      Object.assign(this.contentStyle, this.originalContentStyle)
+    }
+
+    this.recentContentType = contentType
+
+    switch (contentType) {
       case 'diffs':
         return (
           <DiffContent
@@ -202,6 +213,7 @@ export default class TutorialPage extends React.Component {
             srcHistory={this.props.params.srcVersionHistory}
             destVersion={this.props.params.destVersionNumber}
             destHistory={this.props.params.destVersionHistory}
+            containerStyle={this.contentStyle}
             diff={this.props.params.versionsDiff}
           />
         )
@@ -243,7 +255,7 @@ export default class TutorialPage extends React.Component {
           </SubMenu> : null}
         </Aside>
         <Display>
-          <MainContentContainer>
+          <MainContentContainer ref={this.defineContentStyle}>
             <TopBar>
               <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
               <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
@@ -256,5 +268,20 @@ export default class TutorialPage extends React.Component {
         </Display>
       </Container>
     )
+  }
+
+  // Will get and store the native .style object of content element
+  defineContentStyle = (ref) => {
+    if (ref) {
+      const contentEl = ReactDOM.findDOMNode(ref)
+
+      this.contentStyle = contentEl.style
+      this.originalContentStyle = { ...this.contentStyle }
+
+      this.forceUpdate()
+    } else {
+      delete this.contentStyle
+      delete this.originalContentStyle
+    }
   }
 }
