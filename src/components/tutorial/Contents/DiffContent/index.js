@@ -12,7 +12,7 @@ import FilesTree from './FilesTree';
 const filesTreeBarFontSize = 15;
 const filesTreeBarHeight = '45px';
 const filesTreeWidth = '280px';
-const filesFiltersHeight = '80px';
+const filesFiltersHeight = '90px';
 
 const Container = styled.div`
   width: 100%;
@@ -91,6 +91,8 @@ const FilesFilters = styled.div`
 
 const FileFilter = styled.input`
   margin: 5px 10px;
+  padding: 0 10px;
+  font-size: 14px;
   flex-grow: 1;
   height: ${parseInt(filesFiltersHeight) / 2 - 15}px;
   background-color: #22262b;
@@ -136,7 +138,8 @@ const ActionButton = Button.extend`
 
 export default class extends React.Component {
   static defaultProps = {
-    containerStyle: {}
+    scrollerStyle: {},
+    scrollerHeight: '100%',
   }
 
   constructor(props) {
@@ -146,8 +149,6 @@ export default class extends React.Component {
       diffPaths: [],
       pickingFiles: true,
     }
-
-    this.originalContainerHeight = '100%'
 
     let diffViewType = storage.getItem('diff-view-type')
 
@@ -168,8 +169,12 @@ export default class extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.hasOwnProperty('style') && props.containerStyle !== this.props.containerStyle) {
-      this.originalContainerHeight = props.style.height
+    if (
+      props.hasOwnProperty('scrollerStyle') &&
+      props.scrollerStyle !== this.props.scrollerStyle ||
+      props.hasOwnProperty('scrollerHeight') &&
+      props.scrollerHeight !== this.props.scrollerHeight
+    ) {
       this.forceUpdate()
     }
   }
@@ -206,14 +211,17 @@ export default class extends React.Component {
   render() {
     const contentStyle = {}
 
+    // Any time parent components have changed, this render method will be invoked,
+    // thus, the dimensions will always be updated
     if (this.state.pickingFiles) {
       contentStyle.width = `calc(100% - ${filesTreeWidth})`
       contentStyle.marginLeft = filesTreeWidth
-      this.props.containerStyle.height = `calc(${this.originalContainerHeight} - ${filesFiltersHeight})`
+      this.props.scrollerStyle.height = `calc(${this.props.scrollerHeight} - ${filesFiltersHeight})`
+      this.resetFilesFiltersDimensions()
     } else {
       contentStyle.width = '100%'
       contentStyle.marginLeft = 0
-      this.props.containerStyle.height = this.originalContainerHeight
+      this.props.scrollerStyle.height = this.props.scrollerHeight
     }
 
     return (
@@ -229,9 +237,9 @@ export default class extends React.Component {
               </div>
             </FilesTreeBar>
             <FilesTree cache={this} diff={this.props.diff} addFile={this.addFileDiff} removeFile={this.removeFileDiff} />
-            <FilesFilters>
-              <FileFilter />
-              <FileFilter />
+            <FilesFilters ref={ref => this.filesFilters = ReactDOM.findDOMNode(ref)}>
+              <FileFilter placeholder="Include files (regular expression)..." />
+              <FileFilter placeholder="Exclude files (regular expression)..." />
             </FilesFilters>
           </FilesPicker>
         )}
@@ -301,5 +309,12 @@ export default class extends React.Component {
 
     const { top } = this.container.getBoundingClientRect()
     this.filesPicker.style.top = Math.max(top, 0) + 'px'
+  }
+
+  resetFilesFiltersDimensions = () => {
+    if (!this.filesFilters) return
+
+    const { left } = this.filesFilters.getBoundingClientRect()
+    this.filesFilters.style.width = `calc(100% - ${left}px)`
   }
 }

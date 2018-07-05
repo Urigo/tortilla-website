@@ -25,6 +25,7 @@ import {
 import { DiffContent, StepContent } from './tutorial/Contents'
 
 const topBarHeight = '112.5px';
+const contentHeight = '100%';
 
 const Container = styled.div`
   display: flex;
@@ -90,7 +91,7 @@ const TopBarSubTitle = styled.h3`
 `
 
 const MainContentContainer = styled.div`
-  height: 100%;
+  height: ${contentHeight};
   display: block;
   overflow: auto;
   background-color: ${({ theme }) => theme.white};
@@ -213,7 +214,8 @@ export default class TutorialPage extends React.Component {
             srcHistory={this.props.params.srcVersionHistory}
             destVersion={this.props.params.destVersionNumber}
             destHistory={this.props.params.destVersionHistory}
-            containerStyle={this.contentStyle}
+            scrollerStyle={this.contentStyle}
+            scrollerHeight={contentHeight}
             diff={this.props.params.versionsDiff}
           />
         )
