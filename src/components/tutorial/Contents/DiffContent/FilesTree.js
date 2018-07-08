@@ -68,13 +68,46 @@ class FileTree extends React.Component {
       props.excludePattern.toString() != this.props.excludePattern.toString()
     )
 
+    let oldChildren
+    let newChildren
+
     if (reduceChildren) {
-      state.children = this.reduceChildren(props)
+      oldChildren = this.state.children
+      newChildren = state.children = this.reduceChildren(props)
     }
 
     if (Object.keys(state).length) {
-      this.setState(state)
+      this.setState(state, () => {
+        if (reduceChildren) {
+          this.modifyFiles(newChildren, oldChildren)
+        }
+      })
     }
+  }
+
+  // This will call the props.addFile and props.removeFile callbacks based on the
+  // modifications that have happened in children
+  modifyFiles(newChildren, oldChildren) {
+    const newLeaves = pickLeaves(newChildren)
+    const oldLeaves = pickLeaves(oldChildren)
+    const newActiveLeaves = newLeaves.filter(node => node.active)
+    const oldActiveLeaves = oldLeaves.filter(node => node.active)
+
+    newActiveLeaves.forEach((newActiveLeaf, i) => {
+      const oldActiveLeaf = oldActiveLeaves[i]
+
+      if (newActiveLeaf && !oldActiveLeaf) {
+        this.props.addFile(newActiveLeaf.path)
+      }
+    })
+
+    oldActiveLeaves.forEach((oldActiveLeaf, i) => {
+      const newActiveLeaf = newActiveLeaves[i]
+
+      if (oldActiveLeaf && !newActiveLeaf) {
+        this.props.removeFile(oldActiveLeaf.path)
+      }
+    })
   }
 
   constructChildren() {
@@ -168,6 +201,26 @@ class FileTree extends React.Component {
     // Ascending order. Dirs first
     return dirChildren.concat(fileChildren)
   }
+}
+
+function pickLeaves(children) {
+  // Use stash if already calculated
+  if (children[internal]) return children[internal]
+
+  const leaves = children.reduce((leaves, node) => {
+    if (node.children) {
+      leaves.push(...pickLeaves(node.children))
+    } else {
+      leaves.push(node)
+    }
+
+    return leaves
+  }, [])
+
+  // Store cache for future calculations
+  children[internal] = leaves
+
+  return leaves
 }
 
 function onToggle(node, toggled) {
