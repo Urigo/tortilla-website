@@ -23,10 +23,14 @@ class FileTree extends React.Component {
     diff: PropTypes.string.isRequired,
     addFile: PropTypes.func.isRequired,
     removeFile: PropTypes.func.isRequired,
+    includePattern: PropTypes.instanceOf(RegExp),
+    excludePattern: PropTypes.instanceOf(RegExp),
     cache: PropTypes.object,
   }
 
   static defaultProps = {
+    includePattern: new RegExp(),
+    excludePattern: new RegExp(),
     // Will be used to persist data in case component is unmounted
     cache: {}
   }
@@ -35,16 +39,40 @@ class FileTree extends React.Component {
     super(props);
 
     this.constructChildren();
+
+    this.state = {
+      children: this.reduceChildren()
+    }
   }
 
   render() {
     return (
       <Treebeard
-        data={this.children}
+        data={this.state.children}
         decorators={diffDecorators}
         onToggle={onToggle.bind(this)}
       />
     );
+  }
+
+  componentWillReceiveProps(props) {
+    const state = {}
+
+    const reduceChildren = (
+      props.hasOwnProperty('includePattern') &&
+      props.includePattern.toString() != this.props.includePattern.toString()
+    ) || (
+      props.hasOwnProperty('excludePattern') &&
+      props.excludePattern.toString() != this.props.excludePattern.toString()
+    )
+
+    if (reduceChildren) {
+      state.children = this.reduceChildren(props)
+    }
+
+    if (Object.keys(state).length) {
+      this.setState(state)
+    }
   }
 
   constructChildren() {
@@ -90,6 +118,42 @@ class FileTree extends React.Component {
         }, this);
       })
     })
+  }
+
+  // Will reduce the full tree into a filtered one based on the given patterns
+  // Note that the state of the old tree will be stashed on the component
+  reduceChildren(props = this.props, children = this.children) {
+    if (!children.length) return children
+
+    const { includePattern, excludePattern } = props
+    // This how an empty RegExp would appear like
+    const include = includePattern.toString() != '/(?:)/'
+    const exclude = excludePattern.toString() != '/(?:)/'
+
+    return children.reduce((reducedChildren, node) => {
+      if (
+        (!include || includePattern.test(node.path)) &&
+        (!exclude || !excludePattern.test(node.path))
+      ) {
+        let reducedNode = node
+
+        // Ensure that we don't modify the original children cache!
+        if (node.children) {
+          reducedNode = {
+            ...node,
+            children: this.reduceChildren(props, node.children),
+            get toggled() { return node.toggled },
+            set toggled(toggled) { node.toggled = toggled },
+            get active() { return node.active },
+            set active(active) { node.active = active },
+          }
+        }
+
+        reducedChildren.push(reducedNode)
+      }
+
+      return reducedChildren
+    }, [])
   }
 }
 

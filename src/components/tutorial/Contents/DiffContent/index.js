@@ -235,13 +235,26 @@ export default class extends React.Component {
                 Pick Files
               </div>
               <div style={{ float: 'right' }}>
-                <FaClose onClick={this.toggleFilePicking.bind(this)} />
+                <FaClose onClick={this.toggleFilePicking} />
               </div>
             </FilesTreeBar>
-            <FilesTree cache={this} diff={this.props.diff} addFile={this.addFileDiff} removeFile={this.removeFileDiff} />
+            <FilesTree
+              cache={this}
+              diff={this.props.diff}
+              addFile={this.addFileDiff}
+              removeFile={this.removeFileDiff}
+              includePattern={this.state.includePattern}
+              excludePattern={this.state.excludePattern}
+            />
             <FilesFilters ref={ref => this.filesFilters = ReactDOM.findDOMNode(ref)}>
-              <FileFilter placeholder="Include files (regular expression)..." />
-              <FileFilter placeholder="Exclude files (regular expression)..." />
+              <FileFilter
+                onChange={this.includeFiles}
+                placeholder="Include files (regular expression)..."
+              />
+              <FileFilter
+                onChange={this.excludeFiles}
+                placeholder="Exclude files (regular expression)..."
+              />
             </FilesFilters>
           </FilesPicker>
         )}
@@ -254,7 +267,7 @@ export default class extends React.Component {
               <ActionButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ActionButton>
             )}
             {!this.state.pickingFiles && (
-              <ActionButton onClick={this.toggleFilePicking.bind(this)}>pick</ActionButton>
+              <ActionButton onClick={this.toggleFilePicking}>pick</ActionButton>
             )}
           </ActionButtons>
 
@@ -277,6 +290,16 @@ export default class extends React.Component {
     )
   }
 
+  toggleFilePicking = () => {
+    this.setState({
+      pickingFiles: !this.state.pickingFiles
+    }, () => {
+      if (this.state.pickingFiles) {
+        this.resetFilesPickerDimensions();
+      }
+    })
+  }
+
   addFileDiff = (path) => {
     if (!this.state.diffPaths.includes(path)) {
       this.setState({
@@ -294,16 +317,6 @@ export default class extends React.Component {
     }
   }
 
-  toggleFilePicking() {
-    this.setState({
-      pickingFiles: !this.state.pickingFiles
-    }, () => {
-      if (this.state.pickingFiles) {
-        this.resetFilesPickerDimensions();
-      }
-    })
-  }
-
   resetFilesPickerDimensions = (e) => {
     if (!this.container) return
     if (!this.filesPicker) return
@@ -318,5 +331,17 @@ export default class extends React.Component {
 
     const { left } = this.filesFilters.getBoundingClientRect()
     this.filesFilters.style.width = `calc(100% - ${left}px)`
+  }
+
+  includeFiles = (e) => {
+    this.setState({
+      includePattern: new RegExp(e.target.value)
+    })
+  }
+
+  excludeFiles = (e) => {
+    this.setState({
+      excludePattern: new RegExp(e.target.value)
+    })
   }
 }
