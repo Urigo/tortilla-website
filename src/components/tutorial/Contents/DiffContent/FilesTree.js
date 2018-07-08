@@ -26,13 +26,15 @@ class FileTree extends React.Component {
     includePattern: PropTypes.instanceOf(RegExp),
     excludePattern: PropTypes.instanceOf(RegExp),
     cache: PropTypes.object,
+    sortCb: PropTypes.func,
   }
 
   static defaultProps = {
+    sortCb: (a, b) => a.name < b.name ? -1 : 1,
     includePattern: new RegExp(),
     excludePattern: new RegExp(),
     // Will be used to persist data in case component is unmounted
-    cache: {}
+    cache: {},
   }
 
   constructor(props) {
@@ -130,7 +132,7 @@ class FileTree extends React.Component {
     const include = includePattern.toString() != '/(?:)/'
     const exclude = excludePattern.toString() != '/(?:)/'
 
-    return children.reduce((reducedChildren, node) => {
+    const reducedChildren = children.reduce((reducedChildren, node) => {
       if (
         (!include || includePattern.test(node.path)) &&
         (!exclude || !excludePattern.test(node.path))
@@ -154,6 +156,17 @@ class FileTree extends React.Component {
 
       return reducedChildren
     }, [])
+
+    const dirChildren = reducedChildren
+      .filter(node => node.children)
+      .sort(props.sortCb)
+
+    const fileChildren = reducedChildren
+      .filter(node => !node.children)
+      .sort(props.sortCb)
+
+    // Ascending order. Dirs first
+    return dirChildren.concat(fileChildren)
   }
 }
 
