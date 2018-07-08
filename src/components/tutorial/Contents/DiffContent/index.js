@@ -185,6 +185,8 @@ export default class extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.resetFilesPickerDimensions, true)
+
+    this.props.scrollerStyle.height = this.props.scrollerHeight
   }
 
   resetDiffTypeParams(state = this.state) {

@@ -194,17 +194,7 @@ export default class TutorialPage extends React.Component {
   }
 
   renderContent() {
-    const contentType = this.props.contentType
-
-    // An insurance mechanism that will reset the .style object any time we change
-    // the content
-    if (this.recentContentType !== contentType && this.contentStyle) {
-      Object.assign(this.contentStyle, this.originalContentStyle)
-    }
-
-    this.recentContentType = contentType
-
-    switch (contentType) {
+    switch (this.props.contentType) {
       case 'diffs':
         return (
           <DiffContent
