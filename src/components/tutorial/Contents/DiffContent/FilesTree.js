@@ -88,6 +88,9 @@ class FileTree extends React.Component {
       children: this.children = []
     };
 
+    // In SSR this is gonna be empty
+    if (!this.props.diff) return
+
     // Compose children out of given diff, assuming the schema is correct
     this.props.diff.match(/^diff --git [^\s]+ [^\s]+/mg).forEach((header) => {
       header.split(' ').slice(-2).forEach((path) => {
