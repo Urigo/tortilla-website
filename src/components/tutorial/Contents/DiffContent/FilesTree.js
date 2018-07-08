@@ -23,16 +23,16 @@ class FileTree extends React.Component {
     diff: PropTypes.string.isRequired,
     addFile: PropTypes.func.isRequired,
     removeFile: PropTypes.func.isRequired,
-    includePattern: PropTypes.instanceOf(RegExp),
-    excludePattern: PropTypes.instanceOf(RegExp),
+    includePattern: PropTypes.oneOf([PropTypes.instanceOf(RegExp), PropTypes.string]),
+    excludePattern: PropTypes.oneOf([PropTypes.instanceOf(RegExp), PropTypes.string]),
     cache: PropTypes.object,
     sortCb: PropTypes.func,
   }
 
   static defaultProps = {
     sortCb: (a, b) => a.name < b.name ? -1 : 1,
-    includePattern: new RegExp(),
-    excludePattern: new RegExp(),
+    includePattern: '',
+    excludePattern: '',
     // Will be used to persist data in case component is unmounted
     cache: {},
   }
@@ -93,11 +93,11 @@ class FileTree extends React.Component {
       header.split(' ').slice(-2).forEach((path) => {
         if (path == '/dev/null') return;
 
+        // Slice initial /a /b parts
         const names = path.split('/').slice(1)
         path = names.join('/')
 
-        // Slice initial /a /b parts
-        names.slice(1).reduce((node, name, index, split) => {
+        names.reduce((node, name, index, split) => {
           if (!node.children) {
             node.children = [];
           }
@@ -128,14 +128,11 @@ class FileTree extends React.Component {
     if (!children.length) return children
 
     const { includePattern, excludePattern } = props
-    // This how an empty RegExp would appear like
-    const include = includePattern.toString() != '/(?:)/'
-    const exclude = excludePattern.toString() != '/(?:)/'
 
     const reducedChildren = children.reduce((reducedChildren, node) => {
       if (
-        (!include || includePattern.test(node.path)) &&
-        (!exclude || !excludePattern.test(node.path))
+        (!includePattern || node.path.match(includePattern)) &&
+        (!excludePattern || !node.path.match(excludePattern))
       ) {
         let reducedNode = node
 

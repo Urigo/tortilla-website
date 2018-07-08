@@ -335,13 +335,24 @@ export default class extends React.Component {
 
   includeFiles = (e) => {
     this.setState({
-      includePattern: new RegExp(e.target.value)
+      includePattern: createPattern(e.target.value)
     })
   }
 
   excludeFiles = (e) => {
     this.setState({
-      excludePattern: new RegExp(e.target.value)
+      excludePattern: createPattern(e.target.value)
     })
+  }
+}
+
+// This will ensure that the application won't crash even if the typed RegExp is invalid
+function createPattern(str) {
+  if (!str) return ''
+
+  try {
+    return new RegExp(str)
+  } catch (e) {
+    return ''
   }
 }
