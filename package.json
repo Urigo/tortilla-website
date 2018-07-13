@@ -16,7 +16,7 @@
     "@fortawesome/fontawesome-free-brands": "^5.0.10",
     "@fortawesome/fontawesome-free-regular": "^5.0.8",
     "@fortawesome/fontawesome-free-solid": "^5.0.8",
-    "@fortawesome/react-fontawesome": "^0.0.17",
+    "@fortawesome/react-fontawesome": "^0.1.0",
     "gatsby": "^1.9.238",
     "gatsby-link": "^1.6.39",
     "gatsby-plugin-react-helmet": "^2.0.8",
