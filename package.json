@@ -34,8 +34,8 @@
     "typescript-styled-plugin": "^0.6.0"
   },
   "devDependencies": {
-    "prettier": "^1.11.1",
-    "pretty-error": "^2.1.1"
+    "prettier": "1.13.7",
+    "pretty-error": "2.1.1"
   },
   "workspaces": [
     "plugins/gatsby-transform-tortilla",
