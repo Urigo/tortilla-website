@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { navigateTo } from 'gatsby-link'
+import { push } from 'gatsby'
 
 import { diffRoute, isVersionSpecific } from '../../../utils/routes'
 import storage from '../../../utils/storage';
@@ -81,9 +81,9 @@ export default class extends React.Component {
     }
   }
 
-  navigateTo(link) {
+  push(link) {
     this.save();
-    navigateTo(link);
+    push(link);
   }
 
   save() {
@@ -115,7 +115,7 @@ export default class extends React.Component {
           )
         }
         return (
-          <Diff key={srcVersion} onClick={() => this.navigateTo(link)}>
+          <Diff key={srcVersion} onClick={() => this.push(link)}>
             <SrcName>{srcVersion}</SrcName>
             →
             <DestName>{this.props.destVersion}</DestName>

@@ -15,5 +15,6 @@ module.exports = {
     'gatsby-transform-tortilla',
     'gatsby-plugin-styled-components',
     'gatsby-plugin-react-helmet',
+    'gatsby-plugin-postcss'
   ],
 }

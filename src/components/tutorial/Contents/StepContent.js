@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { navigateTo } from 'gatsby-link'
+import { push } from 'gatsby'
 
 import Counter from './Counter'
 import Stepper from '../../common/Stepper'
@@ -112,7 +112,7 @@ export default class extends React.Component {
       step: id,
     });
 
-    navigateTo(route);
+    push(route);
   }
 
   getStep() {

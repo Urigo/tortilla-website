@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Link, { withPrefix } from 'gatsby-link'
+import Link, { withPrefix } from 'gatsby'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import {
   faHistory,
@@ -23,6 +23,7 @@ import {
   SubMenuHeaderClose,
 } from './tutorial/Menus'
 import { DiffContent, StepContent } from './tutorial/Contents'
+import Layout from './layout'
 
 const topBarHeight = '112.5px';
 const contentHeight = '100%';
@@ -225,40 +226,42 @@ export default class TutorialPage extends React.Component {
 
   render() {
     return (
-      <Container>
-        <Aside>
-          <Menu
-            menu={this.menu}
-            active={this.state.activeTab}
-            onSelect={itemName => this.select(itemName)}
-          >
-            <TortillaLink to="/">
-              <TortillaLogo src={withPrefix('img/logo.png')} alt="Tortilla Logo" />
-            </TortillaLink>
-          </Menu>
-          {this.state.isSubMenuOpen ? <SubMenu>
-            <SubMenuHeader>
-              <SubMenuHeaderClose onClick={() => this.close()} />
-              <SubMenuHeaderTitle>
-                {this.state.activeTab}
-              </SubMenuHeaderTitle>
-            </SubMenuHeader>
-            <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
-          </SubMenu> : null}
-        </Aside>
-        <Display>
-          <MainContentContainer ref={this.defineContentStyle}>
-            <TopBar>
-              <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
-              <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
-              <SubMenuHeaderGithub link={this.props.tutorial.repoUrl}/>
-            </TopBar>
-            <MainContent>
-              {this.renderContent()}
-            </MainContent>
-          </MainContentContainer>
-        </Display>
-      </Container>
+      <Layout>
+        <Container>
+          <Aside>
+            <Menu
+              menu={this.menu}
+              active={this.state.activeTab}
+              onSelect={itemName => this.select(itemName)}
+            >
+              <TortillaLink to="/">
+                <TortillaLogo src={withPrefix('img/logo.png')} alt="Tortilla Logo" />
+              </TortillaLink>
+            </Menu>
+            {this.state.isSubMenuOpen ? <SubMenu>
+              <SubMenuHeader>
+                <SubMenuHeaderClose onClick={() => this.close()} />
+                <SubMenuHeaderTitle>
+                  {this.state.activeTab}
+                </SubMenuHeaderTitle>
+              </SubMenuHeader>
+              <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
+            </SubMenu> : null}
+          </Aside>
+          <Display>
+            <MainContentContainer ref={this.defineContentStyle}>
+              <TopBar>
+                <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
+                <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
+                <SubMenuHeaderGithub link={this.props.tutorial.repoUrl}/>
+              </TopBar>
+              <MainContent>
+                {this.renderContent()}
+              </MainContent>
+            </MainContentContainer>
+          </Display>
+        </Container>
+      </Layout>
     )
   }
 

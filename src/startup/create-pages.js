@@ -2,8 +2,8 @@ const path = require('path')
 
 const createTutorial = require('./create-tutorial')
 
-module.exports = async ({ graphql, boundActionCreators }) => {
-  const { createPage } = boundActionCreators
+module.exports = async ({ graphql, actions }) => {
+  const { createPage } = actions
 
   const result = await graphql(`
     {

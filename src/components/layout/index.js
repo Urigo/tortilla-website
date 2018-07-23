@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 
-import Modal from '../components/common/Modal'
-import Theme from '../themes/home'
+import Theme from '../../themes/home'
+import Modal from '../common/Modal'
 
 import './index.css'
 
@@ -27,17 +27,13 @@ const meta = [
 ]
 const scripts = ['https://unpkg.com/highlight.js@9.12.0']
 
-const TemplateWrapper = ({ children }: any) => (
+const Layout = ({ children }: any) => (
   <ThemeProvider theme={Theme}>
     <div>
       <Helmet title="Tortilla" meta={meta} link={links} />
-      <div>{children()}</div>
+      <div>{children}</div>
     </div>
   </ThemeProvider>
 )
 
-TemplateWrapper.propTypes = {
-  children: PropTypes.func,
-}
-
-export default TemplateWrapper
+export default Layout

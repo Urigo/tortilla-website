@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { navigateTo } from 'gatsby-link'
+import { push } from 'gatsby'
 import { kebabCase } from 'lodash'
 
 import storage from '../../../utils/storage';
@@ -67,7 +67,7 @@ export default class extends React.Component {
     }
   }
 
-  navigateToVersion(version) {
+  pushVersion(version) {
     this.save();
 
     const link = stepRoute({
@@ -76,7 +76,7 @@ export default class extends React.Component {
       step: 1,
     })
 
-    navigateTo(link);
+    push(link);
   }
 
   save() {
@@ -109,7 +109,7 @@ export default class extends React.Component {
           )
         }
         return (
-          <Version key={version} onClick={() => this.navigateToVersion(version)}>
+          <Version key={version} onClick={() => this.pushVersion(version)}>
             <Name>{title}</Name>
           </Version>
         )

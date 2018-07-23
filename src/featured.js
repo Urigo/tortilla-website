@@ -1,4 +1,4 @@
-import { withPrefix } from 'gatsby-link'
+import { withPrefix } from 'gatsby'
 
 export default {
   'whatsapp': {
