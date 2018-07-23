@@ -2,10 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import FaIcon from './FaIcon'
 
-import Theme from '../../themes/home'
-
-import OutlineButton from './OutlineButton'
-
 const Icon = styled(FaIcon).attrs({
   size: 16
 }) `

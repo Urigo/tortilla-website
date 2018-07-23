@@ -2,8 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Link, { withPrefix } from 'gatsby'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { Link, withPrefix } from 'gatsby'
 import {
   faHistory,
   faListUl,
@@ -18,7 +17,6 @@ import {
   SubMenu,
   SubMenuHeader,
   SubMenuHeaderTitle,
-  SubMenuHeaderSubtitle,
   SubMenuHeaderGithub,
   SubMenuHeaderClose,
 } from './tutorial/Menus'
@@ -161,7 +159,7 @@ export default class TutorialPage extends React.Component {
     switch (this.state.activeTab) {
       case 'diffs':
         const srcVersions = this.props.common.allVersionsNumbers.filter(version =>
-          version != this.props.common.versionNumber
+          version !== this.props.common.versionNumber
         )
 
         return (
@@ -191,6 +189,7 @@ export default class TutorialPage extends React.Component {
             latestVersion={this.props.common.tutorialVersion}
           />
         )
+      default: return null
     }
   }
 
@@ -221,6 +220,7 @@ export default class TutorialPage extends React.Component {
             tutorialVersion={this.props.tutorial.version}
           />
         )
+      default: return null
     }
   }
 

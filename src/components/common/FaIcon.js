@@ -1,10 +1,9 @@
-import React from 'react'
 import styled from 'styled-components'
-import FaIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const getSize = ({ size }) => typeof size === 'string' ? size : size + 'px'
 
-export default styled(FaIcon) `
+export default styled(FontAwesomeIcon) `
   font-size: ${getSize};
   line-height: ${getSize};
   height: ${getSize};

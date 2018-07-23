@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import Link from 'gatsby'
+import { Link } from 'gatsby'
 import { stepRoute } from '../../../utils/routes'
 
 const SPACE_SIZE = 30
-const TOP_SPACE = 20
 const HEIGHT = 270
 const LEFT_SIZE = 190
 

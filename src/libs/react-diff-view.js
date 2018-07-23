@@ -1,5 +1,5 @@
 // SSR
-if (typeof window == 'undefined') {
+if (typeof window === 'undefined') {
   try {
     global.window = global
     module.exports = require('react-diff-view');

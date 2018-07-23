@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 
@@ -25,7 +24,6 @@ const meta = [
   { name: 'description', content: 'Sample' },
   { name: 'keywords', content: 'sample, something' },
 ]
-const scripts = ['https://unpkg.com/highlight.js@9.12.0']
 
 const Layout = ({ children }: any) => (
   <ThemeProvider theme={Theme}>

@@ -57,15 +57,15 @@ class FileTree extends React.Component {
     );
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     const state = {}
 
     const reduceChildren = (
       props.hasOwnProperty('includePattern') &&
-      props.includePattern.toString() != this.props.includePattern.toString()
+      props.includePattern.toString() !== this.props.includePattern.toString()
     ) || (
       props.hasOwnProperty('excludePattern') &&
-      props.excludePattern.toString() != this.props.excludePattern.toString()
+      props.excludePattern.toString() !== this.props.excludePattern.toString()
     )
 
     let oldChildren
@@ -127,7 +127,7 @@ class FileTree extends React.Component {
     // Compose children out of given diff, assuming the schema is correct
     this.props.diff.match(/^diff --git [^\s]+ [^\s]+/mg).forEach((header) => {
       header.split(' ').slice(-2).forEach((path) => {
-        if (path == '/dev/null') return;
+        if (path === '/dev/null') return;
 
         // Slice initial /a /b parts
         const names = path.split('/').slice(1)
@@ -139,7 +139,7 @@ class FileTree extends React.Component {
           }
 
           let childNode = node.children.find((candi) => {
-            return candi.name == name
+            return candi.name === name
           });
 
           if (!childNode) {

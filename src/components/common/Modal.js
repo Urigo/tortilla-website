@@ -1,3 +1,4 @@
+import React from 'react'
 import Modal from 'react-modal'
 
 import Theme from '../../themes/home'

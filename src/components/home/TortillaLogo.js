@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { withPrefix } from 'gatsby'
 
 const Container = styled.div`
   display: block;

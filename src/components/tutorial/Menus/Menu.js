@@ -52,23 +52,21 @@ export const ItemBorder = styled.div`
 `
 
 export default class Menu extends React.Component {
+  static getDerivedStateFromProps(props, state) {
+    if (props.active !== state._active) {
+      return {
+        _active: state.active,
+        active: props.active,
+      }
+    }
+    return null
+  }
+
   constructor(props) {
     super(props)
 
     this.state = {
       active: props.active || null,
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    const state = {}
-
-    if (props.active !== this.props.active) {
-      state.active = props.active
-    }
-
-    if (Object.keys(state).length) {
-      this.setState(state)
     }
   }
 
@@ -94,7 +92,7 @@ export default class Menu extends React.Component {
         onClick={() => this.select(item, i)}
       >
         {this.isActive(item, i) ? <ItemBorder /> : null}
-        {typeof item.icon == 'string' ?
+        {typeof item.icon === 'string' ?
           <ItemUnicode>{item.icon}</ItemUnicode> :
           <ItemIcon icon={item.icon} />}
       </Item>
