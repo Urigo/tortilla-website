@@ -39,6 +39,16 @@ export default class extends React.Component {
     onChange: PropTypes.func.isRequired,
   }
 
+  static getDerivedStateFromProps(props) {
+    if (props.hasOwnProperty('current')) {
+      return {
+        current: props.current
+      }
+    }
+
+    return null
+  }
+
   constructor(props) {
     super(props);
 
