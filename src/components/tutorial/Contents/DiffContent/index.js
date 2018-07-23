@@ -179,8 +179,8 @@ export default class extends React.Component {
     this.props.scrollerStyle.height = this.props.scrollerHeight
   }
 
-  setState(state) {
-    super.setState(state)
+  setState(state, callback) {
+    super.setState(state, callback)
 
     this.resetDiffTypeParams(state)
   }
