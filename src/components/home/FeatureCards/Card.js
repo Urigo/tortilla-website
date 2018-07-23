@@ -26,8 +26,8 @@ const Container = styled.div`
 `
 
 const Left = styled.div`
-  position: relative
-  padding-right: ${SPACE_SIZE / 2}px
+  position: relative;
+  padding-right: ${SPACE_SIZE / 2}px;
   flex: 1 0 ${LEFT_SIZE}px;
 `
 
