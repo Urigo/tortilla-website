@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import Header from './home/Header'
+import Layout from './layout'
 
 const Container = styled.div`
   background: linear-gradient(to right, #121212, #131313, #121212);
@@ -18,10 +19,12 @@ class HomePage extends React.Component {
 
   render() {
     return (
-      <Container>
-        <Header tutorials={this.props.tutorials} />
-        <Footer>© 2018 Uri Goldstein</Footer>
-      </Container>
+      <Layout>
+        <Container>
+          <Header tutorials={this.props.tutorials} />
+          <Footer>© 2018 Uri Goldstein</Footer>
+        </Container>
+      </Layout>
     )
   }
 }

@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import Link from 'gatsby-link'
+import { Link } from 'gatsby'
 import { stepRoute } from '../../../utils/routes'
 
 const SPACE_SIZE = 30
-const TOP_SPACE = 20
 const HEIGHT = 270
 const LEFT_SIZE = 190
 
@@ -27,8 +26,8 @@ const Container = styled.div`
 `
 
 const Left = styled.div`
-  position: relative
-  padding-right: ${SPACE_SIZE / 2}px
+  position: relative;
+  padding-right: ${SPACE_SIZE / 2}px;
   flex: 1 0 ${LEFT_SIZE}px;
 `
 

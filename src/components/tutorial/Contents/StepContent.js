@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { navigateTo } from 'gatsby-link'
+import { push } from 'gatsby'
 
 import Counter from './Counter'
 import Stepper from '../../common/Stepper'
@@ -97,51 +97,46 @@ const Html = styled.div`
 `
 
 export default class extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      stepId: this.props.step.id,
-    }
-  }
-
   changeStep(id) {
     const route = stepRoute({
       tutorialName: this.props.tutorialName,
-      versionName: isVersionSpecific() && this.props.tutorialVersion.number,
+      version: (
+        isVersionSpecific(this.props.pathname) &&
+        this.props.tutorialVersion.number
+      ),
       step: id,
     });
 
-    navigateTo(route);
-  }
-
-  getStep() {
-    return this.props.tutorialVersion.steps.find(({ id }) => id === this.state.stepId);
+    push(route);
   }
 
   render() {
-    const step = this.getStep();
-
     return (
       <Content>
-        {this.renderBar(Header, step)}
+        {this.renderBar(Header)}
         <Html dangerouslySetInnerHTML={{ __html: this.props.step.html }} />
-        {this.renderBar(Footer, step)}
+        {this.renderBar(Footer)}
       </Content>
     );
   }
 
-  renderBar(BarType, step) {
+  renderBar(BarType) {
+    const step = this.props.step
+    const stepsNum = this.props.tutorialVersion.steps.length
+
     return (
       <BarType>
         <Left>
           <Counter
             current={step.id}
-            count={this.props.tutorialVersion.steps.length}
+            count={stepsNum}
           />
           <Info>
             <Title>{step.name}</Title>
-            <Stepper limit={this.props.tutorialVersion.steps.length} current={this.state.stepId - 1} onChange={i => this.changeStep(i + 1)} />
+            <Stepper
+              limit={stepsNum}
+              current={step.id - 1}
+              onChange={i => this.changeStep(i + 1)} />
           </Info>
         </Left>
         <Right>

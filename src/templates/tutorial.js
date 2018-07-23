@@ -1,19 +1,20 @@
 import React from 'react'
+import { graphql } from 'gatsby'
 
 import TutorialPage from '../components/TutorialPage'
 
 export default props => (
   <TutorialPage
     location={props.location}
-    common={props.pathContext.common}
-    contentType={props.pathContext.contentType}
-    params={props.pathContext.contentData}
+    common={props.pageContext.common}
+    contentType={props.pageContext.contentType}
+    params={props.pageContext.contentData}
     tutorial={props.data.tortillaTutorial}
   />
 )
 
 export const tutorialPageQuery = graphql`
-  query tutorialPage(
+  query (
     $tutorialName: String!
     $versionNumber: String!
   ) {

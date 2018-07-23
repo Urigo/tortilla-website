@@ -5,8 +5,6 @@ import { faPencilAlt } from '@fortawesome/fontawesome-free-solid'
 import Button from '../common/Button'
 import FaIcon from '../common/FaIcon'
 
-const FONT_SIZE = 14;
-
 const IconContainer = styled.div`
   flex: 0 0 30px;
   width: 30px;

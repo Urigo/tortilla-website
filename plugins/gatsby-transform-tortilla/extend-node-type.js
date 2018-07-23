@@ -4,7 +4,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLNonNull,
-} = require('graphql')
+} = require('gatsby/graphql')
 
 const { TypeName } = require('./config')
 

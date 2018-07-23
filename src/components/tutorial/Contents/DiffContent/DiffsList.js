@@ -159,12 +159,12 @@ class DiffsList extends React.Component {
     this.resetDiffTypeParams()
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     let reset
     let oldPaths
     let newPaths
 
-    if (props.hasOwnProperty('diffType') && props.diffType != this.props.diffType) {
+    if (props.hasOwnProperty('diffType') && props.diffType !== this.props.diffType) {
       this.resetDiffTypeParams(props)
       reset = true
     }
@@ -205,6 +205,7 @@ class DiffsList extends React.Component {
         this.viewTypeAction = 'split'
         this.gutterProduct = 2
         break
+      default:
     }
   }
 
@@ -236,7 +237,7 @@ class DiffsList extends React.Component {
     // Sometimes there might be no visible changes between versions
     if (!this.props.diff) return
 
-    if (typeof paths == 'boolean') {
+    if (typeof paths === 'boolean') {
       reset = paths
       paths = null
     }
@@ -292,7 +293,6 @@ class DiffsList extends React.Component {
         //    of executions when needed
         this.thread = setImmediate(() => {
           const diffFileView = document.createElement('span')
-          const diffFileReactEl = this.renderDiffFile(parsedFileDiff)
 
           ReactDOM.render(this.renderDiffFile(parsedFileDiff), diffFileView, () => {
             if (reset) {
@@ -354,13 +354,9 @@ class DiffsList extends React.Component {
 
     // Will store the view's header
     let header = []
-    // Will store the new file path for external use
-    let filePath
 
     // File removed
     if (Number(oldRevision) !== 0) {
-      filePath = oldPath
-
       header.push(this.srcBaseUrl
         ? <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
         : <NullPath key={0}>{oldPath}</NullPath>
@@ -369,17 +365,13 @@ class DiffsList extends React.Component {
 
     if (Number(newRevision) !== 0) {
       // File changed
-      if (newPath == oldPath) {
-        filePath = oldPath
-
+      if (newPath === oldPath) {
         header = [this.destBaseUrl
           ? <Path key={0} href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
           : <NullPath key={0}>{oldPath}</NullPath>
         ]
       // File renamed, moved or added
       } else {
-        filePath = newPath
-
         header.push(this.destBaseUrl
           ? <Path key={header.length} href={`${this.destBaseUrl}/${newPath}`}>{newPath}</Path>
           : <NullPath key={header.length}>{newPath}</NullPath>
@@ -387,7 +379,7 @@ class DiffsList extends React.Component {
       }
     }
 
-    if (header.length == 2) {
+    if (header.length === 2) {
       header.splice(1, 0, <span key={0.5}>→</span>)
     }
 
@@ -410,7 +402,7 @@ class DiffsList extends React.Component {
       }
 
       .diff-hunk-header {
-        width: ${this.props.diffType == 'split' && '200%'};
+        width: ${this.props.diffType === 'split' && '200%'};
       }
 
       .diff-gutter {
@@ -434,7 +426,6 @@ class DiffsList extends React.Component {
       }
     `
 
-    // We attach the filePath as an additional metadata for the returned value
     return (
       <Container>
         <DiffHeader>{header}</DiffHeader>

@@ -20,12 +20,12 @@ const processMd = (doc, options = {}) =>
 module.exports = async function onCreateNode({
   node,
   loadNodeContent,
-  boundActionCreators,
+  actions,
 }) {
   const {
     createNode,
     createParentChildLink
-  } = boundActionCreators
+  } = actions
 
   // accept only json files
   if (node.internal.mediaType !== 'application/json') {

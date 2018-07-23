@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
-import { faTimes, faFile } from '@fortawesome/fontawesome-free-solid'
+import { faTimes } from '@fortawesome/fontawesome-free-solid'
 
 import storage from '../../../../utils/storage';
 import Button from '../../../common/Button';
@@ -36,13 +36,6 @@ const FaClose = styled(FaIcon).attrs({
 }) `
   color: black;
   cursor: pointer;
-`
-
-const FaFile = styled(FaIcon).attrs({
-  icon: faFile,
-  size: 25,
-}) `
-  color: black;
 `
 
 const FilesPicker = styled.div `
@@ -168,25 +161,28 @@ export default class extends React.Component {
     this.resetFilesPickerDimensions()
   }
 
-  componentWillReceiveProps(props) {
-    if (
-      props.hasOwnProperty('scrollerStyle') &&
-      props.scrollerStyle !== this.props.scrollerStyle ||
-      props.hasOwnProperty('scrollerHeight') &&
-      props.scrollerHeight !== this.props.scrollerHeight
-    ) {
-      this.forceUpdate()
-    }
-  }
-
-  componentWillUpdate(props, state) {
-    this.resetDiffTypeParams(state)
+  componentShouldUpdate(props) {
+    return (
+      (
+        props.hasOwnProperty('scrollerStyle') &&
+        props.scrollerStyle !== this.props.scrollerStyle
+      ) || (
+        props.hasOwnProperty('scrollerHeight') &&
+        props.scrollerHeight !== this.props.scrollerHeight
+      )
+    )
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.resetFilesPickerDimensions, true)
 
     this.props.scrollerStyle.height = this.props.scrollerHeight
+  }
+
+  setState(state, callback) {
+    super.setState(state, callback)
+
+    this.resetDiffTypeParams(state)
   }
 
   resetDiffTypeParams(state = this.state) {
@@ -199,6 +195,7 @@ export default class extends React.Component {
         this.oppositeViewType = 'split'
         this.viewTypeAction = 'split'
         break
+      default:
     }
   }
 
@@ -311,7 +308,7 @@ export default class extends React.Component {
   removeFileDiff = (path) => {
     const index = this.state.diffPaths.indexOf(path)
 
-    if (index != -1) {
+    if (index !== -1) {
       this.state.diffPaths.splice(index, 1)
       this.forceUpdate()
     }

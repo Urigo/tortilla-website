@@ -1,4 +1,5 @@
 import React from 'react'
+import { graphql } from 'gatsby'
 
 import HomePage from '../components/HomePage'
 
@@ -14,7 +15,7 @@ export default props => {
 }
 
 export const query = graphql `
-  query AllTortillaTutorial {
+  {
     allTortillaTutorial {
       edges {
         node {

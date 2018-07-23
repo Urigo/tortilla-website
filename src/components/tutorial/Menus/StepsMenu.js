@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { navigateTo } from 'gatsby-link'
+import { push } from 'gatsby'
 
 import { stepRoute, isVersionSpecific } from '../../../utils/routes'
 import storage from '../../../utils/storage';
@@ -90,9 +90,9 @@ export default class extends React.Component {
     }
   }
 
-  navigateTo(link) {
+  push(link) {
     this.save();
-    navigateTo(link);
+    push(link);
   }
 
   save() {
@@ -123,7 +123,7 @@ export default class extends React.Component {
           )
         }
         return (
-          <Step key={step.id} onClick={() => this.navigateTo(link)}>
+          <Step key={step.id} onClick={() => this.push(link)}>
             <Number>{step.id}</Number>
             <Name>{step.name}</Name>
           </Step>

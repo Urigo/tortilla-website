@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { navigateTo } from 'gatsby-link'
-import { kebabCase } from 'lodash'
+import { push } from 'gatsby'
 
 import storage from '../../../utils/storage';
 import { stepRoute } from '../../../utils/routes';
@@ -67,16 +66,16 @@ export default class extends React.Component {
     }
   }
 
-  navigateToVersion(version) {
+  pushVersion(version) {
     this.save();
 
     const link = stepRoute({
       tutorialName: this.props.tutorialName,
-      version: version != this.props.latestVersion && version,
+      version: version !== this.props.latestVersion && version,
       step: 1,
     })
 
-    navigateTo(link);
+    push(link);
   }
 
   save() {
@@ -94,10 +93,10 @@ export default class extends React.Component {
   render() {
     return <Versions innerRef={this.setContainerRef}>
       {this.props.allVersions.map(version => {
-        const active = version == this.props.activeVersion
+        const active = version === this.props.activeVersion
         let title = version
 
-        if (version == this.props.latestVersion) {
+        if (version === this.props.latestVersion) {
           title += ' (latest)'
         }
 
@@ -109,7 +108,7 @@ export default class extends React.Component {
           )
         }
         return (
-          <Version key={version} onClick={() => this.navigateToVersion(version)}>
+          <Version key={version} onClick={() => this.pushVersion(version)}>
             <Name>{title}</Name>
           </Version>
         )

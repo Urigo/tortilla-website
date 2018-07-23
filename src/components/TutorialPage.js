@@ -2,8 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Link, { withPrefix } from 'gatsby-link'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { Link, withPrefix } from 'gatsby'
 import {
   faHistory,
   faListUl,
@@ -18,11 +17,11 @@ import {
   SubMenu,
   SubMenuHeader,
   SubMenuHeaderTitle,
-  SubMenuHeaderSubtitle,
   SubMenuHeaderGithub,
   SubMenuHeaderClose,
 } from './tutorial/Menus'
 import { DiffContent, StepContent } from './tutorial/Contents'
+import Layout from './layout'
 
 const topBarHeight = '112.5px';
 const contentHeight = '100%';
@@ -160,7 +159,7 @@ export default class TutorialPage extends React.Component {
     switch (this.state.activeTab) {
       case 'diffs':
         const srcVersions = this.props.common.allVersionsNumbers.filter(version =>
-          version != this.props.common.versionNumber
+          version !== this.props.common.versionNumber
         )
 
         return (
@@ -190,6 +189,7 @@ export default class TutorialPage extends React.Component {
             latestVersion={this.props.common.tutorialVersion}
           />
         )
+      default: return null
     }
   }
 
@@ -220,45 +220,48 @@ export default class TutorialPage extends React.Component {
             tutorialVersion={this.props.tutorial.version}
           />
         )
+      default: return null
     }
   }
 
   render() {
     return (
-      <Container>
-        <Aside>
-          <Menu
-            menu={this.menu}
-            active={this.state.activeTab}
-            onSelect={itemName => this.select(itemName)}
-          >
-            <TortillaLink to="/">
-              <TortillaLogo src={withPrefix('img/logo.png')} alt="Tortilla Logo" />
-            </TortillaLink>
-          </Menu>
-          {this.state.isSubMenuOpen ? <SubMenu>
-            <SubMenuHeader>
-              <SubMenuHeaderClose onClick={() => this.close()} />
-              <SubMenuHeaderTitle>
-                {this.state.activeTab}
-              </SubMenuHeaderTitle>
-            </SubMenuHeader>
-            <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
-          </SubMenu> : null}
-        </Aside>
-        <Display>
-          <MainContentContainer ref={this.defineContentStyle}>
-            <TopBar>
-              <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
-              <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
-              <SubMenuHeaderGithub link={this.props.tutorial.repoUrl}/>
-            </TopBar>
-            <MainContent>
-              {this.renderContent()}
-            </MainContent>
-          </MainContentContainer>
-        </Display>
-      </Container>
+      <Layout>
+        <Container>
+          <Aside>
+            <Menu
+              menu={this.menu}
+              active={this.state.activeTab}
+              onSelect={itemName => this.select(itemName)}
+            >
+              <TortillaLink to="/">
+                <TortillaLogo src={withPrefix('img/logo.png')} alt="Tortilla Logo" />
+              </TortillaLink>
+            </Menu>
+            {this.state.isSubMenuOpen ? <SubMenu>
+              <SubMenuHeader>
+                <SubMenuHeaderClose onClick={() => this.close()} />
+                <SubMenuHeaderTitle>
+                  {this.state.activeTab}
+                </SubMenuHeaderTitle>
+              </SubMenuHeader>
+              <SubMenuContent>{this.renderSubMenuContent()}</SubMenuContent>
+            </SubMenu> : null}
+          </Aside>
+          <Display>
+            <MainContentContainer ref={this.defineContentStyle}>
+              <TopBar>
+                <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
+                <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
+                <SubMenuHeaderGithub link={this.props.tutorial.repoUrl}/>
+              </TopBar>
+              <MainContent>
+                {this.renderContent()}
+              </MainContent>
+            </MainContentContainer>
+          </Display>
+        </Container>
+      </Layout>
     )
   }
 
