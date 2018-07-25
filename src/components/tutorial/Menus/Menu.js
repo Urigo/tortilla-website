@@ -46,8 +46,7 @@ export const ItemBorder = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 6px;
-  border-radius: 0 6px 6px 0;
+  width: 4px;
   background-color: ${({ theme }) => theme.primaryBlue};
 `
 

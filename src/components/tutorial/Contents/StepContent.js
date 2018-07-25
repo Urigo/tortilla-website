@@ -15,7 +15,7 @@ const Content = styled.div`
 `
 
 const Header = styled.div`
-  padding: 25px;
+  padding: 10px 25px;
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   flex: 0 0 auto;
