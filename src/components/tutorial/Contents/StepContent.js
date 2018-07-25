@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 
-import Counter from './Counter'
 import Stepper from '../../common/Stepper'
 import ImproveButton from '../ImproveButton'
 import { stepRoute, isVersionSpecific } from '../../../utils/routes'
@@ -41,6 +40,7 @@ const Left = styled.div`
 
 const Info = styled.div`
   display: flex;
+  margin-left: 10px;
   flex-direction: column;
   justify-content: space-between;
 `
@@ -127,17 +127,7 @@ export default class extends React.Component {
     return (
       <BarType>
         <Left>
-          <Counter
-            current={step.id}
-            count={stepsNum}
-          />
-          <Info>
-            <Title>{step.name}</Title>
-            <Stepper
-              limit={stepsNum}
-              current={step.id - 1}
-              onChange={i => this.changeStep(i + 1)} />
-          </Info>
+          <Title>{step.name}</Title>
         </Left>
         <Right>
           {/* // In case git URL is not defined in package.json */}
@@ -148,6 +138,12 @@ export default class extends React.Component {
               branch={this.props.tutorialBranch}
             />
           )}
+          <Info>
+            <Stepper
+              limit={stepsNum}
+              current={step.id - 1}
+              onChange={i => this.changeStep(i + 1)} />
+          </Info>
         </Right>
       </BarType>
     )

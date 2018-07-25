@@ -10,6 +10,7 @@ const Container = styled.div`
   // in production so instead I've used an inlined class. The issue is that the parent's
   // style is prioritized higher than the child component
   .nav-button {
+    float: left;
     background-color: ${({ theme }) => theme.primaryBlue};
     border: 0 none;
 
@@ -30,6 +31,18 @@ const Container = styled.div`
       color: ${({ theme }) => theme.white} !important;
     }
   }
+`
+
+const Count = styled.div`
+  padding: 0 10px;
+  font-size: 24px;
+  line-height: 39px;
+  font-weight: 800;
+  color: ${({ theme }) => theme.primaryGray};
+  float: left;
+  border: 1px solid silver;
+  border-radius: 3px;
+  margin: 0 10px;
 `
 
 export default class extends React.Component {
@@ -96,7 +109,9 @@ export default class extends React.Component {
           icon={faChevronLeft}
           disabled={!this.hasPrev()}
           onClick={() => this.prev()} />
-        {'\u00A0\u00A0'}
+        <Count>
+          {this.props.current + 1} / {this.props.limit}
+        </Count>
         <Button
           className="nav-button"
           icon={faChevronRight}

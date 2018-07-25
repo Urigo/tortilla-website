@@ -16,7 +16,7 @@ const IconContainer = styled.div`
 `
 const Icon = styled(FaIcon).attrs({
   icon: faPencilAlt,
-  size: 14,
+  size: 17,
 }) ``
 
 const Text = styled.a`
@@ -25,16 +25,14 @@ const Text = styled.a`
   flex: 1 1 auto;
   line-height: 30px;
   text-align: center;
-  margin-right: 10px;
 `
 
 const ImproveButton = Button.extend`
-  width: 100%;
-  height: 50px;
-  padding: 10px;
+  height: 40px;
+  padding: 5px;
   display: flex;
   flex-direction: row;
-  border-radius: 5px;
+  border-radius: 3px;
   border: 0 none;
   background-color: ${({ theme }) => theme.primaryBlue};
   text-align: center;
@@ -52,8 +50,9 @@ const getEditHref = ({ url, branch, step }) => (
 export default props => (
   <ImproveButton>
     <IconContainer>
-      <Icon />
+      <Text href={getEditHref(props)}>
+        <Icon />
+      </Text>
     </IconContainer>
-    <Text href={getEditHref(props)}>Suggest Changes</Text>
   </ImproveButton>
 )
