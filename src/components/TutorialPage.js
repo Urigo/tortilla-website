@@ -6,6 +6,7 @@ import { Link, withPrefix } from 'gatsby'
 import {
   faHistory,
   faListUl,
+  faShoePrints,
 } from '@fortawesome/fontawesome-free-solid'
 
 import storage from '../utils/storage';
@@ -113,7 +114,7 @@ export default class TutorialPage extends React.Component {
 
   menu = [
     { name: 'versions', icon: faHistory },
-    { name: 'steps', icon: '👣' },
+    { name: 'steps', icon: faShoePrints },
     { name: 'diffs', icon: faListUl },
   ]
 
