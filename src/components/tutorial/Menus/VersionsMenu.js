@@ -8,35 +8,46 @@ import { stepRoute } from '../../../utils/routes';
 export const Versions = styled.div`
   display: flex;
   flex-direction: column;
-
-  & > *:first-child {
-    border-top: 0 none;
-  }
 `
 
 const Name = styled.div`
   font-size: 12px;
+  font-weight: 800;
+  color: ${({ theme }) => theme.blueGray};
+  margin-right: 5px;
+`
+
+const Latest = Name.extend`
   font-weight: normal;
-  color: #0e324c;
 `
 
 const Version = styled.a`
   display: block;
   padding: 15px 0 15px 25px;
+  height: 62px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #2a5f85;
-  border-top: solid 1px #0e324c;
+  color: ${({ theme }) => theme.blueGray};
+  border-bottom: solid 1px ${({ theme }) => theme.separator};
   text-decoration: none;
   cursor: pointer;
 `
 
 const ActiveVersion = Version.extend`
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.primaryBlue};
+  outline: 2px solid;
+  outline-color: ${({ theme }) => theme.primaryBlue};
+  outline-offset: -2px;
 
-  ${Name} {
-    color: ${({ theme }) => theme.white};
+  &:hover {
+    outline: 2px solid;
+    outline-color: ${({ theme }) => theme.primaryBlue};
+    outline-offset: -2px;
+  }
+
+  ${Name}, ${Latest} {
+    color: ${({ theme }) => theme.primaryBlue};
   }
 `
 
@@ -96,20 +107,22 @@ export default class extends React.Component {
         const active = version === this.props.activeVersion
         let title = version
 
-        if (version === this.props.latestVersion) {
-          title += ' (latest)'
-        }
-
         if (active) {
           return (
             <ActiveVersion key={version} innerRef={this.setActiveRef}>
               <Name>{title}</Name>
+              {(version === this.props.latestVersion) && <Latest>
+                (latest)
+              </Latest>}
             </ActiveVersion>
           )
         }
         return (
           <Version key={version} onClick={() => this.pushVersion(version)}>
             <Name>{title}</Name>
+            {(version === this.props.latestVersion) && <Latest>
+              (latest)
+            </Latest>}
           </Version>
         )
       })}

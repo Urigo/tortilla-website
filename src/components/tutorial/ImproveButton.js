@@ -10,9 +10,8 @@ const IconContainer = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 3px;
-  background-color: ${({ theme }) => theme.primaryBlue};
   line-height: 30px;
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.blueGray};
 `
 const Icon = styled(FaIcon).attrs({
   icon: faPencilAlt,
@@ -34,13 +33,8 @@ const ImproveButton = Button.extend`
   flex-direction: row;
   border-radius: 3px;
   border: 0 none;
-  background-color: ${({ theme }) => theme.primaryBlue};
   text-align: center;
-  color: ${({ theme }) => theme.white};
-
-  &:hover, &:hover ${IconContainer} {
-    background-color: #3b71e8;
-  }
+  border: 1px solid ${({ theme }) => theme.separator};
 `
 
 const getEditHref = ({ url, branch, step }) => (

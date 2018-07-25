@@ -7,7 +7,6 @@ export {
   SubMenu,
   SubMenuHeader,
   SubMenuHeaderTitle,
-  SubMenuHeaderSubtitle,
   SubMenuHeaderGithub,
   SubMenuHeaderClose,
 } from './SubMenu'

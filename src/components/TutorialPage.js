@@ -24,7 +24,7 @@ import {
 import { DiffContent, StepContent } from './tutorial/Contents'
 import Layout from './layout'
 
-const topBarHeight = '112.5px';
+const topBarHeight = '110px';
 const contentHeight = '100%';
 
 const Container = styled.div`
@@ -36,7 +36,6 @@ const Container = styled.div`
 const Aside = styled.aside`
   flex: 0 0 auto;
   display: flex;
-  background: #0e324c;
   align-self: stretch;
   flex-direction: row;
   justify-content: flex-start;
@@ -53,7 +52,7 @@ const Display = styled.div`
 
 const TortillaLink = styled(Link) `
   padding: 0;
-  margin: 30px 15px;
+  margin: 27.5px 15px;
   text-align: center;
 `
 
@@ -70,7 +69,6 @@ const SubMenuContent = styled.div`
 `
 
 const TopBar = styled.div`
-  background-color: #f2f5f7;
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 20px 0 20px;
   height: ${topBarHeight};
@@ -81,6 +79,7 @@ const TopBarTitle = styled.h1`
   margin: 0;
   margin-bottom: 10px;
   text-overflow: ellipsis;
+  font-size: 34px;
 `
 
 const TopBarSubTitle = styled.h3`
@@ -88,6 +87,8 @@ const TopBarSubTitle = styled.h3`
   color: gray;
   margin-bottom: 10px;
   display: inline-block;
+  font-size: 17px;
+  color: ${({ theme }) => theme.blueGray}
 `
 
 const MainContentContainer = styled.div`
@@ -253,7 +254,7 @@ export default class TutorialPage extends React.Component {
             <MainContentContainer ref={this.defineContentStyle}>
               <TopBar>
                 <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
-                <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
+                <TopBarSubTitle>VERSION {this.props.common.versionNumber}</TopBarSubTitle>
                 <SubMenuHeaderGithub link={this.props.tutorial.repoUrl}/>
               </TopBar>
               <MainContent>

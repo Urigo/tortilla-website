@@ -15,8 +15,8 @@ const Content = styled.div`
 `
 
 const Header = styled.div`
-  padding: 10px 25px;
-  border-bottom: 1px solid #e8e8e8;
+  padding: 10.2px 25px;
+  border-bottom: 1px solid ${({ theme }) => theme.separator};
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
@@ -26,7 +26,7 @@ const Header = styled.div`
 `
 
 const Footer = Header.extend`
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid ${({ theme }) => theme.separator};
 `
 
 const Left = styled.div`
@@ -46,9 +46,8 @@ const Info = styled.div`
 `
 
 const Title = styled.div`
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 800;
-  color: #0e324c;
 `
 
 const Right = styled.div`

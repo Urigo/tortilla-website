@@ -40,9 +40,11 @@ const Count = styled.div`
   font-weight: 800;
   color: ${({ theme }) => theme.primaryGray};
   float: left;
-  border: 1px solid silver;
+  border: 1px solid ${({ theme }) => theme.separator};
   border-radius: 3px;
   margin: 0 10px;
+  text-align: center;
+  width: 5ch;
 `
 
 export default class extends React.Component {
