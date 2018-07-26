@@ -10,12 +10,164 @@ const {
   TypeName
 } = require('./config')
 
-const processMd = (doc, options = {}) =>
-  remark()
-  .use(highlight)
-  .use(remarkGitHub, options)
-  .use(html)
-  .process(doc)
+const processMd = (doc, options = {}) => {
+  const diffs = []
+
+  return remark()
+    .use(extractDiffs, diffs)
+    .use(highlight)
+    .use(remarkGitHub, options)
+    .use(html)
+    .process(doc)
+    .then((html) => postProcess(html, diffs))
+}
+
+const postProcess = (html, diffs) => {
+  // TODO: Post process
+
+  return html
+}
+
+const extractDiffs = (exports) => {
+  if (exports === undefined) {
+    throw TypeError('exports must be provided')
+  }
+
+  if (!(exports instanceof Array)) {
+    throw TypeError('exports must be an array')
+  }
+
+  return (ast) => {
+    const root = ast.children
+
+    root.filter((node) => {
+      return (
+        node.type === 'heading' &&
+        node.depth === 4 &&
+        node.children &&
+        node.children.length === 1 &&
+        node.children[0].type === 'text' &&
+        node.children[0].value.match(/Step \d+\.\d+\:/)
+      )
+    })
+    .forEach((node) => {
+      let i = root.indexOf(node)
+      let title = node.children.map(child => child.value).join('')
+
+      const step = {
+        number: title.match(/Step (\d+\.\d+)/)[1],
+        files: [],
+        title,
+      }
+
+      exports.push(step)
+      const files = step.files
+
+      while (
+        (node = root[++i]) &&
+        node.type === 'heading' &&
+        node.depth === 5 &&
+        node.children
+      ) {
+        title = node.children.map(child => child.value).join('')
+
+        const [operation, oldFile, newFile = oldFile] = title.match(
+          /([^\s]+) ([^\s]+)(?: to ([^\s]+))?/
+        ).slice(1)
+
+        const file = {
+          title: node.children[0].value,
+          operation,
+          oldFile,
+          newFile,
+          diffs: []
+        }
+
+        files.push(file)
+        const diffs = file.diffs
+
+        while (
+          (node = root[++i]) &&
+          node.type === 'code' &&
+          node.lang === 'diff'
+        ) {
+          const diff = []
+
+          node.value.split('\n').forEach((line, j) => {
+            if (!j) {
+              diff.push({
+                line,
+                type: 'meta',
+                payload: {},
+              })
+              return
+            }
+
+            let type
+            switch (line[0]) {
+              case '-': type = 'del'; break
+              case '+': type = 'add'; break
+              default: type = 'non'; break
+            }
+            line = line.slice(1)
+
+            let [allNums, delNum, addNum] = line.match(/^┊ *(\d*)┊ *(\d*)┊/)
+            delNum = Number(delNum)
+            addNum = Number(addNum)
+            line = line.slice(allNums.length)
+
+            diff.push({
+              line,
+              type,
+              payload: { delNum, addNum },
+            })
+          })
+        }
+      }
+    })
+  }
+
+  // return (ast) => {
+  //   ast.children.filter((node) => {
+  //     return node.type === 'code' && node.lang === 'diff'
+  //   })
+  //   .forEach((node) => {
+  //     const index = ast.children.indexOf(node)
+  //     console.log(ast.children[index - 1], ast.children[index - 2])
+
+  //     if (node.lang !== 'diff') return
+
+  //     node.value.split('\n').forEach((line, i) => {
+  //       if (!i) {
+  //         return exports.push({
+  //           line,
+  //           type: 'meta',
+  //           payload: {},
+  //         })
+  //       }
+
+  //       let type
+  //       switch (line[0]) {
+  //         case '-': type = 'del'; break
+  //         case '+': type = 'add'; break
+  //         default: type = 'non'; break
+  //       }
+  //       line = line.slice(1)
+
+  //       let [allNums, delNum, addNum] = line.match(/^┊ *(\d*)┊ *(\d*)┊/)
+  //       delNum = Number(delNum)
+  //       addNum = Number(addNum)
+  //       line = line.slice(allNums.length)
+
+  //       exports.push({
+  //         line,
+  //         type,
+  //         payload: { delNum, addNum },
+  //       })
+  //     })
+  //   })
+  // }
+}
 
 module.exports = async function onCreateNode({
   node,
