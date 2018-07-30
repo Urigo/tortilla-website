@@ -51,7 +51,7 @@ const extractDiffs = (exports) => {
       )
     })
     .forEach((node) => {
-      let i = root.indexOf(node)
+      const i = root.indexOf(node)
       let title = node.children.map(child => child.value).join('')
 
       const step = {
@@ -64,11 +64,12 @@ const extractDiffs = (exports) => {
       const files = step.files
 
       while (
-        (node = root[++i]) &&
+        (node = root[i + 1]) &&
         node.type === 'heading' &&
         node.depth === 5 &&
         node.children
       ) {
+        root.splice(i + 1, 1)
         title = node.children.map(child => child.value).join('')
 
         const [operation, oldFile, newFile = oldFile] = title.match(
@@ -87,10 +88,11 @@ const extractDiffs = (exports) => {
         const diffs = file.diffs
 
         while (
-          (node = root[++i]) &&
+          (node = root[i + 1]) &&
           node.type === 'code' &&
           node.lang === 'diff'
         ) {
+          root.splice(i + 1, 1)
           const diff = []
 
           node.value.split('\n').forEach((line, j) => {
