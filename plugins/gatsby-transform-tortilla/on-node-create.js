@@ -11,21 +11,15 @@ const {
 } = require('./config')
 
 const processMd = (doc, options = {}) => {
-  const diffs = []
+  const stepDiffs = []
 
   return remark()
-    .use(extractDiffs, diffs)
+    .use(extractDiffs, stepDiffs)
     .use(highlight)
     .use(remarkGitHub, options)
     .use(html)
     .process(doc)
-    .then((html) => postProcess(html, diffs))
-}
-
-const postProcess = (html, diffs) => {
-  // TODO: Post process
-
-  return html
+    .then((html) => ({ html, stepDiffs }))
 }
 
 const extractDiffs = (exports) => {
@@ -56,12 +50,11 @@ const extractDiffs = (exports) => {
 
       const step = {
         number: title.match(/Step (\d+\.\d+)/)[1],
-        files: [],
+        diff: '',
         title,
       }
 
       exports.push(step)
-      const files = step.files
 
       while (
         (node = root[i + 1]) &&
@@ -72,20 +65,37 @@ const extractDiffs = (exports) => {
         root.splice(i + 1, 1)
         title = node.children.map(child => child.value).join('')
 
-        const [operation, oldFile, newFile = oldFile] = title.match(
+        let [operation, oldPath, newPath = oldPath] = title.match(
           /([^\s]+) ([^\s]+)(?: to ([^\s]+))?/
         ).slice(1)
 
-        const file = {
-          title: node.children[0].value,
-          operation,
-          oldFile,
-          newFile,
-          diffs: []
+        switch (operation) {
+          case 'Added':
+            oldPath = '/dev/null'
+            newPath = `b/${newPath}`
+            step.diff += `diff --git ${oldPath} ${newPath}`
+            step.diff += 'new file mode 100644'
+            step.diff += 'index 0000000...0000000'
+            step.diff += `--- ${oldPath}`
+            step.diff += `+++ ${newPath}`
+            break;
+          case 'Deleted':
+            oldPath = `a/${oldPath}`
+            newPath = '/dev/null'
+            step.diff += `diff --git ${oldPath} ${newPath}`
+            step.diff += 'deleted file mode 100644'
+            step.diff += 'index 0000000...0000000'
+            step.diff += `--- ${oldPath}`
+            step.diff += `+++ ${newPath}`
+            break;
+          default:
+            oldPath = `a/${oldPath}`
+            newPath = `b/${newPath}`
+            step.diff += `diff --git ${oldPath} ${newPath}`
+            step.diff += 'index 0000000...0000000'
+            step.diff += `--- ${oldPath}`
+            step.diff += `+++ ${newPath}`
         }
-
-        files.push(file)
-        const diffs = file.diffs
 
         while (
           (node = root[i + 1]) &&
@@ -93,40 +103,19 @@ const extractDiffs = (exports) => {
           node.lang === 'diff'
         ) {
           root.splice(i + 1, 1)
-          const diff = []
 
           node.value.split('\n').forEach((line, j) => {
-            if (!j) {
-              diff.push({
-                line,
-                type: 'meta',
-                payload: {},
-              })
-              return
+            if (j) {
+              step.diff += line.match(/^(.)┊ *\d*┊ *\d*┊(.+)/).slice(1).join('')
+            } else {
+              step.diff += line
             }
-
-            let type
-            switch (line[0]) {
-              case '-': type = 'del'; break
-              case '+': type = 'add'; break
-              default: type = 'non'; break
-            }
-            line = line.slice(1)
-
-            let [allNums, delNum, addNum] = line.match(/^┊ *(\d*)┊ *(\d*)┊/)
-            delNum = Number(delNum)
-            addNum = Number(addNum)
-            line = line.slice(allNums.length)
-
-            diff.push({
-              line,
-              type,
-              payload: { delNum, addNum },
-            })
           })
         }
       }
     })
+
+    throw exports
   }
 
   // return (ast) => {
