@@ -110,6 +110,8 @@ export default class extends React.Component {
   }
 
   render() {
+    debugger
+
     return (
       <Content>
         {this.renderBar(Header)}

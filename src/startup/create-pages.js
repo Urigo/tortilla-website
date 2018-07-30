@@ -27,6 +27,10 @@ module.exports = async ({ graphql, actions }) => {
                 content
                 html
                 revision
+                diffs {
+                  index
+                  value
+                }
               }
             }
           }

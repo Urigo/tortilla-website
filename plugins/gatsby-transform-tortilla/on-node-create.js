@@ -11,17 +11,19 @@ const {
 } = require('./config')
 
 const processMd = (doc, options = {}) => {
-  const stepDiffs = []
+  const diffs = []
 
   return remark()
-    .use(extractDiffs, stepDiffs)
+    .use(extractDiffs, diffs)
     .use(highlight)
     .use(remarkGitHub, options)
     .use(html)
     .process(doc)
-    .then((html) => ({ html, stepDiffs }))
+    .then((html) => ({ html, diffs }))
 }
 
+// A plugin that will extract all tortilla {{{diffStep}}}s given an ast by simply
+// looking for parts in the markdown which are likely to be so
 const extractDiffs = (exports) => {
   if (exports === undefined) {
     throw TypeError('exports must be provided')
@@ -48,13 +50,12 @@ const extractDiffs = (exports) => {
       const i = root.indexOf(node)
       let title = node.children.map(child => child.value).join('')
 
-      const step = {
-        number: title.match(/Step (\d+\.\d+)/)[1],
-        diff: '',
-        title,
+      const diff = {
+        index: title.match(/Step (\d+\.\d+)/)[1],
+        value: '',
       }
 
-      exports.push(step)
+      exports.push(diff)
 
       while (
         (node = root[i + 1]) &&
@@ -73,28 +74,28 @@ const extractDiffs = (exports) => {
           case 'Added':
             oldPath = '/dev/null'
             newPath = `b/${newPath}`
-            step.diff += `diff --git ${oldPath} ${newPath}`
-            step.diff += 'new file mode 100644'
-            step.diff += 'index 0000000...0000000'
-            step.diff += `--- ${oldPath}`
-            step.diff += `+++ ${newPath}`
+            diff.value += `diff --git ${oldPath} ${newPath}\n`
+            diff.value += 'new file mode 100644\n'
+            diff.value += 'index 0000000...0000000\n'
+            diff.value += `--- ${oldPath}\n`
+            diff.value += `+++ ${newPath}\n`
             break;
           case 'Deleted':
             oldPath = `a/${oldPath}`
             newPath = '/dev/null'
-            step.diff += `diff --git ${oldPath} ${newPath}`
-            step.diff += 'deleted file mode 100644'
-            step.diff += 'index 0000000...0000000'
-            step.diff += `--- ${oldPath}`
-            step.diff += `+++ ${newPath}`
+            diff.value += `diff --git ${oldPath} ${newPath}\n`
+            diff.value += 'deleted file mode 100644\n'
+            diff.value += 'index 0000000...0000000\n'
+            diff.value += `--- ${oldPath}\n`
+            diff.value += `+++ ${newPath}\n`
             break;
           default:
             oldPath = `a/${oldPath}`
             newPath = `b/${newPath}`
-            step.diff += `diff --git ${oldPath} ${newPath}`
-            step.diff += 'index 0000000...0000000'
-            step.diff += `--- ${oldPath}`
-            step.diff += `+++ ${newPath}`
+            diff.value += `diff --git ${oldPath} ${newPath}\n`
+            diff.value += 'index 0000000...0000000\n'
+            diff.value += `--- ${oldPath}\n`
+            diff.value += `+++ ${newPath}\n`
         }
 
         while (
@@ -106,58 +107,15 @@ const extractDiffs = (exports) => {
 
           node.value.split('\n').forEach((line, j) => {
             if (j) {
-              step.diff += line.match(/^(.)┊ *\d*┊ *\d*┊(.+)/).slice(1).join('')
+              diff.value += line.match(/^(.)┊ *\d*┊ *\d*┊(.*)/).slice(1).join('') + '\n'
             } else {
-              step.diff += line
+              diff.value += line + '\n'
             }
           })
         }
       }
     })
-
-    throw exports
   }
-
-  // return (ast) => {
-  //   ast.children.filter((node) => {
-  //     return node.type === 'code' && node.lang === 'diff'
-  //   })
-  //   .forEach((node) => {
-  //     const index = ast.children.indexOf(node)
-  //     console.log(ast.children[index - 1], ast.children[index - 2])
-
-  //     if (node.lang !== 'diff') return
-
-  //     node.value.split('\n').forEach((line, i) => {
-  //       if (!i) {
-  //         return exports.push({
-  //           line,
-  //           type: 'meta',
-  //           payload: {},
-  //         })
-  //       }
-
-  //       let type
-  //       switch (line[0]) {
-  //         case '-': type = 'del'; break
-  //         case '+': type = 'add'; break
-  //         default: type = 'non'; break
-  //       }
-  //       line = line.slice(1)
-
-  //       let [allNums, delNum, addNum] = line.match(/^┊ *(\d*)┊ *(\d*)┊/)
-  //       delNum = Number(delNum)
-  //       addNum = Number(addNum)
-  //       line = line.slice(allNums.length)
-
-  //       exports.push({
-  //         line,
-  //         type,
-  //         payload: { delNum, addNum },
-  //       })
-  //     })
-  //   })
-  // }
 }
 
 module.exports = async function onCreateNode({
@@ -186,7 +144,7 @@ module.exports = async function onCreateNode({
     tutorial.versions.map(async version => {
       return Promise.all(
         version.steps.map(async step => {
-          step.html = await processMd(step.content, stepScope)
+          Object.assign(step, await processMd(step.content, stepScope))
         })
       )
     })
