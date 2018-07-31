@@ -106,6 +106,12 @@ export default class extends React.Component {
     this.appendDiffs()
   }
 
+  componentDidUpdate(props) {
+    if (props.step.id !== this.props.step.id) {
+      this.appendDiffs()
+    }
+  }
+
   changeStep(id) {
     const route = stepRoute({
       tutorialName: this.props.tutorialName,
@@ -124,7 +130,7 @@ export default class extends React.Component {
       <Content>
         {this.renderBar(Header)}
         <Html
-          ref={this.htmlRef}
+          ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
           dangerouslySetInnerHTML={{ __html: this.props.step.html }}
         />
         {this.renderBar(Footer)}
@@ -161,21 +167,17 @@ export default class extends React.Component {
     )
   }
 
-  appendDiffs = (diff, anchor, file) => {
-    const htmlEl = ReactDOM.findDOMNode(this.htmlRef.current)
-
+  appendDiffs = async (diff, anchor, file) => {
     if (!diff) {
-      this.props.step.diffs.forEach((diff) => {
-        this.appendDiffs(diff)
-      })
-
-      return
+      return Promise.all(this.props.step.diffs.map((diff) => {
+        return this.appendDiffs(diff)
+      }))
     }
 
     if (!anchor) {
       const title = `Step ${diff.index}`
 
-      anchor = Array.from(htmlEl.childNodes).find((node) => {
+      anchor = Array.from(this.htmlEl.childNodes).find((node) => {
         return (
           node.tagName === 'H4' &&
           node.innerText.match(title) &&
@@ -193,23 +195,23 @@ export default class extends React.Component {
         return anchor = anchor.nextElementSibling
       })
 
-      files.forEach((file) => {
-        this.appendDiffs(diff, anchors.shift(), file)
-      })
-
-      return
+      return Promise.all(files.map((file) => {
+        return this.appendDiffs(diff, anchors.shift(), file)
+      }))
     }
 
     const container = document.createElement('span')
 
-    ReactDOM.render(
-      <ReactDiffView
-        hunks={file.hunks}
-        viewType="unified"
-        key={`${file.oldPath}_${file.newPath}`}
-      />
-    , container)
+    this.htmlEl.insertBefore(container, anchor.nextSibling)
 
-    htmlEl.insertBefore(container, anchor.nextSibling)
+    return new Promise((resolve) => {
+      ReactDOM.render(
+        <ReactDiffView
+          hunks={file.hunks}
+          viewType="unified"
+          key={`${file.oldPath}_${file.newPath}`}
+        />
+      , container, resolve)
+    })
   }
 }
