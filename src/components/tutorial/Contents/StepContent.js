@@ -1,10 +1,14 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 
+import { parseDiff, Diff as ReactDiffView } from '../../../libs/react-diff-view'
 import Stepper from '../../common/Stepper'
 import ImproveButton from '../ImproveButton'
 import { stepRoute, isVersionSpecific } from '../../../utils/routes'
+
+const occupied = Symbol()
 
 const Content = styled.div`
   height: 100%;
@@ -96,6 +100,12 @@ const Html = styled.div`
 `
 
 export default class extends React.Component {
+  htmlRef = React.createRef()
+
+  componentDidMount() {
+    this.appendDiffs()
+  }
+
   changeStep(id) {
     const route = stepRoute({
       tutorialName: this.props.tutorialName,
@@ -110,12 +120,13 @@ export default class extends React.Component {
   }
 
   render() {
-    debugger
-
     return (
       <Content>
         {this.renderBar(Header)}
-        <Html dangerouslySetInnerHTML={{ __html: this.props.step.html }} />
+        <Html
+          ref={this.htmlRef}
+          dangerouslySetInnerHTML={{ __html: this.props.step.html }}
+        />
         {this.renderBar(Footer)}
       </Content>
     );
@@ -148,5 +159,36 @@ export default class extends React.Component {
         </Right>
       </BarType>
     )
+  }
+
+  appendDiffs = (diff) => {
+    if (!diff) {
+      this.props.step.diffs.forEach(this.appendDiffs)
+      return
+    }
+
+    const htmlEl = ReactDOM.findDOMNode(this.htmlRef.current)
+    const title = `Step ${diff.index}`
+    const files = parseDiff(diff.value)
+
+    const anchor = Array.from(htmlEl.childNodes).find((node) => {
+      return (
+        node.tagName === 'H4' &&
+        node.innerText.match(title) &&
+        !node[occupied]
+      )
+    })
+
+    if (!anchor) return
+
+    anchor[occupied] = true
+
+    const container = document.createElement('span')
+
+    ReactDOM.render(files.map((file, i) =>
+      <ReactDiffView hunks={file.hunks} viewType="unified" key={i} />
+    ), container)
+
+    htmlEl.insertBefore(container, anchor.nextSibling)
   }
 }

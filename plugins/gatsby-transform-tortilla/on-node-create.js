@@ -76,7 +76,7 @@ const extractDiffs = (exports) => {
             newPath = `b/${newPath}`
             diff.value += `diff --git ${oldPath} ${newPath}\n`
             diff.value += 'new file mode 100644\n'
-            diff.value += 'index 0000000...0000000\n'
+            diff.value += 'index 0000000..0000000\n'
             diff.value += `--- ${oldPath}\n`
             diff.value += `+++ ${newPath}\n`
             break;
@@ -85,7 +85,7 @@ const extractDiffs = (exports) => {
             newPath = '/dev/null'
             diff.value += `diff --git ${oldPath} ${newPath}\n`
             diff.value += 'deleted file mode 100644\n'
-            diff.value += 'index 0000000...0000000\n'
+            diff.value += 'index 0000000..0000000\n'
             diff.value += `--- ${oldPath}\n`
             diff.value += `+++ ${newPath}\n`
             break;
@@ -93,7 +93,7 @@ const extractDiffs = (exports) => {
             oldPath = `a/${oldPath}`
             newPath = `b/${newPath}`
             diff.value += `diff --git ${oldPath} ${newPath}\n`
-            diff.value += 'index 0000000...0000000\n'
+            diff.value += 'index 0000000..0000000 100644\n'
             diff.value += `--- ${oldPath}\n`
             diff.value += `+++ ${newPath}\n`
         }
