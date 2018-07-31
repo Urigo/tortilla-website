@@ -47,7 +47,7 @@ const extractDiffs = (exports) => {
       )
     })
     .forEach((node) => {
-      const i = root.indexOf(node)
+      let i = root.indexOf(node)
       let title = node.children.map(child => child.value).join('')
 
       const diff = {
@@ -58,12 +58,11 @@ const extractDiffs = (exports) => {
       exports.push(diff)
 
       while (
-        (node = root[i + 1]) &&
+        (node = root[++i]) &&
         node.type === 'heading' &&
         node.depth === 5 &&
         node.children
       ) {
-        root.splice(i + 1, 1)
         title = node.children.map(child => child.value).join('')
 
         let [operation, oldPath, newPath = oldPath] = title.match(

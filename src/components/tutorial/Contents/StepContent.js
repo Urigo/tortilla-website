@@ -161,33 +161,54 @@ export default class extends React.Component {
     )
   }
 
-  appendDiffs = (diff) => {
+  appendDiffs = (diff, anchor, file) => {
+    const htmlEl = ReactDOM.findDOMNode(this.htmlRef.current)
+
     if (!diff) {
-      this.props.step.diffs.forEach(this.appendDiffs)
+      this.props.step.diffs.forEach((diff) => {
+        this.appendDiffs(diff)
+      })
+
       return
     }
 
-    const htmlEl = ReactDOM.findDOMNode(this.htmlRef.current)
-    const title = `Step ${diff.index}`
-    const files = parseDiff(diff.value)
+    if (!anchor) {
+      const title = `Step ${diff.index}`
 
-    const anchor = Array.from(htmlEl.childNodes).find((node) => {
-      return (
-        node.tagName === 'H4' &&
-        node.innerText.match(title) &&
-        !node[occupied]
-      )
-    })
+      anchor = Array.from(htmlEl.childNodes).find((node) => {
+        return (
+          node.tagName === 'H4' &&
+          node.innerText.match(title) &&
+          !node[occupied]
+        )
+      })
 
-    if (!anchor) return
+      anchor[occupied] = true
 
-    anchor[occupied] = true
+      const files = parseDiff(diff.value)
+
+      // First we need to collect the anchors before making modification, otherwise the
+      // DOM tree would change and nextSibling would result in different elements
+      const anchors = files.map(() => {
+        return anchor = anchor.nextElementSibling
+      })
+
+      files.forEach((file) => {
+        this.appendDiffs(diff, anchors.shift(), file)
+      })
+
+      return
+    }
 
     const container = document.createElement('span')
 
-    ReactDOM.render(files.map((file, i) =>
-      <ReactDiffView hunks={file.hunks} viewType="unified" key={i} />
-    ), container)
+    ReactDOM.render(
+      <ReactDiffView
+        hunks={file.hunks}
+        viewType="unified"
+        key={`${file.oldPath}_${file.newPath}`}
+      />
+    , container)
 
     htmlEl.insertBefore(container, anchor.nextSibling)
   }
