@@ -2,6 +2,7 @@ import { withPrefix } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
+import FeatureCard from './home/FeatureCard'
 import Layout from './layout'
 
 const DesktopImg = styled.img`
@@ -101,6 +102,49 @@ const IntroDiv = styled.div`
   }
 `
 
+const FeatureBatchA = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 800px;
+  margin-left: auto;
+  margin-right: auto;
+
+  > ._title {
+    font-family: Montserrat;
+    font-size: 34px;
+    font-weight: 800;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #142345;
+  }
+
+  > ._subtitle {
+    max-width: 935px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    height: 80px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #5b6f9d;
+  }
+
+  > ._feature-cards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`
+
 class HomePage extends React.Component {
   static propTypes = {
     tutorials: PropTypes.arrayOf(PropTypes.any),
@@ -111,7 +155,7 @@ class HomePage extends React.Component {
       <Layout>
         <DesktopImg src={withPrefix('img/group-19.svg')} class="Group-19" />
         <IntroDiv>
-          <img src={withPrefix('Logo/logo.svg')} />
+          <img src={withPrefix('Logo/logo.svg')} alt="tortilla" />
           <div className="_title">
             A great framework for creating awesome tutorials!
           </div>
@@ -128,6 +172,36 @@ class HomePage extends React.Component {
           </div>
           <div className="_text">Follow on Github</div>
         </GitFollowBtn>
+        <FeatureBatchA>
+          <div className="_title">
+            Respect the developer time
+          </div>
+          <div className="_subtitle">
+            You don't need to read each time new tutorial for each version, Our framework releases a new version up to date with fine grained git-diff code changes with explanations where and how to upgrade.
+          </div>
+          <div className="_feature-cards">
+            <FeatureCard
+              imgSrc={withPrefix('Icons_116/icons-116-free.svg')}
+              title="Lifetime access"
+              subtitle="we know that developer time is precious - so we guarantee that will be always free."
+            />
+            <FeatureCard
+              imgSrc={withPrefix('Icons_116/icons-116-update.svg')}
+              title="Always Up to Date"
+              subtitle="Always up to date tutorials - don’t waste your time on starting to learn tutorials and finding out in the middle that they are outdated."
+            />
+            <FeatureCard
+              imgSrc={withPrefix('Icons_116/icons-116-eco.svg')}
+              title="Programming Ecosystem"
+              subtitle="The best place to keep up with the always-moving programming ecosystem."
+            />
+            <FeatureCard
+              imgSrc={withPrefix('Icons_116/icons-116-open.svg')}
+              title="Open Source"
+              subtitle="Open source tutorials - contribute and get full access to all the tutorial’s source code and videos."
+            />
+          </div>
+        </FeatureBatchA>
       </Layout>
     )
   }
