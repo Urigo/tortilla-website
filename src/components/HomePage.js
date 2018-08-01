@@ -57,6 +57,50 @@ const GitFollowBtn = styled.div`
   }
 `
 
+const IntroDiv = styled.div`
+  position: absolute;
+  left: 156px;
+  top: 175px;
+
+  ._title {
+    width: 671px;
+    font-family: Montserrat;
+    font-size: 44px;
+    font-weight: 800;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #142345;
+  }
+
+  ._subtitle {
+    width: 549px;
+    margin-top: 20px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #5b6f9d;
+  }
+
+  ._start-btn {
+    cursor: pointer;
+    margin-top: 30px;
+    width: 192px;
+    height: 55px;
+    border-radius: 5px;
+    background-color: #4c84ff;
+    box-shadow: 2px 3px 13px 0 rgba(0, 85, 255, 0.3);
+    color: white;
+    text-align: center;
+    line-height: 55px;
+  }
+`
+
 class HomePage extends React.Component {
   static propTypes = {
     tutorials: PropTypes.arrayOf(PropTypes.any),
@@ -66,6 +110,18 @@ class HomePage extends React.Component {
     return (
       <Layout>
         <DesktopImg src={withPrefix('img/group-19.svg')} class="Group-19" />
+        <IntroDiv>
+          <img src={withPrefix('Logo/logo.svg')} />
+          <div className="_title">
+            A great framework for creating awesome tutorials!
+          </div>
+          <div className="_subtitle">
+            Create tutorials from real code, based on git steps with easy CLI to keep your tutorial on to date with versioning support, rendering everywhere, multiple language translations and much more…
+          </div>
+          <div className="_start-btn">
+            Get Started
+          </div>
+        </IntroDiv>
         <GitFollowBtn>
           <div className="_icon">
             <img src={withPrefix('icns_30/icns-30-github.svg')} alt="Github" />
