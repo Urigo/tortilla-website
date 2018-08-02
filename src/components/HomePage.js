@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import FeatureCard from './home/FeatureCard'
+import FeaturedTutorial from './home/FeaturedTutorial'
 import FeatureCardsSection from './home/FeatureCardsSection'
 import Layout from './layout'
 
@@ -220,6 +221,36 @@ class HomePage extends React.Component {
               imgSrc={withPrefix('Icons_116/icons-116-translate.svg')}
               title="Translations"
               subtitle="contributors to help translate your tutorials to other languages."
+            />
+          </FeatureCardsSection>
+          <FeatureCardsSection
+            style={{ marginTop: 150 }}
+            title="Here are our current courses"
+            subtitle="Always up to date tutorials, Play with versions control - watch git-diff on how and why to upgrade from one version of the tutorial to the next. The best place to keep up with the always-moving Javascript ecosystem. Open source tutorials - contribute and get full access to all the tutorial’s source code and videos."
+          >
+            <FeaturedTutorial
+              imgSrc={withPrefix('img/whatsapp.svg')}
+              title="An Angular based Whatsapp clone"
+              description="Using Angular, GraphQL, Apollo, PostgreSQL and TypeORM"
+              style={{ backgroundColor: '#27e0c0', boxShadow: '10px 10px 20px 0 rgba(39, 224 ,192 ,0.2)' }}
+            />
+            <FeaturedTutorial
+              imgSrc={withPrefix('img/destination.svg')}
+              title="Building a native Node.JS addon"
+              description="Native NodeJS add-on creation tutorial using C++ for improved performance"
+              style={{ backgroundColor: '#ffd22d', boxShadow: '10px 10px 20px 0 rgba(255, 210, 45, 0.2)' }}
+            />
+            <FeaturedTutorial
+              imgSrc={withPrefix('img/snake-1.svg')}
+              title="A Tron-style snake game"
+              description="How to implement a game engine in JS and build a style game"
+              style={{ backgroundColor: '#ff596d', boxShadow: '10px 10px 20px 0 rgba(255, 89, 109, 0.2)' }}
+            />
+            <FeaturedTutorial
+              imgSrc={withPrefix('img/love.svg')}
+              title="A chat app with React Native"
+              description="Chat clone using React Native, GraphQL, Apollo, SQL and Sequelize"
+              style={{ backgroundColor: '#8585ff', boxShadow: '10px 10px 20px 0 rgba(133, 133, 255, 0.2)' }}
             />
           </FeatureCardsSection>
         </Body>
