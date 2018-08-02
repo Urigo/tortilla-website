@@ -2,28 +2,31 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Link, withPrefix } from 'gatsby'
+import { Link, push, withPrefix } from 'gatsby'
 import {
   faHistory,
   faListUl,
+  faShoePrints,
 } from '@fortawesome/fontawesome-free-solid'
 
+import FaIcon from './common/FaIcon'
 import storage from '../utils/storage';
+import { stepRoute } from '../utils/routes'
 import {
   Menu,
   StepsMenu,
   DiffsMenu,
-  VersionsMenu,
   SubMenu,
   SubMenuHeader,
   SubMenuHeaderTitle,
   SubMenuHeaderGithub,
   SubMenuHeaderClose,
 } from './tutorial/Menus'
+import VersionsBar from './tutorial/VersionsBar'
 import { DiffContent, StepContent } from './tutorial/Contents'
 import Layout from './layout'
 
-const topBarHeight = '112.5px';
+const topBarHeight = '215px';
 const contentHeight = '100%';
 
 const Container = styled.div`
@@ -35,7 +38,6 @@ const Container = styled.div`
 const Aside = styled.aside`
   flex: 0 0 auto;
   display: flex;
-  background: #0e324c;
   align-self: stretch;
   flex-direction: row;
   justify-content: flex-start;
@@ -52,7 +54,7 @@ const Display = styled.div`
 
 const TortillaLink = styled(Link) `
   padding: 0;
-  margin: 30px 15px;
+  margin: 27.5px 15px;
   text-align: center;
 `
 
@@ -69,7 +71,6 @@ const SubMenuContent = styled.div`
 `
 
 const TopBar = styled.div`
-  background-color: #f2f5f7;
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 20px 0 20px;
   height: ${topBarHeight};
@@ -80,13 +81,25 @@ const TopBarTitle = styled.h1`
   margin: 0;
   margin-bottom: 10px;
   text-overflow: ellipsis;
+  font-size: 34px;
+`
+
+const TopBarSeparator = styled.div`
+  margin: 0;
+  margin-top: -20px;
+  margin-bottom: 15px;
+  text-overflow: ellipsis;
+  font-size: 34px;
+  font-weight: 800;
 `
 
 const TopBarSubTitle = styled.h3`
   margin: 0;
   color: gray;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   display: inline-block;
+  font-size: 17px;
+  color: ${({ theme }) => theme.blueGray}
 `
 
 const MainContentContainer = styled.div`
@@ -112,8 +125,7 @@ export default class TutorialPage extends React.Component {
   }
 
   menu = [
-    { name: 'versions', icon: faHistory },
-    { name: 'steps', icon: '👣' },
+    { name: 'steps', icon: faShoePrints },
     { name: 'diffs', icon: faListUl },
   ]
 
@@ -180,15 +192,6 @@ export default class TutorialPage extends React.Component {
             activeStep={this.props.params.step}
           />
         )
-      case 'versions':
-        return (
-          <VersionsMenu
-            tutorialName={this.props.tutorial.name}
-            activeVersion={this.props.common.versionNumber}
-            allVersions={this.props.common.allVersionsNumbers}
-            latestVersion={this.props.common.tutorialVersion}
-          />
-        )
       default: return null
     }
   }
@@ -251,9 +254,18 @@ export default class TutorialPage extends React.Component {
           <Display>
             <MainContentContainer ref={this.defineContentStyle}>
               <TopBar>
+                <SubMenuHeaderGithub link={this.props.tutorial.repoUrl} />
                 <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
-                <TopBarSubTitle>Version {this.props.common.versionNumber}</TopBarSubTitle>
-                <SubMenuHeaderGithub link={this.props.tutorial.repoUrl}/>
+                <TopBarSeparator>__</TopBarSeparator>
+                <TopBarSubTitle>
+                  <FaIcon icon={faHistory} size={20} />
+                  &nbsp;VERSIONS
+                </TopBarSubTitle>
+                <VersionsBar
+                  allVersions={this.props.common.allVersionsNumbers}
+                  activeVersion={this.props.common.versionNumber}
+                  activateVersion={this.activateVersion}
+                />
               </TopBar>
               <MainContent>
                 {this.renderContent()}
@@ -278,5 +290,15 @@ export default class TutorialPage extends React.Component {
       delete this.contentStyle
       delete this.originalContentStyle
     }
+  }
+
+  activateVersion = (targetVersion) => {
+    const link = stepRoute({
+      tutorialName: this.props.common.tutorialName,
+      version: targetVersion,
+      step: 1,
+    })
+
+    push(link)
   }
 }

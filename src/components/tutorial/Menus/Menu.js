@@ -6,13 +6,15 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: strech;
+  border-right: 1px solid;
+  border-color: ${({ theme }) => theme.separator};
 `
 
 const Separator = styled.div`
   margin: 0 auto 15px auto;
   width: 70%;
   height: 1px;
-  background-color: rgba(113, 134, 150, 0.37);
+  background-color: ${({ theme }) => theme.separator};
 `
 
 const ItemIcon = styled(FaIcon).attrs({
@@ -34,11 +36,11 @@ const Item = styled.div`
   cursor: pointer;
 
   ${ItemIcon}, ${ItemUnicode} {
-    color: ${props => (props.active ? props.theme.white : props.theme.blueGray)};
+    color: ${props => (props.active ? props.theme.primaryBlue : props.theme.blueGray)};
   }
 
   &:hover ${ItemIcon}, &:hover ${ItemUnicode} {
-    color: ${({ theme }) => theme.white};
+    color: ${({ theme }) => theme.primaryBlue};
   }
 `
 
@@ -46,8 +48,7 @@ export const ItemBorder = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 6px;
-  border-radius: 0 6px 6px 0;
+  width: 4px;
   background-color: ${({ theme }) => theme.primaryBlue};
 `
 

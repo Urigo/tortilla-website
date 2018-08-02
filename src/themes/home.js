@@ -3,9 +3,10 @@ export default {
   primaryGray: '#d2d5de',
   darkGray: '#7f859b',
   lightGray: '#e6ecf4',
-  blueGray: '#718696',
+  blueGray: '#5b6f9d',
 
   lightBlack: '#505050',
+  separator: '#e8e8e8',
 
   primaryBlue: '#4c84ff',
   grayBlue: '#182e3f',

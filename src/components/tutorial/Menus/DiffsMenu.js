@@ -8,16 +8,13 @@ import storage from '../../../utils/storage';
 export const Diffs = styled.div`
   display: flex;
   flex-direction: column;
-
-  & > *:first-child {
-    border-top: 0 none;
-  }
 `
 
 const Name = styled.div`
   font-size: 12px;
   font-weight: normal;
-  color: #0e324c;
+  color: ${({ theme }) => theme.blueGray};
+  font-weight: 800;
 `
 
 const SrcName = Name.extend`
@@ -34,17 +31,27 @@ const Diff = styled.a`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #2a5f85;
-  border-top: solid 1px #0e324c;
+  color: ${({ theme }) => theme.blueGray};
+  border-bottom: solid 1px ${({ theme }) => theme.separator};
   text-decoration: none;
   cursor: pointer;
+  height: 62px;
 `
 
 const ActiveDiff = Diff.extend`
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.primaryBlue};
+  outline: 2px solid;
+  outline-color: ${({ theme }) => theme.primaryBlue};
+  outline-offset: -2px;
+
+  &:hover {
+    outline: 2px solid;
+    outline-color: ${({ theme }) => theme.primaryBlue};
+    outline-offset: -2px;
+  }
 
   ${SrcName}, ${DestName} {
-    color: ${({ theme }) => theme.white};
+    color: ${({ theme }) => theme.primaryBlue};
   }
 `
 

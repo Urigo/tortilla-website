@@ -9,6 +9,7 @@ const {
 const { TypeName } = require('./config')
 
 const StepTypeName = TypeName + 'Step'
+const DiffTypeName = TypeName + 'Diff'
 const VersionTypeName = TypeName + 'Version'
 
 module.exports = (
@@ -18,6 +19,18 @@ module.exports = (
   if (type.name !== TypeName) {
     return {}
   }
+
+  const diffType = new GraphQLObjectType({
+    name: DiffTypeName,
+    fields: {
+      index: {
+        type: GraphQLString
+      },
+      value: {
+        type: GraphQLString
+      },
+    }
+  })
 
   const stepType = new GraphQLObjectType({
     name: StepTypeName,
@@ -37,6 +50,9 @@ module.exports = (
       },
       revision: {
         type: GraphQLString,
+      },
+      diffs: {
+        type: new GraphQLList(diffType),
       },
     },
   })

@@ -8,10 +8,6 @@ import storage from '../../../utils/storage';
 export const Steps = styled.div`
   display: flex;
   flex-direction: column;
-
-  & > *:first-child {
-    border-top: 0 none;
-  }
 `
 
 const Number = styled.div`
@@ -21,16 +17,17 @@ const Number = styled.div`
   line-height: 30px;
   text-align: center;
   border-radius: 3px;
-  color: #0e324c;
-  background-color: #1d4866;
-  border: solid 1px #0e324c;
+  color: ${({ theme }) => theme.blueGray};
+  background-color: white;
+  border: solid 1px ${({ theme }) => theme.blueGray};
 `
 
 const Name = styled.div`
   margin-left: 15px;
   font-size: 12px;
   font-weight: normal;
-  color: #0e324c;
+  color: ${({ theme }) => theme.blueGray};
+  font-weight: 600;
 `
 
 const Step = styled.a`
@@ -39,21 +36,35 @@ const Step = styled.a`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #2a5f85;
-  border-top: solid 1px #0e324c;
+  background-color: white;
+  border-bottom: solid 1px ${({ theme }) => theme.separator};
+  color: ${({ theme }) => theme.blueGray};
   text-decoration: none;
   cursor: pointer;
 `
 
 const ActiveStep = Step.extend`
+  outline: 2px solid;
+  outline-color: ${({ theme }) => theme.primaryBlue};
+  outline-offset: -2px;
+
+  &:hover {
+    outline: 2px solid;
+    outline-color: ${({ theme }) => theme.primaryBlue};
+    outline-offset: -2px;
+  }
+
   ${Number} {
     color: ${({ theme }) => theme.primaryBlue};
-    background-color: ${({ theme }) => '#0e324c'};
-    border-color: ${({ theme }) => theme.white};
+    background-color: white;
+    border-color: ${({ theme }) => theme.primaryBlue};
+    border-width: 2px;
+    height: 32px;
+    line-height: 28px;
   }
 
   ${Name} {
-    color: ${({ theme }) => theme.white};
+    color: ${({ theme }) => theme.primaryBlue};
   }
 `
 

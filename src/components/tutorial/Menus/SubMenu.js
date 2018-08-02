@@ -8,33 +8,23 @@ import FaIcon from '../../common/FaIcon'
 
 export const SubMenu = Container.extend`
   width: 270px;
-  background-color: #1d4866;
+  background-color: ${({ theme }) => theme.white};
 `
 
 export const SubMenuHeader = styled.div`
   min-height: 47px;
   position: relative;
   padding: 0 15px;
-  border-bottom: 1px solid #0e324c;
+  border-bottom: 1px solid ${({ theme }) => theme.separator};
 `
 
 export const SubMenuHeaderTitle = styled.div`
-  margin: 10px 0;
+  padding: 10px 0;
   font-size: 24px;
   font-weight: 800;
-  color: #092133;
+  color: ${({ theme }) => theme.blueGray};
   text-transform: uppercase;
-`
-
-export const SubMenuHeaderSubtitle = styled.div`
-  height: 26px;
-  margin: 10px 0 0 0;
-  font-size: 16px;
-  font-weight: 800;
-  color: ${({ theme }) => theme.white};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: inline-block;
 `
 
 const GithubLogo = styled(FaIcon).attrs({
@@ -81,6 +71,6 @@ export const SubMenuHeaderClose = styled(FaIcon).attrs({
   position: absolute;
   right: 15px;
   top: 15px;
-  color: #0e324c;
+  color: ${({ theme }) => theme.blueGray};
   cursor: pointer;
 `

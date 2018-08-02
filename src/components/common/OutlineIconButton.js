@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import FaIcon from './FaIcon'
 
 const Icon = styled(FaIcon).attrs({
-  size: 16
+  size: 17
 }) `
   color: ${({ theme }) => theme.primaryGray};
 `
 
-const SIZE = 26
+const SIZE = 40
 
 const Button = styled.button`
   outline: none;
