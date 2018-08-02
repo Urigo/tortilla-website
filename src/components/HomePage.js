@@ -23,6 +23,19 @@ const Footer = styled.div`
   width: 100%;
   position: relative;
   height: 784px;
+  overflow: hidden;
+
+  ._background {
+    z-index: -1;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: #162c5e;
+    width: 100%;
+    height: 350px;
+    transform-origin: top right;
+    transform: rotate(13deg) translateX(100px) scaleX(10) scaleY(10);
+  }
 
   ._food-truck {
     margin: 0;
@@ -340,6 +353,7 @@ class HomePage extends React.Component {
 
         <Footer>
           <img className="_rocket" src={withPrefix('img/group-17.svg')} />
+          <div className="_background" />
           <img className="_food-truck" src={withPrefix('img/group-16.svg')} />
         </Footer>
 
