@@ -19,6 +19,67 @@ const Body = styled.div`
   position: relative;
 `
 
+const Footer = styled.div`
+  width: 100%;
+  position: relative;
+  height: 800px;
+`
+
+const UnderBar = styled.div`
+  position: relative;
+  width: 100%;
+  height: 60px;
+  background-color: #142345;
+  box-shadow: inset 0 1px 0 0 #142345;
+  line-height: 60px;
+
+  > ._logo {
+    float: left;
+    width: 34px;
+    margin: 0;
+    margin-top: 7px;
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+
+  > ._logo-text {
+    font-family: Montserrat;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    font-style: italic;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #ffffff;
+  }
+
+  > ._copyright {
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #5b6f9d;
+  }
+
+  > ._terms {
+    margin-right: 156px;
+    margin-top: 24px;
+    float: right;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #5b6f9d;
+  }
+`
+
 const DesktopImg = styled.img`
   pointer-events: none;
   user-select: none;
@@ -254,6 +315,17 @@ class HomePage extends React.Component {
             />
           </FeatureCardsSection>
         </Body>
+
+        <Footer>
+
+        </Footer>
+
+        <UnderBar>
+          <img className="_logo" src={withPrefix('Logo/logo-tortilla-ondark.svg')} />
+          <span className="_logo-text">tortilla</span>
+          <span className="_copyright">Copyright © 2018 Tortilla, Inc.</span>
+          <span className="_terms">Terms  •  Privacy Policy and Cookie Policy</span>
+        </UnderBar>
       </Layout>
     )
   }
