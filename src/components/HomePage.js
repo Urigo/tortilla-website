@@ -22,7 +22,29 @@ const Body = styled.div`
 const Footer = styled.div`
   width: 100%;
   position: relative;
-  height: 800px;
+  height: 784px;
+
+  ._food-truck {
+    margin: 0;
+    pointer-events: none;
+    user-select: none;
+    user-drag: none;
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    bottom: 0;
+  }
+
+  ._rocket {
+    margin: 0;
+    pointer-events: none;
+    user-select: none;
+    user-drag: none;
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    bottom: 450px;
+  }
 `
 
 const UnderBar = styled.div`
@@ -38,7 +60,7 @@ const UnderBar = styled.div`
     width: 34px;
     margin: 0;
     margin-top: 7px;
-    margin-left: 20px;
+    margin-left: 156px;
     margin-right: 10px;
   }
 
@@ -317,7 +339,8 @@ class HomePage extends React.Component {
         </Body>
 
         <Footer>
-
+          <img className="_rocket" src={withPrefix('img/group-17.svg')} />
+          <img className="_food-truck" src={withPrefix('img/group-16.svg')} />
         </Footer>
 
         <UnderBar>
