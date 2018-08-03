@@ -13,6 +13,7 @@ const FeaturedTutorial = styled.div`
     padding-top: 20px;
     padding-bottom: 10px;
     border-radius: 29px;
+    cursor: pointer;
 
     > img {
       width: ${({ imgSize }) => imgSize}px;
