@@ -516,26 +516,26 @@ class HomePage extends React.Component {
             <div className="_title">“We are always use the newest”</div>
             <div className="_title">technologies…”</div>
             <div className="_tech-icns">
-              <img src={withPrefix('icns_30/icns-30-angular.svg')} />
-              <img src={withPrefix('icns_30/icns-30-graphql.svg')} />
-              <img src={withPrefix('icns_30/icns-30-apolo.svg')} />
-              <img src={withPrefix('icns_30/icns-30-react.svg')} />
-              <img src={withPrefix('icns_30/icns-30-meteor.svg')} />
-              <img src={withPrefix('icns_30/icns-30-webpack.svg')} />
-              <img src={withPrefix('icns_30/icns-30-js.svg')} />
-              <img src={withPrefix('icns_30/icns-30-node.svg')} />
-              <img src={withPrefix('icns_30/icns-30-post.svg')} />
-              <img src={withPrefix('icns_30/icns-30-post-copy.svg')} />
-              <img src={withPrefix('icns_30/icns-30-c.svg')} />
-              <img src={withPrefix('icns_30/icns-30-sequelize.svg')} />
+              <img src={withPrefix('icns_30/icns-30-angular.svg')} alt="angular" />
+              <img src={withPrefix('icns_30/icns-30-graphql.svg')} alt="graphql" />
+              <img src={withPrefix('icns_30/icns-30-apolo.svg')} alt="apolo" />
+              <img src={withPrefix('icns_30/icns-30-react.svg')} alt="react" />
+              <img src={withPrefix('icns_30/icns-30-meteor.svg')} alt="meteor" />
+              <img src={withPrefix('icns_30/icns-30-webpack.svg')} alt="webpack" />
+              <img src={withPrefix('icns_30/icns-30-js.svg')} alt="js" />
+              <img src={withPrefix('icns_30/icns-30-node.svg')} alt="node" />
+              <img src={withPrefix('icns_30/icns-30-post.svg')} alt="post" />
+              <img src={withPrefix('icns_30/icns-30-post-copy.svg')} alt="copy" />
+              <img src={withPrefix('icns_30/icns-30-c.svg')} alt="c" />
+              <img src={withPrefix('icns_30/icns-30-sequelize.svg')} alt="sequelize" />
             </div>
           </TechSection>
         </Body>
 
         <Footer>
-          <img className="_rocket" src={withPrefix('img/group-17.svg')} />
+          <img className="_rocket" src={withPrefix('img/group-17.svg')} alt="" />
           <div className="_background" />
-          <img className="_food-truck" src={withPrefix('img/group-16.svg')} />
+          <img className="_food-truck" src={withPrefix('img/group-16.svg')} alt="" />
 
           <div className="_contact">
             <div className="_title">Keep in touch!</div><br />
@@ -543,7 +543,7 @@ class HomePage extends React.Component {
             <div className="_info">
               <input className="_email" />
               <div className="_send-btn">
-                <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} />
+                <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
                 <div className="_text">Send</div>
               </div>
               <br />
@@ -551,8 +551,8 @@ class HomePage extends React.Component {
               <div className="_follow">
                 <div className="_text">Don’t forget to follow us ;)</div>
                 <div className="_social-btns">
-                  <img src={withPrefix('icns_30/icns-30-github.svg')} />
-                  <img src={withPrefix('icns_30/icns-30-twitter.svg')} />
+                  <img src={withPrefix('icns_30/icns-30-github.svg')} alt="github" />
+                  <img src={withPrefix('icns_30/icns-30-twitter.svg')} alt="twitter" />
                 </div>
               </div>
             </div>
@@ -560,7 +560,7 @@ class HomePage extends React.Component {
         </Footer>
 
         <UnderBar>
-          <img className="_logo" src={withPrefix('Logo/logo-tortilla-ondark.svg')} />
+          <img className="_logo" src={withPrefix('Logo/logo-tortilla-ondark.svg')} alt="tortilla" />
           <span className="_logo-text">tortilla</span>
           <span className="_copyright">Copyright © 2018 Tortilla, Inc.</span>
           <span className="_terms">Terms  •  Privacy Policy and Cookie Policy</span>
