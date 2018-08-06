@@ -1,4 +1,4 @@
-import { withPrefix } from 'gatsby'
+import { withPrefix, navigateTo } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -6,6 +6,9 @@ import FeatureCard from './home/FeatureCard'
 import FeaturedTutorial from './home/FeaturedTutorial'
 import FeatureCardsSection from './home/FeatureCardsSection'
 import Layout from './layout'
+
+const TWITTER_URL = 'https://twitter.com/UriGoldshtein'
+const GITHUB_URL = 'https://github.com/Urigo'
 
 const Header = styled.div`
   width: 100%;
@@ -180,7 +183,7 @@ const Footer = styled.div`
         > ._social-btns {
           float: right;
 
-          > img {
+          > a > img {
             margin-left: 10px;
             cursor: pointer;
           }
@@ -276,7 +279,8 @@ const Hump = styled.div`
   }
 `
 
-const GitFollowBtn = styled.div`
+const GitFollowBtn = styled.a`
+  display: block;
   width: 200px;
   height: 40px;
   padding: 3px;
@@ -351,6 +355,8 @@ const IntroDiv = styled.div`
   }
 
   ._start-btn {
+    display: block;
+    text-decoration: none;
     cursor: pointer;
     margin-top: 30px;
     width: 192px;
@@ -414,15 +420,15 @@ class HomePage extends React.Component {
             <div className="_subtitle">
               Create tutorials from real code, based on git steps with easy CLI to keep your tutorial on to date with versioning support, rendering everywhere, multiple language translations and much more…
             </div>
-            <div className="_start-btn">
+            <a className="_start-btn" href={GITHUB_URL}>
               Get Started
-            </div>
+            </a>
           </IntroDiv>
-          <GitFollowBtn>
+          <GitFollowBtn href={GITHUB_URL}>
             <div className="_icon">
               <img src={withPrefix('icns_30/icns-30-github.svg')} alt="Github" />
             </div>
-            <div className="_text">Follow on Github</div>
+            <div className="_text" onClick={this.navToGithub}>Follow on Github</div>
           </GitFollowBtn>
         </Header>
 
@@ -551,8 +557,18 @@ class HomePage extends React.Component {
               <div className="_follow">
                 <div className="_text">Don’t forget to follow us ;)</div>
                 <div className="_social-btns">
-                  <img src={withPrefix('icns_30/icns-30-github.svg')} alt="github" />
-                  <img src={withPrefix('icns_30/icns-30-twitter.svg')} alt="twitter" />
+                  <a href="https://twitter.com/UriGoldshtein">
+                    <img
+                      src={withPrefix('icns_30/icns-30-github.svg')}
+                      alt="github"
+                    />
+                  </a>
+                  <a href="https://github.com/Urigo">
+                    <img
+                      src={withPrefix('icns_30/icns-30-twitter.svg')}
+                      alt="twitter"
+                    />
+                  </a>
                 </div>
               </div>
             </div>
