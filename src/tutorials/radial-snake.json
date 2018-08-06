@@ -6,6 +6,7 @@
     "releases": [
       {
         "releaseVersion": "0.1.6",
+        "releaseDate": "2018-06-21 10:10:56 +0800",
         "tagName": "master@0.1.6",
         "tagRevision": "133e7b8b38dd15aab45f74e613be8f97233a134f",
         "historyRevision": "fabd14068d64ff6e8c7e5cca23a2055c333dee38",
@@ -55,6 +56,7 @@
       },
       {
         "releaseVersion": "0.1.5",
+        "releaseDate": "2018-06-20 18:50:00 +0800",
         "tagName": "master@0.1.5",
         "tagRevision": "8d6fa2214280e0c1e4ccb912be7ae6b195426a67",
         "historyRevision": "487213110f946c6b181cfd665d2c98c0fc680356",
@@ -104,6 +106,7 @@
       },
       {
         "releaseVersion": "0.1.4",
+        "releaseDate": "2018-06-20 18:45:34 +0800",
         "tagName": "master@0.1.4",
         "tagRevision": "15f35e435e0099d9abdbb3eb2c633cba8bbe12ed",
         "historyRevision": "06644498e39f4fbc3696173073c131860aa2d097",
@@ -153,6 +156,7 @@
       },
       {
         "releaseVersion": "0.1.3",
+        "releaseDate": "2017-04-23 02:36:35 -0200",
         "tagName": "master@0.1.3",
         "tagRevision": "c69695f7f85ac663117d7376f30a0f9c86ca6f75",
         "historyRevision": "8b8973ecb7717162b5b2ccfa3d5b55d83240ccfa",
@@ -202,6 +206,7 @@
       },
       {
         "releaseVersion": "0.1.2",
+        "releaseDate": "2017-04-23 02:33:01 -0200",
         "tagName": "master@0.1.2",
         "tagRevision": "965026a0ad8dcb1a673e812aa58104c34149636a",
         "historyRevision": "e0ebdd9379acc65035a1729541d56ee60d4b73d2",
@@ -251,6 +256,7 @@
       },
       {
         "releaseVersion": "0.1.1",
+        "releaseDate": "2017-04-23 02:26:55 -0200",
         "tagName": "master@0.1.1",
         "tagRevision": "c97e2ed6ba8fa19764bd936f381005499bb9e531",
         "historyRevision": "7accb991dd3a15a7f796e3bbe11a9e2fbfc2ce9b",
@@ -300,6 +306,7 @@
       },
       {
         "releaseVersion": "0.1.0",
+        "releaseDate": "2017-02-10 22:25:13 -0200",
         "tagName": "master@0.1.0",
         "tagRevision": "4757b21855dc427d65f5b866b73bed00db84e559",
         "historyRevision": "1b7aafcd0c64a5b78437d32e76925dd67d9b9b19",
@@ -349,6 +356,7 @@
       },
       {
         "releaseVersion": "0.0.2",
+        "releaseDate": "2017-01-20 03:02:52 -0200",
         "tagName": "master@0.0.2",
         "tagRevision": "f8c0e5318f1f94bae85aa1b078a9592df34847c2",
         "historyRevision": "6e3117812c01aa5e13779e8b0f44c3c8e3f0115d",
@@ -398,6 +406,7 @@
       },
       {
         "releaseVersion": "0.0.1",
+        "releaseDate": "2017-01-16 16:17:28 -0200",
         "tagName": "master@0.0.1",
         "tagRevision": "94c76797c3a03e9c37c63114159549f9c707d4ad",
         "historyRevision": "07bb0fb5711ee4dd189f2afcca1184db8b2cd5f4",
