@@ -25,7 +25,7 @@ const Footer = styled.div`
   height: 784px;
   overflow: hidden;
 
-  ._background {
+  > ._background {
     z-index: -1;
     position: absolute;
     right: 0;
@@ -37,7 +37,7 @@ const Footer = styled.div`
     transform: rotate(13deg) translateX(100px) scaleX(10) scaleY(10);
   }
 
-  ._food-truck {
+  > ._food-truck {
     margin: 0;
     pointer-events: none;
     user-select: none;
@@ -48,7 +48,7 @@ const Footer = styled.div`
     bottom: 0;
   }
 
-  ._rocket {
+  > ._rocket {
     margin: 0;
     pointer-events: none;
     user-select: none;
@@ -57,6 +57,110 @@ const Footer = styled.div`
     z-index: -1;
     right: 0;
     bottom: 450px;
+  }
+
+  > ._contact {
+    margin-left: 156px;
+    margin-top: 220px;
+
+    > ._title {
+      font-family: Montserrat;
+      font-size: 34px;
+      font-weight: 800;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #ffffff;
+    }
+
+    > ._subtitle {
+      width: 549px;
+      font-family: Montserrat;
+      font-size: 16px;
+      font-weight: 300;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #8797bb;
+    }
+
+    > ._info {
+      margin-top: 50px;
+
+      > br {
+        clear: both;
+        float: left;
+        display: block;
+        position: relative;
+      }
+
+      > ._email {
+        float: left;
+        margin-right: 16px;
+        width: 416px;
+        height: 41px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        border: solid 1px #d2d5de;
+        font-family: Montserrat;
+        font-size: 14px;
+        font-weight: 300;
+        font-style: italic;
+        font-stretch: normal;
+        letter-spacing: normal;
+        color: #5b6f9d;
+        line-height: 41px;
+        padding-left: 10px;
+      }
+
+      > ._send-btn {
+        cursor: pointer;
+        float: left;
+        width: 105px;
+        height: 40px;
+        border-radius: 5px;
+        background-color: #4c84ff;
+        line-height: 40px;
+
+        > ._icon {
+          float: left;
+          margin-left: 5px;
+          margin-top: 5px;
+        }
+
+        > ._text {
+          float: left;
+          font-family: Montserrat;
+          font-size: 14px;
+          font-weight: normal;
+          font-style: normal;
+          font-stretch: normal;
+          letter-spacing: normal;
+          margin-left: 5px;
+          color: #ffffff;
+        }
+      }
+
+      ._details {
+        margin-top: 20px;
+        width: 537px;
+        height: 110px;
+        border-radius: 4px;
+        background-color: #ffffff;
+        border: solid 1px #d2d5de;
+        font-family: Montserrat;
+        font-size: 14px;
+        font-weight: 300;
+        font-style: italic;
+        font-stretch: normal;
+        letter-spacing: normal;
+        color: #5b6f9d;
+        padding-left: 10px;
+        padding-top: 10px;
+      }
+    }
   }
 `
 
@@ -355,6 +459,20 @@ class HomePage extends React.Component {
           <img className="_rocket" src={withPrefix('img/group-17.svg')} />
           <div className="_background" />
           <img className="_food-truck" src={withPrefix('img/group-16.svg')} />
+
+          <div className="_contact">
+            <div className="_title">Keep in touch!</div><br />
+            <div className="_subtitle">Contact us to help convert your favorite existing open source tutorials to Tortilla and keep them up to date!<br /><br />On premise option - want to upgrade your internal company guides to Tortilla, visible only to your employees? Contact us for help</div>
+            <div className="_info">
+              <input className="_email" />
+              <div className="_send-btn">
+                <img className="_icon" src="icns_30/icns-30-send.svg" />
+                <div className="_text">Send</div>
+              </div>
+              <br />
+              <textarea className="_details" />
+            </div>
+          </div>
         </Footer>
 
         <UnderBar>
