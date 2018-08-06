@@ -21,6 +21,7 @@ module.exports = async ({ graphql, actions }) => {
               number
               revision
               diff
+              releaseDate
               steps {
                 id
                 name

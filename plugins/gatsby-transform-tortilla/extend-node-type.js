@@ -75,6 +75,9 @@ module.exports = (
       diff: {
         type: GraphQLString
       },
+      releaseDate: {
+        type: GraphQLString
+      },
       steps: {
         type: new GraphQLList(stepType),
         args: {

@@ -20,7 +20,10 @@ module.exports = ({ tutorial, createPage }) => {
     const versionName = version.name
     const versionNumber = version.number
     const versionHistory = version.history
-    const allVersionsNumbers = tutorial.versions.map(({ number }) => number)
+    const allVersions = tutorial.versions.map(({ number, releaseDate }) => ({
+      number,
+      releaseDate,
+    }))
 
     const common = {
       tutorialName,
@@ -28,7 +31,7 @@ module.exports = ({ tutorial, createPage }) => {
       tutorialVersion,
       versionNumber,
       versionName,
-      allVersionsNumbers,
+      allVersions,
     }
 
     // TODO: Create and cache on request

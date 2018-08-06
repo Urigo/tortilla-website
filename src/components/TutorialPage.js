@@ -124,6 +124,10 @@ export default class TutorialPage extends React.Component {
     tutorial: PropTypes.object.isRequired,
   }
 
+  get allVersionsNumbers() {
+    return this.props.common.allVersions.map(version => version.number)
+  }
+
   menu = [
     { name: 'steps', icon: faShoePrints },
     { name: 'diffs', icon: faListUl },
@@ -170,7 +174,7 @@ export default class TutorialPage extends React.Component {
   renderSubMenuContent() {
     switch (this.state.activeTab) {
       case 'diffs':
-        const srcVersions = this.props.common.allVersionsNumbers.filter(version =>
+        const srcVersions = this.allVersionsNumbers.filter(version =>
           version !== this.props.common.versionNumber
         )
 
@@ -262,7 +266,7 @@ export default class TutorialPage extends React.Component {
                   &nbsp;VERSIONS
                 </TopBarSubTitle>
                 <VersionsBar
-                  allVersions={this.props.common.allVersionsNumbers}
+                  allVersions={this.allVersionsNumbers}
                   activeVersion={this.props.common.versionNumber}
                   activateVersion={this.activateVersion}
                 />

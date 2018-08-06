@@ -217,6 +217,7 @@ function getVersions(doc) {
     revision: release.tagRevision,
     history: release.historyRevision,
     diff: release.changesDiff,
+    releaseDate: release.releaseDate,
     steps: getSteps(release),
   }));
 }
