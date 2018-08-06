@@ -36,22 +36,38 @@ const extractDiffs = (exports) => {
   return (ast) => {
     const root = ast.children
 
-    root.filter((node) => {
-      return (
-        node.type === 'heading' &&
-        node.depth === 4 &&
-        node.children &&
-        node.children.length === 1 &&
-        node.children[0].type === 'text' &&
-        node.children[0].value.match(/Step \d+\.\d+\:/)
-      )
+    root.map((node) => {
+      if (
+        node.type !== 'heading' ||
+        node.depth !== 4 ||
+        !node.children
+      ) {
+        return
+      }
+
+      let diffTitleNode = node.children[0]
+
+      if (!diffTitleNode) return
+
+      if (diffTitleNode.type === 'link' && diffTitleNode.children) {
+        diffTitleNode = diffTitleNode.children[0]
+      }
+
+      if (!diffTitleNode || diffTitleNode.type !== 'text') return
+
+      const title = diffTitleNode.value.match(/Step (\d+\.\d+)\:/)
+
+      return title && {
+        stepIndex: title[1],
+        node,
+      }
     })
-    .forEach((node) => {
+    .filter(Boolean)
+    .forEach(({ node, stepIndex }) => {
       let i = root.indexOf(node)
-      let title = node.children.map(child => child.value).join('')
 
       const diff = {
-        index: title.match(/Step (\d+\.\d+)/)[1],
+        index: stepIndex,
         value: '',
       }
 
@@ -63,7 +79,7 @@ const extractDiffs = (exports) => {
         node.depth === 5 &&
         node.children
       ) {
-        title = node.children.map(child => child.value).join('')
+        const title = node.children.map(child => child.value).join('')
 
         let [operation, oldPath, newPath = oldPath] = title.match(
           /([^\s]+) ([^\s]+)(?: to ([^\s]+))?/
