@@ -143,7 +143,7 @@ const Footer = styled.div`
         }
       }
 
-      ._details {
+      > ._details {
         margin-top: 20px;
         width: 537px;
         height: 110px;
@@ -159,6 +159,32 @@ const Footer = styled.div`
         color: #5b6f9d;
         padding-left: 10px;
         padding-top: 10px;
+      }
+
+      > ._follow {
+        width: 537px;
+        margin-top: 10px;
+
+        > ._text {
+          float: left;
+          font-family: Montserrat;
+          font-size: 16px;
+          font-weight: 300;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          color: #8797bb;
+        }
+
+        > ._social-btns {
+          float: right;
+
+          > img {
+            margin-left: 10px;
+            cursor: pointer;
+          }
+        }
       }
     }
   }
@@ -466,11 +492,18 @@ class HomePage extends React.Component {
             <div className="_info">
               <input className="_email" />
               <div className="_send-btn">
-                <img className="_icon" src="icns_30/icns-30-send.svg" />
+                <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} />
                 <div className="_text">Send</div>
               </div>
               <br />
               <textarea className="_details" />
+              <div className="_follow">
+                <div className="_text">Don’t forget to follow us ;)</div>
+                <div className="_social-btns">
+                  <img src={withPrefix('icns_30/icns-30-github.svg')} />
+                  <img src={withPrefix('icns_30/icns-30-twitter.svg')} />
+                </div>
+              </div>
             </div>
           </div>
         </Footer>
