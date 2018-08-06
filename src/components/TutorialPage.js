@@ -238,7 +238,7 @@ export default class TutorialPage extends React.Component {
               onSelect={itemName => this.select(itemName)}
             >
               <TortillaLink to="/">
-                <TortillaLogo src={withPrefix('img/logo.png')} alt="Tortilla Logo" />
+                <TortillaLogo src={withPrefix('Logo/logo-tortilla.svg')} alt="Tortilla Logo" />
               </TortillaLink>
             </Menu>
             {this.state.isSubMenuOpen ? <SubMenu>
