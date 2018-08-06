@@ -364,6 +364,38 @@ const IntroDiv = styled.div`
   }
 `
 
+const TechSection = styled.div`
+  width: 700px;
+  text-align: center;
+  margin-top: 150px;
+  margin-left: 156px;
+
+  > ._title {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 800;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #142345;
+  }
+
+  > ._tech-icns {
+    margin-top: 35px;
+
+    > img {
+      margin: 10px;
+      width: 96px;
+      height: 96px;
+      border-radius: 20px;
+      background-color: #ffffff;
+      box-shadow: 10px 10px 20px 0 rgba(180, 188, 217, 0.14);
+    }
+  }
+`
+
 class HomePage extends React.Component {
   static propTypes = {
     tutorials: PropTypes.arrayOf(PropTypes.any),
@@ -479,6 +511,25 @@ class HomePage extends React.Component {
               style={{ backgroundColor: '#8585ff', boxShadow: '10px 10px 20px 0 rgba(133, 133, 255, 0.2)' }}
             />
           </FeatureCardsSection>
+
+          <TechSection>
+            <div className="_title">“We are always use the newest”</div>
+            <div className="_title">technologies…”</div>
+            <div className="_tech-icns">
+              <img src={withPrefix('icns_30/icns-30-angular.svg')} />
+              <img src={withPrefix('icns_30/icns-30-graphql.svg')} />
+              <img src={withPrefix('icns_30/icns-30-apolo.svg')} />
+              <img src={withPrefix('icns_30/icns-30-react.svg')} />
+              <img src={withPrefix('icns_30/icns-30-meteor.svg')} />
+              <img src={withPrefix('icns_30/icns-30-webpack.svg')} />
+              <img src={withPrefix('icns_30/icns-30-js.svg')} />
+              <img src={withPrefix('icns_30/icns-30-node.svg')} />
+              <img src={withPrefix('icns_30/icns-30-post.svg')} />
+              <img src={withPrefix('icns_30/icns-30-post-copy.svg')} />
+              <img src={withPrefix('icns_30/icns-30-c.svg')} />
+              <img src={withPrefix('icns_30/icns-30-sequelize.svg')} />
+            </div>
+          </TechSection>
         </Body>
 
         <Footer>
