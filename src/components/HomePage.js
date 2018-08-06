@@ -1,4 +1,4 @@
-import { withPrefix, navigateTo } from 'gatsby'
+import { withPrefix } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -494,24 +494,28 @@ class HomePage extends React.Component {
           >
             <FeaturedTutorial
               imgSrc={withPrefix('img/whatsapp.svg')}
+              link="/tutorial/whatsapp/step/1"
               title="An Angular based Whatsapp clone"
               description="Using Angular, GraphQL, Apollo, PostgreSQL and TypeORM"
               style={{ backgroundColor: '#27e0c0', boxShadow: '10px 10px 20px 0 rgba(39, 224 ,192 ,0.2)' }}
             />
             <FeaturedTutorial
               imgSrc={withPrefix('img/destination.svg')}
+              link="/tutorial/node-addon/step/1"
               title="Building a native Node.JS addon"
               description="Native NodeJS add-on creation tutorial using C++ for improved performance"
               style={{ backgroundColor: '#ffd22d', boxShadow: '10px 10px 20px 0 rgba(255, 210, 45, 0.2)' }}
             />
             <FeaturedTutorial
               imgSrc={withPrefix('img/snake-1.svg')}
+              link="/tutorial/radial-snake/step/1"
               title="A Tron-style snake game"
               description="How to implement a game engine in JS and build a style game"
               style={{ backgroundColor: '#ff596d', boxShadow: '10px 10px 20px 0 rgba(255, 89, 109, 0.2)' }}
             />
             <FeaturedTutorial
               imgSrc={withPrefix('img/love.svg')}
+              link="/tutorial/chatty/step/1"
               title="A chat app with React Native"
               description="Chat clone using React Native, GraphQL, Apollo, SQL and Sequelize"
               style={{ backgroundColor: '#8585ff', boxShadow: '10px 10px 20px 0 rgba(133, 133, 255, 0.2)' }}
@@ -557,13 +561,13 @@ class HomePage extends React.Component {
               <div className="_follow">
                 <div className="_text">Don’t forget to follow us ;)</div>
                 <div className="_social-btns">
-                  <a href="https://twitter.com/UriGoldshtein">
+                  <a href={TWITTER_URL}>
                     <img
                       src={withPrefix('icns_30/icns-30-github.svg')}
                       alt="github"
                     />
                   </a>
-                  <a href="https://github.com/Urigo">
+                  <a href={GITHUB_URL}>
                     <img
                       src={withPrefix('icns_30/icns-30-twitter.svg')}
                       alt="twitter"

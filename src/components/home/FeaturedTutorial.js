@@ -1,3 +1,4 @@
+import { Link } from 'gatsby'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -8,6 +9,8 @@ const FeaturedTutorial = styled.div`
   margin: 10px;
 
   > ._box {
+    display: block;
+    text-decoration: none;
     width: ${({ size }) => size}px;
     height: ${({ size }) => size}px;
     padding-top: 20px;
@@ -59,12 +62,13 @@ export default ({
   title,
   description,
   style,
+  link,
 }) => (
   <FeaturedTutorial size={164} imgSize={80}>
-    <div className="_box" style={style}>
+    <Link to={link} className="_box" style={style}>
       <img src={imgSrc} alt={title} />
       <div className="_title">{title}</div>
-    </div>
+    </Link>
 
     <div className="_description">{description}</div>
   </FeaturedTutorial>
