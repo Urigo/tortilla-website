@@ -1,9 +1,8 @@
-import { faCube } from '@fortawesome/fontawesome-free-solid'
+import { withPrefix } from 'gatsby'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import FaIcon from '../common/FaIcon'
 
 const Container = styled.div`
   max-width: 100%;
@@ -68,19 +67,20 @@ const LineHeight = 2
 const Line = styled.div`
   float: left;
   height: ${LineHeight}px;
-  width: 50px;
+  width: 40px;
   margin: ${(VersionBoxHeight - LineHeight) / 2}px 0;
   background-color: ${({ theme }) => theme.primaryBlue};
 `
 
-const CubeSize = 20
+const CubeSize = 25
 
-const Cube = styled(FaIcon).attrs({
-  icon: faCube,
-  size: CubeSize,
+const Cube = styled.img.attrs({
+  width: CubeSize,
 })`
+  display: block;
+  cursor: pointer;
   float: left;
-  margin: ${(VersionBoxHeight - CubeSize) / 2}px 5px;
+  margin: ${(VersionBoxHeight - CubeSize) / 2}px 3px;
   color: ${({ theme }) => theme.primaryBlue};
 `
 
@@ -88,7 +88,9 @@ class VersionsBar extends React.Component {
   static propTypes = {
     activeVersion: PropTypes.string.isRequired,
     allVersions: PropTypes.arrayOf(PropTypes.object).isRequired,
-    activateVersion: PropTypes.func.isRequired,
+    activateStep: PropTypes.func.isRequired,
+    activateDiff: PropTypes.func.isRequired,
+    contentType: PropTypes.string.isRequired,
   }
 
   render() {
@@ -99,14 +101,17 @@ class VersionsBar extends React.Component {
             {index !== 0 && (
               <React.Fragment>
                 <Line />
-                <Cube />
+                <Cube
+                  onClick={this.activateDiff.bind(this, index)}
+                  src={this.getDiffCubeSrc(targetVersion)}
+                />
                 <Line />
               </React.Fragment>
             )}
             <VersionBox
               key={targetVersion.number}
-              className={this.getVersionClassName(targetVersion.number)}
-              onClick={this.activateVersion.bind(this, targetVersion.number)}
+              className={this.getVersionClassName(targetVersion)}
+              onClick={this.activateStep.bind(this, index)}
             >
               <div className="_date">
                 {moment(targetVersion.releaseDate).format('MMM Do')}
@@ -121,14 +126,33 @@ class VersionsBar extends React.Component {
     )
   }
 
-  getVersionClassName(targetVersionNumber) {
-    return targetVersionNumber === this.props.activeVersion ? '_active' : ''
+  getVersionClassName(version) {
+    return (
+      this.props.contentType === 'steps' &&
+      version.number === this.props.activeVersion
+    ) ? '_active' : ''
   }
 
-  activateVersion(targetVersionNumber) {
-    if (targetVersionNumber === this.props.activeVersion) return
+  activateStep(versionIndex) {
+    const version = this.props.allVersions[versionIndex]
 
-    this.props.activateVersion(targetVersionNumber)
+    this.props.activateStep(version)
+  }
+
+  activateDiff(versionIndex) {
+    const currVersion = this.props.allVersions[versionIndex]
+    const prevVersion = this.props.allVersions[versionIndex - 1]
+
+    // Compare previous version to current version
+    this.props.activateDiff(prevVersion, currVersion)
+  }
+
+  getDiffCubeSrc(version) {
+    return (
+      this.props.contentType === 'diffs' &&
+      version.number === this.props.activeVersion
+    ) ? withPrefix('icns_30/icns-30-diff-clicked.svg')
+      : withPrefix('icns_30/icns-30-diff.svg')
   }
 }
 

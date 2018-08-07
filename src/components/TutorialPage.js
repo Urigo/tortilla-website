@@ -11,7 +11,7 @@ import {
 
 import FaIcon from './common/FaIcon'
 import storage from '../utils/storage';
-import { stepRoute } from '../utils/routes'
+import { stepRoute, diffRoute } from '../utils/routes'
 import {
   Menu,
   StepsMenu,
@@ -268,7 +268,9 @@ export default class TutorialPage extends React.Component {
                 <VersionsBar
                   allVersions={this.props.common.allVersions}
                   activeVersion={this.props.common.versionNumber}
-                  activateVersion={this.activateVersion}
+                  activateStep={this.activateStep}
+                  activateDiff={this.activateDiff}
+                  contentType={this.props.contentType}
                 />
               </TopBar>
               <MainContent>
@@ -296,11 +298,21 @@ export default class TutorialPage extends React.Component {
     }
   }
 
-  activateVersion = (targetVersion) => {
+  activateStep = (version) => {
     const link = stepRoute({
       tutorialName: this.props.common.tutorialName,
-      version: targetVersion,
+      version: version.number,
       step: 1,
+    })
+
+    push(link)
+  }
+
+  activateDiff = (srcVersion, destVersion) => {
+    const link = diffRoute({
+      tutorialName: this.props.common.tutorialName,
+      srcVersion: srcVersion.number,
+      destVersion: destVersion.number,
     })
 
     push(link)
