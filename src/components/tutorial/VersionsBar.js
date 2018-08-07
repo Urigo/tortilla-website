@@ -15,7 +15,7 @@ const VersionBox = styled.div`
   float: left;
   width: 120px;
   height: ${VersionBoxHeight}px;
-  border: 2px solid ${({ theme }) => theme.primaryBlue};
+  border: 1px solid ${({ theme }) => theme.primaryBlue};
   border-radius: 3px;
   cursor: pointer;
   padding: 5px;
@@ -62,16 +62,17 @@ const VersionBox = styled.div`
   }
 `
 
-const LineHeight = 2
+const LineHeight = 1
 
 const Line = styled.div`
   float: left;
-  border: 1px dashed ${({ theme }) => theme.primaryBlue};
+  border: ${LineHeight / 2}px dashed ${({ theme }) => theme.primaryBlue};
   height: ${LineHeight}px;
   width: 40px;
   margin: ${(VersionBoxHeight - LineHeight) / 2}px 0;
 
   &._active {
+    border-width: ${LineHeight}px;
     border-style: solid;
   }
 `
@@ -97,6 +98,10 @@ class VersionsBar extends React.Component {
     contentType: PropTypes.string.isRequired,
   }
 
+  state = {
+    hoveredCube: null
+  }
+
   render() {
     return (
       <Container>
@@ -107,6 +112,8 @@ class VersionsBar extends React.Component {
                 <Line className={this.getLineClassName(targetVersion)} />
                 <Cube
                   onClick={this.activateDiff.bind(this, index)}
+                  onMouseEnter={() => this.setState({ hoveredCube: targetVersion })}
+                  onMouseLeave={() => this.setState({ hoveredCube: null })}
                   src={this.getDiffCubeSrc(targetVersion)}
                 />
                 <Line className={this.getLineClassName(targetVersion)} />
@@ -160,8 +167,13 @@ class VersionsBar extends React.Component {
 
   getDiffCubeSrc(version) {
     return (
-      this.props.contentType === 'diffs' &&
-      version.number === this.props.activeVersion
+      (
+        this.state.hoveredCube &&
+        this.state.hoveredCube.number === version.number
+      ) || (
+        this.props.contentType === 'diffs' &&
+        version.number === this.props.activeVersion
+      )
     ) ? withPrefix('icns_30/icns-30-diff-clicked.svg')
       : withPrefix('icns_30/icns-30-diff.svg')
   }
