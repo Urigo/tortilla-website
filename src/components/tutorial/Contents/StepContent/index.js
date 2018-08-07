@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 
-import { parseDiff, Diff as ReactDiffView } from '../../../libs/react-diff-view'
-import Stepper from '../../common/Stepper'
-import ImproveButton from '../ImproveButton'
-import { stepRoute, isVersionSpecific } from '../../../utils/routes'
+import SimpleDiffView from './SimpleDiffView'
+import { parseDiff } from '../../../../libs/react-diff-view'
+import Stepper from '../../../common/Stepper'
+import ImproveButton from '../../ImproveButton'
+import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
 
 const occupied = Symbol()
 
@@ -206,11 +207,7 @@ export default class extends React.Component {
 
     return new Promise((resolve) => {
       ReactDOM.render(
-        <ReactDiffView
-          hunks={file.hunks}
-          viewType="unified"
-          key={`${file.oldPath}_${file.newPath}`}
-        />
+        <SimpleDiffView hunks={file.hunks} key={`${file.oldPath}_${file.newPath}`} />
       , container, resolve)
     })
   }
