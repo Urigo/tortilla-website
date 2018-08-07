@@ -66,10 +66,14 @@ const LineHeight = 2
 
 const Line = styled.div`
   float: left;
+  border: 1px dashed ${({ theme }) => theme.primaryBlue};
   height: ${LineHeight}px;
   width: 40px;
   margin: ${(VersionBoxHeight - LineHeight) / 2}px 0;
-  background-color: ${({ theme }) => theme.primaryBlue};
+
+  &._active {
+    border-style: solid;
+  }
 `
 
 const CubeSize = 25
@@ -100,12 +104,12 @@ class VersionsBar extends React.Component {
           <React.Fragment key={`${targetVersion.number}_${index}`}>
             {index !== 0 && (
               <React.Fragment>
-                <Line />
+                <Line className={this.getLineClassName(targetVersion)} />
                 <Cube
                   onClick={this.activateDiff.bind(this, index)}
                   src={this.getDiffCubeSrc(targetVersion)}
                 />
-                <Line />
+                <Line className={this.getLineClassName(targetVersion)} />
               </React.Fragment>
             )}
             <VersionBox
@@ -124,6 +128,13 @@ class VersionsBar extends React.Component {
         ))}
       </Container>
     )
+  }
+
+  getLineClassName(version) {
+    return (
+      this.props.contentType === 'diffs' &&
+      version.number === this.props.activeVersion
+    ) ? '_active' : ''
   }
 
   getVersionClassName(version) {
