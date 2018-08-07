@@ -266,7 +266,7 @@ export default class TutorialPage extends React.Component {
                   &nbsp;VERSIONS
                 </TopBarSubTitle>
                 <VersionsBar
-                  allVersions={this.allVersionsNumbers}
+                  allVersions={this.props.common.allVersions}
                   activeVersion={this.props.common.versionNumber}
                   activateVersion={this.activateVersion}
                 />
