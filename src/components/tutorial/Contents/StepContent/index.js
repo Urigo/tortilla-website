@@ -144,7 +144,14 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
+    window.addEventListener('scroll', this.resetStepsMenuDimensions, true)
+
+    this.resetStepsMenuDimensions()
     this.appendDiffs()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.resetStepsMenuDimensions, true)
   }
 
   componentDidUpdate(props) {
@@ -168,8 +175,9 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Content>
+      <Content ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
         <StepsHeader
+          ref={ref => this.stepsHeader = ReactDOM.findDOMNode(ref)}
           opened={this.state.stepsMenuOpen}
           style={{ width: `${MenuWidth}px`, float: 'left' }}
           close={this.closeStepsMenu}
@@ -178,7 +186,7 @@ export default class extends React.Component {
         {this.renderBar(Header)}
         <br />
         {this.state.stepsMenuOpen && (
-          <MenuContainer>
+          <MenuContainer ref={ref => this.stepsMenu = ReactDOM.findDOMNode(ref)}>
             <StepsMenu
               tutorialName={this.props.tutorialName}
               tutorialVersion={this.props.tutorialVersion}
@@ -277,7 +285,9 @@ export default class extends React.Component {
     this.setState({
       stepsMenuOpen: true
     }, () => {
+      window.addEventListener('scroll', this.resetStepsMenuDimensions, true)
       storage.setItem('steps-menu-opened', true)
+      this.resetStepsMenuDimensions()
     })
   }
 
@@ -285,7 +295,36 @@ export default class extends React.Component {
     this.setState({
       stepsMenuOpen: false
     }, () => {
+      window.removeEventListener('scroll', this.resetStepsMenuDimensions, true)
       storage.setItem('steps-menu-opened', false)
+      this.resetStepsMenuDimensions()
     })
+  }
+
+  resetStepsMenuDimensions = (e) => {
+    if (!this.state.stepsMenuOpen) {
+      if (this.stepsHeader) {
+        this.stepsHeader.style.transform = ''
+      }
+
+      if (this.stepsMenu) {
+        this.stepsMenu.style.transform = ''
+      }
+
+      return
+    }
+
+    if (!this.container) return
+
+    const { top } = this.container.getBoundingClientRect()
+    const offset = Math.min(top, 0)
+
+    if (this.stepsHeader) {
+      this.stepsHeader.style.transform = `translateY(${-offset}px)`
+    }
+
+    if (this.stepsMenu) {
+      this.stepsMenu.style.transform = `translateY(${-offset}px)`
+    }
   }
 }
