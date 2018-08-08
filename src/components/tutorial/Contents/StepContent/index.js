@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 
-import SimpleDiffView from './SimpleDiffView'
+import storage from '../../../../utils/storage'
 import { parseDiff } from '../../../../libs/react-diff-view'
 import Stepper from '../../../common/Stepper'
 import ImproveButton from '../../ImproveButton'
 import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
+import SimpleDiffView from './SimpleDiffView'
 import StepsHeader from './StepsHeader'
 import StepsMenu from './StepsMenu'
 
@@ -123,7 +124,24 @@ const Html = styled.div`
 `
 
 export default class extends React.Component {
+  get contentContainerStyle() {
+    return this.state.stepsMenuOpen ? {} : {
+      width: '100%'
+    }
+  }
+
+  get footerStyle() {
+    return this.state.stepsMenuOpen ? {} : {
+      width: '100%',
+      marginLeft: 0,
+    }
+  }
+
   htmlRef = React.createRef()
+
+  state = {
+    stepsMenuOpen: storage.getItem('steps-menu-position') || true
+  }
 
   componentDidMount() {
     this.appendDiffs()
@@ -151,34 +169,43 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
-        <StepsHeader style={{ width: `${MenuWidth}px`, float: 'left' }} />
+        <StepsHeader
+          opened={this.state.stepsMenuOpen}
+          style={{ width: `${MenuWidth}px`, float: 'left' }}
+          close={this.closeStepsMenu}
+          open={this.openStepsMenu}
+        />
         {this.renderBar(Header)}
         <br />
-        <MenuContainer>
-          <StepsMenu
-            tutorialName={this.props.tutorialName}
-            tutorialVersion={this.props.tutorialVersion}
-            activeStep={this.props.step}
-            pathname={this.props.pathname}
-          />
-        </MenuContainer>
-        <ContentContainer>
+        {this.state.stepsMenuOpen && (
+          <MenuContainer>
+            <StepsMenu
+              tutorialName={this.props.tutorialName}
+              tutorialVersion={this.props.tutorialVersion}
+              activeStep={this.props.step}
+              pathname={this.props.pathname}
+            />
+          </MenuContainer>
+        )}
+        <ContentContainer style={this.contentContainerStyle}>
           <Html
             ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
             dangerouslySetInnerHTML={{ __html: this.props.step.html }}
           />
         </ContentContainer>
-        {this.renderBar(Footer)}
+        {this.renderBar(Footer, {
+          style: this.footerStyle
+        })}
       </Content>
     );
   }
 
-  renderBar(BarType) {
+  renderBar(BarType, props = {}) {
     const step = this.props.step
     const stepsNum = this.props.tutorialVersion.steps.length
 
     return (
-      <BarType>
+      <BarType {...props}>
         <Left>
           <Title>{step.name}</Title>
         </Left>
@@ -243,6 +270,22 @@ export default class extends React.Component {
       ReactDOM.render(
         <SimpleDiffView hunks={file.hunks} key={`${file.oldPath}_${file.newPath}`} />
       , container, resolve)
+    })
+  }
+
+  openStepsMenu = () => {
+    this.setState({
+      stepsMenuOpen: true
+    }, () => {
+      storage.setItem('steps-menu-opened', true)
+    })
+  }
+
+  closeStepsMenu = () => {
+    this.setState({
+      stepsMenuOpen: false
+    }, () => {
+      storage.setItem('steps-menu-opened', false)
     })
   }
 }

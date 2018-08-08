@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { faList, faTimes, faAngleDown } from '@fortawesome/fontawesome-free-solid'
-import storage from '../../../../utils/storage'
 import FaIcon from '../../../common/FaIcon'
 
 const StepbarHeight = 63
@@ -66,10 +65,6 @@ const Stepline = styled.div`
 `
 
 class StepsHeader extends React.Component {
-  state = {
-    opened: true || storage.getItem('steps-menu-opened')
-  }
-
   render() {
     return (
       <div style={this.props.style}>
@@ -78,31 +73,15 @@ class StepsHeader extends React.Component {
             <ListIcon />
             <div className="_text">Step</div>
           </div>
-          {this.state.opened ? (
-            <CloseBtn onClick={this.close} />
+          {this.props.opened ? (
+            <CloseBtn onClick={this.props.close} />
           ) : (
-            <OpenBtn onClick={this.open} />
+            <OpenBtn onClick={this.props.open} />
           )}
         </Stepbar>
         <Stepline />
       </div>
     )
-  }
-
-  open = () => {
-    this.setState({
-      opened: true
-    }, () => {
-      storage.setItem('steps-menu-opened', true)
-    })
-  }
-
-  close = () => {
-    this.setState({
-      opened: false
-    }, () => {
-      storage.setItem('steps-menu-opened', false)
-    })
   }
 }
 
