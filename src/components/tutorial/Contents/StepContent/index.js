@@ -8,6 +8,7 @@ import { parseDiff } from '../../../../libs/react-diff-view'
 import Stepper from '../../../common/Stepper'
 import ImproveButton from '../../ImproveButton'
 import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
+import StepsHeader from './StepsHeader'
 import StepsMenu from './StepsMenu'
 
 const occupied = Symbol('occupied')
@@ -16,6 +17,13 @@ const MenuWidth = 300
 const Content = styled.div`
   height: 100%;
   background-color: ${({ theme }) => theme.white};
+
+  > br {
+    clear: both;
+    float: left;
+    display: block;
+    position: relative;
+  }
 `
 
 const MenuContainer = styled.div`
@@ -38,10 +46,14 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   text-align: left;
+  float: left;
+  width: calc(100% - ${MenuWidth}px);
+  border-left: solid 1px ${({ theme }) => theme.separator};
 `
 
 const Footer = Header.extend`
   border-top: 1px solid ${({ theme }) => theme.separator};
+  margin-left: ${MenuWidth}px;
 `
 
 const Left = styled.div`
@@ -139,6 +151,9 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
+        <StepsHeader style={{ width: `${MenuWidth}px`, float: 'left' }} />
+        {this.renderBar(Header)}
+        <br />
         <MenuContainer>
           <StepsMenu
             tutorialName={this.props.tutorialName}
@@ -148,13 +163,12 @@ export default class extends React.Component {
           />
         </MenuContainer>
         <ContentContainer>
-          {this.renderBar(Header)}
           <Html
             ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
             dangerouslySetInnerHTML={{ __html: this.props.step.html }}
           />
-          {this.renderBar(Footer)}
         </ContentContainer>
+        {this.renderBar(Footer)}
       </Content>
     );
   }
