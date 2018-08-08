@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { push } from 'gatsby'
-import { faList, faTimes } from '@fortawesome/fontawesome-free-solid'
+import { faList, faTimes, faAngleDown } from '@fortawesome/fontawesome-free-solid'
 
 import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
@@ -57,6 +57,17 @@ const CloseBtn = styled(FaIcon).attrs({
   icon: faTimes,
   size: 20,
 })`
+  cursor: pointer;
+  float: right;
+  margin: 10px;
+  color: ${({theme}) => theme.primaryBlue};
+`
+
+const OpenBtn = styled(FaIcon).attrs({
+  icon: faAngleDown,
+  size: 20,
+})`
+  cursor: pointer;
   float: right;
   margin: 10px;
   color: ${({theme}) => theme.primaryBlue};
@@ -136,6 +147,10 @@ export default class extends React.Component {
 
     this.containerRef = null;
     this.setContainerRef = el => this.containerRef = el;
+
+    this.state = {
+      opened: true || storage.getItem('steps-menu-opened')
+    }
   }
 
   componentDidMount() {
@@ -143,6 +158,8 @@ export default class extends React.Component {
   }
 
   scrollToActive() {
+    if (!this.state.opened) return
+
     // XXX: We can change this behaviour later
     const pos = this.read();
 
@@ -178,10 +195,14 @@ export default class extends React.Component {
             <ListIcon />
             <div className="_text">STEPS</div>
           </div>
-          <CloseBtn />
+          {this.state.opened ? (
+            <CloseBtn onClick={this.close} />
+          ) : (
+            <OpenBtn onClick={this.open} />
+          )}
         </Header>
         <Underline />
-        {this.props.tutorialVersion.steps.map(step => {
+        {this.state.opened && this.props.tutorialVersion.steps.map(step => {
           const active = this.props.activeStep &&
             step.id === this.props.activeStep.id
           const link = propsToLink(this.props, step)
@@ -203,5 +224,21 @@ export default class extends React.Component {
         })}
       </Steps>
     )
+  }
+
+  open = () => {
+    this.setState({
+      opened: true
+    }, () => {
+      storage.setItem('steps-menu-opened', true)
+    })
+  }
+
+  close = () => {
+    this.setState({
+      opened: false
+    }, () => {
+      storage.setItem('steps-menu-opened', false)
+    })
   }
 }
