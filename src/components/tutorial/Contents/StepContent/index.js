@@ -8,19 +8,29 @@ import { parseDiff } from '../../../../libs/react-diff-view'
 import Stepper from '../../../common/Stepper'
 import ImproveButton from '../../ImproveButton'
 import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
+import StepsMenu from './StepsMenu'
 
-const occupied = Symbol()
+const occupied = Symbol('occupied')
+const MenuWidth = 300
 
 const Content = styled.div`
   height: 100%;
   background-color: ${({ theme }) => theme.white};
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
+`
+
+const MenuContainer = styled.div`
+  float: left;
+  width: ${MenuWidth}px;
+`
+
+const ContentContainer = styled.div`
+  float: left;
+  width: calc(100% - ${MenuWidth}px);
+  border-left: solid 1px ${({ theme }) => theme.separator};
 `
 
 const Header = styled.div`
-  padding: 10.2px 25px;
+  padding: 10.5px 25px;
   border-bottom: 1px solid ${({ theme }) => theme.separator};
   display: flex;
   flex: 0 0 auto;
@@ -129,12 +139,22 @@ export default class extends React.Component {
   render() {
     return (
       <Content>
-        {this.renderBar(Header)}
-        <Html
-          ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
-          dangerouslySetInnerHTML={{ __html: this.props.step.html }}
-        />
-        {this.renderBar(Footer)}
+        <MenuContainer>
+          <StepsMenu
+            tutorialName={this.props.tutorialName}
+            tutorialVersion={this.props.tutorialVersion}
+            activeStep={this.props.step}
+            pathname={this.props.pathname}
+          />
+        </MenuContainer>
+        <ContentContainer>
+          {this.renderBar(Header)}
+          <Html
+            ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
+            dangerouslySetInnerHTML={{ __html: this.props.step.html }}
+          />
+          {this.renderBar(Footer)}
+        </ContentContainer>
       </Content>
     );
   }

@@ -1,13 +1,65 @@
 import React from 'react'
 import styled from 'styled-components'
 import { push } from 'gatsby'
+import { faList, faTimes } from '@fortawesome/fontawesome-free-solid'
 
-import { stepRoute, isVersionSpecific } from '../../../utils/routes'
-import storage from '../../../utils/storage';
+import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
+import storage from '../../../../utils/storage'
+import FaIcon from '../../../common/FaIcon'
 
-export const Steps = styled.div`
+const HeaderHeight = 63
+const UnderlineHeight = 4
+
+const Steps = styled.div`
   display: flex;
   flex-direction: column;
+`
+
+const Header = styled.div`
+  height: ${HeaderHeight}px;
+  border-bottom: solid 1px ${({ theme }) => theme.separator};
+  padding-top: 10px;
+
+  > ._title {
+    > ._text {
+      margin: 10px;
+      float: left;
+      font-family: Montserrat;
+      font-size: 17px;
+      font-weight: 800;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: ${({theme}) => theme.primaryBlue};
+    }
+  }
+`
+
+const Underline = styled.span`
+  width: 165px;
+  border-radius: 6px;
+  margin-top: ${-UnderlineHeight / 2}px;
+  height: ${UnderlineHeight}px;
+  background-color: ${({theme}) => theme.primaryBlue};
+`
+
+const ListIcon = styled(FaIcon).attrs({
+  icon: faList,
+  size: 20,
+})`
+  float: left;
+  margin: 10px;
+  color: ${({theme}) => theme.primaryBlue};
+`
+
+const CloseBtn = styled(FaIcon).attrs({
+  icon: faTimes,
+  size: 20,
+})`
+  float: right;
+  margin: 10px;
+  color: ${({theme}) => theme.primaryBlue};
 `
 
 const Number = styled.div`
@@ -119,27 +171,37 @@ export default class extends React.Component {
   }
 
   render() {
-    return <Steps innerRef={this.setContainerRef}>
-      {this.props.tutorialVersion.steps.map(step => {
-        const active = this.props.activeStep &&
-          step.id === this.props.activeStep.id
-        const link = propsToLink(this.props, step)
+    return (
+      <Steps innerRef={this.setContainerRef}>
+        <Header>
+          <div className="_title">
+            <ListIcon />
+            <div className="_text">STEPS</div>
+          </div>
+          <CloseBtn />
+        </Header>
+        <Underline />
+        {this.props.tutorialVersion.steps.map(step => {
+          const active = this.props.activeStep &&
+            step.id === this.props.activeStep.id
+          const link = propsToLink(this.props, step)
 
-        if (active) {
+          if (active) {
+            return (
+              <ActiveStep key={step.id} innerRef={this.setActiveRef}>
+                <Number>{step.id}</Number>
+                <Name>{step.name}</Name>
+              </ActiveStep>
+            )
+          }
           return (
-            <ActiveStep key={step.id} innerRef={this.setActiveRef}>
+            <Step key={step.id} onClick={() => this.push(link)}>
               <Number>{step.id}</Number>
               <Name>{step.name}</Name>
-            </ActiveStep>
+            </Step>
           )
-        }
-        return (
-          <Step key={step.id} onClick={() => this.push(link)}>
-            <Number>{step.id}</Number>
-            <Name>{step.name}</Name>
-          </Step>
-        )
-      })}
-    </Steps>;
+        })}
+      </Steps>
+    )
   }
 }
