@@ -39,6 +39,7 @@ const TopBarTitle = styled.h1`
   margin-bottom: 10px;
   text-overflow: ellipsis;
   font-size: 34px;
+  white-space: nowrap;
 `
 
 const TopBarSeparator = styled.div`

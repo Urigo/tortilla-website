@@ -5,14 +5,16 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  max-width: 100%;
-  overflow-y: overlay;
+  width: 100%;
+  overflow-x: overlay;
+  overflow-y: hidden;
+  white-space: nowrap;
 `
 
 const VersionBoxHeight = 60
 
 const VersionBox = styled.div`
-  float: left;
+  display: inline-block;
   width: 120px;
   height: ${VersionBoxHeight}px;
   border: 1px solid ${({ theme }) => theme.primaryBlue};
@@ -63,13 +65,14 @@ const VersionBox = styled.div`
 `
 
 const LineHeight = 1
+const CubeSize = 25
 
 const Line = styled.div`
-  float: left;
+  display: inline-block;
   border: ${LineHeight / 2}px dashed ${({ theme }) => theme.primaryBlue};
   height: ${LineHeight}px;
   width: 40px;
-  margin: ${(VersionBoxHeight - LineHeight) / 2}px 0;
+  margin: ${(VersionBoxHeight - LineHeight - CubeSize - 10) / 2}px 0;
 
   &._active {
     border-width: ${LineHeight}px;
@@ -77,15 +80,12 @@ const Line = styled.div`
   }
 `
 
-const CubeSize = 25
-
 const Cube = styled.img.attrs({
   width: CubeSize,
 })`
-  display: block;
+  display: inline-block;
   cursor: pointer;
-  float: left;
-  margin: ${(VersionBoxHeight - CubeSize) / 2}px 3px;
+  margin: 0 3px;
   color: ${({ theme }) => theme.primaryBlue};
 `
 
