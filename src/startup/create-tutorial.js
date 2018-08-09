@@ -34,15 +34,13 @@ module.exports = ({ tutorial, createPage }) => {
       allVersions,
     }
 
-    // TODO: Create and cache on request
-    // Create diff page with every possible versions combination
-    tutorial.versions.forEach((srcVersion, srcIndex) => {
+    // If iterated version is not the most recent.
+    if (index) {
+      const srcVersion = tutorial.versions[index - 1]
       const srcVersionNumber = srcVersion.number
       const srcVersionHistory = srcVersion.history
 
-      if (srcVersionNumber == versionNumber) return
-      if (srcIndex == index) return
-
+      // Will create diff page bi-directionally
       createDiff({
         createPage,
         common,
@@ -54,7 +52,7 @@ module.exports = ({ tutorial, createPage }) => {
           tutorialChunk,
         }
       })
-    })
+    }
 
     // Create step page for each step
     version.steps.forEach(step => {

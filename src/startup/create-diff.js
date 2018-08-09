@@ -1,7 +1,5 @@
 const path = require('path')
 const { kebabCase } = require('lodash')
-const { Dump } = require('tortilla/dist/dump')
-const { Git } = require('tortilla/dist/git')
 const { diffReleases } = require('../libs/tortilla')
 const { diffRoute } = require('../utils/routes')
 
