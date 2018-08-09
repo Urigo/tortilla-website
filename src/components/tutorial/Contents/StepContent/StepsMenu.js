@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 
-import { stepRoute, isVersionSpecific } from '../../../utils/routes'
-import storage from '../../../utils/storage';
+import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
+import storage from '../../../../utils/storage'
 
-export const Steps = styled.div`
+const Steps = styled.div`
   display: flex;
   flex-direction: column;
 `
@@ -119,27 +119,29 @@ export default class extends React.Component {
   }
 
   render() {
-    return <Steps innerRef={this.setContainerRef}>
-      {this.props.tutorialVersion.steps.map(step => {
-        const active = this.props.activeStep &&
-          step.id === this.props.activeStep.id
-        const link = propsToLink(this.props, step)
+    return (
+      <Steps innerRef={this.setContainerRef}>
+        {this.props.tutorialVersion.steps.map(step => {
+          const active = this.props.activeStep &&
+            step.id === this.props.activeStep.id
+          const link = propsToLink(this.props, step)
 
-        if (active) {
+          if (active) {
+            return (
+              <ActiveStep key={step.id} innerRef={this.setActiveRef}>
+                <Number>{step.id}</Number>
+                <Name>{step.name}</Name>
+              </ActiveStep>
+            )
+          }
           return (
-            <ActiveStep key={step.id} innerRef={this.setActiveRef}>
+            <Step key={step.id} onClick={() => this.push(link)}>
               <Number>{step.id}</Number>
               <Name>{step.name}</Name>
-            </ActiveStep>
+            </Step>
           )
-        }
-        return (
-          <Step key={step.id} onClick={() => this.push(link)}>
-            <Number>{step.id}</Number>
-            <Name>{step.name}</Name>
-          </Step>
-        )
-      })}
-    </Steps>;
+        })}
+      </Steps>
+    )
   }
 }

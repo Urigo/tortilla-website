@@ -3,23 +3,43 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 
-import { parseDiff, Diff as ReactDiffView } from '../../../libs/react-diff-view'
-import Stepper from '../../common/Stepper'
-import ImproveButton from '../ImproveButton'
-import { stepRoute, isVersionSpecific } from '../../../utils/routes'
+import storage from '../../../../utils/storage'
+import { parseDiff } from '../../../../libs/react-diff-view'
+import Stepper from '../../../common/Stepper'
+import ImproveButton from '../../ImproveButton'
+import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
+import SimpleDiffView from './SimpleDiffView'
+import StepsHeader from './StepsHeader'
+import StepsMenu from './StepsMenu'
 
-const occupied = Symbol()
+const occupied = Symbol('occupied')
+const MenuWidth = 300
 
 const Content = styled.div`
   height: 100%;
   background-color: ${({ theme }) => theme.white};
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
+
+  > br {
+    clear: both;
+    float: left;
+    display: block;
+    position: relative;
+  }
+`
+
+const MenuContainer = styled.div`
+  float: left;
+  width: ${MenuWidth}px;
+`
+
+const ContentContainer = styled.div`
+  float: left;
+  width: calc(100% - ${MenuWidth}px);
+  border-left: solid 1px ${({ theme }) => theme.separator};
 `
 
 const Header = styled.div`
-  padding: 10.2px 25px;
+  padding: 10.5px 25px;
   border-bottom: 1px solid ${({ theme }) => theme.separator};
   display: flex;
   flex: 0 0 auto;
@@ -27,10 +47,14 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   text-align: left;
+  float: left;
+  width: calc(100% - ${MenuWidth}px);
+  border-left: solid 1px ${({ theme }) => theme.separator};
 `
 
 const Footer = Header.extend`
   border-top: 1px solid ${({ theme }) => theme.separator};
+  margin-left: ${MenuWidth}px;
 `
 
 const Left = styled.div`
@@ -100,10 +124,34 @@ const Html = styled.div`
 `
 
 export default class extends React.Component {
+  get contentContainerStyle() {
+    return this.state.stepsMenuOpen ? {} : {
+      width: '100%'
+    }
+  }
+
+  get footerStyle() {
+    return this.state.stepsMenuOpen ? {} : {
+      width: '100%',
+      marginLeft: 0,
+    }
+  }
+
   htmlRef = React.createRef()
 
+  state = {
+    stepsMenuOpen: storage.getItem('steps-menu-position') || true
+  }
+
   componentDidMount() {
+    window.addEventListener('scroll', this.resetStepsMenuDimensions, true)
+
+    this.resetStepsMenuDimensions()
     this.appendDiffs()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.resetStepsMenuDimensions, true)
   }
 
   componentDidUpdate(props) {
@@ -127,23 +175,45 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Content>
-        {this.renderBar(Header)}
-        <Html
-          ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
-          dangerouslySetInnerHTML={{ __html: this.props.step.html }}
+      <Content ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
+        <StepsHeader
+          ref={ref => this.stepsHeader = ReactDOM.findDOMNode(ref)}
+          opened={this.state.stepsMenuOpen}
+          style={{ width: `${MenuWidth}px`, float: 'left' }}
+          close={this.closeStepsMenu}
+          open={this.openStepsMenu}
         />
-        {this.renderBar(Footer)}
+        {this.renderBar(Header)}
+        <br />
+        {this.state.stepsMenuOpen && (
+          <MenuContainer ref={ref => this.stepsMenu = ReactDOM.findDOMNode(ref)}>
+            <StepsMenu
+              tutorialName={this.props.tutorialName}
+              tutorialVersion={this.props.tutorialVersion}
+              activeStep={this.props.step}
+              pathname={this.props.pathname}
+            />
+          </MenuContainer>
+        )}
+        <ContentContainer style={this.contentContainerStyle}>
+          <Html
+            ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
+            dangerouslySetInnerHTML={{ __html: this.props.step.html }}
+          />
+        </ContentContainer>
+        {this.renderBar(Footer, {
+          style: this.footerStyle
+        })}
       </Content>
     );
   }
 
-  renderBar(BarType) {
+  renderBar(BarType, props = {}) {
     const step = this.props.step
     const stepsNum = this.props.tutorialVersion.steps.length
 
     return (
-      <BarType>
+      <BarType {...props}>
         <Left>
           <Title>{step.name}</Title>
         </Left>
@@ -206,12 +276,55 @@ export default class extends React.Component {
 
     return new Promise((resolve) => {
       ReactDOM.render(
-        <ReactDiffView
-          hunks={file.hunks}
-          viewType="unified"
-          key={`${file.oldPath}_${file.newPath}`}
-        />
+        <SimpleDiffView hunks={file.hunks} key={`${file.oldPath}_${file.newPath}`} />
       , container, resolve)
     })
+  }
+
+  openStepsMenu = () => {
+    this.setState({
+      stepsMenuOpen: true
+    }, () => {
+      window.addEventListener('scroll', this.resetStepsMenuDimensions, true)
+      storage.setItem('steps-menu-opened', true)
+      this.resetStepsMenuDimensions()
+    })
+  }
+
+  closeStepsMenu = () => {
+    this.setState({
+      stepsMenuOpen: false
+    }, () => {
+      window.removeEventListener('scroll', this.resetStepsMenuDimensions, true)
+      storage.setItem('steps-menu-opened', false)
+      this.resetStepsMenuDimensions()
+    })
+  }
+
+  resetStepsMenuDimensions = (e) => {
+    if (!this.state.stepsMenuOpen) {
+      if (this.stepsHeader) {
+        this.stepsHeader.style.transform = ''
+      }
+
+      if (this.stepsMenu) {
+        this.stepsMenu.style.transform = ''
+      }
+
+      return
+    }
+
+    if (!this.container) return
+
+    const { top } = this.container.getBoundingClientRect()
+    const offset = Math.min(top, 0)
+
+    if (this.stepsHeader) {
+      this.stepsHeader.style.transform = `translateY(${-offset}px)`
+    }
+
+    if (this.stepsMenu) {
+      this.stepsMenu.style.transform = `translateY(${-offset}px)`
+    }
   }
 }

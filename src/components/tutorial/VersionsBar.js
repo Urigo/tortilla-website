@@ -1,9 +1,8 @@
-import { faCube } from '@fortawesome/fontawesome-free-solid'
+import { withPrefix } from 'gatsby'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import FaIcon from '../common/FaIcon'
 
 const Container = styled.div`
   max-width: 100%;
@@ -16,7 +15,7 @@ const VersionBox = styled.div`
   float: left;
   width: 120px;
   height: ${VersionBoxHeight}px;
-  border: 2px solid ${({ theme }) => theme.primaryBlue};
+  border: 1px solid ${({ theme }) => theme.primaryBlue};
   border-radius: 3px;
   cursor: pointer;
   padding: 5px;
@@ -63,24 +62,30 @@ const VersionBox = styled.div`
   }
 `
 
-const LineHeight = 2
+const LineHeight = 1
 
 const Line = styled.div`
   float: left;
+  border: ${LineHeight / 2}px dashed ${({ theme }) => theme.primaryBlue};
   height: ${LineHeight}px;
-  width: 50px;
+  width: 40px;
   margin: ${(VersionBoxHeight - LineHeight) / 2}px 0;
-  background-color: ${({ theme }) => theme.primaryBlue};
+
+  &._active {
+    border-width: ${LineHeight}px;
+    border-style: solid;
+  }
 `
 
-const CubeSize = 20
+const CubeSize = 25
 
-const Cube = styled(FaIcon).attrs({
-  icon: faCube,
-  size: CubeSize,
+const Cube = styled.img.attrs({
+  width: CubeSize,
 })`
+  display: block;
+  cursor: pointer;
   float: left;
-  margin: ${(VersionBoxHeight - CubeSize) / 2}px 5px;
+  margin: ${(VersionBoxHeight - CubeSize) / 2}px 3px;
   color: ${({ theme }) => theme.primaryBlue};
 `
 
@@ -88,7 +93,13 @@ class VersionsBar extends React.Component {
   static propTypes = {
     activeVersion: PropTypes.string.isRequired,
     allVersions: PropTypes.arrayOf(PropTypes.object).isRequired,
-    activateVersion: PropTypes.func.isRequired,
+    activateStep: PropTypes.func.isRequired,
+    activateDiff: PropTypes.func.isRequired,
+    contentType: PropTypes.string.isRequired,
+  }
+
+  state = {
+    hoveredCube: null
   }
 
   render() {
@@ -98,15 +109,20 @@ class VersionsBar extends React.Component {
           <React.Fragment key={`${targetVersion.number}_${index}`}>
             {index !== 0 && (
               <React.Fragment>
-                <Line />
-                <Cube />
-                <Line />
+                <Line className={this.getLineClassName(targetVersion)} />
+                <Cube
+                  onClick={this.activateDiff.bind(this, index)}
+                  onMouseEnter={() => this.setState({ hoveredCube: targetVersion })}
+                  onMouseLeave={() => this.setState({ hoveredCube: null })}
+                  src={this.getDiffCubeSrc(targetVersion)}
+                />
+                <Line className={this.getLineClassName(targetVersion)} />
               </React.Fragment>
             )}
             <VersionBox
               key={targetVersion.number}
-              className={this.getVersionClassName(targetVersion.number)}
-              onClick={this.activateVersion.bind(this, targetVersion.number)}
+              className={this.getVersionClassName(targetVersion)}
+              onClick={this.activateStep.bind(this, index)}
             >
               <div className="_date">
                 {moment(targetVersion.releaseDate).format('MMM Do')}
@@ -121,14 +137,45 @@ class VersionsBar extends React.Component {
     )
   }
 
-  getVersionClassName(targetVersionNumber) {
-    return targetVersionNumber === this.props.activeVersion ? '_active' : ''
+  getLineClassName(version) {
+    return (
+      this.props.contentType === 'diffs' &&
+      version.number === this.props.activeVersion
+    ) ? '_active' : ''
   }
 
-  activateVersion(targetVersionNumber) {
-    if (targetVersionNumber === this.props.activeVersion) return
+  getVersionClassName(version) {
+    return (
+      this.props.contentType === 'steps' &&
+      version.number === this.props.activeVersion
+    ) ? '_active' : ''
+  }
 
-    this.props.activateVersion(targetVersionNumber)
+  activateStep(versionIndex) {
+    const version = this.props.allVersions[versionIndex]
+
+    this.props.activateStep(version)
+  }
+
+  activateDiff(versionIndex) {
+    const currVersion = this.props.allVersions[versionIndex]
+    const prevVersion = this.props.allVersions[versionIndex - 1]
+
+    // Compare previous version to current version
+    this.props.activateDiff(prevVersion, currVersion)
+  }
+
+  getDiffCubeSrc(version) {
+    return (
+      (
+        this.state.hoveredCube &&
+        this.state.hoveredCube.number === version.number
+      ) || (
+        this.props.contentType === 'diffs' &&
+        version.number === this.props.activeVersion
+      )
+    ) ? withPrefix('icns_30/icns-30-diff-clicked.svg')
+      : withPrefix('icns_30/icns-30-diff.svg')
   }
 }
 

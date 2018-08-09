@@ -39,7 +39,7 @@ const Container = styled.div`
   }
 
   .diff-hunk-header-content {
-    display: inline-block
+    display: inline-block;
     border: none;
     background-color: #f1f8ff;
     color: gray;
