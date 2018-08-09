@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   width: 100%;
+  height: 83px;
   overflow-x: overlay;
   overflow-y: hidden;
   white-space: nowrap;
@@ -67,6 +68,7 @@ const VersionBox = styled.div`
 const LineHeight = 1
 const CubeSize = 25
 
+// TODO: Update paths in diff content view when switching versions
 const Line = styled.div`
   display: inline-block;
   border: ${LineHeight / 2}px dashed ${({ theme }) => theme.primaryBlue};
