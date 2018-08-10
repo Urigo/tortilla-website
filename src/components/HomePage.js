@@ -2,6 +2,7 @@ import { withPrefix } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
+import device from '../utils/device'
 import FeatureCard from './home/FeatureCard'
 import FeaturedTutorial from './home/FeaturedTutorial'
 import FeatureCardsSection from './home/FeatureCardsSection'
@@ -28,6 +29,10 @@ const Footer = styled.div`
   height: 784px;
   overflow: hidden;
 
+  ${device.mobile`
+    height: 1150px;
+  `}
+
   > ._background {
     z-index: -1;
     position: absolute;
@@ -38,6 +43,11 @@ const Footer = styled.div`
     height: 350px;
     transform-origin: top right;
     transform: rotate(13deg) translateX(100px) scaleX(10) scaleY(10);
+
+    ${device.mobile`
+      height: 850px;
+      transform: rotate(13deg) translateX(200px) scaleX(10) scaleY(10);
+    `}
   }
 
   > ._food-truck {
@@ -60,11 +70,22 @@ const Footer = styled.div`
     z-index: -1;
     right: 0;
     bottom: 450px;
+
+    ${device.mobile`
+      top: 0;
+      right: -30px;
+    `}
   }
 
   > ._contact {
     margin-left: 156px;
     margin-top: 220px;
+
+    ${device.mobile`
+      margin-left: 10px;
+      margin-right: 10px;
+      margin-top: 320px;
+    `}
 
     > ._title {
       font-family: Montserrat;
@@ -87,6 +108,10 @@ const Footer = styled.div`
       line-height: normal;
       letter-spacing: normal;
       color: #8797bb;
+
+      ${device.mobile`
+        width: 100%;
+      `}
     }
 
     > ._info {
@@ -116,6 +141,10 @@ const Footer = styled.div`
         color: #5b6f9d;
         line-height: 41px;
         padding-left: 10px;
+
+        ${device.mobile`
+          width: 100%;
+        `}
       }
 
       > ._send-btn {
@@ -126,6 +155,10 @@ const Footer = styled.div`
         border-radius: 5px;
         background-color: #4c84ff;
         line-height: 40px;
+
+        ${device.mobile`
+          float: right;
+        `}
 
         > ._icon {
           float: left;
@@ -162,11 +195,19 @@ const Footer = styled.div`
         color: #5b6f9d;
         padding-left: 10px;
         padding-top: 10px;
+
+        ${device.mobile`
+          width: 100%;
+        `}
       }
 
       > ._follow {
         width: 537px;
         margin-top: 10px;
+
+        ${device.mobile`
+          width: 100%;
+        `}
 
         > ._text {
           float: left;
@@ -182,6 +223,10 @@ const Footer = styled.div`
 
         > ._social-btns {
           float: right;
+
+          ${device.mobile`
+            float: left;
+          `}
 
           > a > img {
             margin-left: 10px;
@@ -208,6 +253,10 @@ const UnderBar = styled.div`
     margin-top: 7px;
     margin-left: 156px;
     margin-right: 10px;
+
+    ${device.mobile`
+      margin-left: 10px;
+    `}
   }
 
   > ._logo-text {
@@ -245,6 +294,10 @@ const UnderBar = styled.div`
     line-height: normal;
     letter-spacing: normal;
     color: #5b6f9d;
+
+    ${device.mobile`
+      margin-right: 10px;
+    `}
   }
 `
 
@@ -552,14 +605,18 @@ class HomePage extends React.Component {
             <div className="_subtitle">Contact us to help convert your favorite existing open source tutorials to Tortilla and keep them up to date!<br /><br />On premise option - want to upgrade your internal company guides to Tortilla, visible only to your employees? Contact us for help</div>
             <div className="_info">
               <input className="_email" />
-              <div className="_send-btn">
-                <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
-                <div className="_text">Send</div>
-              </div>
+              {device.desktop.active && <>
+                <div className="_send-btn">
+                  <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
+                  <div className="_text">Send</div>
+                </div>
+              </>}
               <br />
               <textarea className="_details" />
               <div className="_follow">
-                <div className="_text">Don’t forget to follow us ;)</div>
+                {device.desktop.active && <>
+                  <div className="_text">Don’t forget to follow us ;)</div>
+                </>}
                 <div className="_social-btns">
                   <a href={TWITTER_URL}>
                     <img
@@ -575,14 +632,22 @@ class HomePage extends React.Component {
                   </a>
                 </div>
               </div>
+              {device.mobile.active && <>
+                <div className="_send-btn">
+                  <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
+                  <div className="_text">Send</div>
+                </div>
+              </>}
             </div>
           </div>
         </Footer>
 
         <UnderBar>
           <img className="_logo" src={withPrefix('Logo/logo-tortilla-ondark.svg')} alt="tortilla" />
-          <span className="_logo-text">tortilla</span>
-          <span className="_copyright">Copyright © 2018 Tortilla, Inc.</span>
+          {device.desktop.active && <>
+            <span className="_logo-text">tortilla</span>
+            <span className="_copyright">Copyright © 2018 Tortilla, Inc.</span>
+          </>}
           <span className="_terms">Terms  •  Privacy Policy and Cookie Policy</span>
         </UnderBar>
       </Layout>
