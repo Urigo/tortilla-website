@@ -590,7 +590,7 @@ class HomePage extends React.Component {
           </FeatureCardsSection>
 
           <TechSection>
-            <div className="_title">“We are always use the newest”</div>
+            <div className="_title">“We are always use the newest</div>
             <div className="_title">technologies…”</div>
             <div className="_tech-icns">
               <img src={withPrefix('icns_30/icns-30-angular.svg')} alt="angular" />
