@@ -429,6 +429,11 @@ const TechSection = styled.div`
   margin-top: 150px;
   margin-left: 156px;
 
+  ${device.mobile`
+    margin-left: 0;
+    width: 100%;
+  `}
+
   > ._title {
     font-family: Montserrat;
     font-size: 24px;
@@ -439,6 +444,10 @@ const TechSection = styled.div`
     letter-spacing: normal;
     text-align: center;
     color: #142345;
+
+    ${device.mobile`
+      font-size: 19px;
+    `}
   }
 
   > ._tech-icns {
@@ -451,6 +460,11 @@ const TechSection = styled.div`
       border-radius: 20px;
       background-color: #ffffff;
       box-shadow: 10px 10px 20px 0 rgba(180, 188, 217, 0.14);
+
+      ${device.mobile`
+        width: 18%;
+        height: auto;
+      `}
     }
   }
 `
@@ -515,7 +529,7 @@ class HomePage extends React.Component {
             />
           </FeatureCardsSection>
           <FeatureCardsSection
-            style={{ marginTop: 150 }}
+            style={device.desktop.active ? { marginTop: 150 } : {}}
             title={"Respect the teacher's time"}
             subtitle={"The first platform that respects learners and teachers time, Automatically render your tutorial to Tortilla platform your own website or blog post simultaneously, Contact us for early access, add your new or existing tutorial."}
           >
@@ -541,7 +555,7 @@ class HomePage extends React.Component {
             />
           </FeatureCardsSection>
           <FeatureCardsSection
-            style={{ marginTop: 150 }}
+            style={device.desktop.active ? { marginTop: 150 } : {}}
             title="Here are our current courses"
             subtitle="Always up to date tutorials, Play with versions control - watch git-diff on how and why to upgrade from one version of the tutorial to the next. The best place to keep up with the always-moving Javascript ecosystem. Open source tutorials - contribute and get full access to all the tutorial’s source code and videos."
           >
@@ -587,10 +601,12 @@ class HomePage extends React.Component {
               <img src={withPrefix('icns_30/icns-30-webpack.svg')} alt="webpack" />
               <img src={withPrefix('icns_30/icns-30-js.svg')} alt="js" />
               <img src={withPrefix('icns_30/icns-30-node.svg')} alt="node" />
-              <img src={withPrefix('icns_30/icns-30-post.svg')} alt="post" />
-              <img src={withPrefix('icns_30/icns-30-post-copy.svg')} alt="copy" />
-              <img src={withPrefix('icns_30/icns-30-c.svg')} alt="c" />
-              <img src={withPrefix('icns_30/icns-30-sequelize.svg')} alt="sequelize" />
+              {device.desktop.active && <>
+                <img src={withPrefix('icns_30/icns-30-post.svg')} alt="post" />
+                <img src={withPrefix('icns_30/icns-30-post-copy.svg')} alt="copy" />
+                <img src={withPrefix('icns_30/icns-30-c.svg')} alt="c" />
+                <img src={withPrefix('icns_30/icns-30-sequelize.svg')} alt="sequelize" />
+              </>}
             </div>
           </TechSection>
         </Body>
