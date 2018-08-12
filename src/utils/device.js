@@ -25,18 +25,18 @@ device.onLayoutChange = (callback) => {
 function resetLayout() {
   const type = device.type
 
-  if (type !== 'mobile' && outerWidth <= sizes.mobile) {
+  if (outerWidth <= sizes.mobile) {
     device.desktop.active = false
     device.mobile.active = true
     device.type = 'mobile'
   }
-  else if (type !== 'desktop') {
+  else {
     device.desktop.active = true
     device.mobile.active = false
     device.type = 'desktop'
   }
 
-  if (type !== device.type) {
+  if (device.type !== type) {
     for (let callback of layoutChangeCallbacks) {
       callback()
     }

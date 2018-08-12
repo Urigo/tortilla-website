@@ -544,15 +544,26 @@ class HomePage extends React.Component {
     tutorials: PropTypes.arrayOf(PropTypes.any),
   }
 
+  // SSR media queries fix - will force initial render
+  state = {
+    deviceType: null
+  }
+
   componentDidMount() {
     device.onLayoutChange(() => {
-      this.forceUpdate()
+      this.setState({
+        deviceType: device.type
+      })
+    })
+
+    this.setState({
+      deviceType: device.type
     })
   }
 
   render() {
     return (
-      <Layout key={device.type}>
+      <Layout key={this.state.deviceType}>
         <Header>
           {device.mobile.active && (
             <div className="_fill-up" />
