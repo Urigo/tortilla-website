@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import device from '../../utils/device'
 
 const FeatureCard = styled.div`
   width: 260px;
@@ -9,6 +10,11 @@ const FeatureCard = styled.div`
   box-shadow: 11px 11px 22px 0 rgba(218, 218, 218, 0.41);
   margin: 20px;
 
+  ${device.mobile`
+    width: calc(50% - 10px);
+    margin: 5px;
+  `}
+
   img {
     width: 120px;
     margin: 0;
@@ -16,6 +22,10 @@ const FeatureCard = styled.div`
     margin-right: auto;
     margin-bottom: 10px;
     display: block;
+
+    ${device.mobile`
+      width: 100px;
+    `}
   }
 
   ._title {

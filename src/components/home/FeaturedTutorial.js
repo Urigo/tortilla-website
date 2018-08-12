@@ -1,12 +1,20 @@
 import { Link } from 'gatsby'
 import React from 'react'
 import styled from 'styled-components'
+import device from '../../utils/device'
 
 const FeaturedTutorial = styled.div`
   width: ${({ size }) => size}px;
   padding-top: 30px;
   height: 193px;
   margin: 10px;
+
+  ${device.mobile`
+    padding-top: 0;
+    margin: 5px;
+    width: calc(50% - 10px);
+    height: 130px;
+  `}
 
   > ._box {
     display: block;
@@ -18,6 +26,11 @@ const FeaturedTutorial = styled.div`
     border-radius: 29px;
     cursor: pointer;
 
+    ${device.mobile`
+      width: 100%;
+      height: auto;
+    `}
+
     > img {
       width: ${({ imgSize }) => imgSize}px;
       height: ${({ imgSize }) => imgSize}px;
@@ -25,6 +38,11 @@ const FeaturedTutorial = styled.div`
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 15px;
+
+      ${device.mobile`
+        width: 50px;
+        height: 50px;
+      `}
     }
 
     > ._title {
@@ -70,6 +88,8 @@ export default ({
       <div className="_title">{title}</div>
     </Link>
 
-    <div className="_description">{description}</div>
+    {device.desktop.active && (
+      <div className="_description">{description}</div>
+    )}
   </FeaturedTutorial>
 )

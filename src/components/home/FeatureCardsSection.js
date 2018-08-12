@@ -1,10 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
+import device from '../../utils/device'
 
 const FeatureCardsSection = styled.div`
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+
+  ${device.mobile`
+    padding: 10px;
+    margin-top: 50px;
+  `}
 
   > ._title {
     font-family: Montserrat;
@@ -16,6 +22,10 @@ const FeatureCardsSection = styled.div`
     letter-spacing: normal;
     text-align: center;
     color: #142345;
+
+    ${device.mobile`
+      font-size: 28px;
+    `}
   }
 
   > ._subtitle {
@@ -33,12 +43,21 @@ const FeatureCardsSection = styled.div`
     letter-spacing: normal;
     text-align: center;
     color: #5b6f9d;
+
+    ${device.mobile`
+      height: auto;
+      margin-bottom: 30px;
+    `}
   }
 
   > ._feature-cards {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    ${device.mobile`
+      flex-wrap: wrap;
+    `}
   }
 `
 
