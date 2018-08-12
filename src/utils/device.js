@@ -26,8 +26,10 @@ function setCurrentDevice() {
   }
 }
 
-window.addEventListener('resize', setCurrentDevice)
-
-setCurrentDevice()
+// In case of SSR
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', setCurrentDevice)
+  setCurrentDevice()
+}
 
 export default device
