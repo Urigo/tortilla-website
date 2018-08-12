@@ -431,6 +431,7 @@ const TechSection = styled.div`
 
   ${device.mobile`
     margin-left: 0;
+    margin-top: 100px;
     width: 100%;
   `}
 

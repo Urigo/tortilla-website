@@ -9,6 +9,7 @@ const FeatureCardsSection = styled.div`
 
   ${device.mobile`
     padding: 10px;
+    margin-top: 50px;
   `}
 
   > ._title {
@@ -21,6 +22,10 @@ const FeatureCardsSection = styled.div`
     letter-spacing: normal;
     text-align: center;
     color: #142345;
+
+    ${device.mobile`
+      font-size: 28px;
+    `}
   }
 
   > ._subtitle {
@@ -41,6 +46,7 @@ const FeatureCardsSection = styled.div`
 
     ${device.mobile`
       height: auto;
+      margin-bottom: 30px;
     `}
   }
 

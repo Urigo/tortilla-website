@@ -13,6 +13,7 @@ const FeaturedTutorial = styled.div`
     padding-top: 0;
     margin: 5px;
     width: calc(50% - 10px);
+    height: 130px;
   `}
 
   > ._box {
@@ -87,6 +88,8 @@ export default ({
       <div className="_title">{title}</div>
     </Link>
 
-    <div className="_description">{description}</div>
+    {device.desktop.active && (
+      <div className="_description">{description}</div>
+    )}
   </FeaturedTutorial>
 )
