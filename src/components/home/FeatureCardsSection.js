@@ -24,7 +24,7 @@ const FeatureCardsSection = styled.div`
     color: #142345;
 
     ${device.mobile`
-      font-size: 28px;
+      font-size: 23px;
     `}
   }
 
@@ -47,6 +47,7 @@ const FeatureCardsSection = styled.div`
     ${device.mobile`
       height: auto;
       margin-bottom: 30px;
+      font-size: 13px;
     `}
   }
 

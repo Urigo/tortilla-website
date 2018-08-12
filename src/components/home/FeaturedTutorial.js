@@ -58,6 +58,10 @@ const FeaturedTutorial = styled.div`
       letter-spacing: normal;
       text-align: center;
       color: #ffffff;
+
+      ${device.mobile`
+        font-size: 13px;
+      `}
     }
   }
 

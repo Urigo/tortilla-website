@@ -16,6 +16,18 @@ const Header = styled.div`
   height: 800px;
   position: relative;
   top: 0;
+
+  ${device.mobile`
+    height: 500px;
+  `}
+
+  > ._fill-up {
+    background-color: ${({ theme }) => theme.primaryBlue};
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 170px;
+  }
 `
 
 const Body = styled.div`
@@ -96,6 +108,10 @@ const Footer = styled.div`
       line-height: normal;
       letter-spacing: normal;
       color: #ffffff;
+
+      ${device.mobile`
+        font-size: 23px;
+      `}
     }
 
     > ._subtitle {
@@ -111,6 +127,7 @@ const Footer = styled.div`
 
       ${device.mobile`
         width: 100%;
+        font-size: 13px;
       `}
     }
 
@@ -311,6 +328,12 @@ const DesktopImg = styled.img`
   position: absolute;
   top: 0;
   right: 0;
+
+  ${device.mobile`
+    width: calc(100% + 300px);
+    height: auto;
+    top: 169.5px;
+  `}
 `
 
 const Hump = styled.div`
@@ -324,7 +347,7 @@ const Hump = styled.div`
   z-index: -1;
 
   ${device.mobile`
-    top: calc(50% - 300px);
+    left: -600px;
   `}
 
   ._context {
@@ -348,6 +371,10 @@ const GitFollowBtn = styled.a`
   right: 10px;
   top: 10px;
   cursor: pointer;
+
+  ${device.mobile`
+    width: 40px;
+  `}
 
   ._icon {
     float: left;
@@ -386,7 +413,33 @@ const IntroDiv = styled.div`
   left: 156px;
   top: 175px;
 
-  ._title {
+  ${device.mobile`
+    left: 10px;
+    top: 20px;
+
+    > br {
+      display: block;
+      margin: 10px 0;
+      content: " ";
+    }
+
+    > ._logo {
+      float: left;
+      margin: 0;
+      margin-right: 5px;
+    }
+
+    > ._logo-title {
+      color: white;
+      font-size: 20px;
+      font-family: Montserrat;
+      font-style: italic;
+      font-weight: 800;
+      line-height: 45px;
+    }
+  `}
+
+  > ._title {
     width: 671px;
     font-family: Montserrat;
     font-size: 44px;
@@ -396,9 +449,14 @@ const IntroDiv = styled.div`
     line-height: normal;
     letter-spacing: normal;
     color: #142345;
+
+    ${device.mobile`
+      width: 345px;
+      font-size: 20px;
+    `}
   }
 
-  ._subtitle {
+  > ._subtitle {
     width: 549px;
     margin-top: 20px;
     font-family: Montserrat;
@@ -409,9 +467,16 @@ const IntroDiv = styled.div`
     line-height: normal;
     letter-spacing: normal;
     color: #5b6f9d;
+
+    ${device.mobile`
+      width: 100%;
+      padding-right: 10px;
+      color: white;
+      font-size: 12px;
+    `}
   }
 
-  ._start-btn {
+  > ._start-btn {
     display: block;
     text-decoration: none;
     cursor: pointer;
@@ -483,24 +548,43 @@ class HomePage extends React.Component {
     return (
       <Layout>
         <Header>
+          {device.mobile.active && (
+            <div className="_fill-up" />
+          )}
           <DesktopImg src={withPrefix('img/group-19.svg')} class="Group-19" />
           <IntroDiv>
-            <img src={withPrefix('Logo/logo.svg')} alt="tortilla" />
+            {device.desktop.active ? <>
+              <img className="_logo" src={withPrefix('Logo/logo.svg')} alt="tortilla" />
+            </> : <>
+              <img
+                className="_logo"
+                src={withPrefix('Logo/logo-tortilla-ondark.svg')}
+                alt="tortilla"
+              />
+              <div className="_logo-title">tortilla</div>
+              <br />
+            </>}
             <div className="_title">
               A great framework for creating awesome tutorials!
             </div>
             <div className="_subtitle">
               Create tutorials from real code, based on git steps with easy CLI to keep your tutorial on to date with versioning support, rendering everywhere, multiple language translations and much more…
             </div>
-            <a className="_start-btn" href={GITHUB_URL}>
-              Get Started
-            </a>
+            {device.desktop.active && <>
+              <a className="_start-btn" href={GITHUB_URL}>
+                Get Started
+              </a>
+            </>}
           </IntroDiv>
           <GitFollowBtn href={GITHUB_URL}>
             <div className="_icon">
               <img src={withPrefix('icns_30/icns-30-github.svg')} alt="Github" />
             </div>
-            <div className="_text" onClick={this.navToGithub}>Follow on Github</div>
+            {device.desktop.active && <>
+              <div className="_text">
+                Follow on Github
+              </div>
+            </>}
           </GitFollowBtn>
         </Header>
 

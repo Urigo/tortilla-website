@@ -38,6 +38,10 @@ const FeatureCard = styled.div`
     letter-spacing: normal;
     text-align: center;
     color: #4c84ff;
+
+    ${device.mobile`
+      font-size: 14px;
+    `}
   }
 
   ._separator {
@@ -59,6 +63,10 @@ const FeatureCard = styled.div`
     letter-spacing: normal;
     text-align: center;
     color: #162c5e;
+
+    ${device.mobile`
+      font-size: 13px;
+    `}
   }
 `
 
