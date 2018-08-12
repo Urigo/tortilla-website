@@ -544,9 +544,15 @@ class HomePage extends React.Component {
     tutorials: PropTypes.arrayOf(PropTypes.any),
   }
 
+  componentDidMount() {
+    device.onLayoutChange(() => {
+      this.forceUpdate()
+    })
+  }
+
   render() {
     return (
-      <Layout>
+      <Layout key={device.type}>
         <Header>
           {device.mobile.active && (
             <div className="_fill-up" />
