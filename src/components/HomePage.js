@@ -323,6 +323,10 @@ const Hump = styled.div`
   left: -500px;
   z-index: -1;
 
+  ${device.mobile`
+    top: calc(50% - 300px);
+  `}
+
   ._context {
     width: 800px;
     height: 800px;
