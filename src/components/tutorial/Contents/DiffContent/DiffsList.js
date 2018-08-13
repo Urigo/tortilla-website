@@ -135,6 +135,11 @@ class DiffsList extends React.Component {
       app state doesn't exist (at least in the context of React.Component)
      */
 
+    this.resetRawData()
+    this.resetDiffTypeParams()
+  }
+
+  resetRawData(props = this.props) {
     if (props.baseUrl) {
       this.srcBaseUrl = `${props.baseUrl}/tree/${props.srcHistoryObject}`
       this.destBaseUrl = `${props.baseUrl}/tree/${props.destHistoryObject}`
@@ -155,14 +160,19 @@ class DiffsList extends React.Component {
       .map((fileDiff, i) => {
         return i ? '\ndiff --git' + fileDiff : fileDiff
       })
-
-    this.resetDiffTypeParams()
   }
 
   UNSAFE_componentWillReceiveProps(props) {
     let reset
     let oldPaths
     let newPaths
+
+    if (props.diff !== this.props.diff) {
+      this.stopThread()
+      this.resetRawData(props)
+      this.diffContainer.innerHTML = ''
+      reset = true
+    }
 
     if (props.hasOwnProperty('diffType') && props.diffType !== this.props.diffType) {
       this.resetDiffTypeParams(props)
