@@ -165,7 +165,7 @@ const Style = styled.div`
 class ContactForm extends React.Component {
   state = {
     email: '',
-    body: '',
+    details: '',
   }
 
   render() {
@@ -174,15 +174,23 @@ class ContactForm extends React.Component {
         <div className="_title">Keep in touch!</div><br />
         <div className="_subtitle">Contact us to help convert your favorite existing open source tutorials to Tortilla and keep them up to date!<br /><br />On premise option - want to upgrade your internal company guides to Tortilla, visible only to your employees? Contact us for help</div>
         <div className="_info">
-          <input className="_email" placeholder="your.email@domain.com" />
+          <input
+            className="_email"
+            placeholder="your.email@domain.com"
+            onChange={this.setEmail}
+          />
           {device.desktop.active && <>
-            <div className="_send-btn">
+            <div className="_send-btn" onClick={this.send}>
               <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
               <div className="_text">Send</div>
             </div>
           </>}
           <br />
-          <textarea className="_details" placeholder={'"Help us to help you" ;)'} />
+          <textarea
+            className="_details"
+            placeholder={'"Help us to help you" ;)'}
+            onChange={this.setDetails}
+          />
           <div className="_follow">
             {device.desktop.active && <>
               <div className="_text">Don’t forget to follow us ;)</div>
@@ -203,7 +211,7 @@ class ContactForm extends React.Component {
             </div>
           </div>
           {device.mobile.active && <>
-            <div className="_send-btn">
+            <div className="_send-btn" onClick={this.send}>
               <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
               <div className="_text">Send</div>
             </div>
@@ -213,15 +221,53 @@ class ContactForm extends React.Component {
     )
   }
 
-  async send() {
-    // fetch('/api/contact', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({name: 'eytan_manor', subject: 'Pitch me', text: 'hello world'})
-    // })
+  setEmail = (e) => {
+    this.setState({
+      email: e.target.value
+    })
+  }
+
+  Details = (e) => {
+    this.setState({
+      details: e.target.value
+    })
+  }
+
+  validateFields() {
+    try {
+      validateEmail(this.state.email)
+    }
+    catch (e) {
+      swal('Email is invalid', e.message)
+      return false
+    }
+
+    try {
+      validateLength(this.state.details, 1000)
+    }
+    catch (e) {
+      swal('Details are invalid', e.message)
+      return false
+    }
+
+    return true
+  }
+
+  send = () => {
+    if (!this.validate()) return
+
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      details: JSON.stringify(this.state)
+    }).then(() => {
+      swal('Message successfully sent',
+        'If relevant, we will notice you shortly :-)'
+      )
+    })
   }
 }
 
