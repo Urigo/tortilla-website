@@ -161,18 +161,6 @@ export default class extends React.Component {
     this.resetFilesPickerDimensions()
   }
 
-  componentShouldUpdate(props) {
-    return (
-      (
-        props.hasOwnProperty('scrollerStyle') &&
-        props.scrollerStyle !== this.props.scrollerStyle
-      ) || (
-        props.hasOwnProperty('scrollerHeight') &&
-        props.scrollerHeight !== this.props.scrollerHeight
-      )
-    )
-  }
-
   componentWillUnmount() {
     window.removeEventListener('scroll', this.resetFilesPickerDimensions, true)
 

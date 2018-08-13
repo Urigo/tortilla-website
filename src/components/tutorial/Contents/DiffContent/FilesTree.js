@@ -23,8 +23,8 @@ class FileTree extends React.Component {
     diff: PropTypes.string.isRequired,
     addFile: PropTypes.func.isRequired,
     removeFile: PropTypes.func.isRequired,
-    includePattern: PropTypes.oneOf([PropTypes.instanceOf(RegExp), PropTypes.string]),
-    excludePattern: PropTypes.oneOf([PropTypes.instanceOf(RegExp), PropTypes.string]),
+    includePattern: PropTypes.oneOfType([PropTypes.instanceOf(RegExp), PropTypes.string]),
+    excludePattern: PropTypes.oneOfType([PropTypes.instanceOf(RegExp), PropTypes.string]),
     cache: PropTypes.object,
     sortCb: PropTypes.func,
   }
@@ -59,8 +59,15 @@ class FileTree extends React.Component {
 
   UNSAFE_componentWillReceiveProps(props) {
     const state = {}
+    let reduceChildren
 
-    const reduceChildren = (
+    // Recalculate dat shit
+    if (props.diff !== this.props.diff) {
+      this.constructChildren(props, true)
+      reduceChildren = true
+    }
+
+    reduceChildren = reduceChildren || (
       props.hasOwnProperty('includePattern') &&
       props.includePattern.toString() !== this.props.includePattern.toString()
     ) || (
@@ -110,22 +117,22 @@ class FileTree extends React.Component {
     })
   }
 
-  constructChildren() {
-    if (this.props.cache[internal]) {
-      this.children = this.props.cache[internal].children;
+  constructChildren(props = this.props, reset) {
+    if (props.cache[internal] && !reset) {
+      this.children = props.cache[internal].children;
 
       return;
     }
 
-    this.props.cache[internal] = {
+    props.cache[internal] = {
       children: this.children = []
     };
 
     // In SSR this is gonna be empty
-    if (!this.props.diff) return
+    if (!props.diff) return
 
     // Compose children out of given diff, assuming the schema is correct
-    this.props.diff.match(/^diff --git [^\s]+ [^\s]+/mg).forEach((header) => {
+    props.diff.match(/^diff --git [^\s]+ [^\s]+/mg).forEach((header) => {
       header.split(' ').slice(-2).forEach((path) => {
         if (path === '/dev/null') return;
 
