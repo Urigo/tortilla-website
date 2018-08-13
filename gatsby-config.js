@@ -1,3 +1,5 @@
+const api = require('./src/api')
+
 const resolveTutorials = {
   resolve: 'gatsby-source-filesystem',
   options: {
@@ -7,6 +9,9 @@ const resolveTutorials = {
 }
 
 module.exports = {
+  developMiddleware: (app) => {
+    app.use('/api', api)
+  },
   siteMetadata: {
     title: 'Tortilla',
   },
