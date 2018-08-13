@@ -42,6 +42,7 @@
     "sendmail": "^1.4.1",
     "setimmediate": "^1.0.5",
     "styled-components": "^3.2.3",
+    "sweetalert2": "^7.26.11",
     "tortilla": "0.0.1-alpha.37",
     "typescript-styled-plugin": "^0.10.0"
   },
