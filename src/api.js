@@ -29,7 +29,7 @@ api.post('/contact', (req, res) => {
 
   const descriptor = {
     from: `"${body.email}" <no-reply@tortilla.academy>`,
-    to: 'emanor6@gmail.com',
+    to: 'uri.goldshtein@gmail.com',
     subject: 'Incoming message',
     text: body.details,
   }
