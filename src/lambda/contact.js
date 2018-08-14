@@ -2,6 +2,13 @@ const sendMail = require('sendmail')()
 const { validateEmail, validateLength } = require('../utils/validations')
 
 exports.handler = (event, context, callback) => {
+  if (!process.env.CONTACT_EMAIL) {
+    return callback(null, {
+      statusCode: 500,
+      body: 'process.env.CONTACT_EMAIL must be defined',
+    })
+  }
+
   const body = JSON.parse(event.body)
 
   try {
@@ -26,7 +33,7 @@ exports.handler = (event, context, callback) => {
 
   const descriptor = {
     from: `"${body.email}" <no-reply@tortilla.academy>`,
-    to: 'uri.goldshtein@gmail.com',
+    to: process.env.CONTACT_EMAIL,
     subject: 'Incoming message',
     text: body.details,
   }
