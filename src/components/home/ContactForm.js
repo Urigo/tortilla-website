@@ -86,6 +86,11 @@ const Style = styled.div`
         float: right;
       `}
 
+      &._sending {
+        background-color: silver;
+        cursor: default;
+      }
+
       > ._icon {
         float: left;
         margin-left: 5px;
@@ -102,6 +107,13 @@ const Style = styled.div`
         letter-spacing: normal;
         margin-left: 5px;
         color: #ffffff;
+
+        &._sending {
+          width: 100%;
+          margin: 0;
+          color: gray;
+          text-align: center;
+        }
       }
     }
 
@@ -167,6 +179,7 @@ const Style = styled.div`
   }
 
   > ._error-message {
+    float: left;
     color: red;
   }
 `
@@ -190,12 +203,7 @@ class ContactForm extends React.Component {
             placeholder="your.email@domain.com"
             onChange={this.setEmail}
           />
-          {device.desktop.active && <>
-            <div className="_send-btn" onClick={this.send}>
-              <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
-              <div className="_text">Send</div>
-            </div>
-          </>}
+          {device.desktop.active && this.renderSendBtn()}
           <br />
           <textarea
             className={classNames('_details', {
@@ -223,17 +231,25 @@ class ContactForm extends React.Component {
               </a>
             </div>
           </div>
-          {device.mobile.active && <>
-            <div className="_send-btn" onClick={this.send}>
-              <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
-              <div className="_text">Send</div>
-            </div>
-          </>}
+          {device.mobile.active && this.renderSendBtn()}
         </div>
         <br />
         <br />
         <div className="_error-message">{this.state.errorMessage}</div>
       </Style>
+    )
+  }
+
+  renderSendBtn() {
+    return this.state.sending ? (
+      <div className="_send-btn _sending" onClick={this.send}>
+        <div className="_text _sending">Sending...</div>
+      </div>
+    ) : (
+      <div className="_send-btn" onClick={this.send}>
+        <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
+        <div className="_text">Send</div>
+      </div>
     )
   }
 
@@ -282,7 +298,12 @@ class ContactForm extends React.Component {
   }
 
   send = () => {
+    if (this.state.sending) return
     if (!this.validateFields()) return
+
+    this.setState({
+      sending: true
+    })
 
     fetch('/.netlify/functions/contact', {
       method: 'POST',
@@ -306,6 +327,14 @@ class ContactForm extends React.Component {
           type: 'success',
         })
       }
+
+      this.setState({
+        sending: false
+      })
+    }).catch(() => {
+      this.setState({
+        sending: false
+      })
     })
   }
 }
