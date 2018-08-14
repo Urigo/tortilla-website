@@ -284,7 +284,7 @@ class ContactForm extends React.Component {
   send = () => {
     if (!this.validateFields()) return
 
-    fetch('/api/contact', {
+    fetch('/.netlify/functions/contact', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
