@@ -1,3 +1,5 @@
+const proxy = require('http-proxy-middleware')
+
 const resolveTutorials = {
   resolve: 'gatsby-source-filesystem',
   options: {
@@ -7,6 +9,17 @@ const resolveTutorials = {
 }
 
 module.exports = {
+  developMiddleware: (app) => {
+    app.use(
+      '/.netlify/functions/',
+      proxy({
+        target: 'http://localhost:9000',
+        pathRewrite: {
+          '/.netlify/functions/': '',
+        },
+      })
+    )
+  },
   siteMetadata: {
     title: 'Tortilla',
   },
