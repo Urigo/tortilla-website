@@ -17,7 +17,6 @@ const device = Object.keys(sizes).reduce((acc, label) => {
   return acc
 }, {})
 
-
 device.onLayoutChange = (callback) => {
   layoutChangeCallbacks.add(callback)
 }

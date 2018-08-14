@@ -1,10 +1,11 @@
-import React from 'react'
-// import swal from 'swal2'
+import classNames from 'classnames'
 import { withPrefix } from 'gatsby'
+import React from 'react'
 import styled from 'styled-components'
-import device from '../../utils/device'
+import swal from 'sweetalert2'
 import { TWITTER_URL, GITHUB_URL } from '../../consts'
-// import { validateEmail, validateLength } from '../../utils/validations'
+import device from '../../utils/device'
+import { validateEmail, validateLength } from '../../utils/validations'
 
 const Style = styled.div`
   > ._title {
@@ -159,6 +160,14 @@ const Style = styled.div`
         }
       }
     }
+
+    > ._error-target {
+      border: 2px solid red;
+    }
+  }
+
+  > ._error-message {
+    color: red;
   }
 `
 
@@ -175,7 +184,9 @@ class ContactForm extends React.Component {
         <div className="_subtitle">Contact us to help convert your favorite existing open source tutorials to Tortilla and keep them up to date!<br /><br />On premise option - want to upgrade your internal company guides to Tortilla, visible only to your employees? Contact us for help</div>
         <div className="_info">
           <input
-            className="_email"
+            className={classNames('_email', {
+              '_error-target': this.state.errorTarget === 'email'
+            })}
             placeholder="your.email@domain.com"
             onChange={this.setEmail}
           />
@@ -187,7 +198,9 @@ class ContactForm extends React.Component {
           </>}
           <br />
           <textarea
-            className="_details"
+            className={classNames('_details', {
+              '_error-target': this.state.errorTarget === 'details'
+            })}
             placeholder={'"Help us to help you" ;)'}
             onChange={this.setDetails}
           />
@@ -217,36 +230,51 @@ class ContactForm extends React.Component {
             </div>
           </>}
         </div>
+        <br />
+        <br />
+        <div className="_error-message">{this.state.errorMessage}</div>
       </Style>
     )
   }
 
   setEmail = (e) => {
     this.setState({
-      email: e.target.value
+      errorTarget: '',
+      errorMessage: '',
+      email: e.target.value,
     })
   }
 
-  Details = (e) => {
+  setDetails = (e) => {
     this.setState({
-      details: e.target.value
+      errorTarget: '',
+      errorMessage: '',
+      details: e.target.value,
     })
   }
 
   validateFields() {
     try {
-      validateEmail(this.state.email)
+      validateEmail('Email', this.state.email)
     }
     catch (e) {
-      swal('Email is invalid', e.message)
+      this.setState({
+        errorTarget: 'email',
+        errorMessage: e.message,
+      })
+
       return false
     }
 
     try {
-      validateLength(this.state.details, 1000)
+      validateLength('Details', this.state.details, 10, 1000)
     }
     catch (e) {
-      swal('Details are invalid', e.message)
+      this.setState({
+        errorTarget: 'details',
+        errorMessage: e.message,
+      })
+
       return false
     }
 
@@ -254,7 +282,7 @@ class ContactForm extends React.Component {
   }
 
   send = () => {
-    if (!this.validate()) return
+    if (!this.validateFields()) return
 
     fetch('/api/contact', {
       method: 'POST',
@@ -262,11 +290,22 @@ class ContactForm extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      details: JSON.stringify(this.state)
-    }).then(() => {
-      swal('Message successfully sent',
-        'If relevant, we will notice you shortly :-)'
-      )
+      body: JSON.stringify(this.state),
+    }).then((res) => {
+      if (res.status >= 400) {
+        swal({
+          title: 'Oy vey...',
+          text: 'Message wasn\'t sent due to internal server error :-(',
+          type: 'error',
+        })
+      }
+      else {
+        swal({
+          title: 'Message successfully sent',
+          text: 'If relevant, we will notice you shortly :-)',
+          type: 'success',
+        })
+      }
     })
   }
 }

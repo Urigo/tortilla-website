@@ -1,54 +1,37 @@
 const express = require('express')
 const bodyPraser = require('body-parser')
 const sendMail = require('sendmail')()
+const { validateEmail, validateLength } = require('./utils/validations')
 
 const api = new express.Router()
 api.use(bodyPraser.json())
 
-api.use('/contact', (req, res) => {
+api.post('/contact', (req, res) => {
   const body = req.body
 
-  if (typeof body.name != 'string') {
+  try {
+    validateEmail('body.email', body.email)
+  }
+  catch (e) {
     res.status(403)
-    res.send('"body.name" string must be provided')
+    res.send(e.message)
     return
   }
 
-  if (body.name.length > 30) {
-    res.status(403)
-    res.send('"body.name" must be less than 30 characters long')
-    return
+  try {
+    validateLength('body.details', body.details, 10, 1000)
   }
-
-  if (typeof body.subject != 'string') {
+  catch (e) {
     res.status(403)
-    res.send('"body.subject" string must be provided')
-    return
-  }
-
-  if (body.subject.length > 100) {
-    res.status(403)
-    res.send('"body.subject" must be less than 100 characters long')
-    return
-  }
-
-  if (typeof body.text != 'string') {
-    res.status(403)
-    res.send('"body.text" string must be provided')
-    return
-  }
-
-  if (body.text.length > 1000) {
-    res.status(403)
-    res.send('"body.text" must be less than 1000 characters long')
+    res.send(e.message)
     return
   }
 
   const descriptor = {
-    from: `"${body.name}" <no-reply@tortilla.academy>`,
-    to: 'uri.goldshtein@gmail.com',
-    subject: body.subject,
-    text: body.text,
+    from: `"${body.email}" <no-reply@tortilla.academy>`,
+    to: 'emanor6@gmail.com',
+    subject: 'Incoming message',
+    text: body.details,
   }
 
   sendMail(descriptor, (err) => {
@@ -56,7 +39,7 @@ api.use('/contact', (req, res) => {
       res.status(500).send(err.message)
     }
     else {
-      res.send(descriptor)
+      res.send()
     }
   })
 })
