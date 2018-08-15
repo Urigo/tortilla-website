@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Treebeard, decorators } from 'react-treebeard'
 
+console.log(decorators)
+
 // Will be used to store hidden properties
 const internal = Symbol('files_tree_internal')
 
@@ -13,8 +15,46 @@ const diffDecorators = {
       boxShadow: 'inset 1px 0 0 white',
       background: 'rgba(255, 255, 255, .1)',
     })
+    Object.assign(props.style.container[0], {
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    })
+    try {
+      Object.assign(props.style.subtree, {
+        paddingLeft: '13px',
+      })
+    }
+    catch (e) {
+      // Probably a leaf who's padding is bounded to the tree's
+    }
 
-    return React.createElement(decorators.Container, props)
+    const {style, decorators, terminal, onClick, node} = this.props;
+
+    return (
+      <div onClick={onClick}
+           ref={ref => this.clickableRef = ref}
+           style={style.container}>
+          {!terminal ? this.renderToggle() : null}
+
+          <decorators.Header node={node}
+                             style={style.header}/>
+      </div>
+    )
+  },
+
+  Toggle({ style }) {
+    const { height, width } = style
+
+    return (
+      <div style={style.base}>
+        <div style={style.wrapper}>
+          <div style={{ height, width, color: style.arrow.fill }}>
+            🗁
+          </div>
+        </div>
+      </div>
+    )
   }
 }
 
@@ -52,6 +92,7 @@ class FileTree extends React.Component {
       <Treebeard
         data={this.state.children}
         decorators={diffDecorators}
+        animations={false}
         onToggle={onToggle.bind(this)}
       />
     )
@@ -136,17 +177,21 @@ class FileTree extends React.Component {
       const files = header
         .match(/--- ([^\s]+)\n\+\+\+ ([^\s]+)/)
         .slice(1)
-        .map(path => ({ path }))
+        .map(path => ({
+          rawPath: path,
+          // Slice initial /a /b parts
+          path: path.split('/').slice(1).join('/')
+        }))
 
       if (files[0].path === files[1].path) {
         files.pop()
         files[0].mode = 'changed'
       }
-      else if (files[0].path === '/dev/null') {
+      else if (files[0].rawPath === '/dev/null') {
         files.shift()
         files[0].mode = 'added'
       }
-      else if (files[1].path === '/dev/null') {
+      else if (files[1].rawPath === '/dev/null') {
         files.pop()
         files[0].mode = 'deleted'
       }
@@ -156,9 +201,7 @@ class FileTree extends React.Component {
       }
 
       files.forEach(({ path, mode }, i) => {
-        // Slice initial /a /b parts
-        const names = path.split('/').slice(1)
-        path = names.join('/')
+        const names = path.split('/')
 
         names.reduce((node, name, index, split) => {
           if (!node.children) {
@@ -172,7 +215,7 @@ class FileTree extends React.Component {
           if (!childNode) {
             childNode = {
               name,
-              path,
+              path: split.slice(0, index + 1).join('/'),
             }
 
             // If leaf
