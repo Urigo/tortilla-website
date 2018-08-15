@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Treebeard, decorators } from 'react-treebeard';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Treebeard, decorators } from 'react-treebeard'
 
 // Will be used to store hidden properties
 const internal = Symbol('files_tree_internal')
@@ -12,9 +12,9 @@ const diffDecorators = {
     Object.assign(props.style.activeLink, {
       boxShadow: 'inset 1px 0 0 white',
       background: 'rgba(255, 255, 255, .1)',
-    });
+    })
 
-    return React.createElement(decorators.Container, props);
+    return React.createElement(decorators.Container, props)
   }
 }
 
@@ -38,9 +38,9 @@ class FileTree extends React.Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.constructChildren();
+    this.constructChildren()
 
     this.state = {
       children: this.reduceChildren()
@@ -54,7 +54,7 @@ class FileTree extends React.Component {
         decorators={diffDecorators}
         onToggle={onToggle.bind(this)}
       />
-    );
+    )
   }
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -119,48 +119,76 @@ class FileTree extends React.Component {
 
   constructChildren(props = this.props, reset) {
     if (props.cache[internal] && !reset) {
-      this.children = props.cache[internal].children;
+      this.children = props.cache[internal].children
 
-      return;
+      return
     }
 
     props.cache[internal] = {
       children: this.children = []
-    };
+    }
 
     // In SSR this is gonna be empty
     if (!props.diff) return
 
     // Compose children out of given diff, assuming the schema is correct
-    props.diff.match(/^diff --git [^\s]+ [^\s]+/mg).forEach((header) => {
-      header.split(' ').slice(-2).forEach((path) => {
-        if (path === '/dev/null') return;
+    props.diff.match(/\n--- [^\s]+\n\+\+\+ [^\s]+\n/g).forEach((header) => {
+      const files = header
+        .match(/--- ([^\s]+)\n\+\+\+ ([^\s]+)/)
+        .slice(1)
+        .map(path => ({ path }))
 
+      if (files[0].path === files[1].path) {
+        files.pop()
+        files[0].mode = 'changed'
+      }
+      else if (files[0].path === '/dev/null') {
+        files.shift()
+        files[0].mode = 'added'
+      }
+      else if (files[1].path === '/dev/null') {
+        files.pop()
+        files[0].mode = 'deleted'
+      }
+      else {
+        files[0].mode = 'deleted'
+        files[1].mode = 'added'
+      }
+
+      files.forEach(({ path, mode }, i) => {
         // Slice initial /a /b parts
         const names = path.split('/').slice(1)
         path = names.join('/')
 
         names.reduce((node, name, index, split) => {
           if (!node.children) {
-            node.children = [];
+            node.children = []
           }
 
           let childNode = node.children.find((candi) => {
             return candi.name === name
-          });
+          })
 
           if (!childNode) {
-            childNode = { name, path };
+            childNode = {
+              name,
+              path,
+            }
 
-            node.children.push(childNode);
+            // If leaf
+            if (index === names.length - 1) {
+              childNode.mode = mode
+            }
+
+            node.children.push(childNode)
 
             node.children.sort((a, b) => {
-              return a.name > b.name ? 1 : -1;
-            });
+              return a.name > b.name ? 1 : -1
+            })
           }
 
-          return childNode;
-        }, this);
+          return childNode
+        }, this)
       })
     })
   }
@@ -232,18 +260,18 @@ function pickLeaves(children) {
 
 function onToggle(node, toggled) {
   if (node.children) {
-    node.toggled = toggled;
+    node.toggled = toggled
   } else if (node.active) {
-    delete node.active;
+    delete node.active
 
-    this.props.removeFile(node.path);
+    this.props.removeFile(node.path)
   } else {
-    node.active = true;
+    node.active = true
 
-    this.props.addFile(node.path);
+    this.props.addFile(node.path)
   }
 
-  this.forceUpdate();
+  this.forceUpdate()
 }
 
-export default FileTree;
+export default FileTree
