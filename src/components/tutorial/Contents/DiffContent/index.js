@@ -7,7 +7,6 @@ import storage from '../../../../utils/storage';
 import Button from '../../../common/Button';
 import FaIcon from '../../../common/FaIcon'
 import DiffsList from './DiffsList';
-import FilesTree from './FilesTree';
 
 const filesTreeBarFontSize = 15;
 const filesTreeBarHeight = '45px';
@@ -68,6 +67,13 @@ const FilesTreeBar = styled.div`
   line-height: ${filesTreeBarHeight};
   color: white;
   padding: 0 10px;
+`
+
+const FilesTree = styled(require('./FilesTree').default)`
+  height: calc(100% - ${filesTreeBarHeight});
+  width: ${filesTreeWidth};
+  border-right: 1px solid ${props => props.theme.separator};
+  overflow-y: overlay;
 `
 
 const FilesFilters = styled.div`

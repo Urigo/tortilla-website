@@ -6,7 +6,7 @@ const Style = styled.div`
   > ._nodes-list {
     margin: 0;
     padding: 0;
-    margin-top: 5px;
+    margin-top: 8px;
     list-style-type: none;
   }
 
@@ -63,6 +63,9 @@ class FSTree extends React.Component {
                 node={node}
                 depth={this.depth + 1}
                 onSelect={this.onSelect}
+                onDeselect={this.onDeselect}
+                onCollapse={this.onCollapse}
+                onExpand={this.onExpand}
               />
             </li>
           ))}
@@ -89,15 +92,35 @@ class FSTree extends React.Component {
     }
   }
 
-  onSelect = (node, component) => {
-    if (this.nodeComponent && !component.state.selected) {
+  onDeselect = (node, component) => {
+    if (this.nodeComponent) {
       this.nodeComponent.deselect();
     }
 
     this.nodeComponent = component;
 
+    if (typeof this.props.onDeselect === 'function') {
+      this.props.onDeselect(node, component);
+    }
+  }
+
+  onSelect = (node, component) => {
+    this.nodeComponent = component;
+
     if (typeof this.props.onSelect === 'function') {
       this.props.onSelect(node, component);
+    }
+  }
+
+  onCollapse = (node, component) => {
+    if (typeof this.props.onCollapse === 'function') {
+      this.props.onCollapse(node, component);
+    }
+  }
+
+  onExpand = (node, component) => {
+    if (typeof this.props.onExpand === 'function') {
+      this.props.onExpand(node, component);
     }
   }
 }

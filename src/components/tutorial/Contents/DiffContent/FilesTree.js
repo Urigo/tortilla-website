@@ -36,10 +36,13 @@ class FileTree extends React.Component {
 
   render() {
     return (
-      <FSTree
-        tree={this.state.children}
-        onSelect={onSelect.bind(this)}
-      />
+      <div className={this.props.className}>
+        <FSTree
+          tree={this.state.children}
+          onSelect={onSelect.bind(this)}
+          onDeselect={onDeselect.bind(this)}
+        />
+      </div>
     )
   }
 
@@ -246,15 +249,12 @@ function pickLeaves(children) {
   return leaves
 }
 
-function onSelect(node, component) {
-  if (node.children) return
+function onSelect(node) {
+  this.props.addFile(node.path)
+}
 
-  if (node.selected) {
-    this.props.addFile(component.getSelectionPath())
-  }
-  else {
-    this.props.removeFile(component.getSelectionPath())
-  }
+function onDeselect(node) {
+  this.props.removeFile(node.path)
 }
 
 export default FileTree
