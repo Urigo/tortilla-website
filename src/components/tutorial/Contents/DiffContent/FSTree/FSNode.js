@@ -82,11 +82,18 @@ class FSNode extends React.Component {
 
     this.depth = Number(props.depth) || 0
 
+    const node = props.node
+
     this.state = {
-      node: { ...props.node },
-      collapsed: true,
-      selected: false,
+      node,
+      collapsed: typeof node.collapsed === 'boolean' ? node.collapsed : true,
+      selected: typeof node.selected === 'boolean' ? node.selected : false,
     }
+  }
+
+  componentDidUpdate() {
+    this.state.node.collapsed = this.state.collapsed
+    this.state.node.selected = this.state.selected
   }
 
   render() {
@@ -116,6 +123,7 @@ class FSNode extends React.Component {
                 tree={node.children}
                 depth={this.depth}
                 onSelect={this.onSelect}
+                onDeselect={this.onDeselect}
               />
             )}
           </div>
@@ -137,14 +145,7 @@ class FSNode extends React.Component {
   }
 
   deselect() {
-    if (!this.state.selected) {
-      // Try to deselect child nodes just in case
-      if (this.children) {
-        this.children.deselect()
-      }
-
-      return
-    }
+    if (!this.state.selected) return
 
     this.setState({
       selected: false
@@ -258,6 +259,12 @@ class FSNode extends React.Component {
   onSelect = (node, component) => {
     if (typeof this.props.onSelect === 'function') {
       this.props.onSelect(node, component);
+    }
+  }
+
+  onDeselect = (node, component) => {
+    if (typeof this.props.onDeselect === 'function') {
+      this.props.onDeselect(node, component);
     }
   }
 }
