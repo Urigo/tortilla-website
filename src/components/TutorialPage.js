@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { push } from 'gatsby'
@@ -118,7 +117,7 @@ export default class TutorialPage extends React.Component {
       <Layout>
         <Container>
           <Display>
-            <MainContentContainer ref={this.defineContentStyle}>
+            <MainContentContainer>
               <TopBar>
                 <GithubAuthor link={this.props.tutorial.repoUrl} />
                 <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
@@ -143,21 +142,6 @@ export default class TutorialPage extends React.Component {
         </Container>
       </Layout>
     )
-  }
-
-  // Will get and store the native .style object of content element
-  defineContentStyle = (ref) => {
-    if (ref) {
-      const contentEl = ReactDOM.findDOMNode(ref)
-
-      this.contentStyle = contentEl.style
-      this.originalContentStyle = { ...this.contentStyle }
-
-      this.forceUpdate()
-    } else {
-      delete this.contentStyle
-      delete this.originalContentStyle
-    }
   }
 
   activateStep = (version) => {

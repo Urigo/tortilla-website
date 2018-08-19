@@ -92,8 +92,8 @@ class FSNode extends React.Component {
   }
 
   componentDidUpdate() {
-    this.state.node.collapsed = this.state.collapsed
-    this.state.node.selected = this.state.selected
+    this.props.node.collapsed = this.state.collapsed
+    this.props.node.selected = this.state.selected
   }
 
   render() {

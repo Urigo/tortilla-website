@@ -8,7 +8,7 @@ import DiffsList from './DiffsList';
 
 const filesTreeBarHeight = '63px';
 const filesTreeWidth = '280px';
-const filesFiltersHeight = '90px';
+const filesFiltersHeight = '45px';
 
 const Container = styled.div`
   width: 100%;
@@ -55,7 +55,7 @@ const FilesHeader = styled(require('./FilesHeader').default)`
 `
 
 const FilesTree = styled(require('./FilesTree').default)`
-  height: calc(100% - ${filesTreeBarHeight});
+  height: calc(100% - ${filesTreeBarHeight} - ${filesFiltersHeight});
   width: ${filesTreeWidth};
   border-right: 1px solid ${props => props.theme.separator};
   overflow-y: overlay;
@@ -66,10 +66,10 @@ const FilesFilters = styled.div`
   display: flex;
   flex-direction: column;
   padding: 5px 0;
-  right: 0;
-  left: ${filesTreeWidth};
+  left: 0;
+  width: ${filesTreeWidth};
   height: ${filesFiltersHeight};
-  background-color: #2f353e;
+  border: 1px solid ${props => props.theme.separator};
   bottom: 0;
 `
 
@@ -79,7 +79,6 @@ const FileFilter = styled.input`
   font-size: 14px;
   flex-grow: 1;
   height: ${parseInt(filesFiltersHeight) / 2 - 15}px;
-  background-color: #22262b;
   outline: none;
   border: none;
   color: #9da5ab;
@@ -195,7 +194,6 @@ export default class extends React.Component {
       contentStyle.width = `calc(100% - ${filesTreeWidth})`
       contentStyle.marginLeft = filesTreeWidth
       this.props.scrollerStyle.height = `calc(${this.props.scrollerHeight} - ${filesFiltersHeight})`
-      this.resetFilesFiltersDimensions()
     } else {
       contentStyle.width = '100%'
       contentStyle.marginLeft = 0
@@ -215,14 +213,10 @@ export default class extends React.Component {
               includePattern={this.state.includePattern}
               excludePattern={this.state.excludePattern}
             />
-            <FilesFilters ref={ref => this.filesFilters = ReactDOM.findDOMNode(ref)}>
+            <FilesFilters>
               <FileFilter
                 onChange={this.includeFiles}
-                placeholder="Include files (regular expression)..."
-              />
-              <FileFilter
-                onChange={this.excludeFiles}
-                placeholder="Exclude files (regular expression)..."
+                placeholder="🔍 Search files (regexp)"
               />
             </FilesFilters>
           </FilesPicker>
@@ -293,13 +287,6 @@ export default class extends React.Component {
 
     const { top } = this.container.getBoundingClientRect()
     this.filesPicker.style.top = Math.max(top, 0) + 'px'
-  }
-
-  resetFilesFiltersDimensions = () => {
-    if (!this.filesFilters) return
-
-    const { left } = this.filesFilters.getBoundingClientRect()
-    this.filesFilters.style.width = `calc(100% - ${left}px)`
   }
 
   includeFiles = (e) => {
