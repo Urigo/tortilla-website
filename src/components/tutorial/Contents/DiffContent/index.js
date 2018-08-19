@@ -1,15 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
-import { faTimes } from '@fortawesome/fontawesome-free-solid'
 
 import storage from '../../../../utils/storage';
 import Button from '../../../common/Button';
-import FaIcon from '../../../common/FaIcon'
 import DiffsList from './DiffsList';
 
-const filesTreeBarFontSize = 15;
-const filesTreeBarHeight = '45px';
+const filesTreeBarHeight = '63px';
 const filesTreeWidth = '280px';
 const filesFiltersHeight = '90px';
 
@@ -27,14 +24,6 @@ const Content = styled.div`
   height: 100%;
   overflow-y: overlay;
   overflow-x: hidden;
-`
-
-const FaClose = styled(FaIcon).attrs({
-  icon: faTimes,
-  size: filesTreeBarFontSize,
-}) `
-  color: black;
-  cursor: pointer;
 `
 
 const FilesPicker = styled.div `
@@ -59,14 +48,10 @@ const FilesPicker = styled.div `
   }
 `
 
-const FilesTreeBar = styled.div`
+const FilesHeader = styled(require('./FilesHeader').default)`
   width: ${filesTreeWidth};
-  height: ${filesTreeBarHeight};
-  background-color: #2f353e;
-  font-size: ${filesTreeBarFontSize}px;
-  line-height: ${filesTreeBarHeight};
-  color: white;
-  padding: 0 10px;
+  border-right: 1px solid ${props => props.theme.separator};
+  display: block;
 `
 
 const FilesTree = styled(require('./FilesTree').default)`
@@ -221,14 +206,7 @@ export default class extends React.Component {
       <Container ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
         {this.state.pickingFiles && (
           <FilesPicker ref={ref => this.filesPicker = ReactDOM.findDOMNode(ref)}>
-            <FilesTreeBar>
-              <div style={{ float: 'left' }}>
-                Pick Files
-              </div>
-              <div style={{ float: 'right' }}>
-                <FaClose onClick={this.toggleFilePicking} />
-              </div>
-            </FilesTreeBar>
+            <FilesHeader opened={this.state.pickingFiles} close={this.toggleFilePicking} open={this.toggleFilePicking} />
             <FilesTree
               cache={this}
               diff={this.props.diff}

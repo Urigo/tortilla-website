@@ -67,11 +67,11 @@ const Fileline = styled.div`
 class FilesHeader extends React.Component {
   render() {
     return (
-      <div style={this.props.style}>
+      <div className={this.props.className} style={this.props.style}>
         <Filebar>
           <div className="_title">
             <ListIcon />
-            <div className="_text">File</div>
+            <div className="_text">Files</div>
           </div>
           {this.props.opened ? (
             <CloseBtn onClick={this.props.close} />

@@ -15,11 +15,11 @@ const Style = (() => {
 
       &._selected {
         color: white;
-        background-color: rgb(50, 120, 220);
+        background-color: ${({ theme }) => theme.primaryBlue};
       }
 
       &._deselected {
-        color: black;
+        color: ${({ theme }) => theme.blueGray};
         background-color: white;
       }
     }
@@ -59,6 +59,7 @@ const Style = (() => {
     }
 
     ._text {
+      font-weight: bold;
       display: inline-block;
       line-height: ${height};
       height: 100%;
