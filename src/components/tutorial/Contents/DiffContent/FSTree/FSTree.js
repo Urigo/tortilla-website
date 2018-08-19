@@ -1,23 +1,31 @@
-import * as _ from 'lodash'
 import React from 'react'
 import styled from 'styled-components'
-
-const margin = '8px'
+import { exports } from './module'
 
 const Style = styled.div`
   > ._nodes-list {
     margin: 0;
     padding: 0;
+    margin-top: 5px;
     list-style-type: none;
   }
 
   > ._nodes-list-item {
-    margin-top: ${margin};
-    margin-bottom: ${margin};
+    margin-top: 8px 0;
   }
 `
 
-class FsTree extends React.Component {
+class FSTree extends React.Component {
+  static getDerivedStateFromProps(props) {
+    const state = {}
+
+    if (props.hasOwnProperty('tree')) {
+      state.tree = props.tree
+    }
+
+    return state
+  }
+
   constructor(props) {
     super(props)
 
@@ -30,20 +38,10 @@ class FsTree extends React.Component {
     this._nodes = []
   }
 
-  componentWillUpdate() {
+  getSnapshotBeforeUpdate() {
     this._nodes = []
-  }
 
-  componentWillReceiveProps(props) {
-    const state = {}
-
-    if (props.hasOwnProperty('tree')) {
-      state.tree = props.tree
-    }
-
-    if (_.size(state)) {
-      this.setState(state)
-    }
+    return null
   }
 
   getNodes() {
@@ -60,9 +58,11 @@ class FsTree extends React.Component {
         <ul className="_nodes-list">
           {tree.map((node, index) => (
             <li key={index} className="_nodes-list-item">
-              <FSNode ref={ref => this._nodes.push(ref)}
-                      node={node}
-                      depth={this.depth + 1}
+              <exports.FSNode
+                ref={ref => this._nodes.push(ref)}
+                node={node}
+                depth={this.depth + 1}
+                onSelect={this.onSelect}
               />
             </li>
           ))}
@@ -88,6 +88,18 @@ class FsTree extends React.Component {
       }
     }
   }
+
+  onSelect = (node, component) => {
+    if (this.nodeComponent && !component.state.selected) {
+      this.nodeComponent.deselect();
+    }
+
+    this.nodeComponent = component;
+
+    if (typeof this.props.onSelect === 'function') {
+      this.props.onSelect(node, component);
+    }
+  }
 }
 
-export default FsTree
+exports.FSTree = FSTree

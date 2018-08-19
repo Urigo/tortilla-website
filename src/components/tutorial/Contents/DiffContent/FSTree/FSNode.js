@@ -1,6 +1,73 @@
 import React from 'react'
+import styled from 'styled-components'
+import { exports } from './module'
 
-class FsNode extends React.Component {
+const Style = (() => {
+  const height = '20px'
+
+  return styled.div`
+    width: 100%;
+    height: ${height};
+    display: inline-block;
+
+    ._wrap {
+      height: 100%;
+
+      &._selected {
+        color: white;
+        background-color: rgb(50, 120, 220);
+      }
+
+      &._deselected {
+        color: black;
+        background-color: white;
+      }
+    }
+
+    ._node {
+      user-select: none;
+      cursor: default;
+    }
+
+    ._arrow {
+      display: inline-block;
+      text-align: center;
+      line-height: ${height};
+      width: 10px;
+      height: 100%;
+      cursor: pointer;
+      transform: translateX(-3px);
+
+      &._collapsed {
+        transform: rotate(-90deg);
+      }
+    }
+
+    ._descriptor {
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    ._icon {
+      display: inline-block;
+      text-align: center;
+      line-height: ${height};
+      width: 30px;
+      height: 100%;
+      user-select: none;
+      font-weight: bold;
+    }
+
+    ._text {
+      display: inline-block;
+      line-height: ${height};
+      height: 100%;
+      user-select: none;
+    }
+  `
+})()
+
+class FSNode extends React.Component {
   get children() {
     return this._children && this._children.target
   }
@@ -28,22 +95,26 @@ class FsNode extends React.Component {
     return (
       <Style>
         <div className={this.getWrapClass()} style={this.getWrapStyle()}>
-          <div style={this.getNodeStyle()}>
+          <div className="_node" style={this.getNodeStyle()}>
             {node.children && (
               <div
                 className={this.getArrowClass()}
-                onClick={this.toggleCollapse.bind(this)}
-              />
+                onClick={this.onClick}
+              >
+                ▼
+              </div>
             )}
-            <div onClick={this.select.bind(this)}>
-              <div>{this.getIcon()}</div>
-              <div>{node.title}</div>
+            <div className="_descriptor" onClick={this.onClick}>
+              <div className="_icon">{this.getIcon()}</div>
+              <div className="_text">{node.name}</div>
             </div>
             {node.children && !collapsed && (
-              <FSTree
+              <exports.FSTree
+                className="_fstree"
                 ref={ref => this.children = ref}
                 tree={node.children}
                 depth={this.depth}
+                onSelect={this.onSelect}
               />
             )}
           </div>
@@ -58,7 +129,7 @@ class FsNode extends React.Component {
     this.setState({
       selected: true
     }, () => {
-      if (typeof this.props.onSelect == 'function') {
+      if (typeof this.props.onSelect === 'function') {
         this.props.onSelect(this.state.node, this)
       }
     })
@@ -77,7 +148,7 @@ class FsNode extends React.Component {
     this.setState({
       selected: false
     }, () => {
-      if (typeof this.props.onDeselect == 'function') {
+      if (typeof this.props.onDeselect === 'function') {
         this.props.onDeselect(this.state.node, this)
       }
     })
@@ -85,14 +156,14 @@ class FsNode extends React.Component {
 
   getSelectionPath() {
     if (this.state.selected) {
-      return this.state.node.title
+      return this.state.node.name
     }
 
     if (this.children) {
       const childSelectionPath = this.children.getSelectionPath()
 
       if (childSelectionPath) {
-        return this.state.node.title + '/' + childSelectionPath
+        return this.state.node.name + '/' + childSelectionPath
       }
     }
   }
@@ -102,7 +173,9 @@ class FsNode extends React.Component {
   }
 
   getWrapClass() {
-    return this.state.selected ? 'selected' : 'deselected'
+    const selected = this.state.selected ? '_selected' : '_deselected'
+
+    return `_wrap ${selected}`
   }
 
   getDepthSize(depth = this.depth) {
@@ -132,9 +205,9 @@ class FsNode extends React.Component {
   }
 
   getArrowClass() {
-    const collapsed = this.state.collapsed ? 'collapsed' : ''
+    const collapsed = this.state.collapsed ? '_collapsed' : ''
 
-    return `arrow ${collapsed}`
+    return `_arrow ${collapsed}`
   }
 
   getIcon() {
@@ -150,7 +223,7 @@ class FsNode extends React.Component {
     this.setState({
       collapsed: true
     }, () => {
-      if (typeof this.props.onCollapse == 'function') {
+      if (typeof this.props.onCollapse === 'function') {
         this.props.onCollapse(this.state.node, this)
       }
     })
@@ -162,15 +235,30 @@ class FsNode extends React.Component {
     this.setState({
       collapsed: false
     }, () => {
-      if (typeof this.props.onExpand == 'function') {
+      if (typeof this.props.onExpand === 'function') {
         this.props.onExpand(this.state.node, this)
       }
     })
   }
 
-  toggleCollapse(e) {
+  toggleCollapse() {
     return this.state.collapsed ? this.expand() : this.collapse()
+  }
+
+  onClick = () => {
+    if (this.state.node.children) {
+      this.toggleCollapse()
+    }
+    else {
+      this.toggleSelection()
+    }
+  }
+
+  onSelect = (node, component) => {
+    if (typeof this.props.onSelect === 'function') {
+      this.props.onSelect(node, component);
+    }
   }
 }
 
-export default FsNode
+exports.FSNode = FSNode

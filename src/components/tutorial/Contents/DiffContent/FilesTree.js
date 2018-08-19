@@ -1,62 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Treebeard, decorators } from 'react-treebeard'
-
-console.log(decorators)
+import { FSTree } from './FSTree'
 
 // Will be used to store hidden properties
 const internal = Symbol('files_tree_internal')
-
-const diffDecorators = {
-  ...decorators,
-
-  Container(props) {
-    Object.assign(props.style.activeLink, {
-      boxShadow: 'inset 1px 0 0 white',
-      background: 'rgba(255, 255, 255, .1)',
-    })
-    Object.assign(props.style.container[0], {
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-    })
-    try {
-      Object.assign(props.style.subtree, {
-        paddingLeft: '13px',
-      })
-    }
-    catch (e) {
-      // Probably a leaf who's padding is bounded to the tree's
-    }
-
-    const {style, decorators, terminal, onClick, node} = this.props;
-
-    return (
-      <div onClick={onClick}
-           ref={ref => this.clickableRef = ref}
-           style={style.container}>
-          {!terminal ? this.renderToggle() : null}
-
-          <decorators.Header node={node}
-                             style={style.header}/>
-      </div>
-    )
-  },
-
-  Toggle({ style }) {
-    const { height, width } = style
-
-    return (
-      <div style={style.base}>
-        <div style={style.wrapper}>
-          <div style={{ height, width, color: style.arrow.fill }}>
-            🗁
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
 
 class FileTree extends React.Component {
   static propTypes = {
@@ -89,11 +36,9 @@ class FileTree extends React.Component {
 
   render() {
     return (
-      <Treebeard
-        data={this.state.children}
-        decorators={diffDecorators}
-        animations={false}
-        onToggle={onToggle.bind(this)}
+      <FSTree
+        tree={this.state.children}
+        onSelect={onSelect.bind(this)}
       />
     )
   }
@@ -255,10 +200,10 @@ class FileTree extends React.Component {
           reducedNode = {
             ...node,
             children: this.reduceChildren(props, node.children),
-            get toggled() { return node.toggled },
-            set toggled(toggled) { node.toggled = toggled },
-            get active() { return node.active },
-            set active(active) { node.active = active },
+            get collapsed() { return node.collapsed },
+            set collapsed(collapsed) { node.collapsed = collapsed },
+            get selected() { return node.selected },
+            set selected(selected) { node.selected = selected },
           }
         }
 
@@ -301,20 +246,15 @@ function pickLeaves(children) {
   return leaves
 }
 
-function onToggle(node, toggled) {
-  if (node.children) {
-    node.toggled = toggled
-  } else if (node.active) {
-    delete node.active
+function onSelect(node, component) {
+  if (node.children) return
 
-    this.props.removeFile(node.path)
-  } else {
-    node.active = true
-
-    this.props.addFile(node.path)
+  if (node.selected) {
+    this.props.addFile(component.getSelectionPath())
   }
-
-  this.forceUpdate()
+  else {
+    this.props.removeFile(component.getSelectionPath())
+  }
 }
 
 export default FileTree
