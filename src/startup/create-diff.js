@@ -37,8 +37,8 @@ module.exports = ({
 
   const versionsDiff = diffReleases(
     tutorialChunk,
-    srcVersionNumber,
     destVersionNumber,
+    srcVersionNumber,
   )
 
   paths.forEach((path) => {
