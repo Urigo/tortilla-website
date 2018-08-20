@@ -2256,7 +2256,7 @@ body-parser@1.18.2:
     raw-body "2.3.2"
     type-is "~1.6.15"
 
-body-parser@^1.18.2, body-parser@^1.18.3:
+body-parser@^1.18.2:
   version "1.18.3"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.18.3.tgz#5b292198ffdd553b3a0f20ded0592b956955c8b4"
   dependencies:
@@ -6757,7 +6757,7 @@ neo-async@^2.5.0:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.5.1.tgz#acb909e327b1e87ec9ef15f41b8a269512ad41ee"
 
-netlify-lambda@^0.4.0:
+netlify-lambda@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/netlify-lambda/-/netlify-lambda-0.4.0.tgz#e944ff73edf89de6e1ff782f4c10183e01f70616"
   dependencies:
