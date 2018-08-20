@@ -32,6 +32,7 @@ const Style = (() => {
     ._descriptor {
       cursor: pointer;
       display: inline-block;
+      white-space: nowrap;
     }
 
     ._icon {
@@ -50,6 +51,7 @@ const Style = (() => {
       line-height: ${height};
       height: 100%;
       user-select: none;
+      text-overflow: ellipsis;
     }
   `
 })()

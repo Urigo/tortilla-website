@@ -7,7 +7,6 @@ import Button from '../../../common/Button';
 import DiffsList from './DiffsList';
 
 const filesTreeBarHeight = '63px';
-const filesTreeWidth = '280px';
 const filesFiltersHeight = '45px';
 
 const Container = styled.div`
@@ -26,7 +25,7 @@ const Content = styled.div`
   overflow-x: hidden;
 `
 
-const FilesPicker = styled.div `
+const FilesPicker = styled.div`
   position: fixed;
   overflow: overlay;
   width: 100%;
@@ -40,7 +39,6 @@ const FilesPicker = styled.div `
   // 'react-treebeard' is not set in a way that its classes or style can be modified
   // else wise
   & > ul {
-    width: ${filesTreeWidth};
     height: calc(100% - ${filesTreeBarHeight});
     padding-top: 10px !important;
     overflow: overlay;
@@ -48,17 +46,23 @@ const FilesPicker = styled.div `
   }
 `
 
+const FilesPickerStretcher = styled.div`
+  position: fixed;
+  width: 10px;
+  bottom: 0;
+  cursor: ew-resize;
+`
+
 const FilesHeader = styled(require('./FilesHeader').default)`
-  width: ${filesTreeWidth};
   border-right: 1px solid ${props => props.theme.separator};
   display: block;
 `
 
 const FilesTree = styled(require('./FilesTree').default)`
   height: calc(100% - ${filesTreeBarHeight} - ${filesFiltersHeight});
-  width: ${filesTreeWidth};
   border-right: 1px solid ${props => props.theme.separator};
   overflow-y: overlay;
+  overflow-x: hidden;
 `
 
 const FilesFilters = styled.div`
@@ -67,7 +71,6 @@ const FilesFilters = styled.div`
   flex-direction: column;
   padding: 5px 0;
   left: 0;
-  width: ${filesTreeWidth};
   height: ${filesFiltersHeight};
   border: 1px solid ${props => props.theme.separator};
   bottom: 0;
@@ -131,6 +134,7 @@ export default class extends React.Component {
     this.state = {
       diffPaths: [],
       pickingFiles: true,
+      filesTreeWidth: 280,
     }
 
     let diffViewType = storage.getItem('diff-view-type')
@@ -186,13 +190,15 @@ export default class extends React.Component {
   }
 
   render() {
+    const filesTreeStyle = { width: this.state.filesTreeWidth + 'px' }
+    const stretcherStyle = { left: (this.state.filesTreeWidth - 5) + 'px' }
     const contentStyle = {}
 
     // Any time parent components have changed, this render method will be invoked,
     // thus, the dimensions will always be updated
     if (this.state.pickingFiles) {
-      contentStyle.width = `calc(100% - ${filesTreeWidth})`
-      contentStyle.marginLeft = filesTreeWidth
+      contentStyle.width = `calc(100% - ${this.state.filesTreeWidth}px)`
+      contentStyle.marginLeft = this.state.filesTreeWidth
       this.props.scrollerStyle.height = `calc(${this.props.scrollerHeight} - ${filesFiltersHeight})`
     } else {
       contentStyle.width = '100%'
@@ -202,10 +208,16 @@ export default class extends React.Component {
 
     return (
       <Container ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
-        {this.state.pickingFiles && (
+        {this.state.pickingFiles && <>
           <FilesPicker ref={ref => this.filesPicker = ReactDOM.findDOMNode(ref)}>
-            <FilesHeader opened={this.state.pickingFiles} close={this.toggleFilePicking} open={this.toggleFilePicking} />
+            <FilesHeader
+              opened={this.state.pickingFiles}
+              close={this.toggleFilePicking}
+              open={this.toggleFilePicking}
+              style={filesTreeStyle}
+            />
             <FilesTree
+              style={filesTreeStyle}
               cache={this}
               diff={this.props.diff}
               addFile={this.addFileDiff}
@@ -213,14 +225,19 @@ export default class extends React.Component {
               includePattern={this.state.includePattern}
               excludePattern={this.state.excludePattern}
             />
-            <FilesFilters>
+            <FilesFilters style={filesTreeStyle}>
               <FileFilter
                 onChange={this.includeFiles}
                 placeholder="🔍 Search files (regexp)"
               />
             </FilesFilters>
           </FilesPicker>
-        )}
+          <FilesPickerStretcher
+            ref={ref => this.filesPickerStretcher = ReactDOM.findDOMNode(ref)}
+            style={stretcherStyle}
+            onMouseDown={this.startStretchingFilePicker}
+          />
+        </>}
 
         <Content style={contentStyle}>
           <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
@@ -285,8 +302,11 @@ export default class extends React.Component {
     if (!this.filesPicker) return
     if (e && !e.target.contains(this.filesPicker)) return
 
-    const { top } = this.container.getBoundingClientRect()
-    this.filesPicker.style.top = Math.max(top, 0) + 'px'
+    let { top } = this.container.getBoundingClientRect()
+    top = Math.max(top, 0) + 'px'
+
+    this.filesPicker.style.top = top
+    this.filesPickerStretcher.style.top = top
   }
 
   includeFiles = (e) => {
@@ -299,6 +319,30 @@ export default class extends React.Component {
     this.setState({
       excludePattern: createPattern(e.target.value)
     })
+  }
+
+  startStretchingFilePicker = (e) => {
+    document.addEventListener('mousemove', this.stretchFilePicker)
+    document.addEventListener('mouseup', this.stopStretchingFilePicker)
+
+    this._clientX = e.clientX
+  }
+
+  stretchFilePicker = (e) => {
+    const deltaClientX = e.clientX - this._clientX
+    this._clientX = e.clientX
+
+    const filesTreeWidth = this.state.filesTreeWidth + deltaClientX
+
+    if (filesTreeWidth >= 200 && filesTreeWidth <= 600)
+    this.setState({
+      filesTreeWidth
+    })
+  }
+
+  stopStretchingFilePicker = (e) => {
+    document.removeEventListener('mousemove', this.stretchFilePicker)
+    document.removeEventListener('mouseup', this.stopStretchingFilePicker)
   }
 }
 

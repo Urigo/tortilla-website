@@ -14,6 +14,7 @@ class FileTree extends React.Component {
     excludePattern: PropTypes.oneOfType([PropTypes.instanceOf(RegExp), PropTypes.string]),
     cache: PropTypes.object,
     sortCb: PropTypes.func,
+    style: PropTypes.object,
   }
 
   static defaultProps = {
@@ -36,7 +37,7 @@ class FileTree extends React.Component {
 
   render() {
     return (
-      <div className={this.props.className}>
+      <div className={this.props.className} style={this.props.style} >
         <FSTree
           tree={this.state.children}
           onSelect={onSelect.bind(this)}
