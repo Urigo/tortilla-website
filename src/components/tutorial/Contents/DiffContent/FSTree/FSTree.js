@@ -56,8 +56,8 @@ class FSTree extends React.Component {
     return (
       <Style>
         <ul className="_nodes-list">
-          {tree.map((node, index) => (
-            <li key={index} className="_nodes-list-item">
+          {tree.map((node) => (
+            <li key={node.name} className="_nodes-list-item">
               <exports.FSNode
                 ref={ref => this._nodes.push(ref)}
                 node={node}
