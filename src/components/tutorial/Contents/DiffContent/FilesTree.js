@@ -1,22 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Treebeard, decorators } from 'react-treebeard';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { FSTree } from './FSTree'
 
 // Will be used to store hidden properties
 const internal = Symbol('files_tree_internal')
-
-const diffDecorators = {
-  ...decorators,
-
-  Container(props) {
-    Object.assign(props.style.activeLink, {
-      boxShadow: 'inset 1px 0 0 white',
-      background: 'rgba(255, 255, 255, .1)',
-    });
-
-    return React.createElement(decorators.Container, props);
-  }
-}
 
 class FileTree extends React.Component {
   static propTypes = {
@@ -27,6 +14,7 @@ class FileTree extends React.Component {
     excludePattern: PropTypes.oneOfType([PropTypes.instanceOf(RegExp), PropTypes.string]),
     cache: PropTypes.object,
     sortCb: PropTypes.func,
+    style: PropTypes.object,
   }
 
   static defaultProps = {
@@ -38,9 +26,9 @@ class FileTree extends React.Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.constructChildren();
+    this.constructChildren()
 
     this.state = {
       children: this.reduceChildren()
@@ -49,12 +37,14 @@ class FileTree extends React.Component {
 
   render() {
     return (
-      <Treebeard
-        data={this.state.children}
-        decorators={diffDecorators}
-        onToggle={onToggle.bind(this)}
-      />
-    );
+      <div className={this.props.className} style={this.props.style} >
+        <FSTree
+          tree={this.state.children}
+          onSelect={onSelect.bind(this)}
+          onDeselect={onDeselect.bind(this)}
+        />
+      </div>
+    )
   }
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -119,48 +109,78 @@ class FileTree extends React.Component {
 
   constructChildren(props = this.props, reset) {
     if (props.cache[internal] && !reset) {
-      this.children = props.cache[internal].children;
+      this.children = props.cache[internal].children
 
-      return;
+      return
     }
 
     props.cache[internal] = {
       children: this.children = []
-    };
+    }
 
     // In SSR this is gonna be empty
     if (!props.diff) return
 
     // Compose children out of given diff, assuming the schema is correct
-    props.diff.match(/^diff --git [^\s]+ [^\s]+/mg).forEach((header) => {
-      header.split(' ').slice(-2).forEach((path) => {
-        if (path === '/dev/null') return;
+    props.diff.match(/\n--- [^\s]+\n\+\+\+ [^\s]+\n/g).forEach((header) => {
+      const files = header
+        .match(/--- ([^\s]+)\n\+\+\+ ([^\s]+)/)
+        .slice(1)
+        .map(path => ({
+          rawPath: path,
+          // Slice initial /a /b parts
+          path: path.split('/').slice(1).join('/')
+        }))
 
-        // Slice initial /a /b parts
-        const names = path.split('/').slice(1)
-        path = names.join('/')
+      if (files[0].path === files[1].path) {
+        files.pop()
+        files[0].mode = 'modified'
+      }
+      else if (files[0].rawPath === '/dev/null') {
+        files.shift()
+        files[0].mode = 'added'
+      }
+      else if (files[1].rawPath === '/dev/null') {
+        files.pop()
+        files[0].mode = 'deleted'
+      }
+      else {
+        files[0].mode = 'deleted'
+        files[1].mode = 'added'
+      }
+
+      files.forEach(({ path, mode }, i) => {
+        const names = path.split('/')
 
         names.reduce((node, name, index, split) => {
           if (!node.children) {
-            node.children = [];
+            node.children = []
           }
 
           let childNode = node.children.find((candi) => {
             return candi.name === name
-          });
+          })
 
           if (!childNode) {
-            childNode = { name, path };
+            childNode = {
+              name,
+              path: split.slice(0, index + 1).join('/'),
+            }
 
-            node.children.push(childNode);
+            // If leaf
+            if (index === names.length - 1) {
+              childNode.mode = mode
+            }
+
+            node.children.push(childNode)
 
             node.children.sort((a, b) => {
-              return a.name > b.name ? 1 : -1;
-            });
+              return a.name > b.name ? 1 : -1
+            })
           }
 
-          return childNode;
-        }, this);
+          return childNode
+        }, this)
       })
     })
   }
@@ -184,10 +204,10 @@ class FileTree extends React.Component {
           reducedNode = {
             ...node,
             children: this.reduceChildren(props, node.children),
-            get toggled() { return node.toggled },
-            set toggled(toggled) { node.toggled = toggled },
-            get active() { return node.active },
-            set active(active) { node.active = active },
+            get collapsed() { return node.collapsed },
+            set collapsed(collapsed) { node.collapsed = collapsed },
+            get selected() { return node.selected },
+            set selected(selected) { node.selected = selected },
           }
         }
 
@@ -230,20 +250,12 @@ function pickLeaves(children) {
   return leaves
 }
 
-function onToggle(node, toggled) {
-  if (node.children) {
-    node.toggled = toggled;
-  } else if (node.active) {
-    delete node.active;
-
-    this.props.removeFile(node.path);
-  } else {
-    node.active = true;
-
-    this.props.addFile(node.path);
-  }
-
-  this.forceUpdate();
+function onSelect(node) {
+  this.props.addFile(node.path)
 }
 
-export default FileTree;
+function onDeselect(node) {
+  this.props.removeFile(node.path)
+}
+
+export default FileTree

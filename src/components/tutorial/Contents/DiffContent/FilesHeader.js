@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { faShoePrints, faTimes, faAngleDown } from '@fortawesome/fontawesome-free-solid'
+import { faList, faTimes, faAngleDown } from '@fortawesome/fontawesome-free-solid'
 import FaIcon from '../../../common/FaIcon'
 
-const StepbarHeight = 63
-const SteplineHeight = 4
+const FilebarHeight = 63
+const FilelineHeight = 4
 
 const ListIcon = styled(FaIcon).attrs({
-  icon: faShoePrints,
+  icon: faList,
   size: 20,
 })`
   float: left;
@@ -35,8 +35,8 @@ const OpenBtn = styled(FaIcon).attrs({
   color: ${({theme}) => theme.primaryBlue};
 `
 
-const Stepbar = styled.div`
-  height: ${StepbarHeight}px;
+const Filebar = styled.div`
+  height: ${FilebarHeight}px;
   border-bottom: solid 1px ${({ theme }) => theme.separator};
   padding-top: 10px;
 
@@ -56,33 +56,33 @@ const Stepbar = styled.div`
   }
 `
 
-const Stepline = styled.div`
+const Fileline = styled.div`
   width: 165px;
   border-radius: 6px;
-  margin-top: ${-SteplineHeight / 2}px;
-  height: ${SteplineHeight}px;
+  margin-top: ${-FilelineHeight / 2}px;
+  height: ${FilelineHeight}px;
   background-color: ${({theme}) => theme.primaryBlue};
 `
 
-class StepsHeader extends React.Component {
+class FilesHeader extends React.Component {
   render() {
     return (
-      <div style={this.props.style}>
-        <Stepbar>
+      <div className={this.props.className} style={this.props.style}>
+        <Filebar>
           <div className="_title">
             <ListIcon />
-            <div className="_text">Step</div>
+            <div className="_text">Files</div>
           </div>
           {this.props.opened ? (
             <CloseBtn onClick={this.props.close} />
           ) : (
             <OpenBtn onClick={this.props.open} />
           )}
-        </Stepbar>
-        <Stepline />
+        </Filebar>
+        <Fileline />
       </div>
     )
   }
 }
 
-export default StepsHeader
+export default FilesHeader
