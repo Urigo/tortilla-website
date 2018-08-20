@@ -133,7 +133,7 @@ class FileTree extends React.Component {
 
       if (files[0].path === files[1].path) {
         files.pop()
-        files[0].mode = 'changed'
+        files[0].mode = 'modified'
       }
       else if (files[0].rawPath === '/dev/null') {
         files.shift()

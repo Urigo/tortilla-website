@@ -29,20 +29,6 @@ const Style = (() => {
       cursor: default;
     }
 
-    ._arrow {
-      display: inline-block;
-      text-align: center;
-      line-height: ${height};
-      width: 10px;
-      height: 100%;
-      cursor: pointer;
-      transform: translateX(-3px);
-
-      &._collapsed {
-        transform: rotate(-90deg);
-      }
-    }
-
     ._descriptor {
       cursor: pointer;
       display: inline-block;
@@ -104,14 +90,6 @@ class FSNode extends React.Component {
       <Style>
         <div className={this.getWrapClass()} style={this.getWrapStyle()}>
           <div className="_node" style={this.getNodeStyle()}>
-            {node.children && (
-              <div
-                className={this.getArrowClass()}
-                onClick={this.onClick}
-              >
-                ▼
-              </div>
-            )}
             <div className="_descriptor" onClick={this.onClick}>
               <div className="_icon">{this.getIcon()}</div>
               <div className="_text">{node.name}</div>
@@ -206,17 +184,19 @@ class FSNode extends React.Component {
     }
   }
 
-  getArrowClass() {
-    const collapsed = this.state.collapsed ? '_collapsed' : ''
-
-    return `_arrow ${collapsed}`
-  }
-
   getIcon() {
-    if (!this.state.node.children) return '🗎'
-    if (!this.state.collapsed) return '🗁'
+    const { node, collapsed } = this.state
 
-    return '🗀'
+    if (!node.children) {
+      switch (node.mode) {
+        case 'added': return '+ 🗎'
+        case 'deleted': return '- 🗎'
+        case 'modified': return '± 🗎'
+        default: return '🗎'
+      }
+    }
+
+    return collapsed ? '\u00A0\u00A0🗀' : '\u00A0\u00A0🗁'
   }
 
   collapse() {
