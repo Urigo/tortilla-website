@@ -261,32 +261,29 @@ class DiffsList extends React.Component {
       this.process = Promise.resolve()
     }
 
-    // If no paths provided, no need to continue
-    if (!paths || !paths.length) {
-      if (reset) {
-        this.diffContainer.innerHTML = ''
-        this.allPaths = []
-      }
+    let rawFilesDiffs
+    // If paths provided, filter accordingly
+    if (paths && paths.length) {
+      // Takes diffs which match the paths
+      rawFilesDiffs = this.rawFilesDiffs.filter((fileDiff) => {
+        // Gotta match because of the way we split the file diffs
+        const [oldPath, newPath] = fileDiff
+          .match(/diff --git ([^\s]+) ([^\s]+)/)
+          .slice(1)
+          // Remove /a /b
+          .map(path => path.split('/').slice(1).join('/'))
 
-      return
+        return paths.includes(oldPath) || paths.includes(newPath)
+      })
     }
-
-    // Takes diffs which match the paths
-    const rawFilesDiffs = this.rawFilesDiffs.filter((fileDiff) => {
-      // Gotta match because of the way we split the file diffs
-      const [oldPath, newPath] = fileDiff
-        .match(/diff --git ([^\s]+) ([^\s]+)/)
-        .slice(1)
-        // Remove /a /b
-        .map(path => path.split('/').slice(1).join('/'))
-
-      return paths.includes(oldPath) || paths.includes(newPath)
-    })
+    // Otherwise, include everything
+    else {
+      rawFilesDiffs = this.rawFilesDiffs
+    }
 
     // Parse and render diff views in series
     this.process =
     rawFilesDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
-      const path = paths[i]
       const rawFileDiff = rawFilesDiffs[i]
       let parsedFileDiff = this.parsedFilesDiffs.find(parsedFileDiff =>
         [parsedFileDiff.oldPath, parsedFileDiff.newPath].includes(paths[i])
@@ -306,8 +303,10 @@ class DiffsList extends React.Component {
         //    of executions when needed
         this.thread = setImmediate(() => {
           const diffFileView = document.createElement('span')
+          const diffFileViewChildren = this.renderDiffFile(parsedFileDiff)
+          const { path } = diffFileViewChildren.props
 
-          ReactDOM.render(this.renderDiffFile(parsedFileDiff), diffFileView, () => {
+          ReactDOM.render(diffFileViewChildren, diffFileView, () => {
             if (reset) {
               reset = false
               // Reset the view itself only after building the first diff so we won't see
@@ -346,6 +345,7 @@ class DiffsList extends React.Component {
     oldRevision,
     hunks,
     isBinary,
+    tooLong,
   }) {
     const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
       return Math.max(
@@ -367,9 +367,12 @@ class DiffsList extends React.Component {
 
     // Will store the view's header
     let header = []
+    let keyPath
 
     // File removed
     if (Number(oldRevision) !== 0) {
+      keyPath = oldPath
+
       header.push(this.srcBaseUrl
         ? <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
         : <NullPath key={0}>{oldPath}</NullPath>
@@ -385,6 +388,8 @@ class DiffsList extends React.Component {
         ]
       // File renamed, moved or added
       } else {
+        keyPath = keyPath || newPath
+
         header.push(this.destBaseUrl
           ? <Path key={header.length} href={`${this.destBaseUrl}/${newPath}`}>{newPath}</Path>
           : <NullPath key={header.length}>{newPath}</NullPath>
@@ -427,7 +432,7 @@ class DiffsList extends React.Component {
         width: ${lineWidth}ch;
       }
 
-      .diff-binary {
+      .diff-binary, .diff-long {
         width: 100%;
         padding: 0;
         text-align: center;
@@ -440,11 +445,15 @@ class DiffsList extends React.Component {
     `
 
     return (
-      <Container>
+      <Container path={keyPath}>
         <DiffHeader>{header}</DiffHeader>
         {isBinary ? (
           <div className={`diff-binary ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
             BINARY
+          </div>
+        ) : tooLong ? (
+          <div className={`diff-long ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
+            Large diffs are not rendered by default.
           </div>
         ) : (
           <ReactDiffView hunks={hunks} viewType={this.props.diffType} />
