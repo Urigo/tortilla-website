@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
 import { parseDiff, Diff as ReactDiffView } from '../../../../libs/react-diff-view'
+import Thread from '../../../../utils/Thread'
 
 const Container = styled.div`
   clear: both;
@@ -149,9 +150,6 @@ class DiffsList extends React.Component {
     this.allPaths = []
     this.parsedFilesDiffs = []
 
-    // The thread which will be used to execute tasks in series
-    this.process = Promise.resolve()
-
     // Split diff into file-specific diffs
     this.rawFilesDiffs = !props.diff ? [] : props.diff
       // Fix inline hunks
@@ -162,39 +160,24 @@ class DiffsList extends React.Component {
       })
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    let reset
-    let oldPaths
-    let newPaths
+  shouldComponentUpdate(props) {
+    return (
+      props.paths.some(path => !this.props.paths.includes(path)) ||
+      this.props.paths.some(path => !props.paths.includes(path))
+    )
+  }
 
+  UNSAFE_componentWillReceiveProps(props) {
+    // Diff is completely different. Hard reseting
     if (props.diff !== this.props.diff) {
-      this.stopThread()
       this.resetRawData(props)
-      this.diffContainer.innerHTML = ''
-      reset = true
     }
 
     if (props.hasOwnProperty('diffType') && props.diffType !== this.props.diffType) {
       this.resetDiffTypeParams(props)
-      reset = true
     }
 
-    if (props.hasOwnProperty('paths')) {
-      oldPaths = !reset && this.allPaths.filter((path) =>
-        !props.paths.includes(path)
-      )
-
-      newPaths = props.paths.filter((path) =>
-        !this.allPaths.includes(path)
-      )
-    }
-
-    if (reset) {
-      newPaths = newPaths ? this.allPaths.concat(newPaths) : this.allPaths
-    }
-
-    this.disposeFilesDiffs(oldPaths)
-    this.buildFilesDiffs(newPaths, reset)
+    this.buildFilesDiffs(props.paths)
   }
 
   componentWillUnmount() {
@@ -219,47 +202,10 @@ class DiffsList extends React.Component {
     }
   }
 
-  // paths - Paths we would like to get rid of
-  disposeFilesDiffs(paths) {
-    if (!paths) return
-    if (!paths.length) return
-
-    // Queue task, don't perform it synchronously. Otherwise there will be conflicts
-    this.process = this.process.then(() => new Promise((resolve) => {
-      this.thread = setImmediate(() => {
-        paths.forEach((path) => {
-          // Index must exist because everything is happening in series
-          const diffFileIndex = this.allPaths.indexOf(path)
-          const diffFileView = this.diffContainer.children[diffFileIndex]
-
-          this.allPaths.splice(diffFileIndex, 1)
-
-          if (diffFileView) {
-            diffFileView.remove()
-          }
-        })
-
-        resolve()
-      })
-    }))
-  }
-
   // paths - Paths we would like to build
-  // reset - If true, will reset the view
-  buildFilesDiffs(paths, reset) {
+  buildFilesDiffs(paths) {
     // Sometimes there might be no visible changes between versions
     if (!this.props.diff) return
-
-    if (typeof paths === 'boolean') {
-      reset = paths
-      paths = null
-    }
-
-    if (reset) {
-      this.stopThread()
-      // Move build process cursor
-      this.process = Promise.resolve()
-    }
 
     let rawFilesDiffs
     // If paths provided, filter accordingly
@@ -281,8 +227,9 @@ class DiffsList extends React.Component {
       rawFilesDiffs = this.rawFilesDiffs
     }
 
+    // Will be used to indicate weather view should be cleaned or not
+    let reset = true
     // Parse and render diff views in series
-    this.process =
     rawFilesDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
       const rawFileDiff = rawFilesDiffs[i]
       let parsedFileDiff = this.parsedFilesDiffs.find(parsedFileDiff =>
@@ -296,17 +243,15 @@ class DiffsList extends React.Component {
       }
 
       return new Promise(resolve => {
-        // We use setImmediate for 2 reasons
-        // 1. Between 2 executions the DOM will render and so this way we can
-        //    see the progress
-        // 2. We can store the most recent build process and stop the series
-        //    of executions when needed
-        this.thread = setImmediate(() => {
+        const thread = this.restartThread()
+
+        // Here we use setImmediate so we won't clog the execution thread
+        setImmediate(thread.wrap(() => {
           const diffFileView = document.createElement('span')
           const diffFileViewChildren = this.renderDiffFile(parsedFileDiff)
           const { path } = diffFileViewChildren.props
 
-          ReactDOM.render(diffFileViewChildren, diffFileView, () => {
+          ReactDOM.render(diffFileViewChildren, diffFileView, thread.wrap(() => {
             if (reset) {
               reset = false
               // Reset the view itself only after building the first diff so we won't see
@@ -324,14 +269,22 @@ class DiffsList extends React.Component {
             this.diffContainer.insertBefore(diffFileView, nextDiffFileView)
 
             resolve()
-          })
-        })
+          }))
+        }))
       })
-    }), this.process)
+    }), Promise.resolve())
+  }
+
+  restartThread() {
+    this.stopThread()
+
+    return this.thread = new Thread()
   }
 
   stopThread() {
-    clearImmediate(this.thread)
+    if (this.thread) {
+      this.thread.stop()
+    }
   }
 
   render() {
