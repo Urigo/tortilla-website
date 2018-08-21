@@ -85,8 +85,7 @@ class FSNode extends React.Component {
   }
 
   render() {
-    const node = this.state.node
-    const collapsed = this.state.collapsed
+    const { node, collapsed } = this.state
 
     return (
       <Style>
@@ -113,26 +112,34 @@ class FSNode extends React.Component {
   }
 
   select() {
-    if (this.state.selected) return
+    if (this.state.selected) return Promise.resolve()
 
-    this.setState({
-      selected: true
-    }, () => {
-      if (typeof this.props.onSelect === 'function') {
-        this.props.onSelect(this.state.node, this)
-      }
+    return new Promise((resolve) => {
+      this.setState({
+        selected: true
+      }, () => {
+        if (typeof this.props.onSelect === 'function') {
+          this.props.onSelect(this.state.node, this)
+        }
+
+        resolve()
+      })
     })
   }
 
   deselect() {
-    if (!this.state.selected) return
+    if (!this.state.selected) return Promise.resolve()
 
-    this.setState({
-      selected: false
-    }, () => {
-      if (typeof this.props.onDeselect === 'function') {
-        this.props.onDeselect(this.state.node, this)
-      }
+    return new Promise((resolve) => {
+      this.setState({
+        selected: false
+      }, () => {
+        if (typeof this.props.onDeselect === 'function') {
+          this.props.onDeselect(this.state.node, this)
+        }
+
+        resolve()
+      })
     })
   }
 

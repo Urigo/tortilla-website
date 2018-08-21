@@ -93,20 +93,12 @@ class FSTree extends React.Component {
   }
 
   onDeselect = (node, component) => {
-    if (this.nodeComponent) {
-      this.nodeComponent.deselect();
-    }
-
-    this.nodeComponent = component;
-
     if (typeof this.props.onDeselect === 'function') {
       this.props.onDeselect(node, component);
     }
   }
 
   onSelect = (node, component) => {
-    this.nodeComponent = component;
-
     if (typeof this.props.onSelect === 'function') {
       this.props.onSelect(node, component);
     }

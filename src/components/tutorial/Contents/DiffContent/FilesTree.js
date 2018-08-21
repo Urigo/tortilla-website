@@ -250,11 +250,29 @@ function pickLeaves(children) {
   return leaves
 }
 
-function onSelect(node) {
-  this.props.addFile(node.path)
+function onSelect(node, component) {
+  if (component === this.state.selectedNode) return
+
+  const deselecting = this.state.selectedNode
+    ? this.state.selectedNode.deselect()
+    : Promise.resolve()
+
+  deselecting.then(() => {
+    this.setState({
+      selectedNode: component
+    })
+
+    this.props.addFile(node.path)
+  })
 }
 
-function onDeselect(node) {
+function onDeselect(node, component) {
+  if (!this.state.selectedNode) return
+
+  this.setState({
+    selectedNode: null
+  })
+
   this.props.removeFile(node.path)
 }
 

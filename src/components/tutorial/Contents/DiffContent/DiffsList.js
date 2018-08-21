@@ -233,7 +233,10 @@ class DiffsList extends React.Component {
           const diffFileView = this.diffContainer.children[diffFileIndex]
 
           this.allPaths.splice(diffFileIndex, 1)
-          diffFileView.remove()
+
+          if (diffFileView) {
+            diffFileView.remove()
+          }
         })
 
         resolve()
