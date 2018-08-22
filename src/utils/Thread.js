@@ -1,6 +1,7 @@
 class Thread {
   constructor() {
     this.running = true
+    this.awaitingCb = () => {}
   }
 
   wrap(cb) {
@@ -13,12 +14,21 @@ class Thread {
 
   run(cb) {
     if (this.running) {
-      return cb()
+      cb()
+    }
+    else {
+      this.awaitingCb = () => {
+        this.awaitingCb = () => {}
+
+        cb()
+      }
     }
   }
 
   resume() {
     this.running = true
+
+    this.awaitingCb()
   }
 
   stop() {

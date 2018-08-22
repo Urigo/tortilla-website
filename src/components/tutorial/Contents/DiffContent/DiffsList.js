@@ -160,6 +160,9 @@ class DiffsList extends React.Component {
   }
 
   componentDidMount() {
+    document.addEventListener('scroll', this.onScroll)
+    document.addEventListener('mousedown', this.onMouseDown)
+    document.addEventListener('mouseup', this.onMouseUp)
     this.buildFilesDiffs(this.props.paths)
   }
 
@@ -188,6 +191,9 @@ class DiffsList extends React.Component {
   }
 
   componentWillUnmount() {
+    document.removeEventListener('scroll', this.onScroll)
+    document.removeEventListener('mousedown', this.onMouseDown)
+    document.removeEventListener('mouseup', this.onMouseUp)
     this.stopThread()
   }
 
@@ -260,6 +266,10 @@ class DiffsList extends React.Component {
           const diffFileViewChildren = this.renderDiffFile(parsedFileDiff)
           const { path } = diffFileViewChildren.props
 
+          diffFileView.addEventListener('scroll', this.onScroll)
+          diffFileView.addEventListener('mousedown', this.onMouseDown)
+          diffFileView.addEventListener('mouseup', this.onMouseUp)
+
           ReactDOM.render(diffFileViewChildren, diffFileView, thread.wrap(() => {
             if (!this.diffContainer) return
 
@@ -290,6 +300,12 @@ class DiffsList extends React.Component {
     this.stopThread()
 
     return this.thread = new Thread()
+  }
+
+  resumeThread() {
+    if (this.thread) {
+      this.thread.resume()
+    }
   }
 
   stopThread() {
@@ -424,6 +440,23 @@ class DiffsList extends React.Component {
         )}
       </Container>
     )
+  }
+
+  onScroll = () => {
+    clearTimeout(this.scrollTimeout)
+    this.stopThread()
+
+    this.scrollTimeout = setTimeout(() => {
+      this.resumeThread()
+    }, 500)
+  }
+
+  onMouseDown = () => {
+    this.stopThread()
+  }
+
+  onMouseUp = () => {
+    this.resumeThread()
   }
 }
 
