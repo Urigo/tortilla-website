@@ -220,8 +220,7 @@ export default class extends React.Component {
               style={filesTreeStyle}
               cache={this}
               diff={this.props.diff}
-              addFile={this.addFileDiff}
-              removeFile={this.removeFileDiff}
+              showFiles={this.showDiffFiles}
               includePattern={this.state.includePattern}
               excludePattern={this.state.excludePattern}
             />
@@ -280,21 +279,10 @@ export default class extends React.Component {
     })
   }
 
-  addFileDiff = (path) => {
-    if (!this.state.diffPaths.includes(path)) {
-      this.setState({
-        diffPaths: [...this.state.diffPaths, path]
-      })
-    }
-  }
-
-  removeFileDiff = (path) => {
-    const index = this.state.diffPaths.indexOf(path)
-
-    if (index !== -1) {
-      this.state.diffPaths.splice(index, 1)
-      this.forceUpdate()
-    }
+  showDiffFiles = (diffPaths) => {
+    this.setState({
+      diffPaths
+    })
   }
 
   resetFilesPickerDimensions = (e) => {
