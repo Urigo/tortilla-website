@@ -1,4 +1,3 @@
-import 'setimmediate'
 import 'react-diff-view/index.css'
 
 import PropTypes from 'prop-types'
@@ -160,24 +159,32 @@ class DiffsList extends React.Component {
       })
   }
 
-  shouldComponentUpdate(props) {
-    return (
-      props.paths.some(path => !this.props.paths.includes(path)) ||
-      this.props.paths.some(path => !props.paths.includes(path))
-    )
+  componentDidMount() {
+    this.buildFilesDiffs(this.props.paths)
   }
 
   UNSAFE_componentWillReceiveProps(props) {
+    let rebuild
+
     // Diff is completely different. Hard reseting
     if (props.diff !== this.props.diff) {
       this.resetRawData(props)
+      rebuild = true
     }
 
     if (props.hasOwnProperty('diffType') && props.diffType !== this.props.diffType) {
       this.resetDiffTypeParams(props)
+      rebuild = true
     }
 
-    this.buildFilesDiffs(props.paths)
+    rebuild = rebuild || (
+      props.paths.some(path => !this.recentPaths.includes(path)) ||
+      this.recentPaths.some(path => !props.paths.includes(path))
+    )
+
+    if (rebuild) {
+      this.buildFilesDiffs(props.paths)
+    }
   }
 
   componentWillUnmount() {
@@ -204,6 +211,8 @@ class DiffsList extends React.Component {
 
   // paths - Paths we would like to build
   buildFilesDiffs(paths) {
+    this.recentPaths = [...paths]
+
     // Sometimes there might be no visible changes between versions
     if (!this.props.diff) return
 
@@ -246,12 +255,14 @@ class DiffsList extends React.Component {
         const thread = this.restartThread()
 
         // Here we use setImmediate so we won't clog the execution thread
-        setImmediate(thread.wrap(() => {
+        setTimeout(thread.wrap(() => {
           const diffFileView = document.createElement('span')
           const diffFileViewChildren = this.renderDiffFile(parsedFileDiff)
           const { path } = diffFileViewChildren.props
 
           ReactDOM.render(diffFileViewChildren, diffFileView, thread.wrap(() => {
+            if (!this.diffContainer) return
+
             if (reset) {
               reset = false
               // Reset the view itself only after building the first diff so we won't see
@@ -270,7 +281,7 @@ class DiffsList extends React.Component {
 
             resolve()
           }))
-        }))
+        }), 10)
       })
     }), Promise.resolve())
   }

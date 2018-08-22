@@ -16,7 +16,7 @@ if (typeof window === 'undefined') {
 const { parseDiff } = lib
 
 lib.parseDiff = (diffStr) => {
-  const tooLong = diffStr.length >= 10000
+  const tooLong = diffStr.length >= 8000
 
   // If so, get only paths metadata
   if (tooLong) {
