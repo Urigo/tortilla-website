@@ -83,8 +83,8 @@ class FileTree extends React.Component {
 
   // This will call the props.showFiles callback based on the
   // modifications that have happened in children
-  modifyFiles(newChildren) {
-    const paths = newChildren.map(child => child.path)
+  modifyFiles(children) {
+    const paths = pickLeaves(children).map(node => node.path)
 
     this.props.showFiles(paths)
   }
@@ -210,6 +210,26 @@ class FileTree extends React.Component {
     // Ascending order. Dirs first
     return dirChildren.concat(fileChildren)
   }
+}
+
+function pickLeaves(children) {
+  // Use stash if already calculated
+  if (children[internal]) return children[internal]
+
+  const leaves = children.reduce((leaves, node) => {
+    if (node.children) {
+      leaves.push(...pickLeaves(node.children))
+    } else {
+      leaves.push(node)
+    }
+
+    return leaves
+  }, [])
+
+  // Store cache for future calculations
+  children[internal] = leaves
+
+  return leaves
 }
 
 function onSelect(node, component) {
