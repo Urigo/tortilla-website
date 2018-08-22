@@ -8,8 +8,7 @@ const internal = Symbol('files_tree_internal')
 class FileTree extends React.Component {
   static propTypes = {
     diff: PropTypes.string.isRequired,
-    addFile: PropTypes.func.isRequired,
-    removeFile: PropTypes.func.isRequired,
+    showFiles: PropTypes.func.isRequired,
     includePattern: PropTypes.oneOfType([PropTypes.instanceOf(RegExp), PropTypes.string]),
     excludePattern: PropTypes.oneOfType([PropTypes.instanceOf(RegExp), PropTypes.string]),
     cache: PropTypes.object,
@@ -82,29 +81,12 @@ class FileTree extends React.Component {
     }
   }
 
-  // This will call the props.addFile and props.removeFile callbacks based on the
+  // This will call the props.showFiles callback based on the
   // modifications that have happened in children
-  modifyFiles(newChildren, oldChildren) {
-    const newLeaves = pickLeaves(newChildren)
-    const oldLeaves = pickLeaves(oldChildren)
-    const newActiveLeaves = newLeaves.filter(node => node.active)
-    const oldActiveLeaves = oldLeaves.filter(node => node.active)
+  modifyFiles(children) {
+    const paths = pickLeaves(children).map(node => node.path)
 
-    newActiveLeaves.forEach((newActiveLeaf, i) => {
-      const oldActiveLeaf = oldActiveLeaves[i]
-
-      if (newActiveLeaf && !oldActiveLeaf) {
-        this.props.addFile(newActiveLeaf.path)
-      }
-    })
-
-    oldActiveLeaves.forEach((oldActiveLeaf, i) => {
-      const newActiveLeaf = newActiveLeaves[i]
-
-      if (oldActiveLeaf && !newActiveLeaf) {
-        this.props.removeFile(oldActiveLeaf.path)
-      }
-    })
+    this.props.showFiles(paths)
   }
 
   constructChildren(props = this.props, reset) {
@@ -250,12 +232,37 @@ function pickLeaves(children) {
   return leaves
 }
 
-function onSelect(node) {
-  this.props.addFile(node.path)
+function onSelect(node, component) {
+  if (component === this.state.selectedNode) return
+
+  const deselecting = this.state.selectedNode
+    ? this.state.selectedNode.deselect()
+    : Promise.resolve()
+
+  deselecting.then(() => {
+    this.setState({
+      selectedNode: component
+    })
+
+    if (node.children) {
+      const paths = pickLeaves(node.children).map(node => node.path)
+
+      this.props.showFiles(paths)
+    }
+    else {
+      this.props.showFiles([node.path])
+    }
+  })
 }
 
-function onDeselect(node) {
-  this.props.removeFile(node.path)
+function onDeselect(node, component) {
+  if (!this.state.selectedNode) return
+
+  this.setState({
+    selectedNode: null
+  })
+
+  this.props.showFiles([])
 }
 
 export default FileTree

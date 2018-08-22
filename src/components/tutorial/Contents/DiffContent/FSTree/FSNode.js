@@ -1,5 +1,16 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
+
+import {
+  faFile,
+  faFolder,
+  faFolderOpen,
+  faCaretDown,
+  faCaretRight,
+} from '@fortawesome/fontawesome-free-solid'
+
+import FaIcon from './../../../../common/FaIcon'
 import { exports } from './module'
 
 const Style = (() => {
@@ -27,6 +38,7 @@ const Style = (() => {
     ._node {
       user-select: none;
       cursor: default;
+      transform: translateY(-2px);
     }
 
     ._descriptor {
@@ -43,6 +55,34 @@ const Style = (() => {
       height: 100%;
       user-select: none;
       font-weight: bold;
+
+      ._caret {
+        margin-right: 5px;
+        margin-left: -5px;
+      }
+
+      ._mode {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+        font-weight: 800;
+        margin-left: -15px;
+        margin-right: 5px;
+        border: 1px solid ${({ theme }) => theme.blueGray};
+        border-radius: 3px;
+        background-color: white;
+        color: ${({ theme }) => theme.blueGray};
+
+        &._added {
+          color: #356611;
+        }
+
+        &._deleted {
+          color: #951b1b;
+        }
+      }
     }
 
     ._text {
@@ -85,16 +125,15 @@ class FSNode extends React.Component {
   }
 
   render() {
-    const node = this.state.node
-    const collapsed = this.state.collapsed
+    const { node, collapsed } = this.state
 
     return (
       <Style>
         <div className={this.getWrapClass()} style={this.getWrapStyle()}>
           <div className="_node" style={this.getNodeStyle()}>
-            <div className="_descriptor" onClick={this.onClick}>
-              <div className="_icon">{this.getIcon()}</div>
-              <div className="_text">{node.name}</div>
+            <div className="_descriptor">
+              <div className="_icon" onClick={this.toggleCollapse}>{this.getIcon()}</div>
+              <div className="_text" onClick={this.toggleSelection}>{node.name}</div>
             </div>
             {node.children && !collapsed && (
               <exports.FSTree
@@ -113,26 +152,52 @@ class FSNode extends React.Component {
   }
 
   select() {
-    if (this.state.selected) return
+    if (this.state.selected) return Promise.resolve()
 
-    this.setState({
-      selected: true
-    }, () => {
-      if (typeof this.props.onSelect === 'function') {
-        this.props.onSelect(this.state.node, this)
-      }
+    try {
+      ReactDOM.findDOMNode(this)
+    }
+    // If not mounted, still perform operation on node
+    catch (e) {
+      this.state.node.selected = true
+      return Promise.resolve()
+    }
+
+    return new Promise((resolve) => {
+      this.setState({
+        selected: true
+      }, () => {
+        if (typeof this.props.onSelect === 'function') {
+          this.props.onSelect(this.state.node, this)
+        }
+
+        resolve()
+      })
     })
   }
 
   deselect() {
-    if (!this.state.selected) return
+    if (!this.state.selected) return Promise.resolve()
 
-    this.setState({
-      selected: false
-    }, () => {
-      if (typeof this.props.onDeselect === 'function') {
-        this.props.onDeselect(this.state.node, this)
-      }
+    try {
+      ReactDOM.findDOMNode(this)
+    }
+    // If not mounted, still perform operation on node
+    catch (e) {
+      this.state.node.selected = false
+      return Promise.resolve()
+    }
+
+    return new Promise((resolve) => {
+      this.setState({
+        selected: false
+      }, () => {
+        if (typeof this.props.onDeselect === 'function') {
+          this.props.onDeselect(this.state.node, this)
+        }
+
+        resolve()
+      })
     })
   }
 
@@ -150,7 +215,7 @@ class FSNode extends React.Component {
     }
   }
 
-  toggleSelection() {
+  toggleSelection = () => {
     return this.state.selected ? this.deselect() : this.select()
   }
 
@@ -191,14 +256,39 @@ class FSNode extends React.Component {
 
     if (!node.children) {
       switch (node.mode) {
-        case 'added': return '+ 🗎'
-        case 'deleted': return '- 🗎'
-        case 'modified': return '± 🗎'
-        default: return '🗎'
+        case 'added': return (
+          <span onClick={this.toggleSelection}>
+            <span className='_mode _added'>A</span>
+            <FaIcon size={15} icon={faFile} />
+          </span>
+        )
+        case 'deleted': return (
+          <span onClick={this.toggleSelection}>
+            <span className='_mode _deleted'>D</span>
+            <FaIcon size={15} icon={faFile} />
+          </span>
+        )
+        case 'modified': return (
+          <span onClick={this.toggleSelection}>
+            <span className='_mode _modified'>M</span>
+            <FaIcon size={15} icon={faFile} />
+          </span>
+        )
+        default: return <FaIcon icon={faFile} />
       }
     }
 
-    return collapsed ? '\u00A0\u00A0🗀' : '\u00A0\u00A0🗁'
+    return collapsed ? (
+      <span>
+        <FaIcon className="_caret" size={15} icon={faCaretRight} />
+        <FaIcon size={15} icon={faFolder} />
+      </span>
+    ) : (
+      <span>
+        <FaIcon className="_caret" size={15} icon={faCaretDown} />
+        <FaIcon size={15} icon={faFolderOpen} />
+      </span>
+    )
   }
 
   collapse() {
@@ -225,17 +315,10 @@ class FSNode extends React.Component {
     })
   }
 
-  toggleCollapse() {
-    return this.state.collapsed ? this.expand() : this.collapse()
-  }
+  toggleCollapse = () => {
+    if (!this.state.node.children) return
 
-  onClick = () => {
-    if (this.state.node.children) {
-      this.toggleCollapse()
-    }
-    else {
-      this.toggleSelection()
-    }
+    return this.state.collapsed ? this.expand() : this.collapse()
   }
 
   onSelect = (node, component) => {
