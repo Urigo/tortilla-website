@@ -244,7 +244,14 @@ function onSelect(node, component) {
       selectedNode: component
     })
 
-    this.props.showFiles([node.path])
+    if (node.children) {
+      const paths = pickLeaves(node.children).map(node => node.path)
+
+      this.props.showFiles(paths)
+    }
+    else {
+      this.props.showFiles([node.path])
+    }
   })
 }
 

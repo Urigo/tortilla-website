@@ -118,9 +118,9 @@ class FSNode extends React.Component {
       <Style>
         <div className={this.getWrapClass()} style={this.getWrapStyle()}>
           <div className="_node" style={this.getNodeStyle()}>
-            <div className="_descriptor" onClick={this.onClick}>
-              <div className="_icon">{this.getIcon()}</div>
-              <div className="_text">{node.name}</div>
+            <div className="_descriptor">
+              <div className="_icon" onClick={this.toggleCollapse}>{this.getIcon()}</div>
+              <div className="_text" onClick={this.toggleSelection}>{node.name}</div>
             </div>
             {node.children && !collapsed && (
               <exports.FSTree
@@ -202,7 +202,7 @@ class FSNode extends React.Component {
     }
   }
 
-  toggleSelection() {
+  toggleSelection = () => {
     return this.state.selected ? this.deselect() : this.select()
   }
 
@@ -296,17 +296,10 @@ class FSNode extends React.Component {
     })
   }
 
-  toggleCollapse() {
-    return this.state.collapsed ? this.expand() : this.collapse()
-  }
+  toggleCollapse = () => {
+    if (!this.state.node.children) return
 
-  onClick = () => {
-    if (this.state.node.children) {
-      this.toggleCollapse()
-    }
-    else {
-      this.toggleSelection()
-    }
+    return this.state.collapsed ? this.expand() : this.collapse()
   }
 
   onSelect = (node, component) => {
