@@ -1,5 +1,6 @@
 import { faFile, faFolder, faFolderOpen } from '@fortawesome/fontawesome-free-solid'
 import React from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import FaIcon from './../../../../common/FaIcon'
 import { exports } from './module'
@@ -140,6 +141,15 @@ class FSNode extends React.Component {
   select() {
     if (this.state.selected) return Promise.resolve()
 
+    try {
+      ReactDOM.findDOMNode(this)
+    }
+    // If not mounted, still perform operation on node
+    catch (e) {
+      this.state.node.selected = true
+      return Promise.resolve()
+    }
+
     return new Promise((resolve) => {
       this.setState({
         selected: true
@@ -155,6 +165,15 @@ class FSNode extends React.Component {
 
   deselect() {
     if (!this.state.selected) return Promise.resolve()
+
+    try {
+      ReactDOM.findDOMNode(this)
+    }
+    // If not mounted, still perform operation on node
+    catch (e) {
+      this.state.node.selected = false
+      return Promise.resolve()
+    }
 
     return new Promise((resolve) => {
       this.setState({
