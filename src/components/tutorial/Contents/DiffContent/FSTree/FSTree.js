@@ -6,7 +6,7 @@ const Style = styled.div`
   > ._nodes-list {
     margin: 0;
     padding: 0;
-    margin-top: 8px;
+    margin-top: 15px;
     list-style-type: none;
   }
 

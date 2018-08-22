@@ -1,7 +1,15 @@
-import { faFile, faFolder, faFolderOpen } from '@fortawesome/fontawesome-free-solid'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
+
+import {
+  faFile,
+  faFolder,
+  faFolderOpen,
+  faCaretDown,
+  faCaretRight,
+} from '@fortawesome/fontawesome-free-solid'
+
 import FaIcon from './../../../../common/FaIcon'
 import { exports } from './module'
 
@@ -47,6 +55,11 @@ const Style = (() => {
       height: 100%;
       user-select: none;
       font-weight: bold;
+
+      ._caret {
+        margin-right: 5px;
+        margin-left: -5px;
+      }
 
       ._mode {
         display: inline-block;
@@ -244,19 +257,19 @@ class FSNode extends React.Component {
     if (!node.children) {
       switch (node.mode) {
         case 'added': return (
-          <span>
+          <span onClick={this.toggleSelection}>
             <span className='_mode _added'>A</span>
             <FaIcon size={15} icon={faFile} />
           </span>
         )
         case 'deleted': return (
-          <span>
+          <span onClick={this.toggleSelection}>
             <span className='_mode _deleted'>D</span>
             <FaIcon size={15} icon={faFile} />
           </span>
         )
         case 'modified': return (
-          <span>
+          <span onClick={this.toggleSelection}>
             <span className='_mode _modified'>M</span>
             <FaIcon size={15} icon={faFile} />
           </span>
@@ -266,9 +279,15 @@ class FSNode extends React.Component {
     }
 
     return collapsed ? (
-      <span>{'\u00A0\u00A0'}<FaIcon size={15} icon={faFolder} /></span>
+      <span>
+        <FaIcon className="_caret" size={15} icon={faCaretRight} />
+        <FaIcon size={15} icon={faFolder} />
+      </span>
     ) : (
-      <span>{'\u00A0\u00A0'}<FaIcon size={15} icon={faFolderOpen} /></span>
+      <span>
+        <FaIcon className="_caret" size={15} icon={faCaretDown} />
+        <FaIcon size={15} icon={faFolderOpen} />
+      </span>
     )
   }
 
