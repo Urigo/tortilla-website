@@ -1,25 +1,17 @@
 # tortilla-website
 
-## How to start
+To run the app (port 8000):
 
-```
-yarn
-```
+    yarn app
 
-## How to run
+To run lambda service (port 9000):
 
-```
-yarn develop
-```
+    yarn lambda
 
-In few cases, Gatsby won't show changes because it caches them. To run website fresh and up to date:
+To clean Gatsby's cache:
 
-```
-yarn fresh
-```
+    yarn clean
 
-## How to build
+To build:
 
-```
-yarn build
-```
+    yarn build
