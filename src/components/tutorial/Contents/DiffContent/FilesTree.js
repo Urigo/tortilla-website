@@ -64,18 +64,16 @@ class FileTree extends React.Component {
       props.excludePattern.toString() !== this.props.excludePattern.toString()
     )
 
-    let oldChildren
-    let newChildren
+    let children
 
     if (reduceChildren) {
-      oldChildren = this.state.children
-      newChildren = state.children = this.reduceChildren(props)
+      children = state.children = this.reduceChildren(props)
     }
 
     if (Object.keys(state).length) {
       this.setState(state, () => {
         if (reduceChildren) {
-          this.modifyFiles(newChildren, oldChildren)
+          this.modifyFiles(children)
         }
       })
     }
@@ -84,7 +82,10 @@ class FileTree extends React.Component {
   // This will call the props.showFiles callback based on the
   // modifications that have happened in children
   modifyFiles(children) {
-    const paths = pickLeaves(children).map(node => node.path)
+    const allNodes = flattenNodes(children)
+    const selectedNode = allNodes.find(node => node.selected)
+    const targetNodes = selectedNode ? [selectedNode] : allNodes
+    const paths = pickLeaves(targetNodes).map(node => node.path)
 
     this.props.showFiles(paths)
   }
@@ -147,11 +148,16 @@ class FileTree extends React.Component {
             childNode = {
               name,
               path: split.slice(0, index + 1).join('/'),
+              selected: false,
             }
 
             // If leaf
             if (index === names.length - 1) {
               childNode.mode = mode
+            }
+            // If node
+            else {
+              childNode.collapsed = true
             }
 
             node.children.push(childNode)
@@ -179,21 +185,7 @@ class FileTree extends React.Component {
         (!includePattern || node.path.match(includePattern)) &&
         (!excludePattern || !node.path.match(excludePattern))
       ) {
-        let reducedNode = node
-
-        // Ensure that we don't modify the original children cache!
-        if (node.children) {
-          reducedNode = {
-            ...node,
-            children: this.reduceChildren(props, node.children),
-            get collapsed() { return node.collapsed },
-            set collapsed(collapsed) { node.collapsed = collapsed },
-            get selected() { return node.selected },
-            set selected(selected) { node.selected = selected },
-          }
-        }
-
-        reducedChildren.push(reducedNode)
+        reducedChildren.push(node)
       }
 
       return reducedChildren
@@ -212,10 +204,19 @@ class FileTree extends React.Component {
   }
 }
 
-function pickLeaves(children) {
-  // Use stash if already calculated
-  if (children[internal]) return children[internal]
+function flattenNodes(children) {
+  return children.reduce((flat, node) => {
+    if (node.children) {
+      flat.push(...flattenNodes(node.children))
+    }
 
+    flat.push(node)
+
+    return flat
+  }, [])
+}
+
+function pickLeaves(children) {
   const leaves = children.reduce((leaves, node) => {
     if (node.children) {
       leaves.push(...pickLeaves(node.children))
@@ -225,9 +226,6 @@ function pickLeaves(children) {
 
     return leaves
   }, [])
-
-  // Store cache for future calculations
-  children[internal] = leaves
 
   return leaves
 }

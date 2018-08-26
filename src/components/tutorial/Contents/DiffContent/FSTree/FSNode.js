@@ -110,22 +110,13 @@ class FSNode extends React.Component {
 
     this.depth = Number(props.depth) || 0
 
-    const node = props.node
-
     this.state = {
-      node,
-      collapsed: typeof node.collapsed === 'boolean' ? node.collapsed : true,
-      selected: typeof node.selected === 'boolean' ? node.selected : false,
+      node: props.node
     }
   }
 
-  componentDidUpdate() {
-    this.props.node.collapsed = this.state.collapsed
-    this.props.node.selected = this.state.selected
-  }
-
   render() {
-    const { node, collapsed } = this.state
+    const { node } = this.state
 
     return (
       <Style>
@@ -135,7 +126,7 @@ class FSNode extends React.Component {
               <div className="_icon" onClick={this.toggleCollapse}>{this.getIcon()}</div>
               <div className="_text" onClick={this.toggleSelection}>{node.name}</div>
             </div>
-            {node.children && !collapsed && (
+            {node.children && !node.collapsed && (
               <exports.FSTree
                 className="_fstree"
                 ref={ref => this.children = ref}
@@ -152,7 +143,7 @@ class FSNode extends React.Component {
   }
 
   select() {
-    if (this.state.selected) return Promise.resolve()
+    if (this.state.node.selected) return Promise.resolve()
 
     try {
       ReactDOM.findDOMNode(this)
@@ -167,7 +158,9 @@ class FSNode extends React.Component {
 
     return new Promise((resolve) => {
       this.setState({
-        selected: true
+        node: Object.assign(this.state.node, {
+          selected: true
+        })
       }, () => {
         if (typeof this.props.onSelect === 'function') {
           this.props.onSelect(this.state.node, this)
@@ -179,7 +172,7 @@ class FSNode extends React.Component {
   }
 
   deselect() {
-    if (!this.state.selected) return Promise.resolve()
+    if (!this.state.node.selected) return Promise.resolve()
 
     try {
       ReactDOM.findDOMNode(this)
@@ -194,7 +187,9 @@ class FSNode extends React.Component {
 
     return new Promise((resolve) => {
       this.setState({
-        selected: false
+        node: Object.assign(this.state.node, {
+          selected: false
+        })
       }, () => {
         if (typeof this.props.onDeselect === 'function') {
           this.props.onDeselect(this.state.node, this)
@@ -206,7 +201,7 @@ class FSNode extends React.Component {
   }
 
   getSelectionPath() {
-    if (this.state.selected) {
+    if (this.state.node.selected) {
       return this.state.node.name
     }
 
@@ -220,11 +215,11 @@ class FSNode extends React.Component {
   }
 
   toggleSelection = () => {
-    return this.state.selected ? this.deselect() : this.select()
+    return this.state.node.selected ? this.deselect() : this.select()
   }
 
   getWrapClass() {
-    const selected = this.state.selected ? '_selected' : '_deselected'
+    const selected = this.state.node.selected ? '_selected' : '_deselected'
 
     return `_wrap ${selected}`
   }
@@ -256,7 +251,7 @@ class FSNode extends React.Component {
   }
 
   getIcon() {
-    const { node, collapsed } = this.state
+    const { node } = this.state
 
     if (!node.children) {
       switch (node.mode) {
@@ -282,7 +277,7 @@ class FSNode extends React.Component {
       }
     }
 
-    return collapsed ? (
+    return node.collapsed ? (
       <span>
         <FaIcon className="_caret" size={15} icon={faCaretRight} />
         <FaIcon size={15} icon={faFolder} />
@@ -296,10 +291,12 @@ class FSNode extends React.Component {
   }
 
   collapse() {
-    if (this.state.collapsed) return
+    if (this.state.node.collapsed) return
 
     this.setState({
-      collapsed: true
+      node: Object.assign(this.state.node, {
+        collapsed: true
+      })
     }, () => {
       if (typeof this.props.onCollapse === 'function') {
         this.props.onCollapse(this.state.node, this)
@@ -308,10 +305,12 @@ class FSNode extends React.Component {
   }
 
   expand() {
-    if (!this.state.collapsed) return
+    if (!this.state.node.collapsed) return
 
     this.setState({
-      collapsed: false
+      node: Object.assign(this.state.node, {
+        collapsed: false
+      })
     }, () => {
       if (typeof this.props.onExpand === 'function') {
         this.props.onExpand(this.state.node, this)
@@ -322,7 +321,7 @@ class FSNode extends React.Component {
   toggleCollapse = () => {
     if (!this.state.node.children) return
 
-    return this.state.collapsed ? this.expand() : this.collapse()
+    return this.state.node.collapsed ? this.expand() : this.collapse()
   }
 
   onSelect = (node, component) => {
