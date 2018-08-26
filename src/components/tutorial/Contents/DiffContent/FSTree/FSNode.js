@@ -159,7 +159,9 @@ class FSNode extends React.Component {
     }
     // If not mounted, still perform operation on node
     catch (e) {
-      this.state.node.selected = true
+      const node = this.state.node
+      node.selected = true
+
       return Promise.resolve()
     }
 
@@ -184,7 +186,9 @@ class FSNode extends React.Component {
     }
     // If not mounted, still perform operation on node
     catch (e) {
-      this.state.node.selected = false
+      const node = this.state.node
+      node.selected = false
+
       return Promise.resolve()
     }
 
