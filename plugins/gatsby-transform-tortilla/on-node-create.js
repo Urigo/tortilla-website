@@ -22,8 +22,8 @@ const processMd = (doc, options = {}) => {
     .then(html => ({ html, diffs }))
 }
 
-// A plugin that will extract all tortilla {{{diffStep}}}s given an ast by simply
-// looking for parts in the markdown which are likely to be so
+// // A plugin that will extract all tortilla {{{diffStep}}}s given an ast by simply
+// // looking for parts in the markdown which are likely to be so
 const extractDiffs = (exports) => {
   if (exports === undefined) {
     throw TypeError('exports must be provided')

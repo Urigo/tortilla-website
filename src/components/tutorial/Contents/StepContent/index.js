@@ -265,7 +265,10 @@ export default class extends React.Component {
 
       anchor[occupied] = true
 
-      const files = parseDiff(diff.value)
+      // We'll make it the user's responsibility
+      const files = parseDiff(diff.value, {
+        showLong: true
+      })
 
       // First we need to collect the anchors before making modification, otherwise the
       // DOM tree would change and nextSibling would result in different elements

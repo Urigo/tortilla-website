@@ -12,6 +12,10 @@ To clean Gatsby's cache:
 
     yarn clean
 
+Or alternatively you can clean the cache and run the app:
+
+    yarn clean:app
+
 To build:
 
     yarn build
