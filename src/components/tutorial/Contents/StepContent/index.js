@@ -121,6 +121,11 @@ const Html = styled.div`
     font-weight: 800;
     color: ${({theme}) => theme.blueGray};
   }
+
+  img {
+    display: block;
+    margin: 25px auto !important;
+  }
 `
 
 export default class extends React.Component {
@@ -148,6 +153,7 @@ export default class extends React.Component {
 
     this.resetStepsMenuDimensions()
     this.appendDiffs()
+    this.fixImages()
   }
 
   componentWillUnmount() {
@@ -157,6 +163,7 @@ export default class extends React.Component {
   componentDidUpdate(props) {
     if (props.step.id !== this.props.step.id) {
       this.appendDiffs()
+      this.fixImages()
     }
   }
 
@@ -237,6 +244,7 @@ export default class extends React.Component {
     )
   }
 
+  // TODO: Apply during build
   appendDiffs = async (diff, anchor, file) => {
     if (!diff) {
       return Promise.all(this.props.step.diffs.map((diff) => {
@@ -278,6 +286,15 @@ export default class extends React.Component {
       ReactDOM.render(
         <SimpleDiffView hunks={file.hunks} key={`${file.oldPath}_${file.newPath}`} />
       , container, resolve)
+    })
+  }
+
+  // TODO: Apply during build
+  fixImages = () => {
+    this.htmlEl.querySelectorAll('img').forEach((el) => {
+      if (el.src) {
+        el.src = el.src.replace(/(.+?github\.com\/[^/]+\/[^/]+\/)blob/, '$1raw')
+      }
     })
   }
 
