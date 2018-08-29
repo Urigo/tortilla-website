@@ -31,7 +31,7 @@
     "gatsby-plugin-styled-components": "next",
     "gatsby-plugin-typescript": "next",
     "gatsby-source-filesystem": "next",
-    "http-proxy-middleware": "^0.18.0",
+    "http-proxy-middleware": "^0.19.0",
     "moment": "^2.22.2",
     "postcss-browser-reporter": "^0.5.0",
     "postcss-cssnext": "^3.1.0",
