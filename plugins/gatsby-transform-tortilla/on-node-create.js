@@ -210,7 +210,7 @@ function getSteps(release) {
 }
 
 function getVersions(doc) {
-  return doc.releases.map(release => ({
+  const allVersions = doc.releases.map(release => ({
     number: release.releaseVersion,
     name: release.manuals[0].manualTitle,
     tag: release.tagName,
@@ -220,6 +220,51 @@ function getVersions(doc) {
     releaseDate: release.releaseDate,
     steps: getSteps(release),
   }));
+
+  // TODO: Consider moving logic to dump creation
+  const relevantVersions = []
+
+  for (let i = 0; i < allVersions.length; i++) {
+    let version
+
+    [i, version] = getRecentMajorEntry(allVersions, i)
+
+    if (i === -1) {
+      break
+    }
+
+    relevantVersions.push(version)
+  }
+
+  return relevantVersions
+}
+
+// Given the versions [4.0.0, 3.0.1, 3.0.0, 2.0.0] and version 3.0.0
+// the returned version would be 2.0.0
+function getRecentMajorEntry(versions, index) {
+  const version = versions[index]
+
+  // First version in history
+  if (!version) {
+    return [-1, null]
+  }
+
+  // Most recent version in history
+  if (!index) {
+    return [index, version]
+  }
+
+  const nextVersion = versions[index - 1]
+
+  if (getMajorIndex(nextVersion) === getMajorIndex(version)) {
+    return getRecentMajorEntry(versions, index + 1)
+  }
+
+  return [index, version]
+}
+
+function getMajorIndex(version) {
+  return version.number.split('.')[0]
 }
 
 function getTutorialRepoUrl(doc) {
