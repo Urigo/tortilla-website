@@ -85,6 +85,25 @@ const Container = styled.div`
     overflow: initial;
     border: none;
   }
+
+  .diff-binary, .diff-long {
+    width: 100%;
+    padding: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+
+    ._title {
+      font-weight: bold;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+
+    ._subtitle {
+      font-weight: normal;
+      color: black;
+    }
+  }
 `
 
 const DiffHeader = styled.div`
@@ -263,7 +282,15 @@ class DiffsList extends React.Component {
         // Here we use setImmediate so we won't clog the execution thread
         setTimeout(thread.wrap(() => {
           const diffFileView = document.createElement('span')
-          const diffFileViewChildren = this.renderDiffFile(parsedFileDiff)
+
+          // Will re-render a full version of the diff, even if it's long
+          const forceUpdate = () => {
+            const parsedFileDiff = parseDiff(rawFileDiff, { showLong: true })[0]
+            const diffFileViewChildren = this.renderDiffFile(parsedFileDiff)
+            ReactDOM.render(diffFileViewChildren, diffFileView)
+          }
+
+          const diffFileViewChildren = this.renderDiffFile(parsedFileDiff, forceUpdate)
           const { path } = diffFileViewChildren.props
 
           diffFileView.addEventListener('scroll', this.onScroll)
@@ -326,7 +353,7 @@ class DiffsList extends React.Component {
     hunks,
     isBinary,
     tooLong,
-  }) {
+  }, forceUpdate) {
     const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
       return Math.max(
         2,
@@ -412,13 +439,6 @@ class DiffsList extends React.Component {
         width: ${lineWidth}ch;
       }
 
-      .diff-binary, .diff-long {
-        width: 100%;
-        padding: 0;
-        text-align: center;
-        font-weight: bold;
-      }
-
       .diff-hunk-header-content {
         width: ${lineWidth * (2 / this.gutterProduct) + gutterWidth}ch;
       }
@@ -433,7 +453,8 @@ class DiffsList extends React.Component {
           </div>
         ) : tooLong ? (
           <div className={`diff-long ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
-            Large diffs are not rendered by default.
+            <div className="_title" onClick={forceUpdate}>Load diff</div>
+            <div className="_subtitle">Large diffs are not rendered by default.</div>
           </div>
         ) : (
           <ReactDiffView hunks={hunks} viewType={this.props.diffType} />
