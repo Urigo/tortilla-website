@@ -3,7 +3,7 @@ import 'react-diff-view/index.css'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import { parseDiff, Diff as ReactDiffView } from '../../../../libs/react-diff-view'
 import Thread from '../../../../utils/Thread'
@@ -219,13 +219,11 @@ class DiffsList extends React.Component {
   resetDiffTypeParams(props = this.props) {
     switch (props.diffType) {
       case 'split':
-        this.diffHunkWidth = 50
         this.oppositeViewType = 'unified'
         this.viewTypeAction = 'unify'
         this.gutterProduct = 1
         break
       case 'unified':
-        this.diffHunkWidth = 100
         this.oppositeViewType = 'split'
         this.viewTypeAction = 'split'
         this.gutterProduct = 2
@@ -418,30 +416,38 @@ class DiffsList extends React.Component {
       border: 1px solid silver;
       border-radius: 3px;
 
-      .diff-hunk {
-        width: ${this.diffHunkWidth}%;
+      .diff {
+        overflow: ${this.props.diffType === 'split' && 'hidden'};
       }
 
       .diff-hunk-header-gutter {
         width: ${gutterWidth * this.gutterProduct - (0.4 * this.gutterProduct)}ch;
       }
 
-      .diff-hunk-header {
-        width: ${this.props.diffType === 'split' && '200%'};
-      }
-
       .diff-gutter {
         width: ${gutterWidth}ch;
-      }
-
-      .diff-code, .diff-hunk-header-content {
-        min-width: calc(100% - ${gutterWidth * this.gutterProduct}ch);
-        width: ${lineWidth}ch;
       }
 
       .diff-hunk-header-content {
         width: ${lineWidth * (2 / this.gutterProduct) + gutterWidth}ch;
       }
+
+      .diff-code, .diff-hunk-header-content {
+        ${this.props.diffType === 'split' ? css`
+          width: calc(50% - ${gutterWidth * this.gutterProduct}ch);
+          overflow-wrap: break-word;
+          white-space: pre-wrap;
+        ` : css`
+          min-width: calc(100% - ${gutterWidth * this.gutterProduct}ch);
+          width: ${lineWidth}ch;
+        `}
+      }
+
+      ${this.props.diffType === 'split' && css`
+        .diff-hunk {
+          contain: content;
+        }
+      `}
     `
 
     return (
