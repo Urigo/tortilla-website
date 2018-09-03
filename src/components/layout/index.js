@@ -32,7 +32,7 @@ const meta = [
 
 const Layout = ({ children }: any) => (
   <ThemeProvider theme={Theme}>
-    <div>
+    <div style={{ position: 'relative' }}>
       <Helmet title="Tortilla" meta={meta} link={links} />
       <div>{children}</div>
     </div>

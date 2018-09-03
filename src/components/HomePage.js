@@ -72,22 +72,6 @@ const Footer = styled.div`
     bottom: 0;
   }
 
-  > ._rocket {
-    margin: 0;
-    pointer-events: none;
-    user-select: none;
-    user-drag: none;
-    position: absolute;
-    z-index: -1;
-    right: 0;
-    bottom: 450px;
-
-    ${device.mobile`
-      top: 0;
-      right: -30px;
-    `}
-  }
-
   > ._contact-form {
     margin-left: 156px;
     margin-top: 220px;
@@ -202,6 +186,21 @@ const Hump = styled.div`
     border-radius: 200px;
     background-color: #4c84ff;
   }
+`
+
+const Rocket = styled.img`
+  margin: 0;
+  pointer-events: none;
+  user-select: none;
+  user-drag: none;
+  position: absolute;
+  z-index: -2;
+  right: 0;
+  bottom: 450px;
+
+  ${device.mobile`
+    bottom: 860px;
+  `}
 `
 
 const GitFollowBtn = styled.a`
@@ -563,11 +562,13 @@ class HomePage extends React.Component {
         </Body>
 
         <Footer>
-          <img className="_rocket" src={withPrefix('img/group-17.svg')} alt="" />
           <div className="_background" />
           <img className="_food-truck" src={withPrefix('img/group-16.svg')} alt="" />
           <ContactForm className="_contact-form" />
         </Footer>
+
+        {/*Outside of footer due to layout problems*/}
+        <Rocket src={withPrefix('img/group-17.svg')} alt="" />
 
         <UnderBar>
           <img className="_logo" src={withPrefix('Logo/logo-tortilla-ondark.svg')} alt="tortilla" />
