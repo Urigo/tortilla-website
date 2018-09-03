@@ -447,6 +447,10 @@ class DiffsList extends React.Component {
         .diff-hunk {
           contain: content;
         }
+
+        .diff-hunk-header-content {
+          width: calc(100% - ${gutterWidth * this.gutterProduct}ch);
+        }
       `}
     `
 
