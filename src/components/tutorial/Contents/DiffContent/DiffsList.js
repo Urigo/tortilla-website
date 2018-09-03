@@ -344,6 +344,7 @@ class DiffsList extends React.Component {
   }
 
   renderDiffFile({
+    type,
     oldPath,
     newPath,
     newRevision,
@@ -352,6 +353,7 @@ class DiffsList extends React.Component {
     isBinary,
     tooLong,
   }, forceUpdate) {
+    // TODO: Address .type prop
     const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
       return Math.max(
         2,
@@ -404,6 +406,11 @@ class DiffsList extends React.Component {
 
     if (header.length === 2) {
       header.splice(1, 0, <span key={0.5}>→</span>)
+      // Custom file mode
+      header.unshift('moved ')
+    }
+    else {
+      header.unshift(`${type} `)
     }
 
     /* Adding 2 for padding of 1ch in each side */
