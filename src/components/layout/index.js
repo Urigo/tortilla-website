@@ -1,3 +1,4 @@
+import { withPrefix } from 'gatsby'
 import React from 'react'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
@@ -18,6 +19,10 @@ const links = [
   {
     href: 'https://unpkg.com/highlight.js@9.12.0/styles/github.css',
     rel: 'stylesheet',
+  },
+  {
+    href: withPrefix('favicon.png'),
+    rel: 'icon',
   },
 ]
 const meta = [
