@@ -124,7 +124,7 @@ export default class TutorialPage extends React.Component {
             <MainContentContainer ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
               <MainNavBar backHandler={this.navHome} />
               <TopBar>
-                <GithubAuthor link={this.props.tutorial.repoUrl} />
+                <GithubAuthor link={this.props.tutorial.repoUrl} author={this.props.tutorial.author} />
                 <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
                 <TopBarSeparator>__</TopBarSeparator>
                 <TopBarSubTitle>

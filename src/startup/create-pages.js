@@ -15,6 +15,10 @@ module.exports = async ({ graphql, actions }) => {
             repoUrl
             branch
             currentVersion
+            author {
+              username
+              avatar
+            }
             versions {
               name
               history

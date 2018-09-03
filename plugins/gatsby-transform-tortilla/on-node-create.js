@@ -275,6 +275,33 @@ function getTutorialBranch(doc) {
   return doc.branchName;
 }
 
+// Plucking author details from url and not from package.json since it's more reliable.
+// We know that this is a Github username and this way we can easily match a
+// corresponding avatar
+function getTutorialAuthor(doc) {
+  const unknownAuthor = {
+    username: 'unknown',
+    avatar: 'https://avatars.githubusercontent.com/404',
+  }
+
+  if (!doc.repoUrl) {
+    return unknownAuthor
+  }
+
+  const match = doc.repoUrl.match(/github.com\/([^/]+)/)
+
+  if (!match) {
+    return unknownAuthor
+  }
+
+  const username = match[1]
+
+  return {
+    username,
+    avatar: `https://avatars.githubusercontent.com/${username}`
+  }
+}
+
 function getTutorialTitle(doc) {
   return doc.releases[0].manuals[0].manualTitle;
 }
@@ -285,6 +312,7 @@ function getCurrentVersion(doc) {
 
 function fromDumpToTutorial(doc, node) {
   const repoUrl = getTutorialRepoUrl(doc);
+  const author = getTutorialAuthor(doc);
   const branch = getTutorialBranch(doc);
   const versions = getVersions(doc);
   const title = getTutorialTitle(doc);
@@ -293,6 +321,7 @@ function fromDumpToTutorial(doc, node) {
   return {
     name: node.name,
     repoUrl,
+    author,
     branch,
     title,
     currentVersion,

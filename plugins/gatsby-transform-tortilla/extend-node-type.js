@@ -11,6 +11,7 @@ const { TypeName } = require('./config')
 const StepTypeName = TypeName + 'Step'
 const DiffTypeName = TypeName + 'Diff'
 const VersionTypeName = TypeName + 'Version'
+const AuthorTypeName = TypeName + 'Author'
 
 module.exports = (
   { type, store, pathPrefix, getNode, cache, reporter },
@@ -55,6 +56,18 @@ module.exports = (
         type: new GraphQLList(diffType),
       },
     },
+  })
+
+  const authorType = new GraphQLObjectType({
+    name: AuthorTypeName,
+    fields: {
+      username: {
+        type: GraphQLString,
+      },
+      avatar: {
+        type: GraphQLString,
+      },
+    }
   })
 
   const versionType = new GraphQLObjectType({
@@ -117,6 +130,9 @@ module.exports = (
     latestVersion: {
       type: versionType,
       resolve: tutorial => tutorial.versions[tutorial.versions.length - 1],
+    },
+    author: {
+      type: authorType,
     },
     versions: {
       type: new GraphQLList(versionType),
