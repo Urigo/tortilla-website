@@ -6,6 +6,7 @@ import { push } from 'gatsby'
 import { faHistory } from '@fortawesome/fontawesome-free-solid'
 import FaIcon from './common/FaIcon'
 import { stepRoute, diffRoute } from '../utils/routes'
+import MainNavBar from './tutorial/MainNavBar'
 import VersionsBar from './tutorial/VersionsBar'
 import { DiffContent, StepContent } from './tutorial/Contents'
 import Layout from './layout'
@@ -121,6 +122,7 @@ export default class TutorialPage extends React.Component {
         <Container>
           <Display>
             <MainContentContainer ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
+              <MainNavBar backHandler={this.navHome} />
               <TopBar>
                 <GithubAuthor link={this.props.tutorial.repoUrl} />
                 <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
@@ -165,6 +167,10 @@ export default class TutorialPage extends React.Component {
     })
 
     push(link)
+  }
+
+  navHome = () => {
+    push('/')
   }
 
   resetScroller = () => {
