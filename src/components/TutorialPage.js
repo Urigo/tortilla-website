@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { push } from 'gatsby'
@@ -95,6 +96,7 @@ export default class TutorialPage extends React.Component {
             scrollerStyle={this.contentStyle}
             scrollerHeight={contentHeight}
             diff={this.props.params.versionsDiff}
+            resetScroller={this.resetScroller}
           />
         )
       case 'steps':
@@ -106,6 +108,7 @@ export default class TutorialPage extends React.Component {
             tutorialRepo={this.props.tutorial.repoUrl}
             tutorialBranch={this.props.tutorial.branch}
             tutorialVersion={this.props.tutorial.version}
+            resetScroller={this.resetScroller}
           />
         )
       default: return null
@@ -117,7 +120,7 @@ export default class TutorialPage extends React.Component {
       <Layout>
         <Container>
           <Display>
-            <MainContentContainer>
+            <MainContentContainer ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
               <TopBar>
                 <GithubAuthor link={this.props.tutorial.repoUrl} />
                 <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
@@ -162,5 +165,11 @@ export default class TutorialPage extends React.Component {
     })
 
     push(link)
+  }
+
+  resetScroller = () => {
+    if (this.container) {
+      this.container.scrollTop = 0
+    }
   }
 }

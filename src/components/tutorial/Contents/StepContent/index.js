@@ -199,6 +199,7 @@ export default class extends React.Component {
               tutorialVersion={this.props.tutorialVersion}
               activeStep={this.props.step}
               pathname={this.props.pathname}
+              resetScroller={this.props.resetScroller}
             />
           </MenuContainer>
         )}
