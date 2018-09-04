@@ -19,6 +19,11 @@ const device = Object.keys(sizes).reduce((acc, label) => {
 
 device.onLayoutChange = (callback) => {
   layoutChangeCallbacks.add(callback)
+
+  // Dispose method
+  return () => {
+    return layoutChangeCallbacks.delete(callback)
+  }
 }
 
 function resetLayout() {

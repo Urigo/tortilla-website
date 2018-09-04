@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import { GITHUB_URL } from '../consts'
+// TODO: Make a central tutorials.js module; this would be the projection
 import featuredTutorials from '../featured-tutorials.json'
 import device from '../utils/device'
 import ContactForm from './home/ContactForm'
@@ -394,7 +395,7 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    device.onLayoutChange(() => {
+    this.stopObservingLayout = device.onLayoutChange(() => {
       this.setState({
         deviceType: device.type
       })
@@ -403,6 +404,10 @@ class HomePage extends React.Component {
     this.setState({
       deviceType: device.type
     })
+  }
+
+  componentWillUnmount() {
+    this.stopObservingLayout()
   }
 
   render() {

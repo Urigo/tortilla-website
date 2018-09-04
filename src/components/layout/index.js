@@ -3,7 +3,6 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 
-import device from '../../utils/device'
 import Theme from '../../themes/home'
 import Modal from '../common/Modal'
 

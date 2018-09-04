@@ -150,7 +150,7 @@ export default class TutorialPage extends React.Component {
                   width: `calc(100% - ${featuredTutorial ? 130 : 0}px)`,
                 }}>
                   <GithubAuthor link={this.props.tutorial.repoUrl} author={this.props.tutorial.author} />
-                  <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
+                  <TopBarTitle>{featuredTutorial ? featuredTutorial.title : this.props.tutorial.title}</TopBarTitle>
                   <TopBarSeparator>__</TopBarSeparator>
                   <TopBarSubTitle>
                     <FaIcon icon={faHistory} size={20} />
