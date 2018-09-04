@@ -324,7 +324,6 @@ const IntroDiv = styled.div`
   > ._start-btn {
     display: block;
     text-decoration: none;
-    cursor: pointer;
     margin-top: 30px;
     width: 192px;
     height: 55px;
@@ -433,9 +432,9 @@ class HomePage extends React.Component {
               Create tutorials from real code, based on git steps with easy CLI to keep your tutorial on to date with versioning support, rendering everywhere, multiple language translations and much more…
             </div>
             {device.desktop.active && <>
-              <a className="_start-btn" href={GITHUB_URL}>
-                Get Started
-              </a>
+              <div className="_start-btn">
+                Coming soon...
+              </div>
             </>}
           </IntroDiv>
           <GitFollowBtn href={GITHUB_URL}>
