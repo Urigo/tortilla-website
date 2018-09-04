@@ -11,6 +11,7 @@ const GithubContainer = styled.div`
   border-radius: 5px;
   padding: 5px;
   padding-bottom: 0;
+  width: 300px;
 
   ${props => props.link && css`
     border: 1px solid ${props => props.theme.separator};
@@ -52,6 +53,7 @@ const GithubLink = styled.a`
   font-style: italic;
   text-decoration: none;
   color: ${({theme}) => theme.primaryBlue};
+  width: calc(100% - 30px);
 `
 
 const GithubLogo = styled(FaIcon).attrs({
