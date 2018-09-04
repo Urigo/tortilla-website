@@ -625,3 +625,9 @@ pre tt:after {
     font-size: 100%;
   }
 }
+/* Don't show pre-rendered desktop pages for mobile devices */
+@media (max-width: 36em) {
+  body {
+    display: none;
+  }
+}

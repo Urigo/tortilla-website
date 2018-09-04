@@ -3,6 +3,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 
+import device from '../../utils/device'
 import Theme from '../../themes/home'
 import Modal from '../common/Modal'
 
@@ -30,13 +31,22 @@ const meta = [
   { name: 'keywords', content: 'sample, something' },
 ]
 
-const Layout = ({ children }: any) => (
-  <ThemeProvider theme={Theme}>
-    <div style={{ position: 'relative' }}>
-      <Helmet title="Tortilla" meta={meta} link={links} />
-      <div>{children}</div>
-    </div>
-  </ThemeProvider>
-)
+class Layout extends React.Component {
+  componentDidMount() {
+    // Reveal resolution corrected body asap
+    document.body.style.display = 'block'
+  }
+
+  render() {
+    return (
+      <ThemeProvider theme={Theme}>
+        <div style={{ position: 'relative' }}>
+          <Helmet title="Tortilla" meta={meta} link={links} />
+          <div>{this.props.children}</div>
+        </div>
+      </ThemeProvider>
+    )
+  }
+}
 
 export default Layout
