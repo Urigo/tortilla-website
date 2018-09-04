@@ -410,6 +410,10 @@ class HomePage extends React.Component {
     this.stopObservingLayout()
   }
 
+  stopObservingLayout() {
+    // Safety stub
+  }
+
   render() {
     return (
       <Layout key={this.state.deviceType}>
