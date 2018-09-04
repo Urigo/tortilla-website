@@ -4,13 +4,14 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 import { faHistory } from '@fortawesome/fontawesome-free-solid'
-import FaIcon from './common/FaIcon'
+import featuredTutorials from '../featured-tutorials.json'
 import { stepRoute, diffRoute } from '../utils/routes'
+import FaIcon from './common/FaIcon'
+import Layout from './layout'
+import { DiffContent, StepContent } from './tutorial/Contents'
+import { GithubAuthor } from './tutorial/GithubAuthor'
 import MainNavBar from './tutorial/MainNavBar'
 import VersionsBar from './tutorial/VersionsBar'
-import { DiffContent, StepContent } from './tutorial/Contents'
-import Layout from './layout'
-import { GithubAuthor } from './tutorial/GithubAuthor'
 
 const topBarHeight = '215px';
 const contentHeight = '100%';
@@ -28,6 +29,17 @@ const Display = styled.div`
   flex: 1;
   overflow-y: auto;
 `
+
+const TutorialImage = styled.img`
+  width: 110px;
+  height: 165px;
+  display: 'inline-block';
+  border-radius: 5px;
+  padding: 0 10px;
+  margin-right: 20px;
+  transform: translateY(3px);
+`
+
 const TopBar = styled.div`
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 20px 0 20px;
@@ -41,6 +53,7 @@ const TopBarTitle = styled.h1`
   text-overflow: ellipsis;
   font-size: 34px;
   white-space: nowrap;
+  overflow: hidden;
 `
 
 const TopBarSeparator = styled.div`
@@ -117,6 +130,8 @@ export default class TutorialPage extends React.Component {
   }
 
   render() {
+    const featuredTutorial = featuredTutorials[this.props.tutorial.name]
+
     return (
       <Layout>
         <Container>
@@ -124,20 +139,31 @@ export default class TutorialPage extends React.Component {
             <MainContentContainer ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
               <MainNavBar backHandler={this.navHome} />
               <TopBar>
-                <GithubAuthor link={this.props.tutorial.repoUrl} author={this.props.tutorial.author} />
-                <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
-                <TopBarSeparator>__</TopBarSeparator>
-                <TopBarSubTitle>
-                  <FaIcon icon={faHistory} size={20} />
-                  &nbsp;VERSIONS
-                </TopBarSubTitle>
-                <VersionsBar
-                  allVersions={this.props.common.allVersions}
-                  activeVersion={this.props.common.versionNumber}
-                  activateStep={this.activateStep}
-                  activateDiff={this.activateDiff}
-                  contentType={this.props.contentType}
-                />
+                {featuredTutorial && (
+                  <TutorialImage src={featuredTutorial.image} style={{
+                    backgroundColor: `rgb(${featuredTutorial.background})`,
+                    boxShadow: `10px 10px 20px 0 rgba(${featuredTutorial.background},.2)`,
+                  }} />
+                )}
+                <div style={{
+                  display: 'inline-block',
+                  width: `calc(100% - ${featuredTutorial ? 130 : 0}px)`,
+                }}>
+                  <GithubAuthor link={this.props.tutorial.repoUrl} author={this.props.tutorial.author} />
+                  <TopBarTitle>{this.props.tutorial.title}</TopBarTitle>
+                  <TopBarSeparator>__</TopBarSeparator>
+                  <TopBarSubTitle>
+                    <FaIcon icon={faHistory} size={20} />
+                    &nbsp;VERSIONS
+                  </TopBarSubTitle>
+                  <VersionsBar
+                    allVersions={this.props.common.allVersions}
+                    activeVersion={this.props.common.versionNumber}
+                    activateStep={this.activateStep}
+                    activateDiff={this.activateDiff}
+                    contentType={this.props.contentType}
+                  />
+                </div>
               </TopBar>
               <MainContent>
                 {this.renderContent()}
