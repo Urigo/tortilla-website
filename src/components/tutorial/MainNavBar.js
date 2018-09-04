@@ -16,7 +16,9 @@ const Container = styled.div.attrs({
   border-bottom: 1px solid ${theme.separator};
 
   > ._back-btn {
-    height: 30px;
+    font-size: ${height - margin * 2 - 10}px;
+    height: ${height - margin * 2}px;
+    line-height: ${height - margin * 2}px;
     margin-left: ${margin}px;
     margin-top: ${margin}px;
     margin-bottom: ${margin}px;
