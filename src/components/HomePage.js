@@ -465,7 +465,7 @@ class HomePage extends React.Component {
           </Hump>
           <FeatureCardsSection
             title={'Respect the developer time'}
-            subtitle={"You don't need to read each time new tutorial for each version, Our framework releases a new version up to date with fine grained git-diff code changes with explanations where and how to upgrade."}
+            subtitle={"Don't learn a new tutorial every time a dependency gets updated. Our framework will keep tutorials up to date and provides git-diff code changes to help you keep up to date."}
           >
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-free.svg')}
