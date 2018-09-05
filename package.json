@@ -23,6 +23,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.1",
     "@fortawesome/react-fontawesome": "^0.1.0",
     "babel-plugin-styled-components": "^1.5.1",
+    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "gatsby": "next",
     "gatsby-plugin-postcss": "^1.0.0",
@@ -51,6 +52,8 @@
     "typescript-styled-plugin": "^0.10.0"
   },
   "devDependencies": {
+    "babel-plugin-macros": "^2.4.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "netlify-lambda": "0.4.0",
     "prettier": "1.14.2",
     "pretty-error": "2.1.1"

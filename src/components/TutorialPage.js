@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { push } from 'gatsby'
 import { faHistory } from '@fortawesome/fontawesome-free-solid'
 import featuredTutorials from '../featured-tutorials.json'
+import device from '../utils/device'
 import { stepRoute, diffRoute } from '../utils/routes'
 import FaIcon from './common/FaIcon'
 import Layout from './layout'
@@ -88,7 +89,8 @@ const MainContent = styled.div`
   min-height: calc(100% - ${topBarHeight});
 `
 
-export default class TutorialPage extends React.Component {
+@device.only('desktop')
+class TutorialPage extends React.Component {
   static propTypes = {
     common: PropTypes.object.isRequired,
     contentType: PropTypes.string.isRequired,
@@ -205,3 +207,5 @@ export default class TutorialPage extends React.Component {
     }
   }
 }
+
+export default TutorialPage
