@@ -316,13 +316,7 @@ class ContactForm extends React.Component {
   }
 
   send = () => {
-    swal({
-      title: 'Oy vey...',
-      text: 'Message wasn\'t sent due to internal server error :-(',
-      type: 'error',
-    })
-
-    if (this.state.sending || true) return
+    if (this.state.sending) return
     if (!this.validateFields()) return
 
     this.setState({
