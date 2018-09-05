@@ -39,11 +39,11 @@ const Body = styled.div`
 const Footer = styled.div`
   width: 100%;
   position: relative;
-  height: 784px;
+  height: 884px;
   overflow: hidden;
 
   ${device.mobile`
-    height: 1150px;
+    height: 1152px;
   `}
 
   > ._background {
@@ -53,7 +53,7 @@ const Footer = styled.div`
     bottom: 0;
     background-color: #162c5e;
     width: 100%;
-    height: 350px;
+    height: 450px;
     transform-origin: top right;
     transform: rotate(13deg) translateX(100px) scaleX(10) scaleY(10);
 
@@ -81,7 +81,7 @@ const Footer = styled.div`
     ${device.mobile`
       margin-left: 10px;
       margin-right: 10px;
-      margin-top: 320px;
+      margin-top: 280px;
     `}
   }
 `
@@ -198,7 +198,7 @@ const Rocket = styled.img`
   position: absolute;
   z-index: -2;
   right: 0;
-  bottom: 450px;
+  bottom: 550px;
 
   ${device.mobile`
     bottom: 860px;

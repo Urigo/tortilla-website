@@ -195,7 +195,17 @@ class ContactForm extends React.Component {
     return (
       <Style className={this.props.className}>
         <div className="_title">Keep in touch!</div><br />
-        <div className="_subtitle">Contact us to help convert your favorite existing open source tutorials to Tortilla and keep them up to date!<br /><br />On premise option - want to upgrade your internal company guides to Tortilla, visible only to your employees? Contact us for help</div>
+        <div className="_subtitle">
+          Are you one of the following?
+          <br />
+          <br />
+          <ul>
+            <li>A Tutorial author who wants help converting his/hers favorite tutorials to Tortilla and keep them up to date?</li>
+            <li>A company looking to improve and modernize its training programs?</li>
+            <li>A university looking to modernize and improve its programming classes?</li>
+          </ul>
+          We offer many solutions in education and already work with many corporations and universities; so don't hesitate to contact us!
+        </div>
         <div className="_info">
           <input
             className={classNames('_email', {
@@ -211,7 +221,7 @@ class ContactForm extends React.Component {
             className={classNames('_details', {
               '_error-target': this.state.errorTarget === 'details'
             })}
-            placeholder={'"Help us to help you" ;)'}
+            placeholder={'"Help us help you" ;)'}
             onChange={this.setDetails}
           />
           <div className="_follow">
