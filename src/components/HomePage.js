@@ -395,6 +395,7 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
+    // TODO: Make it a decorator
     this.stopObservingLayout = device.onLayoutChange(() => {
       this.setState({
         deviceType: device.type
