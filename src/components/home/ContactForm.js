@@ -347,13 +347,13 @@ class ContactForm extends React.Component {
       }
 
       this.setState({
-        sending: false
-      })
-    }).catch(() => {
-      this.setState({
         sending: false,
         email: '',
         details: '',
+      })
+    }).catch(() => {
+      this.setState({
+        sending: false
       })
     })
   }

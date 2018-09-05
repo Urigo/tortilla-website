@@ -1,3 +1,4 @@
+import { faShoePrints } from '@fortawesome/fontawesome-free-solid'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
@@ -6,6 +7,7 @@ import { push } from 'gatsby'
 import storage from '../../../../utils/storage'
 import { parseDiff } from '../../../../libs/react-diff-view'
 import Stepper from '../../../common/Stepper'
+import FaIcon from '../../../common/FaIcon'
 import ImproveButton from '../../ImproveButton'
 import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
 import SimpleDiffView from './SimpleDiffView'
@@ -15,26 +17,32 @@ import StepsMenu from './StepsMenu'
 const occupied = Symbol('occupied')
 const MenuWidth = 300
 
-const Content = styled.div`
-  height: 100%;
-  background-color: ${({ theme }) => theme.white};
-
-  > br {
-    clear: both;
-    float: left;
-    display: block;
-    position: relative;
-  }
-`
-
 const MenuContainer = styled.div`
   float: left;
   width: ${MenuWidth}px;
+  position: fixed;
+`
+
+const ShowStepsButton = styled(FaIcon).attrs({
+  icon: faShoePrints,
+  size: 40,
+}) `
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 3px;
+  border: 0 none;
+  text-align: center;
+  border: 1px solid ${({ theme }) => theme.separator};
+  color: ${({ theme }) => theme.blueGray};
+  margin-right: 10px;
+  cursor: pointer;
 `
 
 const ContentContainer = styled.div`
   float: left;
   width: calc(100% - ${MenuWidth}px);
+  margin-left: ${MenuWidth}px;
   border-left: solid 1px ${({ theme }) => theme.separator};
 `
 
@@ -48,13 +56,12 @@ const Header = styled.div`
   align-items: center;
   text-align: left;
   float: left;
-  width: calc(100% - ${MenuWidth}px);
-  border-left: solid 1px ${({ theme }) => theme.separator};
+  width: 100%;
 `
 
 const Footer = Header.extend`
   border-top: 1px solid ${({ theme }) => theme.separator};
-  margin-left: ${MenuWidth}px;
+  width: 100%;
 `
 
 const Left = styled.div`
@@ -130,13 +137,10 @@ const Html = styled.div`
 
 export default class extends React.Component {
   get contentContainerStyle() {
-    return this.state.stepsMenuOpen ? {} : {
-      width: '100%'
-    }
-  }
-
-  get footerStyle() {
-    return this.state.stepsMenuOpen ? {} : {
+    return this.state.stepsMenuOpen ? {
+      width: `calc(100% - ${MenuWidth}px)`,
+      marginLeft: `${MenuWidth}px`,
+    } : {
       width: '100%',
       marginLeft: 0,
     }
@@ -182,18 +186,15 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Content ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
-        <StepsHeader
-          ref={ref => this.stepsHeader = ReactDOM.findDOMNode(ref)}
-          opened={this.state.stepsMenuOpen}
-          style={{ width: `${MenuWidth}px`, float: 'left' }}
-          close={this.closeStepsMenu}
-          open={this.openStepsMenu}
-        />
-        {this.renderBar(Header)}
-        <br />
+      <div ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
         {this.state.stepsMenuOpen && (
           <MenuContainer ref={ref => this.stepsMenu = ReactDOM.findDOMNode(ref)}>
+            <StepsHeader
+              opened={this.state.stepsMenuOpen}
+              style={{ width: `${MenuWidth}px`, float: 'left' }}
+              close={this.closeStepsMenu}
+              open={this.openStepsMenu}
+            />
             <StepsMenu
               tutorialName={this.props.tutorialName}
               tutorialVersion={this.props.tutorialVersion}
@@ -204,15 +205,14 @@ export default class extends React.Component {
           </MenuContainer>
         )}
         <ContentContainer style={this.contentContainerStyle}>
+          {this.renderBar(Header)}
           <Html
             ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
             dangerouslySetInnerHTML={{ __html: this.props.step.html }}
           />
+          {this.renderBar(Footer)}
         </ContentContainer>
-        {this.renderBar(Footer, {
-          style: this.footerStyle
-        })}
-      </Content>
+      </div>
     );
   }
 
@@ -227,6 +227,9 @@ export default class extends React.Component {
         </Left>
         <Right>
           {/* // In case git URL is not defined in package.json */}
+          {!this.state.stepsMenuOpen && (
+            <ShowStepsButton onClick={this.openStepsMenu} />
+          )}
           {this.props.tutorialRepo && (
             <ImproveButton
               step={step.id}
@@ -323,31 +326,13 @@ export default class extends React.Component {
   }
 
   resetStepsMenuDimensions = (e) => {
-    if (!this.state.stepsMenuOpen) {
-      if (this.stepsHeader) {
-        this.stepsHeader.style.transform = ''
-      }
-
-      if (this.stepsMenu) {
-        this.stepsMenu.style.transform = ''
-      }
-
-      return
-    }
-
     if (!this.container) return
+    if (!this.stepsMenu) return
+    if (e && !e.target.contains(this.stepsMenu)) return
 
-    const { top } = this.container.getBoundingClientRect()
-    const offset = Math.min(top, 0)
+    let { top } = this.container.getBoundingClientRect()
+    top = Math.max(top, 0) + 'px'
 
-    if (this.stepsHeader) {
-      this.stepsHeader.style.transform = `translateY(${-offset}px)`
-    }
-
-    if (this.stepsMenu) {
-      const { top } = this.stepsMenu.getBoundingClientRect()
-      this.stepsMenu.style.transform = `translateY(${-offset}px)`
-      this.stepsMenu.style.height = `calc(100vh - ${top}px)`
-    }
+    this.stepsMenu.style.top = top
   }
 }

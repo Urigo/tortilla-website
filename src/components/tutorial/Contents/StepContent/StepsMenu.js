@@ -6,7 +6,7 @@ import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
 
 const Steps = styled.div`
-  display: block;
+  display: contents;
   flex-direction: column;
   overflow-y: overlay;
   overflow-x: hidden;
