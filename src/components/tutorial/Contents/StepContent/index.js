@@ -1,4 +1,4 @@
-import { faShoePrints } from '@fortawesome/fontawesome-free-solid'
+import { faShoePrints, faExternalLinkSquareAlt } from '@fortawesome/fontawesome-free-solid'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
@@ -99,9 +99,14 @@ const Html = styled.div`
   overflow-y: auto;
 
   a {
-    font-style: italic;
-    text-decoration: none;
-    color: #e3465a;
+    color: firebrick;
+  }
+
+  h4 > a {
+    font-size: 10px;
+    margin-bottom: 20px;
+    transform: translateY(-5px);
+    display: inline-block;
   }
 
   a:hover {
@@ -119,19 +124,20 @@ const Html = styled.div`
 
   h1 {
     font-size: 34px;
-    font-weight: 800;
-    color: ${({theme}) => theme.blueGray};
   }
 
   h4 {
     font-size: 24px;
-    font-weight: 800;
-    color: ${({theme}) => theme.blueGray};
+    color: ${props => props.theme.blueGray};
   }
 
   img {
     display: block;
     margin: 25px auto !important;
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: normal;
   }
 `
 
@@ -158,6 +164,7 @@ export default class extends React.Component {
     this.resetStepsMenuDimensions()
     this.appendDiffs()
     this.fixImages()
+    this.fixStepsRefs()
   }
 
   componentWillUnmount() {
@@ -168,6 +175,7 @@ export default class extends React.Component {
     if (props.step.id !== this.props.step.id) {
       this.appendDiffs()
       this.fixImages()
+      this.fixStepsRefs()
     }
   }
 
@@ -308,6 +316,19 @@ export default class extends React.Component {
       if (el.src) {
         el.src = el.src.replace(/(.+?github\.com\/[^/]+\/[^/]+\/)blob/, '$1raw')
       }
+    })
+  }
+
+  // TODO: Apply during build
+  fixStepsRefs = () => {
+    this.htmlEl.querySelectorAll('h4 > a').forEach((aEl) => {
+      const h4El = aEl.parentNode
+      h4El.innerHTML = aEl.innerHTML + ' '
+      h4El.appendChild(aEl)
+
+      ReactDOM.render(
+        <FaIcon icon={faExternalLinkSquareAlt} />
+      , aEl)
     })
   }
 
