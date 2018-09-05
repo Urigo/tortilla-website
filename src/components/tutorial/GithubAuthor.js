@@ -25,12 +25,14 @@ const GithubAvatar = styled.img`
   margin: 0;
 `
 
-const GithubUsername = styled.div`
+// TODO: Don't compose profile url in render()
+const GithubUsername = styled.a`
   display: inline-block;
   color: #162c5e;
   font-size: 14px;
   margin-left: 5px;
   transform: translateY(-7px);
+  text-decoration: none;
 
   :after {
     display: block;
@@ -69,7 +71,7 @@ const GithubLogo = styled(FaIcon).attrs({
 export const GithubAuthor = (props) => (
   <GithubContainer {...props}>
     <GithubAvatar src={`${props.author.avatar}?s=30`} width="30" alt={props.author.username} />
-    <GithubUsername>{props.author.username}</GithubUsername>
+    <GithubUsername href={`https://github.com/${props.author.username}`}>{props.author.username}</GithubUsername>
     {props.link && <>
       <br />
       <GithubLogo />
