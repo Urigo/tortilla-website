@@ -229,13 +229,13 @@ class ContactForm extends React.Component {
               <div className="_text">Don’t forget to follow us ;)</div>
             </>}
             <div className="_social-btns">
-              <a href={TWITTER_URL}>
+              <a href={GITHUB_URL}>
                 <img
                   src={withPrefix('icns_30/icns-30-github.svg')}
                   alt="github"
                 />
               </a>
-              <a href={GITHUB_URL}>
+              <a href={TWITTER_URL}>
                 <img
                   src={withPrefix('icns_30/icns-30-twitter.svg')}
                   alt="twitter"
