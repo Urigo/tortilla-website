@@ -44,7 +44,7 @@ const Count = styled.div`
   border-radius: 3px;
   margin: 0 10px;
   text-align: center;
-  width: 5ch;
+  min-width: 110px;
 `
 
 export default class extends React.Component {
