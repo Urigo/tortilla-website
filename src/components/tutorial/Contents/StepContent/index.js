@@ -345,7 +345,9 @@ export default class extends React.Component {
     }
 
     if (this.stepsMenu) {
+      const { top } = this.stepsMenu.getBoundingClientRect()
       this.stepsMenu.style.transform = `translateY(${-offset}px)`
+      this.stepsMenu.style.height = `calc(100vh - ${top}px)`
     }
   }
 }

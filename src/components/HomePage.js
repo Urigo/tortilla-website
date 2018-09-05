@@ -548,10 +548,10 @@ class HomePage extends React.Component {
             <div className="_title">“We always use the newest</div>
             <div className="_title">technologies…”</div>
             <div className="_tech-icns">
+              <img src={withPrefix('icns_30/icns-30-react.svg')} alt="react" />
               <img src={withPrefix('icns_30/icns-30-angular.svg')} alt="angular" />
               <img src={withPrefix('icns_30/icns-30-graphql.svg')} alt="graphql" />
               <img src={withPrefix('icns_30/icns-30-apolo.svg')} alt="apolo" />
-              <img src={withPrefix('icns_30/icns-30-react.svg')} alt="react" />
               <img src={withPrefix('icns_30/icns-30-meteor.svg')} alt="meteor" />
               <img src={withPrefix('icns_30/icns-30-webpack.svg')} alt="webpack" />
               <img src={withPrefix('icns_30/icns-30-js.svg')} alt="js" />

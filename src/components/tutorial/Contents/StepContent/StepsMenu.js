@@ -6,8 +6,11 @@ import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
 
 const Steps = styled.div`
-  display: flex;
+  display: block;
   flex-direction: column;
+  overflow-y: overlay;
+  overflow-x: hidden;
+  height: 100%;
 `
 
 const Number = styled.div`
@@ -91,7 +94,7 @@ export default class extends React.Component {
   }
 
   scrollToActive() {
-    // XXX: We can change this behaviour later
+    // XXX: We can change this behavior later
     const pos = this.read();
 
     if (this.activeRef) {
