@@ -189,6 +189,8 @@ export default class extends React.Component {
     });
 
     push(route);
+
+    this.props.resetScroller()
   }
 
   render() {
