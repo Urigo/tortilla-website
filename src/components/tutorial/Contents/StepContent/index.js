@@ -104,7 +104,6 @@ const Html = styled.div`
 
   h4 > a {
     font-size: 10px;
-    margin-bottom: 20px;
     transform: translateY(-5px);
     display: inline-block;
   }
@@ -305,8 +304,11 @@ export default class extends React.Component {
 
     return new Promise((resolve) => {
       ReactDOM.render(
-        <SimpleDiffView hunks={file.hunks} key={`${file.oldPath}_${file.newPath}`} />
-      , container, resolve)
+        <SimpleDiffView file={file} title={anchor.innerHTML} key={`${file.oldPath}_${file.newPath}`} />
+      , container, () => {
+        anchor.remove()
+        resolve()
+      })
     })
   }
 

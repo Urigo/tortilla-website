@@ -4,6 +4,7 @@ import { Diff as ReactDiffView } from '../../../../libs/react-diff-view'
 
 const baseStyle = `
   margin: 20px;
+  margin-bottom: 25px;
   display: block;
   border: 1px solid silver;
   border-radius: 3px;
@@ -88,7 +89,15 @@ const baseStyle = `
   }
 `
 
-const SimpleDiffView = ({ hunks }) => {
+const DiffHeader = styled.div`
+  margin: 10px;
+  display: block;
+  width: 100%;
+`
+
+const SimpleDiffView = ({ file, title }) => {
+  const { hunks } = file
+
   const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
     return Math.max(
       2,
@@ -134,9 +143,20 @@ const SimpleDiffView = ({ hunks }) => {
 
   return (
     <Container>
+      <DiffHeader>{projectTitle(title)}</DiffHeader>
       <ReactDiffView hunks={hunks} viewType="unified" />
     </Container>
   )
+}
+
+// TODO: Hardcore in dump
+const projectTitle = (title) => {
+  return title
+    .replace(/^Changed?/, 'modify')
+    .replace(/^Removed?/, 'deleted')
+    .replace(/^Adde?d?/, 'add')
+    .replace(/^Renamed?/, 'move')
+    .replace(/^Moved?/, 'move')
 }
 
 export default SimpleDiffView
