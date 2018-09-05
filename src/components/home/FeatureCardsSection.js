@@ -70,7 +70,7 @@ export default ({
 }) => (
   <FeatureCardsSection style={style}>
     <div className="_title">{title}</div>
-    <div className="_subtitle">{subtitle}</div>
+    {subtitle && <div className="_subtitle">{subtitle}</div>}
     <div className="_feature-cards">{children}</div>
   </FeatureCardsSection>
 )

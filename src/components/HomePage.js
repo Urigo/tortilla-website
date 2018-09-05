@@ -468,30 +468,30 @@ class HomePage extends React.Component {
             subtitle={"Don't learn a new tutorial every time a dependency gets updated. Our framework will keep tutorials up to date and provides git-diff code changes to help you keep up to date."}
           >
             <FeatureCard
-              imgSrc={withPrefix('Icons_116/icons-116-free.svg')}
-              title="Lifetime access"
-              subtitle="we know that developer time is precious - so we guarantee that will be always free."
-            />
-            <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-update.svg')}
               title="Always Up to Date"
-              subtitle="Always up to date tutorials - don’t waste your time on starting to learn tutorials and finding out in the middle that they are outdated."
+              subtitle="Always up to date tutorials - don't waste your time on starting to learn tutorials and finding out in the middle that they are outdated."
             />
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-eco.svg')}
               title="Programming Ecosystem"
-              subtitle="The best place to keep up with the always-moving programming ecosystem."
+              subtitle="Keep up to date with the the always-moving programming ecosystem by seeing how the upgrade really affects your already completed tutorials."
             />
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-open.svg')}
               title="Open Source"
-              subtitle="Open source tutorials - contribute and get full access to all the tutorial’s source code and videos."
+              subtitle="Learn and be part of an whole open source ecosystem around each tutorial."
+            />
+            <FeatureCard
+              imgSrc={withPrefix('Icons_116/icons-116-free.svg')}
+              title="Always Free"
+              subtitle="If your programming framework is free, why not the tutorials for it?"
             />
           </FeatureCardsSection>
           <FeatureCardsSection
             style={device.desktop.active ? { marginTop: 150 } : {}}
             title={"Respect the teacher's time"}
-            subtitle={"The first platform that respects learners and teachers time, Automatically render your tutorial to Tortilla platform your own website or blog post simultaneously, Contact us for early access, add your new or existing tutorial."}
+            subtitle={"Creators are the most important people in the chain. We need to help them save every minute we can."}
           >
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-framework.svg')}
@@ -500,24 +500,23 @@ class HomePage extends React.Component {
             />
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-auto.svg')}
-              title="Auto Render"
-              subtitle="Automatically render your tutorial to Tortilla website, Medium.com or your own website or blog post simultaneously."
+              title="Write Once; Render All"
+              subtitle="Write your tutorial's code and text, then render automatically to the Tortilla website, Medium or your own website/blog post; simultaneously."
             />
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-social.svg')}
               title="Social Community"
-              subtitle="Build a community around your tutorial, get help and contributions from learners."
+              subtitle="Build and lead a community around your tutorial; get help and contributions from learners."
             />
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-translate.svg')}
-              title="Translations"
-              subtitle="contributors to help translate your tutorials to other languages."
+              title="International"
+              subtitle="Get contributors from all over the world to help translate and spread your tutorial across countries and languages."
             />
           </FeatureCardsSection>
           <FeatureCardsSection
             style={device.desktop.active ? { marginTop: 150 } : {}}
-            title="Here are our current courses"
-            subtitle="Always up to date tutorials, Play with versions control - watch git-diff on how and why to upgrade from one version of the tutorial to the next. The best place to keep up with the always-moving Javascript ecosystem. Open source tutorials - contribute and get full access to all the tutorial’s source code and videos."
+            title="Check out some of our courses"
           >
             {Object.entries(featuredTutorials).map(([name, data]) => (
               <FeaturedTutorial

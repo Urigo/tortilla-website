@@ -1,4 +1,10 @@
 {
+  "chatty": {
+    "title": "A chat app with React Native",
+    "description": "Chat clone using React Native, GraphQL, Apollo, SQL and Sequelize",
+    "image": "/img/love.svg",
+    "background": [133, 133, 255]
+  },
   "whatsapp": {
     "title": "An angular based Whatsapp clone",
     "description": "Using Angular, GraphQL, Apollo, PostgreSQL and TypeORM",
@@ -16,11 +22,5 @@
     "description": "How to implement a game engine in JS and build a style game",
     "image": "/img/snake-1.svg",
     "background": [255, 89, 109]
-  },
-  "chatty": {
-    "title": "A chat app with React Native",
-    "description": "Chat clone using React Native, GraphQL, Apollo, SQL and Sequelize",
-    "image": "/img/love.svg",
-    "background": [133, 133, 255]
   }
 }
