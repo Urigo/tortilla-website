@@ -334,6 +334,7 @@ const IntroDiv = styled.div`
     color: white;
     text-align: center;
     line-height: 55px;
+    cursor: pointer;
   }
 `
 
@@ -394,6 +395,8 @@ class HomePage extends React.Component {
     deviceType: null
   }
 
+  contactFormRef = React.createRef()
+
   componentDidMount() {
     // TODO: Make it a decorator
     this.stopObservingLayout = device.onLayoutChange(() => {
@@ -413,6 +416,15 @@ class HomePage extends React.Component {
 
   stopObservingLayout() {
     // Safety stub
+  }
+
+  getStarted = () => {
+    const contactForm = this.contactFormRef.current
+
+    if (contactForm) {
+      window.scrollTo(0, 99999)
+      contactForm.focus()
+    }
   }
 
   render() {
@@ -442,8 +454,8 @@ class HomePage extends React.Component {
               Create tutorials from real code, based on git steps with easy CLI to keep your tutorial on to date with versioning support, rendering everywhere, multiple language translations and much more…
             </div>
             {device.desktop.active && <>
-              <div className="_start-btn">
-                Coming soon...
+              <div className="_start-btn" onClick={this.getStarted}>
+                Get Started
               </div>
             </>}
           </IntroDiv>
@@ -557,7 +569,7 @@ class HomePage extends React.Component {
         <Footer>
           <div className="_background" />
           <img className="_food-truck" src={withPrefix('img/group-16.svg')} alt="" />
-          <ContactForm className="_contact-form" />
+          <ContactForm className="_contact-form" ref={this.contactFormRef} />
         </Footer>
 
         {/*Outside of footer due to layout problems*/}

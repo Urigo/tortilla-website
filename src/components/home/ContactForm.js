@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { withPrefix } from 'gatsby'
 import React from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import swal from 'sweetalert2'
 import { TWITTER_URL, GITHUB_URL } from '../../consts'
@@ -202,6 +203,7 @@ class ContactForm extends React.Component {
             })}
             placeholder="your.email@domain.com"
             onChange={this.setEmail}
+            ref={ref => this.emailInput = ReactDOM.findDOMNode(ref)}
           />
           {device.desktop.active && this.renderSendBtn()}
           <br />
@@ -238,6 +240,12 @@ class ContactForm extends React.Component {
         <div className="_error-message">{this.state.errorMessage}</div>
       </Style>
     )
+  }
+
+  focus() {
+    if (this.emailInput) {
+      this.emailInput.focus()
+    }
   }
 
   renderSendBtn() {
@@ -339,7 +347,9 @@ class ContactForm extends React.Component {
       })
     }).catch(() => {
       this.setState({
-        sending: false
+        sending: false,
+        email: '',
+        details: '',
       })
     })
   }
