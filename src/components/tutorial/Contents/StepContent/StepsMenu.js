@@ -6,11 +6,12 @@ import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
 
 const Steps = styled.div`
-  display: contents;
+  display: block;
   flex-direction: column;
   overflow-y: overlay;
   overflow-x: hidden;
   height: 100%;
+  width: 100%;
 `
 
 const Number = styled.div`
@@ -128,7 +129,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Steps innerRef={this.setContainerRef}>
+      <Steps style={this.props.style} innerRef={this.setContainerRef}>
         {this.props.tutorialVersion.steps.map(step => {
           const active = this.props.activeStep &&
             step.id === this.props.activeStep.id

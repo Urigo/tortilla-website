@@ -195,12 +195,18 @@ export default class extends React.Component {
               close={this.closeStepsMenu}
               open={this.openStepsMenu}
             />
+            {/*
+              65px - Header height
+              TODO: Softcode
+            */}
             <StepsMenu
+              ref={ref => this.stepsMenuScroller = ReactDOM.findDOMNode(ref)}
               tutorialName={this.props.tutorialName}
               tutorialVersion={this.props.tutorialVersion}
               activeStep={this.props.step}
               pathname={this.props.pathname}
               resetScroller={this.props.resetScroller}
+              style={{ height: 'calc(100% - 65px)' }}
             />
           </MenuContainer>
         )}
@@ -333,6 +339,9 @@ export default class extends React.Component {
     let { top } = this.container.getBoundingClientRect()
     top = Math.max(top, 0) + 'px'
 
+    // TODO: Make sticky logic generic.
+    // Note that position: sticky doesn't work and if so has poor comparability
     this.stepsMenu.style.top = top
+    this.stepsMenu.style.height = `calc(100% - ${top})`
   }
 }
