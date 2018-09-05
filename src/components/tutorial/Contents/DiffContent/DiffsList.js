@@ -122,7 +122,7 @@ const Path = styled.a`
   }
 `
 
-const NullPath = styled.div`
+const NullPath = styled.span`
   color: inherit;
   text-decoration: none;
 `
@@ -407,7 +407,7 @@ class DiffsList extends React.Component {
     if (header.length === 2) {
       header.splice(1, 0, <span key={0.5}>→</span>)
       // Custom file mode
-      header.unshift('moved ')
+      header.unshift('move ')
     }
     else {
       header.unshift(`${type} `)
