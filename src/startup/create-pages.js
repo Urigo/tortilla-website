@@ -44,12 +44,12 @@ module.exports = async ({ graphql, actions }) => {
     }
   `)
 
-  result.data.allTortillaTutorial.edges.forEach(edge => {
+  return Promise.all(result.data.allTortillaTutorial.edges.map(edge => {
     const tutorial = edge.node
 
-    createTutorial({
+    return createTutorial({
       tutorial,
       createPage,
     })
-  })
+  }))
 }

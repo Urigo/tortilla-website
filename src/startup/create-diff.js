@@ -1,11 +1,11 @@
-const path = require('path')
 const { kebabCase } = require('lodash')
-const { diffReleases } = require('../libs/tortilla')
+const path = require('path')
+const { diffReleases } = require('tortilla')
 const { diffRoute } = require('../utils/routes')
 
 const tutorialTemplate = path.resolve('src/templates/tutorial.js')
 
-module.exports = ({
+module.exports = async ({
   createPage,
   common,
   params: {
@@ -35,14 +35,14 @@ module.exports = ({
     )
   }
 
-  const versionsDiff = diffReleases(
+  const versionsDiff = await diffReleases(
     tutorialChunk,
     destVersionNumber,
     srcVersionNumber,
   )
 
-  paths.forEach((path) => {
-    createPage({
+  return Promise.all(paths.map((path) => {
+    return createPage({
       path,
       component: tutorialTemplate,
       context: {
@@ -58,5 +58,5 @@ module.exports = ({
         },
       }
     })
-  })
+  }))
 }

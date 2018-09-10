@@ -4,7 +4,7 @@ const { stepRoute } = require('../utils/routes')
 
 const tutorialTemplate = path.resolve('src/templates/tutorial.js')
 
-module.exports = ({
+module.exports = async ({
   createPage,
   common,
   params: { step },
@@ -28,8 +28,8 @@ module.exports = ({
     )
   }
 
-  paths.forEach((path) => {
-    createPage({
+  return Promise.all(paths.map((path) => {
+    return createPage({
       path,
       component: tutorialTemplate,
       context: {
@@ -39,5 +39,5 @@ module.exports = ({
         contentData: { step },
       },
     })
-  })
+  }))
 }

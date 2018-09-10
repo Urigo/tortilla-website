@@ -2,7 +2,7 @@ const createDiff = require('./create-diff')
 const createStep = require('./create-step')
 const { map } = require('lodash')
 
-module.exports = ({ tutorial, createPage }) => {
+module.exports = async ({ tutorial, createPage }) => {
   // Will be used later on to compose diff between versions.
   // Note that the transformation is done because we need to match the data in to
   // Tortilla's schema
@@ -13,7 +13,7 @@ module.exports = ({ tutorial, createPage }) => {
     }))
   }
 
-  tutorial.versions.forEach((version, index) => {
+  return Promise.all(tutorial.versions.map((version, index) => {
     const tutorialName = tutorial.name
     const tutorialTitle = tutorial.title
     const tutorialVersion = tutorial.currentVersion
@@ -34,6 +34,8 @@ module.exports = ({ tutorial, createPage }) => {
       allVersions,
     }
 
+    const creatingPages = []
+
     // If iterated version is not the most recent.
     if (index) {
       const srcVersion = tutorial.versions[index - 1]
@@ -41,7 +43,7 @@ module.exports = ({ tutorial, createPage }) => {
       const srcVersionHistory = srcVersion.history
 
       // Will create diff page bi-directionally
-      createDiff({
+      creatingPages.push(createDiff({
         createPage,
         common,
         params: {
@@ -51,16 +53,18 @@ module.exports = ({ tutorial, createPage }) => {
           srcVersionHistory,
           tutorialChunk,
         }
-      })
+      }))
     }
 
     // Create step page for each step
-    version.steps.forEach(step => {
+    creatingPages.push(...version.steps.map(step => {
       createStep({
         createPage,
         common,
         params: { step }
       })
-    })
-  })
+    }))
+
+    return Promise.all(creatingPages)
+  }))
 }
