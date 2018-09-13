@@ -3,6 +3,7 @@ import React from 'react'
 import { css } from 'styled-components'
 
 let outerWidth
+let outerHeight
 const internals = Symbol('device')
 const layoutChangeCallbacks = new Set()
 const sizes = {
@@ -12,7 +13,11 @@ const sizes = {
 
 const device = Object.keys(sizes).reduce((acc, label) => {
   acc[label] = (...args) => css`
-    @media (max-width: ${sizes[label] / 16}em) {
+    @media only screen and (max-width: ${sizes[label] / 16}em) and (orientation: portrait) {
+      ${css(...args)}
+    }
+
+    @media only screen and (max-height: ${sizes[label] / 16}em) and (orientation: landscape) {
       ${css(...args)}
     }
   `
@@ -102,8 +107,9 @@ device.only = (...whitelist) => (Component) => {
 
 function resetLayout() {
   const type = device.type
+  const size = Math.min(outerWidth, outerHeight)
 
-  if (outerWidth <= sizes.mobile) {
+  if (size <= sizes.mobile) {
     device.desktop.active = false
     device.mobile.active = true
     device.type = 'mobile'
@@ -124,9 +130,11 @@ function resetLayout() {
 // In case of SSR
 if (typeof window !== 'undefined') {
   outerWidth = window.outerWidth
+  outerHeight = window.outerHeight
 
   window.addEventListener('resize', () => {
     outerWidth = window.outerWidth
+    outerHeight = window.outerHeight
     resetLayout()
   })
 }
