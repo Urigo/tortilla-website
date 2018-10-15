@@ -9696,9 +9696,9 @@ topo@2.x.x:
   dependencies:
     hoek "4.x.x"
 
-tortilla@^0.0.1-alpha.40:
-  version "0.0.1-alpha.40"
-  resolved "https://registry.yarnpkg.com/tortilla/-/tortilla-0.0.1-alpha.40.tgz#3ea756f2d9a7c9e99dd78b1752324cc614ba2cfa"
+tortilla@^0.0.1-alpha.41:
+  version "0.0.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/tortilla/-/tortilla-0.0.1-alpha.41.tgz#6be0b784bf452cf85d43466e38d4c32959f75715"
   dependencies:
     "@types/fs-extra" "5.0.4"
     "@types/handlebars" "4.0.39"
