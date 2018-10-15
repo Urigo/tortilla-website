@@ -13,14 +13,19 @@ module.exports = async ({ tutorial, createPage }) => {
     }))
   }
 
-  return Promise.all(tutorial.versions.map((version, index) => {
+  // We don't wanna spam the versions nav bar :-)
+  const recentMajorVersions = tutorial.versions.filter(({ isRecentMajor }) => isRecentMajor)
+
+  return Promise.all(recentMajorVersions.map((version, index) => {
+    if (version.mostRecent) return Promise.resolve()
+
     const tutorialName = tutorial.name
     const tutorialTitle = tutorial.title
     const tutorialVersion = tutorial.currentVersion
     const versionName = version.name
     const versionNumber = version.number
     const versionHistory = version.history
-    const allVersions = tutorial.versions.map(({ number, releaseDate }) => ({
+    const allVersions = recentMajorVersions.map(({ number, releaseDate }) => ({
       number,
       releaseDate,
     }))

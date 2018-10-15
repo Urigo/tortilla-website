@@ -221,9 +221,9 @@ function getVersions(doc) {
     steps: getSteps(release),
   }));
 
-  // TODO: Consider moving logic to dump creation
-  const relevantVersions = []
-
+  // Mark recent major releases so they can be filtered on pages creation process.
+  // Note that we don't filter them right now since we need ALL of them in order to
+  // re-create the tutorial based on the diffs
   for (let i = 0; i < allVersions.length; i++) {
     let version
 
@@ -233,10 +233,10 @@ function getVersions(doc) {
       break
     }
 
-    relevantVersions.push(version)
+    version.isRecentMajor = true
   }
 
-  return relevantVersions
+  return allVersions
 }
 
 // Given the versions [4.0.0, 3.0.1, 3.0.0, 2.0.0] and version 3.0.0

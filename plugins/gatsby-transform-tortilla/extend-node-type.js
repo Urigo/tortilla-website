@@ -4,6 +4,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLNonNull,
+  GraphQLBoolean,
 } = require('gatsby/graphql')
 
 const { TypeName } = require('./config')
@@ -91,6 +92,9 @@ module.exports = (
       releaseDate: {
         type: GraphQLString
       },
+      isRecentMajor: {
+        type: GraphQLBoolean
+      },
       steps: {
         type: new GraphQLList(stepType),
         args: {
@@ -138,13 +142,20 @@ module.exports = (
       type: new GraphQLList(versionType),
       args: {
         last: { type: GraphQLInt },
+        isRecentMajor: { type: GraphQLBoolean },
       },
-      resolve: (tutorial, { last }) => {
+      resolve: (tutorial, { last, onlyRecentMajors }) => {
+        const versions = tutorial.versions
+
         if (last) {
-          return [...tutorial.versions].splice(tutorial.versions.length - last)
+          versions = [...versions].splice(tutorial.versions.length - last)
         }
 
-        return tutorial.versions
+        if (onlyRecentMajors) {
+          versions = versions.filter(version => version.isRecentMajor)
+        }
+
+        return versions
       },
     },
     version: {
@@ -152,7 +163,7 @@ module.exports = (
       args: {
         number: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: (tutorial, { name, number }) => {
+      resolve: (tutorial, { number }) => {
         return tutorial.versions.find(
           version => version.number === number
         )
