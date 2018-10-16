@@ -9799,18 +9799,18 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript-styled-plugin@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/typescript-styled-plugin/-/typescript-styled-plugin-0.10.0.tgz#a840889240434b262e8a0d31c287c93e0d6000ee"
+typescript-styled-plugin@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/typescript-styled-plugin/-/typescript-styled-plugin-0.12.0.tgz#ea441d773c1648727dbdb1e961a6a59d8f53c1a3"
   dependencies:
-    typescript-template-language-service-decorator "^1.7.0"
-    vscode-css-languageservice "^3.0.9-next.19"
-    vscode-emmet-helper "1.2.10"
-    vscode-languageserver-types "^3.8.2"
+    typescript-template-language-service-decorator "^2.0.0"
+    vscode-css-languageservice "^3.0.11"
+    vscode-emmet-helper "1.2.11"
+    vscode-languageserver-types "^3.13.0"
 
-typescript-template-language-service-decorator@^1.7.0:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-1.7.1.tgz#60f825b6b2bab725c9a73eaff65cb598e81a1bc8"
+typescript-template-language-service-decorator@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.0.0.tgz#7433fdc464f07034d951dea9a5e76fab6e558f57"
 
 ua-parser-js@^0.7.18:
   version "0.7.18"
@@ -10220,28 +10220,32 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vscode-css-languageservice@^3.0.9-next.19:
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/vscode-css-languageservice/-/vscode-css-languageservice-3.0.9.tgz#770471350120c5bcf6918632a125638fc0ece3be"
+vscode-css-languageservice@^3.0.11:
+  version "3.0.11"
+  resolved "https://registry.yarnpkg.com/vscode-css-languageservice/-/vscode-css-languageservice-3.0.11.tgz#0e75e1870d59fddbfb6021efd5d80df08c9faaeb"
   dependencies:
-    vscode-languageserver-types "^3.10.0"
-    vscode-nls "^3.2.4"
+    vscode-languageserver-types "^3.13.0"
+    vscode-nls "^4.0.0"
 
-vscode-emmet-helper@1.2.10:
-  version "1.2.10"
-  resolved "https://registry.yarnpkg.com/vscode-emmet-helper/-/vscode-emmet-helper-1.2.10.tgz#c4e08c721fa379f57e53c6bdf2843d4b3c830d16"
+vscode-emmet-helper@1.2.11:
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/vscode-emmet-helper/-/vscode-emmet-helper-1.2.11.tgz#4de78223666bf917eb6dc4b225b6c40f6901950c"
   dependencies:
     "@emmetio/extract-abbreviation" "0.1.6"
     jsonc-parser "^1.0.0"
     vscode-languageserver-types "^3.6.0-next.1"
 
-vscode-languageserver-types@^3.10.0, vscode-languageserver-types@^3.6.0-next.1, vscode-languageserver-types@^3.8.2:
+vscode-languageserver-types@^3.13.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.13.0.tgz#b704b024cef059f7b326611c99b9c8753c0a18b4"
+
+vscode-languageserver-types@^3.6.0-next.1:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.10.0.tgz#944e5308f3b36a3f372c766f1a344e903ec9c389"
 
-vscode-nls@^3.2.4:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/vscode-nls/-/vscode-nls-3.2.4.tgz#2166b4183c8aea884d20727f5449e62be69fd398"
+vscode-nls@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/vscode-nls/-/vscode-nls-4.0.0.tgz#4001c8a6caba5cedb23a9c5ce1090395c0e44002"
 
 warning@^3.0.0:
   version "3.0.0"
