@@ -7,6 +7,7 @@ import styled, { css } from 'styled-components'
 
 import { parseDiff, Diff as ReactDiffView } from '../../../../libs/react-diff-view'
 import Thread from '../../../../utils/Thread'
+import DiffHeader from './DiffHeader'
 
 const Container = styled.div`
   clear: both;
@@ -104,12 +105,6 @@ const Container = styled.div`
       color: black;
     }
   }
-`
-
-const DiffHeader = styled.div`
-  margin: 10px;
-  display: block;
-  width: 100%;
 `
 
 const Path = styled.a`
@@ -280,15 +275,21 @@ class DiffsList extends React.Component {
         // Here we use setImmediate so we won't clog the execution thread
         setTimeout(thread.wrap(() => {
           const diffFileView = document.createElement('span')
+          let diffFileViewChildren
 
-          // Will re-render a full version of the diff, even if it's long
-          const forceUpdate = () => {
-            const parsedFileDiff = parseDiff(rawFileDiff, { showLong: true })[0]
-            const diffFileViewChildren = this.renderDiffFile(parsedFileDiff)
+          // Will re-render the diff, in case we hide it or reveal it.
+          // We can also force-render diffs which are normally too long to show.
+          const forceUpdate = (reparse) => {
+            if (reparse) {
+              parsedFileDiff = parseDiff(rawFileDiff, { showLong: !parsedFileDiff.tooLong })[0]
+            }
+
+            diffFileViewChildren = this.renderDiffFile(parsedFileDiff, forceUpdate)
+
             ReactDOM.render(diffFileViewChildren, diffFileView)
           }
 
-          const diffFileViewChildren = this.renderDiffFile(parsedFileDiff, forceUpdate)
+          diffFileViewChildren = this.renderDiffFile(parsedFileDiff, forceUpdate)
           const { path } = diffFileViewChildren.props
 
           diffFileView.addEventListener('scroll', this.onScroll)
@@ -343,16 +344,19 @@ class DiffsList extends React.Component {
     return <Container ref={ref => this.diffContainer = ReactDOM.findDOMNode(ref)} />
   }
 
-  renderDiffFile({
-    type,
-    oldPath,
-    newPath,
-    newRevision,
-    oldRevision,
-    hunks,
-    isBinary,
-    tooLong,
-  }, forceUpdate) {
+  renderDiffFile(diffState, forceUpdate) {
+    const {
+      type,
+      oldPath,
+      newPath,
+      newRevision,
+      oldRevision,
+      hunks,
+      isBinary,
+      tooLong,
+      isHidden,
+    } = diffState
+
     // TODO: Address .type prop
     const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
       return Math.max(
@@ -461,20 +465,32 @@ class DiffsList extends React.Component {
       `}
     `
 
+    const onHideChange = (isHidden) => {
+      diffState.isHidden = isHidden
+      forceUpdate()
+    }
+
+    const loadLongDiff = () => {
+      diffState.tooLong = false
+      forceUpdate(true)
+    }
+
     return (
       <Container path={keyPath}>
-        <DiffHeader>{header}</DiffHeader>
-        {isBinary ? (
-          <div className={`diff-binary ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
-            BINARY
-          </div>
-        ) : tooLong ? (
-          <div className={`diff-long ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
-            <div className="_title" onClick={forceUpdate}>Load diff</div>
-            <div className="_subtitle">Large diffs are not rendered by default.</div>
-          </div>
-        ) : (
-          <ReactDiffView hunks={hunks} viewType={this.props.diffType} />
+        <DiffHeader hidden={isHidden} onHideChange={onHideChange}>{header}</DiffHeader>
+        {!isHidden && (
+          isBinary ? (
+            <div className={`diff-binary ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
+              BINARY
+            </div>
+          ) : tooLong ? (
+            <div className={`diff-long ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
+              <div className="_title" onClick={loadLongDiff}>Load diff</div>
+              <div className="_subtitle">Large diffs are not rendered by default.</div>
+            </div>
+          ) : (
+            <ReactDiffView hunks={hunks} viewType={this.props.diffType} />
+          )
         )}
       </Container>
     )
