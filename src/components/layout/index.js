@@ -27,6 +27,7 @@ const links = [
 ]
 const meta = [
   { name: 'description', content: 'The best JavaScript tutorial-base in the world for absolutely FREE' },
+  { name: 'image', content: withPrefix('Logo/logo.svg')  },
   { name: 'keywords', content: 'tutorial, howto, javascript, webapp, webdesign' },
 ]
 

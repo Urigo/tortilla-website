@@ -532,6 +532,7 @@ class HomePage extends React.Component {
           >
             {Object.entries(featuredTutorials).map(([name, data]) => (
               <FeaturedTutorial
+                key={name}
                 imgSrc={withPrefix(data.image)}
                 link={`/tutorial/${name}/step/1`}
                 title={data.title}
