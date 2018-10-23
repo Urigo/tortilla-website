@@ -132,7 +132,8 @@ class ShareButton extends React.Component {
       url: this.props.url,
     }
 
-    // If not SSR
+    // If not SSR do the following.
+    // It's not critical to set during SSR stage
     if (typeof window !== 'undefined') {
       if (!this.state.text) {
         const meta = document.querySelector('meta[name="description"]')

@@ -188,10 +188,10 @@ export default class extends React.Component {
 
   changeStep(id) {
     const route = stepRoute({
-      tutorialName: this.props.tutorialName,
+      tutorialName: this.props.tutorial.name,
       version: (
-        isVersionSpecific(this.props.pathname) &&
-        this.props.tutorialVersion.number
+        isVersionSpecific(this.props.location.pathname) &&
+        this.props.tutorial.version.number
       ),
       step: id,
     });
@@ -202,13 +202,13 @@ export default class extends React.Component {
   }
 
   render() {
-    const featuredTutorial = featuredTutorials[this.props.tutorialName] || {}
+    const featuredTutorial = featuredTutorials[this.props.tutorial.name] || {}
 
     return (
       <div ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
         <Helmet>
-          <meta name="description" content={`${featuredTutorial.title || this.props.tutorialName} - ${this.props.step.name}`} />
-          <meta name="image" content={withPrefix(featuredTutorial.image)} />
+          <meta name="description" content={`${featuredTutorial.title || this.props.tutorial.name} - ${this.props.step.name}`} />
+          <meta name="image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
         </Helmet>
         {this.state.stepsMenuOpen && (
           <MenuContainer ref={ref => this.stepsMenu = ReactDOM.findDOMNode(ref)}>
@@ -224,10 +224,10 @@ export default class extends React.Component {
             */}
             <StepsMenu
               ref={ref => this.stepsMenuScroller = ReactDOM.findDOMNode(ref)}
-              tutorialName={this.props.tutorialName}
-              tutorialVersion={this.props.tutorialVersion}
+              tutorialName={this.props.tutorial.name}
+              tutorialVersion={this.props.tutorial.version}
               activeStep={this.props.step}
-              pathname={this.props.pathname}
+              pathname={this.props.location.pathname}
               resetScroller={this.props.resetScroller}
               style={{ height: 'calc(100% - 65px)' }}
             />
@@ -247,7 +247,7 @@ export default class extends React.Component {
 
   renderBar(BarType, props = {}) {
     const step = this.props.step
-    const stepsNum = this.props.tutorialVersion.steps.length
+    const stepsNum = this.props.tutorial.version.steps.length
 
     return (
       <BarType {...props}>
@@ -259,11 +259,11 @@ export default class extends React.Component {
           {!this.state.stepsMenuOpen && (
             <ShowStepsButton onClick={this.openStepsMenu} />
           )}
-          {this.props.tutorialRepo && (
+          {this.props.tutorial.repo && (
             <ImproveButton
               step={step.id}
-              url={this.props.tutorialRepo}
-              branch={this.props.tutorialBranch}
+              url={this.props.tutorial.repo}
+              branch={this.props.tutorial.branch}
             />
           )}
           <Info>

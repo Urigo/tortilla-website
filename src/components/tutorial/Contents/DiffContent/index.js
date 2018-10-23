@@ -209,13 +209,13 @@ export default class extends React.Component {
       this.props.scrollerStyle.height = this.props.scrollerHeight
     }
 
-    const featuredTutorial = featuredTutorials[this.props.tutorialName] || {}
+    const featuredTutorial = featuredTutorials[this.props.tutorial.name] || {}
 
     return (
       <Container ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
         <Helmet>
-          <meta name="description" content={`${featuredTutorial.title || this.props.tutorialName} - What's new in v${this.props.srcVersion}`} />
-          <meta name="image" content={withPrefix(featuredTutorial.image)} />
+          <meta name="description" content={`${featuredTutorial.title || this.props.tutorial.name} - What's new in v${this.props.srcVersion}`} />
+          <meta name="image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
         </Helmet>
         {this.state.pickingFiles && <>
           <FilesPicker ref={ref => this.filesPicker = ReactDOM.findDOMNode(ref)}>
@@ -265,7 +265,7 @@ export default class extends React.Component {
                 diff={this.props.diff}
                 diffType={this.state.diffViewType}
                 paths={this.state.diffPaths}
-                baseUrl={this.props.tutorialRepo}
+                baseUrl={this.props.tutorial.repo}
                 srcHistoryObject={this.props.srcHistory}
                 destHistoryObject={this.props.destHistory}
               />

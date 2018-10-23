@@ -103,9 +103,8 @@ class TutorialPage extends React.Component {
       case 'diffs':
         return (
           <DiffContent
-            tutorialName={this.props.tutorial.name}
-            tutorialTitle={this.props.tutorial.title}
-            tutorialRepo={this.props.tutorial.repoUrl}
+            tutorial={this.props.tutorial}
+            location={this.props.location}
             srcVersion={this.props.params.srcVersionNumber}
             srcHistory={this.props.params.srcVersionHistory}
             destVersion={this.props.params.destVersionNumber}
@@ -120,12 +119,8 @@ class TutorialPage extends React.Component {
         return (
           <StepContent
             step={this.props.params.step}
-            pathname={this.props.location.pathname}
-            tutorialName={this.props.tutorial.name}
-            tutorialTitle={this.props.tutorial.title}
-            tutorialRepo={this.props.tutorial.repoUrl}
-            tutorialBranch={this.props.tutorial.branch}
-            tutorialVersion={this.props.tutorial.version}
+            location={this.props.location}
+            tutorial={this.props.tutorial}
             resetScroller={this.resetScroller}
           />
         )
