@@ -1,7 +1,10 @@
+import { withPrefix } from 'gatsby'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Helmet from 'react-helmet'
 import styled from 'styled-components'
 
+import featuredTutorials from '../../../../featured-tutorials.json'
 import storage from '../../../../utils/storage';
 import Button from '../../../common/Button';
 import DiffsList from './DiffsList';
@@ -206,8 +209,14 @@ export default class extends React.Component {
       this.props.scrollerStyle.height = this.props.scrollerHeight
     }
 
+    const featuredTutorial = featuredTutorials[this.props.tutorialName] || {}
+
     return (
       <Container ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
+        <Helmet>
+          <meta name="description" content={`${featuredTutorial.title || this.props.tutorialName} - What's new in v${this.props.srcVersion}`} />
+          <meta name="image" content={withPrefix(featuredTutorial.image)} />
+        </Helmet>
         {this.state.pickingFiles && <>
           <FilesPicker ref={ref => this.filesPicker = ReactDOM.findDOMNode(ref)}>
             <FilesHeader

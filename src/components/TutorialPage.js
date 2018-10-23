@@ -104,6 +104,7 @@ class TutorialPage extends React.Component {
         return (
           <DiffContent
             tutorialName={this.props.tutorial.name}
+            tutorialTitle={this.props.tutorial.title}
             tutorialRepo={this.props.tutorial.repoUrl}
             srcVersion={this.props.params.srcVersionNumber}
             srcHistory={this.props.params.srcVersionHistory}
@@ -121,6 +122,7 @@ class TutorialPage extends React.Component {
             step={this.props.params.step}
             pathname={this.props.location.pathname}
             tutorialName={this.props.tutorial.name}
+            tutorialTitle={this.props.tutorial.title}
             tutorialRepo={this.props.tutorial.repoUrl}
             tutorialBranch={this.props.tutorial.branch}
             tutorialVersion={this.props.tutorial.version}

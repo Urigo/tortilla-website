@@ -26,8 +26,8 @@ const links = [
   },
 ]
 const meta = [
-  { name: 'description', content: 'Sample' },
-  { name: 'keywords', content: 'sample, something' },
+  { name: 'description', content: 'The best JavaScript tutorial-base in the world for absolutely FREE' },
+  { name: 'keywords', content: 'tutorial, howto, javascript, webapp, webdesign' },
 ]
 
 class Layout extends React.Component {
@@ -40,7 +40,7 @@ class Layout extends React.Component {
     return (
       <ThemeProvider theme={Theme}>
         <div style={{ position: 'relative' }}>
-          <Helmet title="Tortilla" meta={meta} link={links} />
+          <Helmet title="tortilla.academy | Full JavaScript tutorials for free" meta={meta} link={links} />
           <div>{this.props.children}</div>
         </div>
       </ThemeProvider>

@@ -1,3 +1,4 @@
+import { withPrefix } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -121,7 +122,7 @@ class ShareButton extends React.Component {
     className: '',
     scale: 1,
     text: '',
-    url: `https://tortilla.academy${window.location.pathname}`,
+    url: withPrefix(window.location.pathname),
   }
 
   render() {

@@ -1,9 +1,11 @@
 import { faShoePrints, faExternalLinkSquareAlt } from '@fortawesome/fontawesome-free-solid'
+import { withPrefix, push } from 'gatsby'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Helmet from 'react-helmet'
 import styled from 'styled-components'
-import { push } from 'gatsby'
 
+import featuredTutorials from '../../../../featured-tutorials.json'
 import { parseDiff } from '../../../../libs/react-diff-view'
 import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
@@ -200,8 +202,14 @@ export default class extends React.Component {
   }
 
   render() {
+    const featuredTutorial = featuredTutorials[this.props.tutorialName] || {}
+
     return (
       <div ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
+        <Helmet>
+          <meta name="description" content={`${featuredTutorial.title || this.props.tutorialName} - ${this.props.step.name}`} />
+          <meta name="image" content={withPrefix(featuredTutorial.image)} />
+        </Helmet>
         {this.state.stepsMenuOpen && (
           <MenuContainer ref={ref => this.stepsMenu = ReactDOM.findDOMNode(ref)}>
             <StepsHeader
