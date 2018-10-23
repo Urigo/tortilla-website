@@ -1,7 +1,9 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { faGithubSquare } from '@fortawesome/fontawesome-free-brands';
+
 import FaIcon from '../common/FaIcon'
+import SocialButton from '../common/SocialButton'
 
 const GithubContainer = styled.div`
   display: block;
@@ -68,11 +70,25 @@ const GithubLogo = styled(FaIcon).attrs({
   transform: translateY(-8px);
 `
 
+const SocialButtons = styled.div `
+  float: right;
+
+  > * {
+    float: right;
+    margin-left: 5px;
+  }
+`
+
 export const GithubAuthor = (props) => (
   <GithubContainer {...props}>
     <GithubAvatar src={`${props.author.avatar}?s=30`} width="30" alt={props.author.username} />
     <GithubUsername href={`https://github.com/${props.author.username}`}>{props.author.username}</GithubUsername>
     {props.link && <>
+      <SocialButtons>
+        <SocialButton media="facebook" scale={0.5} />
+        <SocialButton media="twitter" scale={0.5} />
+        <SocialButton media="pinterest" scale={0.5} />
+      </SocialButtons>
       <br />
       <GithubLogo />
       <GithubLink href={props.link} target="_BLANK">{props.link}</GithubLink>
