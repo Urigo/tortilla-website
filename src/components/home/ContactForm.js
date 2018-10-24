@@ -4,7 +4,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import swal from 'sweetalert2'
-import { TWITTER_URL, GITHUB_URL } from '../../consts'
 import device from '../../utils/device'
 import { validateEmail, validateLength } from '../../utils/validations'
 
@@ -229,13 +228,13 @@ class ContactForm extends React.Component {
               <div className="_text">Don’t forget to follow us ;)</div>
             </>}
             <div className="_social-btns">
-              <a href={GITHUB_URL}>
+              <a href={process.env.GATSBY_GITHUB_URL}>
                 <img
                   src={withPrefix('icns_30/icns-30-github.svg')}
                   alt="github"
                 />
               </a>
-              <a href={TWITTER_URL}>
+              <a href={process.env.GATSBY_TWITTER_URL}>
                 <img
                   src={withPrefix('icns_30/icns-30-twitter.svg')}
                   alt="twitter"

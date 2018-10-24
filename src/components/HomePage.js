@@ -2,7 +2,6 @@ import { withPrefix } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import { GITHUB_URL } from '../consts'
 // TODO: Make a central tutorials.js module; this would be the projection
 import featuredTutorials from '../featured-tutorials.json'
 import device from '../utils/device'
@@ -459,7 +458,7 @@ class HomePage extends React.Component {
               </div>
             </>}
           </IntroDiv>
-          <GitFollowBtn href={GITHUB_URL}>
+          <GitFollowBtn href={process.env.GATSBY_GITHUB_URL}>
             <div className="_icon">
               <img src={withPrefix('icns_30/icns-30-github.svg')} alt="Github" />
             </div>
