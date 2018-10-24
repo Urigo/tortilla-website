@@ -215,7 +215,8 @@ export default class extends React.Component {
       <Container ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
         <Helmet>
           <meta name="description" content={`${featuredTutorial.title || this.props.tutorial.name} - What's new in v${this.props.srcVersion}`} />
-          <meta name="image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
+          <meta name="og:image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
+          <meta name="twitter:image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
         </Helmet>
         {this.state.pickingFiles && <>
           <FilesPicker ref={ref => this.filesPicker = ReactDOM.findDOMNode(ref)}>
