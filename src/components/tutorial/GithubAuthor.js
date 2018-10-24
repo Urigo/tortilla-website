@@ -87,7 +87,6 @@ export const GithubAuthor = (props) => (
       <SocialButtons>
         <SocialButton media="facebook" scale={0.5} />
         <SocialButton media="twitter" scale={0.5} />
-        <SocialButton media="pinterest" scale={0.5} />
       </SocialButtons>
       <br />
       <GithubLogo />

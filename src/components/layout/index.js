@@ -28,7 +28,9 @@ const links = [
 const meta = [
   { name: 'google-site-verification', content: 'Glmf8aCrncL2dnKoMscmc0BpnvaLTvA6feScexYo754' },
   { name: 'description', content: 'The best JavaScript tutorial-base in the world for absolutely FREE' },
-  { name: 'image', content: withPrefix('Logo/logo.svg')  },
+  { name: 'image', content: withPrefix('img/923d3cff-2ac6-43ce-a973-24656d80d2aa.jpg') },
+  { name: 'og:image', content: withPrefix('img/923d3cff-2ac6-43ce-a973-24656d80d2aa.jpg') },
+  { name: 'twitter:image', content: withPrefix('img/923d3cff-2ac6-43ce-a973-24656d80d2aa.jpg') },
   { name: 'keywords', content: 'tutorial, howto, javascript, webapp, webdesign' },
 ]
 
