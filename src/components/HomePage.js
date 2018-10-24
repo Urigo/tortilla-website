@@ -2,8 +2,7 @@ import { withPrefix } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-// TODO: Make a central tutorials.js module; this would be the projection
-import featuredTutorials from '../featured-tutorials.json'
+import featuredTutorials from '../featured-tutorials'
 import device from '../utils/device'
 import ContactForm from './home/ContactForm'
 import FeatureCard from './home/FeatureCard'
@@ -529,16 +528,16 @@ class HomePage extends React.Component {
             style={device.desktop.active ? { marginTop: 150 } : {}}
             title="Check out some of our courses"
           >
-            {Object.entries(featuredTutorials).map(([name, data]) => (
+            {Object.entries(featuredTutorials).map(([name, data]) => name && name !== 'default' && (
               <FeaturedTutorial
                 key={name}
-                imgSrc={withPrefix(data.image)}
+                imgSrc={withPrefix(data.imageSrc)}
                 link={`/tutorial/${name}/step/1`}
                 title={data.title}
                 description={data.description}
                 style={{
-                  backgroundColor: `rgb(${data.background})`,
-                  boxShadow: `10px 10px 20px 0 rgba(${data.background},.2)`
+                  backgroundColor: `rgb(${data.backgroundColor})`,
+                  boxShadow: `10px 10px 20px 0 rgba(${data.backgroundColor},.2)`
                 }}
               />
             ))}

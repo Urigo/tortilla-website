@@ -1,6 +1,12 @@
+const { map } = require('lodash')
+const path = require('path')
+
+require('../featured-tutorials/node-mixin')
+const featuredTutorials = require('../featured-tutorials')
 const createDiff = require('./create-diff')
 const createStep = require('./create-step')
-const { map } = require('lodash')
+
+const staticDirPath = path.resolve(__dirname, '../../static')
 
 module.exports = async ({ tutorial, createPage }) => {
   // Will be used later on to compose diff between versions.
@@ -16,12 +22,31 @@ module.exports = async ({ tutorial, createPage }) => {
   // We don't wanna spam the versions nav bar :-)
   const recentMajorVersions = tutorial.versions.filter(({ isRecentMajor }) => isRecentMajor)
 
-  return Promise.all(recentMajorVersions.map((version, index) => {
-    if (version.mostRecent) return Promise.resolve()
+  return Promise.all(recentMajorVersions.map(async (version, index) => {
+    if (version.mostRecent) return
+
+    // Load image data URLs.
+    // Note that load() will not be invoked twice for 'default' because of the way it's
+    // implemented
+    await Promise.all([
+      featuredTutorials[tutorial.name].load(staticDirPath),
+      featuredTutorials.default.load(staticDirPath),
+    ])
+
+    // Featured tutorials are used as projection - we present existing tutorials the
+    // way we want
+    const featuredTutorial = Object.assign(
+      {},
+      featuredTutorials.default,
+      tutorial,
+      featuredTutorials[tutorial.name],
+    )
 
     const tutorialName = tutorial.name
-    const tutorialTitle = tutorial.title
+    const tutorialTitle = featuredTutorial.title || tutorial.name
+    const tutorialDescription = featuredTutorial.description
     const tutorialVersion = tutorial.currentVersion
+    const tutorialImage = featuredTutorial.imageUrl
     const versionName = version.name
     const versionNumber = version.number
     const versionHistory = version.history
@@ -34,6 +59,7 @@ module.exports = async ({ tutorial, createPage }) => {
       tutorialName,
       tutorialTitle,
       tutorialVersion,
+      tutorialImage,
       versionNumber,
       versionName,
       allVersions,

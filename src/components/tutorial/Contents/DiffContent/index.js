@@ -1,12 +1,10 @@
-import { withPrefix } from 'gatsby'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Helmet from 'react-helmet'
 import styled from 'styled-components'
 
-import featuredTutorials from '../../../../featured-tutorials.json'
 import storage from '../../../../utils/storage';
 import Button from '../../../common/Button';
+import SocialHelmet from '../../../common/SocialHelmet'
 import DiffsList from './DiffsList';
 
 const filesTreeBarHeight = '63px';
@@ -209,15 +207,12 @@ export default class extends React.Component {
       this.props.scrollerStyle.height = this.props.scrollerHeight
     }
 
-    const featuredTutorial = featuredTutorials[this.props.tutorial.name] || {}
-
     return (
       <Container ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
-        <Helmet>
-          <meta name="description" content={`${featuredTutorial.title || this.props.tutorial.name} - What's new in v${this.props.srcVersion}`} />
-          <meta name="og:image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
-          <meta name="twitter:image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
-        </Helmet>
+        <SocialHelmet
+          description={`${this.props.tutorialTitle} - What's new in v${this.props.srcVersion}`}
+          image={this.props.tutorialImage}
+        />
         {this.state.pickingFiles && <>
           <FilesPicker ref={ref => this.filesPicker = ReactDOM.findDOMNode(ref)}>
             <FilesHeader

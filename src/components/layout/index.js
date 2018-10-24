@@ -3,8 +3,10 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 
+import featuredTutorials from '../../featured-tutorials'
 import Theme from '../../themes/home'
 import Modal from '../common/Modal'
+import SocialHelmet from '../common/SocialHelmet'
 
 import './index.css'
 
@@ -27,10 +29,6 @@ const links = [
 ]
 const meta = [
   { name: 'google-site-verification', content: 'Glmf8aCrncL2dnKoMscmc0BpnvaLTvA6feScexYo754' },
-  { name: 'description', content: 'The best JavaScript tutorial-base in the world for absolutely FREE' },
-  { name: 'image', content: withPrefix('img/923d3cff-2ac6-43ce-a973-24656d80d2aa.jpg') },
-  { name: 'og:image', content: withPrefix('img/923d3cff-2ac6-43ce-a973-24656d80d2aa.jpg') },
-  { name: 'twitter:image', content: withPrefix('img/923d3cff-2ac6-43ce-a973-24656d80d2aa.jpg') },
   { name: 'keywords', content: 'tutorial, howto, javascript, webapp, webdesign' },
 ]
 
@@ -45,6 +43,12 @@ class Layout extends React.Component {
       <ThemeProvider theme={Theme}>
         <div style={{ position: 'relative' }}>
           <Helmet title="tortilla.academy | Full JavaScript tutorials for free" meta={meta} link={links} />
+          <SocialHelmet
+            url={process.env.GATSBY_ORIGIN}
+            title={featuredTutorials.title}
+            description={featuredTutorials.description}
+            image={withPrefix('Logo/logo-with-background.jpg')}
+          />
           <div>{this.props.children}</div>
         </div>
       </ThemeProvider>

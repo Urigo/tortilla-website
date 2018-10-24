@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 import { faHistory } from '@fortawesome/fontawesome-free-solid'
-import featuredTutorials from '../featured-tutorials.json'
+import featuredTutorials from '../featured-tutorials'
 import device from '../utils/device'
 import { stepRoute, diffRoute } from '../utils/routes'
 import FaIcon from './common/FaIcon'
@@ -97,36 +97,6 @@ class TutorialPage extends React.Component {
     tutorial: PropTypes.object.isRequired,
   }
 
-  renderContent() {
-    switch (this.props.contentType) {
-      case 'diffs':
-        return (
-          <DiffContent
-            tutorial={this.props.tutorial}
-            location={this.props.location}
-            srcVersion={this.props.params.srcVersionNumber}
-            srcHistory={this.props.params.srcVersionHistory}
-            destVersion={this.props.params.destVersionNumber}
-            destHistory={this.props.params.destVersionHistory}
-            scrollerStyle={this.contentStyle}
-            scrollerHeight={contentHeight}
-            diff={this.props.params.versionsDiff}
-            resetScroller={this.resetScroller}
-          />
-        )
-      case 'steps':
-        return (
-          <StepContent
-            step={this.props.params.step}
-            location={this.props.location}
-            tutorial={this.props.tutorial}
-            resetScroller={this.resetScroller}
-          />
-        )
-      default: return null
-    }
-  }
-
   render() {
     const featuredTutorial = featuredTutorials[this.props.tutorial.name]
 
@@ -138,9 +108,9 @@ class TutorialPage extends React.Component {
               <MainNavBar backHandler={this.navHome} />
               <TopBar>
                 {featuredTutorial && (
-                  <TutorialImage src={featuredTutorial.image} style={{
-                    backgroundColor: `rgb(${featuredTutorial.background})`,
-                    boxShadow: `10px 10px 20px 0 rgba(${featuredTutorial.background},.2)`,
+                  <TutorialImage src={featuredTutorial.imageSrc} style={{
+                    backgroundColor: `rgb(${featuredTutorial.backgroundColor})`,
+                    boxShadow: `10px 10px 20px 0 rgba(${featuredTutorial.backgroundColor},.2)`,
                   }} />
                 )}
                 <div style={{
@@ -171,6 +141,39 @@ class TutorialPage extends React.Component {
         </Container>
       </Layout>
     )
+  }
+
+  renderContent() {
+    switch (this.props.contentType) {
+      case 'diffs':
+        return (
+          <DiffContent
+            tutorial={this.props.tutorial}
+            location={this.props.location}
+            tutorialImage={this.props.common.tutorialImage}
+            tutorialTitle={this.props.common.tutorialTitle}
+            srcVersion={this.props.params.srcVersionNumber}
+            srcHistory={this.props.params.srcVersionHistory}
+            destVersion={this.props.params.destVersionNumber}
+            destHistory={this.props.params.destVersionHistory}
+            scrollerHeight={contentHeight}
+            diff={this.props.params.versionsDiff}
+            resetScroller={this.resetScroller}
+          />
+        )
+      case 'steps':
+        return (
+          <StepContent
+            step={this.props.params.step}
+            location={this.props.location}
+            tutorial={this.props.tutorial}
+            tutorialImage={this.props.common.tutorialImage}
+            tutorialTitle={this.props.common.tutorialTitle}
+            resetScroller={this.resetScroller}
+          />
+        )
+      default: return null
+    }
   }
 
   activateStep = (version) => {

@@ -1,15 +1,14 @@
 import { faShoePrints, faExternalLinkSquareAlt } from '@fortawesome/fontawesome-free-solid'
-import { withPrefix, push } from 'gatsby'
+import { push } from 'gatsby'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Helmet from 'react-helmet'
 import styled from 'styled-components'
 
-import featuredTutorials from '../../../../featured-tutorials.json'
 import { parseDiff } from '../../../../libs/react-diff-view'
 import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
 import FaIcon from '../../../common/FaIcon'
+import SocialHelmet from '../../../common/SocialHelmet'
 import Stepper from '../../../common/Stepper'
 import ImproveButton from '../../ImproveButton'
 import SimpleDiffView from './SimpleDiffView'
@@ -202,15 +201,12 @@ export default class extends React.Component {
   }
 
   render() {
-    const featuredTutorial = featuredTutorials[this.props.tutorial.name] || {}
-
     return (
       <div ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
-        <Helmet>
-          <meta name="description" content={`${featuredTutorial.title || this.props.tutorial.name} - ${this.props.step.name}`} />
-          <meta name="og:image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
-          <meta name="twitter:image" content={`${process.env.GATSBY_ORIGIN}${withPrefix(featuredTutorial.image)}`} />
-        </Helmet>
+        <SocialHelmet
+          description={`${this.props.tutorialTitle} - ${this.props.step.name}`}
+          image={this.props.tutorialImage}
+        />
         {this.state.stepsMenuOpen && (
           <MenuContainer ref={ref => this.stepsMenu = ReactDOM.findDOMNode(ref)}>
             <StepsHeader
