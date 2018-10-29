@@ -528,7 +528,7 @@ class HomePage extends React.Component {
             style={device.desktop.active ? { marginTop: 150 } : {}}
             title="Check out some of our courses"
           >
-            {Object.entries(featuredTutorials).map(([name, data]) => name && name !== 'default' && (
+            {Object.entries(featuredTutorials).map(([name, data]) => name && (
               <FeaturedTutorial
                 key={name}
                 imgSrc={withPrefix(data.imageSrc)}

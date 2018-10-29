@@ -24,15 +24,21 @@ const featuredMap = {
     description: 'How to implement a game engine in JS and build a style game',
     imageSrc: '/img/snake-1.svg',
     backgroundColor: [255, 89, 109]
-  },
-  // Will help reset metadata
-  'default': {
+  }
+}
+
+// Will help reset metadata
+Object.defineProperty(featuredMap, 'default', {
+  enumerable: false,
+  configurable: true,
+  writable: true,
+  value: {
     title: 'tortilla.academy | Full JavaScript tutorials for free',
     description: 'The best JavaScript tutorial-base in the world for absolutely FREE',
     imageSrc: '/Logo/logo.svg',
     backgroundColor: [77, 130, 249],
-  }
-}
+  },
+})
 
 module.exports = Object.keys(featuredMap).reduce((wrappedFeaturedMap, name) => {
   const featured = featuredMap[name]
