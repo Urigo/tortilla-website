@@ -6,7 +6,7 @@ const featuredTutorials = require('../featured-tutorials')
 const createDiff = require('./create-diff')
 const createStep = require('./create-step')
 
-const staticDirPath = path.resolve(__dirname, '../../static')
+const publicDirPath = path.resolve(__dirname, '../../public')
 
 module.exports = async ({ tutorial, createPage }) => {
   // Will be used later on to compose diff between versions.
@@ -29,8 +29,8 @@ module.exports = async ({ tutorial, createPage }) => {
     // Note that load() will not be invoked twice for 'default' because of the way it's
     // implemented
     await Promise.all([
-      featuredTutorials[tutorial.name].load(staticDirPath),
-      featuredTutorials.default.load(staticDirPath),
+      featuredTutorials[tutorial.name].load(publicDirPath),
+      featuredTutorials.default.load(publicDirPath),
     ])
 
     // Featured tutorials are used as projection - we present existing tutorials the

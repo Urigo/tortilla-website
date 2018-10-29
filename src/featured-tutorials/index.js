@@ -36,14 +36,14 @@ Object.defineProperty(featuredMap, 'default', {
     title: 'tortilla.academy | Full JavaScript tutorials for free',
     description: 'The best JavaScript tutorial-base in the world for absolutely FREE',
     imageSrc: '/Logo/logo.svg',
-    backgroundColor: [77, 130, 249],
+    backgroundColor: [255, 255, 255],
   },
 })
 
-module.exports = Object.keys(featuredMap).reduce((wrappedFeaturedMap, name) => {
-  const featured = featuredMap[name]
-  const wrappedFeatured = new FeaturedTutorial(featured)
-  wrappedFeaturedMap[name] = wrappedFeatured
+module.exports = Object.getOwnPropertyNames(featuredMap).reduce((wrappedFeaturedMap, name) => {
+  const descriptor = Object.getOwnPropertyDescriptor(featuredMap, name)
+  descriptor.value = new FeaturedTutorial(descriptor.value)
+  Object.defineProperty(wrappedFeaturedMap, name, descriptor)
 
   return wrappedFeaturedMap
 }, {})
