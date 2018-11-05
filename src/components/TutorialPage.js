@@ -89,7 +89,6 @@ const MainContent = styled.div`
   min-height: calc(100% - ${topBarHeight});
 `
 
-@device.only('desktop')
 class TutorialPage extends React.Component {
   static propTypes = {
     common: PropTypes.object.isRequired,
