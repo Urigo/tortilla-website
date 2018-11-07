@@ -47,7 +47,7 @@ class Layout extends React.Component {
             url={process.env.GATSBY_ORIGIN}
             title={featuredTutorials.title}
             description={featuredTutorials.description}
-            image={withPrefix('Logo/logo.cover.jpg')}
+            image={withPrefix('Logo/logo.cover.png')}
           />
           <div>{this.props.children}</div>
         </div>
