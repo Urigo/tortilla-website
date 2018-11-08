@@ -6,7 +6,7 @@ const featuredTutorials = require('../featured-tutorials')
 const createDiff = require('./create-diff')
 const createStep = require('./create-step')
 
-const publicDirPath = path.resolve(__dirname, '../../public')
+const publicDirPath = path.resolve(process.cwd(), 'public')
 
 module.exports = async ({ tutorial, createPage }) => {
   // Will be used later on to compose diff between versions.
