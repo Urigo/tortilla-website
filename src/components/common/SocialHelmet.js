@@ -7,26 +7,19 @@ const SocialHelmet = (props) => {
   const meta = []
 
   if (props.url) {
-    meta.push({ name: "url", content: props.url })
-    meta.push({ name: "og:url", content: props.url })
-    meta.push({ name: "twitter:url", content: props.url })
+    meta.push({ property: "og:url", content: props.url })
   }
 
   if (props.title) {
-    meta.push({ name: "title", content: props.title })
-    meta.push({ name: "og:title", content: props.title })
-    meta.push({ name: "twitter:title", content: props.title })
+    meta.push({ property: "og:title", content: props.title })
   }
 
   if (props.description) {
-    meta.push({ name: "description", content: props.description })
-    meta.push({ name: "og:description", content: props.description })
-    meta.push({ name: "twitter:description", content: props.description })
+    meta.push({ property: "og:description", content: props.description })
   }
 
   if (props.image) {
-    meta.push({ name: "image", content: props.image })
-    meta.push({ name: "og:image", content: props.image })
+    meta.push({ property: "og:image", content: props.image })
     meta.push({ name: "twitter:image", content: props.image })
   }
 

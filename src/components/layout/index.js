@@ -29,7 +29,8 @@ const links = [
 ]
 const meta = [
   { name: 'google-site-verification', content: 'Glmf8aCrncL2dnKoMscmc0BpnvaLTvA6feScexYo754' },
-  { name: 'keywords', content: 'tutorial, howto, javascript, webapp, webdesign' },
+  { name: 'twitter:card', content: 'summary' },
+  { property: 'og:type', content: 'website' },
 ]
 
 class Layout extends React.Component {
@@ -45,8 +46,8 @@ class Layout extends React.Component {
           <Helmet title="tortilla.academy | Full JavaScript tutorials for free" meta={meta} link={links} />
           <SocialHelmet
             url={process.env.GATSBY_ORIGIN}
-            title={featuredTutorials.title}
-            description={featuredTutorials.description}
+            title={featuredTutorials.default.title}
+            description={featuredTutorials.default.description}
             image={withPrefix('Logo/logo.cover.png')}
           />
           <div>{this.props.children}</div>
