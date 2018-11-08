@@ -99,6 +99,16 @@ const Html = styled.div`
   flex: 0 1 auto;
   overflow-y: auto;
 
+  ._img-container {
+    display: block;
+    max-width: 50vw;
+    margin: 25px auto !important;
+
+    @media only screen and (max-width: 1024px) {
+      max-width: 512px;
+    }
+  }
+
   a {
     color: firebrick;
   }
@@ -132,14 +142,10 @@ const Html = styled.div`
   }
 
   img {
+    max-width: 100%;
     display: block;
-    width: 100%;
-    max-width: 50vw;
-    margin: 25px auto !important;
-
-    @media only screen and (max-width: 1024px) {
-      max-width: 512px;
-    }
+    margin-left: auto;
+    margin-right: auto;
   }
 
   h1, h2, h3, h4 {
@@ -328,9 +334,21 @@ export default class extends React.Component {
   // TODO: Apply during build
   fixImages = () => {
     this.htmlEl.querySelectorAll('img').forEach((el) => {
+      // Replace blob URLs with raw URLs
       if (el.src) {
         el.src = el.src.replace(/(.+?github\.com\/[^/]+\/[^/]+\/)blob/, '$1raw')
       }
+
+      // The following container is necessary for styling where image size is gonna
+      // be dynamic, not too big yet not too small
+      const nextElementSibling = el.nextElementSibling
+      const parentElement = el.parentElement
+      const containerElement = document.createElement('div')
+
+      containerElement.classList.add('_img-container')
+      containerElement.appendChild(el)
+      parentElement.insertBefore(containerElement, nextElementSibling)
+
     })
   }
 
