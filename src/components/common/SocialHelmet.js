@@ -1,6 +1,10 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 
+const normalizeUrl = (url) => {
+  return process.env.GATSBY_ORIGIN + '/' + url.split('/').filter(Boolean).join('/')
+}
+
 // This will update all the metadata which is relevant for all social medias using
 // a single set of props
 const SocialHelmet = (props) => {
@@ -19,8 +23,8 @@ const SocialHelmet = (props) => {
   }
 
   if (props.image) {
-    meta.push({ property: "og:image", content: props.image })
-    meta.push({ name: "twitter:image", content: props.image })
+    meta.push({ property: "og:image", content: normalizeUrl(props.image) })
+    meta.push({ name: "twitter:image", content: normalizeUrl(props.image) })
   }
 
   return (
