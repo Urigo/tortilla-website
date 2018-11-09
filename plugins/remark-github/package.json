@@ -6,6 +6,6 @@
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
-    "unist-util-select": "^1.5.0"
+    "unist-util-select": "^2.0.0"
   }
 }
