@@ -3,8 +3,12 @@
 const crypto = require('crypto')
 const remark = require('remark')
 const html = require('remark-html')
+const lljs = require('lowlight')
 const highlight = require('remark-highlight.js')
-const remarkGitHub = require('../remark-github');
+const remarkGitHub = require('../remark-github')
+
+// https://github.com/highlightjs/highlight.js/issues/1471
+lljs.registerLanguage('graphql', function(e){return{aliases:["gql"],k:{keyword:"query mutation subscription|10 type input schema directive interface union scalar fragment|10 enum on ...",literal:"true false null"},c:[e.HCM,e.QSM,e.NM,{cN:"type",b:"[^\\w][A-Z][a-z]",e:"\\W",eE:!0},{cN:"literal",b:"[^\\w][A-Z][A-Z]",e:"\\W",eE:!0},{cN:"variable",b:"\\$",e:"\\W",eE:!0},{cN:"keyword",b:"[.]{2}",e:"\\."},{cN:"meta",b:"@",e:"\\W",eE:!0}],i:/([;<']|BEGIN)/}})
 
 const {
   TypeName
