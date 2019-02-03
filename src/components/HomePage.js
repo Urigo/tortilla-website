@@ -430,7 +430,7 @@ class HomePage extends React.Component {
       <Layout key={this.state.deviceType}>
         <Header>
           {device.mobile.active && <div className="_fill-up" />}
-          <DesktopImg src={withPrefix('img/group-19.svg')} class="Group-19" />
+          <DesktopImg src={withPrefix('img/group-19.svg')} className="Group-19" />
           <IntroDiv>
             {device.desktop.active ? (
               <>

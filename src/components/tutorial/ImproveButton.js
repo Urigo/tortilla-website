@@ -26,7 +26,7 @@ const Text = styled.a`
   text-align: center;
 `
 
-const ImproveButton = Button.extend`
+const ImproveButton = styled(Button) `
   height: 40px;
   padding: 5px;
   display: flex;

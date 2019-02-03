@@ -107,7 +107,7 @@ const ActionButtons = styled.div`
   margin: 25px 15px;
 `
 
-const ActionButton = Button.extend`
+const ActionButton = styled(Button)`
   width: 120px;
   height: 50px;
   color: ${({ theme }) => theme.primaryBlue};

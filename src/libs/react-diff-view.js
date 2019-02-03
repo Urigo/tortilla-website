@@ -35,9 +35,9 @@ lib.parseDiff = (diffStr, options) => {
 
     if (match)
       if (fsMode === 'Added') {
-        diffStr = diffStr + `\n--- /dev/null` + `\n+++ ${bPath}`
+        diffStr += `\n--- /dev/null\n+++ ${bPath}`
       } else {
-        diffStr = diffStr + `\n--- ${aPath}` + `\n+++ /dev/null`
+        diffStr += `\n--- ${aPath}\n+++ /dev/null`
       }
   }
 

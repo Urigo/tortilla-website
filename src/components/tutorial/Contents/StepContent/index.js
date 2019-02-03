@@ -63,7 +63,7 @@ const Header = styled.div`
   width: 100%;
 `
 
-const Footer = Header.extend`
+const Footer = styled(Header) `
   border-top: 1px solid ${({ theme }) => theme.separator};
   width: 100%;
 `

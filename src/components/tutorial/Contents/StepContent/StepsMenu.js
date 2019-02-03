@@ -47,7 +47,7 @@ const Step = styled.a`
   cursor: pointer;
 `
 
-const ActiveStep = Step.extend`
+const ActiveStep = styled(Step) `
   outline: 2px solid;
   outline-color: ${({ theme }) => theme.primaryBlue};
   outline-offset: -2px;
@@ -132,7 +132,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <Steps style={this.props.style} innerRef={this.setContainerRef}>
+      <Steps style={this.props.style} ref={this.setContainerRef}>
         {this.props.tutorialVersion.steps.map(step => {
           const active =
             this.props.activeStep && step.id === this.props.activeStep.id
@@ -140,7 +140,7 @@ export default class extends React.Component {
 
           if (active) {
             return (
-              <ActiveStep key={step.id} innerRef={this.setActiveRef}>
+              <ActiveStep key={step.id} ref={this.setActiveRef}>
                 <Number>{step.id}</Number>
                 <Name>{step.name}</Name>
               </ActiveStep>
