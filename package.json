@@ -44,7 +44,6 @@
     "react-helmet": "^5.2.0",
     "react-modal": "^3.3.2",
     "react-rating": "^1.1.1",
-    "react-treebeard": "^2.1.0",
     "sendmail": "^1.4.1",
     "setimmediate": "^1.0.5",
     "styled-components": "^4.0.0",
