@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { faChevronDown, faChevronUp } from '@fortawesome/fontawesome-free-solid'
 import FaIcon from '../../../common/FaIcon'
 
-const Container = styled.div `
+const Container = styled.div`
   margin: 10px;
   display: block;
   width: calc(100% - 20px);
@@ -31,7 +31,7 @@ class DiffHeader extends React.Component {
     super(props)
 
     this.state = {
-      hidden: props.hidden
+      hidden: props.hidden,
     }
   }
 
@@ -51,11 +51,14 @@ class DiffHeader extends React.Component {
   }
 
   toggleHide = () => {
-    this.setState({
-      hidden: !this.state.hidden
-    }, () => {
-      this.props.onHideChange(this.state.hidden)
-    })
+    this.setState(
+      {
+        hidden: !this.state.hidden,
+      },
+      () => {
+        this.props.onHideChange(this.state.hidden)
+      }
+    )
   }
 }
 

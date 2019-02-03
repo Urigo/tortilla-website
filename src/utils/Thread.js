@@ -15,8 +15,7 @@ class Thread {
   run(cb) {
     if (this.running) {
       cb()
-    }
-    else {
+    } else {
       this.awaitingCb = () => {
         this.awaitingCb = () => {}
 

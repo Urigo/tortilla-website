@@ -13,34 +13,38 @@ const withVersion = (url, version) => {
 }
 
 exports.stepRoute = ({ tutorialName, version, step }) =>
-  withVersion([
-    // prefix
-    '/tutorial',
-    // tutorial
-    kebabCase(tutorialName),
-    // version
-    '%VERSION%',
-    // prefix
-    'step',
-    // step
-    step,
-  ].join('/'), version)
+  withVersion(
+    [
+      // prefix
+      '/tutorial',
+      // tutorial
+      kebabCase(tutorialName),
+      // version
+      '%VERSION%',
+      // prefix
+      'step',
+      // step
+      step,
+    ].join('/'),
+    version
+  )
 
 exports.diffRoute = ({ tutorialName, srcVersion, destVersion }) =>
-  withVersion([
-    // prefix
-    '/tutorial',
-    // tutorial
-    kebabCase(tutorialName),
-    // version
-    '%VERSION%',
-    // prefix
-    'diff',
-    // destination version
-    kebabCase(srcVersion),
-  ].join('/'), destVersion)
+  withVersion(
+    [
+      // prefix
+      '/tutorial',
+      // tutorial
+      kebabCase(tutorialName),
+      // version
+      '%VERSION%',
+      // prefix
+      'diff',
+      // destination version
+      kebabCase(srcVersion),
+    ].join('/'),
+    destVersion
+  )
 
 // /tutorial/my-tutorial/1.1.1(/sub-route) -> true
-exports.isVersionSpecific = (pathname) => (
-  /\/version\/\d+-\d+-\d+/.test(pathname)
-)
+exports.isVersionSpecific = pathname => /\/version\/\d+-\d+-\d+/.test(pathname)

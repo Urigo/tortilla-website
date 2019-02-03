@@ -111,7 +111,7 @@ class FSNode extends React.Component {
     this.depth = Number(props.depth) || 0
 
     this.state = {
-      node: props.node
+      node: props.node,
     }
   }
 
@@ -123,13 +123,17 @@ class FSNode extends React.Component {
         <div className={this.getWrapClass()} style={this.getWrapStyle()}>
           <div className="_node" style={this.getNodeStyle()}>
             <div className="_descriptor">
-              <div className="_icon" onClick={this.toggleCollapse}>{this.getIcon()}</div>
-              <div className="_text" onClick={this.toggleSelection}>{node.name}</div>
+              <div className="_icon" onClick={this.toggleCollapse}>
+                {this.getIcon()}
+              </div>
+              <div className="_text" onClick={this.toggleSelection}>
+                {node.name}
+              </div>
             </div>
             {node.children && !node.collapsed && (
               <exports.FSTree
                 className="_fstree"
-                ref={ref => this.children = ref}
+                ref={ref => (this.children = ref)}
                 tree={node.children}
                 depth={this.depth}
                 onSelect={this.onSelect}
@@ -147,27 +151,29 @@ class FSNode extends React.Component {
 
     try {
       ReactDOM.findDOMNode(this)
-    }
-    // If not mounted, still perform operation on node
-    catch (e) {
+    } catch (e) {
+      // If not mounted, still perform operation on node
       const node = this.state.node
       node.selected = true
 
       return Promise.resolve()
     }
 
-    return new Promise((resolve) => {
-      this.setState({
-        node: Object.assign(this.state.node, {
-          selected: true
-        })
-      }, () => {
-        if (typeof this.props.onSelect === 'function') {
-          this.props.onSelect(this.state.node, this)
-        }
+    return new Promise(resolve => {
+      this.setState(
+        {
+          node: Object.assign(this.state.node, {
+            selected: true,
+          }),
+        },
+        () => {
+          if (typeof this.props.onSelect === 'function') {
+            this.props.onSelect(this.state.node, this)
+          }
 
-        resolve()
-      })
+          resolve()
+        }
+      )
     })
   }
 
@@ -176,27 +182,29 @@ class FSNode extends React.Component {
 
     try {
       ReactDOM.findDOMNode(this)
-    }
-    // If not mounted, still perform operation on node
-    catch (e) {
+    } catch (e) {
+      // If not mounted, still perform operation on node
       const node = this.state.node
       node.selected = false
 
       return Promise.resolve()
     }
 
-    return new Promise((resolve) => {
-      this.setState({
-        node: Object.assign(this.state.node, {
-          selected: false
-        })
-      }, () => {
-        if (typeof this.props.onDeselect === 'function') {
-          this.props.onDeselect(this.state.node, this)
-        }
+    return new Promise(resolve => {
+      this.setState(
+        {
+          node: Object.assign(this.state.node, {
+            selected: false,
+          }),
+        },
+        () => {
+          if (typeof this.props.onDeselect === 'function') {
+            this.props.onDeselect(this.state.node, this)
+          }
 
-        resolve()
-      })
+          resolve()
+        }
+      )
     })
   }
 
@@ -255,25 +263,29 @@ class FSNode extends React.Component {
 
     if (!node.children) {
       switch (node.mode) {
-        case 'added': return (
-          <span onClick={this.toggleSelection}>
-            <span className='_mode _added'>A</span>
-            <FaIcon size={15} icon={faFile} />
-          </span>
-        )
-        case 'deleted': return (
-          <span onClick={this.toggleSelection}>
-            <span className='_mode _deleted'>D</span>
-            <FaIcon size={15} icon={faFile} />
-          </span>
-        )
-        case 'modified': return (
-          <span onClick={this.toggleSelection}>
-            <span className='_mode _modified'>M</span>
-            <FaIcon size={15} icon={faFile} />
-          </span>
-        )
-        default: return <FaIcon icon={faFile} />
+        case 'added':
+          return (
+            <span onClick={this.toggleSelection}>
+              <span className="_mode _added">A</span>
+              <FaIcon size={15} icon={faFile} />
+            </span>
+          )
+        case 'deleted':
+          return (
+            <span onClick={this.toggleSelection}>
+              <span className="_mode _deleted">D</span>
+              <FaIcon size={15} icon={faFile} />
+            </span>
+          )
+        case 'modified':
+          return (
+            <span onClick={this.toggleSelection}>
+              <span className="_mode _modified">M</span>
+              <FaIcon size={15} icon={faFile} />
+            </span>
+          )
+        default:
+          return <FaIcon icon={faFile} />
       }
     }
 
@@ -293,29 +305,35 @@ class FSNode extends React.Component {
   collapse() {
     if (this.state.node.collapsed) return
 
-    this.setState({
-      node: Object.assign(this.state.node, {
-        collapsed: true
-      })
-    }, () => {
-      if (typeof this.props.onCollapse === 'function') {
-        this.props.onCollapse(this.state.node, this)
+    this.setState(
+      {
+        node: Object.assign(this.state.node, {
+          collapsed: true,
+        }),
+      },
+      () => {
+        if (typeof this.props.onCollapse === 'function') {
+          this.props.onCollapse(this.state.node, this)
+        }
       }
-    })
+    )
   }
 
   expand() {
     if (!this.state.node.collapsed) return
 
-    this.setState({
-      node: Object.assign(this.state.node, {
-        collapsed: false
-      })
-    }, () => {
-      if (typeof this.props.onExpand === 'function') {
-        this.props.onExpand(this.state.node, this)
+    this.setState(
+      {
+        node: Object.assign(this.state.node, {
+          collapsed: false,
+        }),
+      },
+      () => {
+        if (typeof this.props.onExpand === 'function') {
+          this.props.onExpand(this.state.node, this)
+        }
       }
-    })
+    )
   }
 
   toggleCollapse = () => {
@@ -326,13 +344,13 @@ class FSNode extends React.Component {
 
   onSelect = (node, component) => {
     if (typeof this.props.onSelect === 'function') {
-      this.props.onSelect(node, component);
+      this.props.onSelect(node, component)
     }
   }
 
   onDeselect = (node, component) => {
     if (typeof this.props.onDeselect === 'function') {
-      this.props.onDeselect(node, component);
+      this.props.onDeselect(node, component)
     }
   }
 }

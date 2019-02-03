@@ -38,13 +38,14 @@ if (isBrowser) {
 }
 
 function FakedModal() {
-  return <div style = {
-    {
-      display: 'none',
-      visibility: 'hidden'
-    }
-  }
-  />
+  return (
+    <div
+      style={{
+        display: 'none',
+        visibility: 'hidden',
+      }}
+    />
+  )
 }
 
 FakedModal.setAppElement = () => {}

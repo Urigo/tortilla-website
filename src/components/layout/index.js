@@ -30,15 +30,24 @@ const link = [
 ]
 
 const meta = [
-  { name: 'google-site-verification', content: 'Glmf8aCrncL2dnKoMscmc0BpnvaLTvA6feScexYo754' },
+  {
+    name: 'google-site-verification',
+    content: 'Glmf8aCrncL2dnKoMscmc0BpnvaLTvA6feScexYo754',
+  },
   { name: 'twitter:card', content: 'summary' },
   { property: 'og:type', content: 'website' },
 ]
 
 const script = [
   // Global site tag (gtag.js) - Google Analytics
-  { async: true, src: 'https://www.googletagmanager.com/gtag/js?id=UA-128969121-2' },
-  { type: 'text/javascript', innerHTML: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-128969121-2');` },
+  {
+    async: true,
+    src: 'https://www.googletagmanager.com/gtag/js?id=UA-128969121-2',
+  },
+  {
+    type: 'text/javascript',
+    innerHTML: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-128969121-2');`,
+  },
 ]
 
 class Layout extends React.Component {
@@ -51,7 +60,12 @@ class Layout extends React.Component {
     return (
       <ThemeProvider theme={Theme}>
         <div style={{ position: 'relative' }}>
-          <Helmet title="tortilla.academy | Full JavaScript tutorials for free" meta={meta} link={link} script={script} />
+          <Helmet
+            title="tortilla.academy | Full JavaScript tutorials for free"
+            meta={meta}
+            link={link}
+            script={script}
+          />
           <SocialHelmet
             url={process.env.GATSBY_ORIGIN}
             title={featuredTutorials.default.title}

@@ -70,11 +70,7 @@ const FeatureCard = styled.div`
   }
 `
 
-export default ({
-  imgSrc,
-  title,
-  subtitle,
-}) => (
+export default ({ imgSrc, title, subtitle }) => (
   <FeatureCard>
     <img src={imgSrc} alt={title} />
     <div className="_title">{title}</div>

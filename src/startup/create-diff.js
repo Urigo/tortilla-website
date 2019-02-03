@@ -22,7 +22,7 @@ module.exports = async ({
       tutorialName: common.tutorialName,
       srcVersion: srcVersionNumber,
       destVersion: destVersionNumber,
-    })
+    }),
   ]
 
   // No version prefix
@@ -38,25 +38,27 @@ module.exports = async ({
   const versionsDiff = await diffReleases(
     tutorialChunk,
     destVersionNumber,
-    srcVersionNumber,
+    srcVersionNumber
   )
 
-  return Promise.all(paths.map((path) => {
-    return createPage({
-      path,
-      component: tutorialTemplate,
-      context: {
-        ...common,
-        common,
-        contentType: 'diffs',
-        contentData: {
-          srcVersionNumber,
-          srcVersionHistory,
-          destVersionNumber,
-          destVersionHistory,
-          versionsDiff,
+  return Promise.all(
+    paths.map(path => {
+      return createPage({
+        path,
+        component: tutorialTemplate,
+        context: {
+          ...common,
+          common,
+          contentType: 'diffs',
+          contentData: {
+            srcVersionNumber,
+            srcVersionHistory,
+            destVersionNumber,
+            destVersionHistory,
+            versionsDiff,
+          },
         },
-      }
+      })
     })
-  }))
+  )
 }

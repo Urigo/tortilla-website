@@ -81,33 +81,33 @@ const propsToLink = (props, step) =>
 
 export default class extends React.Component {
   constructor(props) {
-    super();
+    super()
 
-    this.activeRef = null;
-    this.setActiveRef = el => this.activeRef = el;
+    this.activeRef = null
+    this.setActiveRef = el => (this.activeRef = el)
 
-    this.containerRef = null;
-    this.setContainerRef = el => this.containerRef = el;
+    this.containerRef = null
+    this.setContainerRef = el => (this.containerRef = el)
   }
 
   componentDidMount() {
-    this.scrollToActive();
+    this.scrollToActive()
   }
 
   scrollToActive() {
     // XXX: We can change this behavior later
-    const pos = this.read();
+    const pos = this.read()
 
     if (this.activeRef) {
-      this.activeRef.scrollIntoView(false);
+      this.activeRef.scrollIntoView(false)
     } else {
-      this.containerRef.parentElement.scrollTop = pos;
+      this.containerRef.parentElement.scrollTop = pos
     }
   }
 
   push(link) {
-    this.save();
-    push(link);
+    this.save()
+    push(link)
 
     // Will scroll the content back to the top
     if (typeof this.props.resetScroller === 'function') {
@@ -116,23 +116,26 @@ export default class extends React.Component {
   }
 
   save() {
-    storage.setItem('steps-menu-position', this.containerRef.parentElement.scrollTop)
+    storage.setItem(
+      'steps-menu-position',
+      this.containerRef.parentElement.scrollTop
+    )
   }
 
   read() {
-    const pos = storage.getItem('steps-menu-position');
+    const pos = storage.getItem('steps-menu-position')
 
-    storage.removeItem('steps-menu-position');
+    storage.removeItem('steps-menu-position')
 
-    return pos || 0;
+    return pos || 0
   }
 
   render() {
     return (
       <Steps style={this.props.style} innerRef={this.setContainerRef}>
         {this.props.tutorialVersion.steps.map(step => {
-          const active = this.props.activeStep &&
-            step.id === this.props.activeStep.id
+          const active =
+            this.props.activeStep && step.id === this.props.activeStep.id
           const link = propsToLink(this.props, step)
 
           if (active) {

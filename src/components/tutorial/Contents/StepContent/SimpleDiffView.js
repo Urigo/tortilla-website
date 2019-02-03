@@ -101,13 +101,13 @@ const SimpleDiffView = ({ file, title }) => {
   const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
     return Math.max(
       2,
-      (maxLineNum).toString().length,
+      maxLineNum.toString().length,
       (hunk.newStart + hunk.newLines).toString().length,
-      (hunk.oldStart + hunk.oldLines).toString().length,
+      (hunk.oldStart + hunk.oldLines).toString().length
     )
   }, 0)
 
-  const hunkContentLengths = hunks.map((hunk => hunk.content.length))
+  const hunkContentLengths = hunks.map(hunk => hunk.content.length)
   const maxHunkContentLength = Math.max(...hunkContentLengths)
 
   const maxLineLength = hunks.reduce((maxContentLength, hunk) => {
@@ -117,8 +117,8 @@ const SimpleDiffView = ({ file, title }) => {
   }, maxHunkContentLength)
 
   /* Adding 2 for padding of 1ch in each side */
-  const gutterWidth = maxLineNum + 2;
-  const lineWidth = maxLineLength + 1;
+  const gutterWidth = maxLineNum + 2
+  const lineWidth = maxLineLength + 1
 
   const Container = styled.div`
     ${baseStyle}
@@ -131,7 +131,8 @@ const SimpleDiffView = ({ file, title }) => {
       width: ${gutterWidth}ch;
     }
 
-    .diff-code, .diff-hunk-header-content {
+    .diff-code,
+    .diff-hunk-header-content {
       min-width: calc(100% - ${gutterWidth * 2}ch);
       width: ${lineWidth}ch;
     }
@@ -150,7 +151,7 @@ const SimpleDiffView = ({ file, title }) => {
 }
 
 // TODO: Hardcore in dump
-const projectTitle = (title) => {
+const projectTitle = title => {
   return title
     .replace(/^Changed?/, 'modify')
     .replace(/^Removed?/, 'deleted')

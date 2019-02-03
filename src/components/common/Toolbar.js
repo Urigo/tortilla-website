@@ -36,10 +36,14 @@ export default class Toolbar extends React.Component {
     return (
       <Container>
         <Left>
-          {this.props.left.map((elem, i) => <Item key={i}>{elem}</Item>)}
+          {this.props.left.map((elem, i) => (
+            <Item key={i}>{elem}</Item>
+          ))}
         </Left>
         <Right>
-          {this.props.right.map((elem, i) => <Item key={i}>{elem}</Item>)}
+          {this.props.right.map((elem, i) => (
+            <Item key={i}>{elem}</Item>
+          ))}
         </Right>
       </Container>
     )

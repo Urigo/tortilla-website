@@ -193,40 +193,52 @@ class ContactForm extends React.Component {
   render() {
     return (
       <Style className={this.props.className}>
-        <div className="_title">Keep in touch!</div><br />
+        <div className="_title">Keep in touch!</div>
+        <br />
         <div className="_subtitle">
           Are you one of the following?
           <br />
           <br />
           <ul>
-            <li>A Tutorial author who wants help converting his/hers favorite tutorials to Tortilla and keep them up to date?</li>
-            <li>A company looking to improve and modernize its training programs?</li>
-            <li>A university looking to modernize and improve its programming classes?</li>
+            <li>
+              A Tutorial author who wants help converting his/hers favorite
+              tutorials to Tortilla and keep them up to date?
+            </li>
+            <li>
+              A company looking to improve and modernize its training programs?
+            </li>
+            <li>
+              A university looking to modernize and improve its programming
+              classes?
+            </li>
           </ul>
-          We offer many solutions in education and already work with many corporations and universities; so don't hesitate to contact us!
+          We offer many solutions in education and already work with many
+          corporations and universities; so don't hesitate to contact us!
         </div>
         <div className="_info">
           <input
             className={classNames('_email', {
-              '_error-target': this.state.errorTarget === 'email'
+              '_error-target': this.state.errorTarget === 'email',
             })}
             placeholder="your.email@domain.com"
             onChange={this.setEmail}
-            ref={ref => this.emailInput = ReactDOM.findDOMNode(ref)}
+            ref={ref => (this.emailInput = ReactDOM.findDOMNode(ref))}
           />
           {device.desktop.active && this.renderSendBtn()}
           <br />
           <textarea
             className={classNames('_details', {
-              '_error-target': this.state.errorTarget === 'details'
+              '_error-target': this.state.errorTarget === 'details',
             })}
             placeholder={'"Help us help you" ;)'}
             onChange={this.setDetails}
           />
           <div className="_follow">
-            {device.desktop.active && <>
-              <div className="_text">Don’t forget to follow us ;)</div>
-            </>}
+            {device.desktop.active && (
+              <>
+                <div className="_text">Don’t forget to follow us ;)</div>
+              </>
+            )}
             <div className="_social-btns">
               <a href={process.env.GATSBY_GITHUB_URL}>
                 <img
@@ -264,13 +276,17 @@ class ContactForm extends React.Component {
       </div>
     ) : (
       <div className="_send-btn" onClick={this.send}>
-        <img className="_icon" src={withPrefix('icns_30/icns-30-send.svg')} alt="" />
+        <img
+          className="_icon"
+          src={withPrefix('icns_30/icns-30-send.svg')}
+          alt=""
+        />
         <div className="_text">Send</div>
       </div>
     )
   }
 
-  setEmail = (e) => {
+  setEmail = e => {
     this.setState({
       errorTarget: '',
       errorMessage: '',
@@ -278,7 +294,7 @@ class ContactForm extends React.Component {
     })
   }
 
-  setDetails = (e) => {
+  setDetails = e => {
     this.setState({
       errorTarget: '',
       errorMessage: '',
@@ -289,8 +305,7 @@ class ContactForm extends React.Component {
   validateFields() {
     try {
       validateEmail('Email', this.state.email)
-    }
-    catch (e) {
+    } catch (e) {
       this.setState({
         errorTarget: 'email',
         errorMessage: e.message,
@@ -301,8 +316,7 @@ class ContactForm extends React.Component {
 
     try {
       validateLength('Details', this.state.details, 10, 1000)
-    }
-    catch (e) {
+    } catch (e) {
       this.setState({
         errorTarget: 'details',
         errorMessage: e.message,
@@ -319,42 +333,43 @@ class ContactForm extends React.Component {
     if (!this.validateFields()) return
 
     this.setState({
-      sending: true
+      sending: true,
     })
 
     fetch('/.netlify/functions/contact', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(this.state),
-    }).then((res) => {
-      if (res.status >= 400) {
-        swal.fire({
-          title: 'Oy vey...',
-          text: 'Message wasn\'t sent due to internal server error :-(',
-          type: 'error',
-        })
-      }
-      else {
-        swal.fire({
-          title: 'Message successfully sent',
-          text: 'If relevant, we will notice you shortly :-)',
-          type: 'success',
-        })
-      }
-
-      this.setState({
-        sending: false,
-        email: '',
-        details: '',
-      })
-    }).catch(() => {
-      this.setState({
-        sending: false
-      })
     })
+      .then(res => {
+        if (res.status >= 400) {
+          swal.fire({
+            title: 'Oy vey...',
+            text: "Message wasn't sent due to internal server error :-(",
+            type: 'error',
+          })
+        } else {
+          swal.fire({
+            title: 'Message successfully sent',
+            text: 'If relevant, we will notice you shortly :-)',
+            type: 'success',
+          })
+        }
+
+        this.setState({
+          sending: false,
+          email: '',
+          details: '',
+        })
+      })
+      .catch(() => {
+        this.setState({
+          sending: false,
+        })
+      })
   }
 }
 

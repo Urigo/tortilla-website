@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import FaIcon from './FaIcon'
 
 const Icon = styled(FaIcon).attrs({
-  size: 17
-}) `
+  size: 17,
+})`
   color: ${({ theme }) => theme.primaryGray};
 `
 

@@ -1,8 +1,5 @@
 exports.validateEmail = (ctx, str) => {
-  if (
-    typeof str !== 'string' &&
-    !(str instanceof String)
-  ) {
+  if (typeof str !== 'string' && !(str instanceof String)) {
     throw TypeError(`${ctx} must be a string`)
   }
 
@@ -19,16 +16,12 @@ exports.validateLength = (ctx, str, ...args) => {
   if (args.length === 1) {
     min = 0
     max = args[0]
-  }
-  else {
+  } else {
     min = args[0]
     max = args[1]
   }
 
-  if (
-    typeof str !== 'string' &&
-    !(str instanceof String)
-  ) {
+  if (typeof str !== 'string' && !(str instanceof String)) {
     throw TypeError(`${ctx} must be a string`)
   }
 

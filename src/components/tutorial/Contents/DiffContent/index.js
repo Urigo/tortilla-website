@@ -2,19 +2,19 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
-import storage from '../../../../utils/storage';
-import Button from '../../../common/Button';
+import storage from '../../../../utils/storage'
+import Button from '../../../common/Button'
 import SocialHelmet from '../../../common/SocialHelmet'
-import DiffsList from './DiffsList';
+import DiffsList from './DiffsList'
 
-const filesTreeBarHeight = '63px';
-const filesFiltersHeight = '45px';
+const filesTreeBarHeight = '63px'
+const filesFiltersHeight = '45px'
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background-color: ${({theme}) => theme.white};
-  color: ${({theme}) => theme.lightBlack};
+  background-color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.lightBlack};
   font-weight: normal;
   font-size: 14px;
 `
@@ -183,16 +183,19 @@ export default class extends React.Component {
   }
 
   toggleDiffViewType = () => {
-    this.setState({
-      diffViewType: this.oppositeViewType
-    }, () => {
-      storage.setItem('diff-view-type', this.state.diffViewType)
-    })
+    this.setState(
+      {
+        diffViewType: this.oppositeViewType,
+      },
+      () => {
+        storage.setItem('diff-view-type', this.state.diffViewType)
+      }
+    )
   }
 
   render() {
     const filesTreeStyle = { width: this.state.filesTreeWidth + 'px' }
-    const stretcherStyle = { left: (this.state.filesTreeWidth - 5) + 'px' }
+    const stretcherStyle = { left: this.state.filesTreeWidth - 5 + 'px' }
     const contentStyle = {}
 
     // Any time parent components have changed, this render method will be invoked,
@@ -200,7 +203,9 @@ export default class extends React.Component {
     if (this.state.pickingFiles) {
       contentStyle.width = `calc(100% - ${this.state.filesTreeWidth}px)`
       contentStyle.marginLeft = this.state.filesTreeWidth
-      this.props.scrollerStyle.height = `calc(${this.props.scrollerHeight} - ${filesFiltersHeight})`
+      this.props.scrollerStyle.height = `calc(${
+        this.props.scrollerHeight
+      } - ${filesFiltersHeight})`
     } else {
       contentStyle.width = '100%'
       contentStyle.marginLeft = 0
@@ -208,47 +213,60 @@ export default class extends React.Component {
     }
 
     return (
-      <Container ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
+      <Container ref={ref => (this.container = ReactDOM.findDOMNode(ref))}>
         <SocialHelmet
-          description={`${this.props.tutorialTitle} - What's new in v${this.props.srcVersion}`}
+          description={`${this.props.tutorialTitle} - What's new in v${
+            this.props.srcVersion
+          }`}
           image={this.props.tutorialImage}
         />
-        {this.state.pickingFiles && <>
-          <FilesPicker ref={ref => this.filesPicker = ReactDOM.findDOMNode(ref)}>
-            <FilesHeader
-              opened={this.state.pickingFiles}
-              close={this.toggleFilePicking}
-              open={this.toggleFilePicking}
-              style={filesTreeStyle}
-            />
-            <FilesTree
-              style={filesTreeStyle}
-              cache={this}
-              diff={this.props.diff}
-              showFiles={this.showDiffFiles}
-              includePattern={this.state.includePattern}
-              excludePattern={this.state.excludePattern}
-            />
-            <FilesFilters style={filesTreeStyle}>
-              <FileFilter
-                onChange={this.includeFiles}
-                placeholder="🔍 Search files (regexp)"
+        {this.state.pickingFiles && (
+          <>
+            <FilesPicker
+              ref={ref => (this.filesPicker = ReactDOM.findDOMNode(ref))}
+            >
+              <FilesHeader
+                opened={this.state.pickingFiles}
+                close={this.toggleFilePicking}
+                open={this.toggleFilePicking}
+                style={filesTreeStyle}
               />
-            </FilesFilters>
-          </FilesPicker>
-          <FilesPickerStretcher
-            ref={ref => this.filesPickerStretcher = ReactDOM.findDOMNode(ref)}
-            style={stretcherStyle}
-            onMouseDown={this.startStretchingFilePicker}
-          />
-        </>}
+              <FilesTree
+                style={filesTreeStyle}
+                cache={this}
+                diff={this.props.diff}
+                showFiles={this.showDiffFiles}
+                includePattern={this.state.includePattern}
+                excludePattern={this.state.excludePattern}
+              />
+              <FilesFilters style={filesTreeStyle}>
+                <FileFilter
+                  onChange={this.includeFiles}
+                  placeholder="🔍 Search files (regexp)"
+                />
+              </FilesFilters>
+            </FilesPicker>
+            <FilesPickerStretcher
+              ref={ref =>
+                (this.filesPickerStretcher = ReactDOM.findDOMNode(ref))
+              }
+              style={stretcherStyle}
+              onMouseDown={this.startStretchingFilePicker}
+            />
+          </>
+        )}
 
         <Content style={contentStyle}>
-          <Title>$ tortilla release diff {this.props.srcVersion} {this.props.destVersion}</Title>
+          <Title>
+            $ tortilla release diff {this.props.srcVersion}{' '}
+            {this.props.destVersion}
+          </Title>
 
           <ActionButtons>
             {this.props.diff && (
-              <ActionButton onClick={this.toggleDiffViewType}>{this.viewTypeAction}</ActionButton>
+              <ActionButton onClick={this.toggleDiffViewType}>
+                {this.viewTypeAction}
+              </ActionButton>
             )}
             {!this.state.pickingFiles && (
               <ActionButton onClick={this.toggleFilePicking}>pick</ActionButton>
@@ -267,7 +285,9 @@ export default class extends React.Component {
               />
             </span>
           ) : (
-            <NoDiff>There are no visible changes between the versions :-)</NoDiff>
+            <NoDiff>
+              There are no visible changes between the versions :-)
+            </NoDiff>
           )}
         </Content>
       </Container>
@@ -275,22 +295,25 @@ export default class extends React.Component {
   }
 
   toggleFilePicking = () => {
-    this.setState({
-      pickingFiles: !this.state.pickingFiles
-    }, () => {
-      if (this.state.pickingFiles) {
-        this.resetFilesPickerDimensions();
+    this.setState(
+      {
+        pickingFiles: !this.state.pickingFiles,
+      },
+      () => {
+        if (this.state.pickingFiles) {
+          this.resetFilesPickerDimensions()
+        }
       }
-    })
+    )
   }
 
-  showDiffFiles = (diffPaths) => {
+  showDiffFiles = diffPaths => {
     this.setState({
-      diffPaths
+      diffPaths,
     })
   }
 
-  resetFilesPickerDimensions = (e) => {
+  resetFilesPickerDimensions = e => {
     if (!this.container) return
     if (!this.filesPicker) return
     if (e && !e.target.contains(this.filesPicker)) return
@@ -302,38 +325,38 @@ export default class extends React.Component {
     this.filesPickerStretcher.style.top = top
   }
 
-  includeFiles = (e) => {
+  includeFiles = e => {
     this.setState({
-      includePattern: createPattern(e.target.value)
+      includePattern: createPattern(e.target.value),
     })
   }
 
-  excludeFiles = (e) => {
+  excludeFiles = e => {
     this.setState({
-      excludePattern: createPattern(e.target.value)
+      excludePattern: createPattern(e.target.value),
     })
   }
 
-  startStretchingFilePicker = (e) => {
+  startStretchingFilePicker = e => {
     document.addEventListener('mousemove', this.stretchFilePicker)
     document.addEventListener('mouseup', this.stopStretchingFilePicker)
 
     this._clientX = e.clientX
   }
 
-  stretchFilePicker = (e) => {
+  stretchFilePicker = e => {
     const deltaClientX = e.clientX - this._clientX
     this._clientX = e.clientX
 
     const filesTreeWidth = this.state.filesTreeWidth + deltaClientX
 
     if (filesTreeWidth >= 200 && filesTreeWidth <= 600)
-    this.setState({
-      filesTreeWidth
-    })
+      this.setState({
+        filesTreeWidth,
+      })
   }
 
-  stopStretchingFilePicker = (e) => {
+  stopStretchingFilePicker = e => {
     document.removeEventListener('mousemove', this.stretchFilePicker)
     document.removeEventListener('mouseup', this.stopStretchingFilePicker)
   }

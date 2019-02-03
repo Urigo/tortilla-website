@@ -14,10 +14,7 @@ export default props => (
 )
 
 export const tutorialPageQuery = graphql`
-  query (
-    $tutorialName: String!
-    $versionNumber: String!
-  ) {
+  query($tutorialName: String!, $versionNumber: String!) {
     tortillaTutorial(name: { eq: $tutorialName }) {
       name
       title

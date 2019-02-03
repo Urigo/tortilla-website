@@ -13,11 +13,13 @@ const sizes = {
 
 const device = Object.keys(sizes).reduce((acc, label) => {
   acc[label] = (...args) => css`
-    @media only screen and (max-width: ${sizes[label] / 16}em) and (orientation: portrait) {
+    @media only screen and (max-width: ${sizes[label] /
+        16}em) and (orientation: portrait) {
       ${css(...args)}
     }
 
-    @media only screen and (max-height: ${sizes[label] / 16}em) and (orientation: landscape) {
+    @media only screen and (max-height: ${sizes[label] /
+        16}em) and (orientation: landscape) {
       ${css(...args)}
     }
   `
@@ -25,7 +27,7 @@ const device = Object.keys(sizes).reduce((acc, label) => {
   return acc
 }, {})
 
-device.onLayoutChange = (callback) => {
+device.onLayoutChange = callback => {
   layoutChangeCallbacks.add(callback)
 
   // Dispose method
@@ -34,19 +36,20 @@ device.onLayoutChange = (callback) => {
   }
 }
 
-device.only = (...whitelist) => (Component) => {
+device.only = (...whitelist) => Component => {
   const componentDidMount = Component.prototype.componentDidMount || Function
-  const componentWillUnmount = Component.prototype.componentWillUnmount || Function
+  const componentWillUnmount =
+    Component.prototype.componentWillUnmount || Function
   const render = Component.prototype.render || Function
 
-  Component.prototype.componentDidMount = function (...args) {
-    const ithis = this[internals] = {}
+  Component.prototype.componentDidMount = function(...args) {
+    const ithis = (this[internals] = {})
 
     ithis.stopObservingLayout = device.onLayoutChange(() => {
       this.setState({
         [internals]: {
-          deviceType: device.type
-        }
+          deviceType: device.type,
+        },
       })
     })
 
@@ -55,14 +58,14 @@ device.only = (...whitelist) => (Component) => {
 
     this.setState({
       [internals]: {
-        deviceType: device.type
-      }
+        deviceType: device.type,
+      },
     })
 
     return componentDidMount.apply(this, args)
   }
 
-  Component.prototype.componentWillUnmount = function (...args) {
+  Component.prototype.componentWillUnmount = function(...args) {
     const ithis = this[internals]
 
     // Safety mechanism
@@ -73,35 +76,58 @@ device.only = (...whitelist) => (Component) => {
     return componentWillUnmount.apply(this, args)
   }
 
-  Component.prototype.render = function (...args) {
+  Component.prototype.render = function(...args) {
     const istate = (this.state && this.state[internals]) || {}
 
     let children
     if (whitelist.includes(device.type)) {
       children = render.apply(this, args)
-    }
-    else {
+    } else {
       // Copied directly from a sweet-alert-2 error modal
       children = (
-        <div className="swal2-container swal2-center swal2-fade" style={{overflowY: 'auto'}}>
-          <div aria-labelledby="swal2-title" aria-describedby="swal2-content" className="swal2-popup swal2-modal swal2-show" tabIndex={-1} role="dialog" aria-live="assertive" aria-modal="true" style={{display: 'flex'}}>
+        <div
+          className="swal2-container swal2-center swal2-fade"
+          style={{ overflowY: 'auto' }}
+        >
+          <div
+            aria-labelledby="swal2-title"
+            aria-describedby="swal2-content"
+            className="swal2-popup swal2-modal swal2-show"
+            tabIndex={-1}
+            role="dialog"
+            aria-live="assertive"
+            aria-modal="true"
+            style={{ display: 'flex' }}
+          >
             <div className="swal2-header">
-              <div className="swal2-icon swal2-error swal2-animate-error-icon" style={{display: 'flex'}}><span className="swal2-x-mark"><span className="swal2-x-mark-line-left" /><span className="swal2-x-mark-line-right" /></span></div>
-              <h2 className="swal2-title" id="swal2-title" style={{display: 'flex'}}>Oy vey...</h2>
+              <div
+                className="swal2-icon swal2-error swal2-animate-error-icon"
+                style={{ display: 'flex' }}
+              >
+                <span className="swal2-x-mark">
+                  <span className="swal2-x-mark-line-left" />
+                  <span className="swal2-x-mark-line-right" />
+                </span>
+              </div>
+              <h2
+                className="swal2-title"
+                id="swal2-title"
+                style={{ display: 'flex' }}
+              >
+                Oy vey...
+              </h2>
             </div>
             <div className="swal2-content">
-              <div id="swal2-content" style={{display: 'block'}}>This page doesn't support {device.type} devices</div>
+              <div id="swal2-content" style={{ display: 'block' }}>
+                This page doesn't support {device.type} devices
+              </div>
             </div>
           </div>
         </div>
       )
     }
 
-    return (
-      <span key={istate.deviceType}>
-        {children}
-      </span>
-    )
+    return <span key={istate.deviceType}>{children}</span>
   }
 }
 
@@ -113,8 +139,7 @@ function resetLayout() {
     device.desktop.active = false
     device.mobile.active = true
     device.type = 'mobile'
-  }
-  else {
+  } else {
     device.desktop.active = true
     device.mobile.active = false
     device.type = 'desktop'
@@ -137,8 +162,7 @@ if (typeof window !== 'undefined') {
     outerHeight = window.outerHeight
     resetLayout()
   })
-}
-else {
+} else {
   outerWidth = Infinity
 }
 

@@ -16,7 +16,7 @@ const IconContainer = styled.div`
 const Icon = styled(FaIcon).attrs({
   icon: faPencilAlt,
   size: 17,
-}) ``
+})``
 
 const Text = styled.a`
   color: inherit;
@@ -37,9 +37,8 @@ const ImproveButton = Button.extend`
   border: 1px solid ${({ theme }) => theme.separator};
 `
 
-const getEditHref = ({ url, branch, step }) => (
+const getEditHref = ({ url, branch, step }) =>
   `${url}/edit/${branch}/.tortilla/manuals/templates/step${step}.tmpl`
-)
 
 export default props => (
   <ImproveButton>

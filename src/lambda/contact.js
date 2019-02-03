@@ -13,21 +13,19 @@ exports.handler = (event, context, callback) => {
 
   try {
     validateEmail('body.email', body.email)
-  }
-  catch (e) {
+  } catch (e) {
     return callback(null, {
       statusCode: 403,
-      body: e.message
+      body: e.message,
     })
   }
 
   try {
     validateLength('body.details', body.details, 10, 1000)
-  }
-  catch (e) {
+  } catch (e) {
     return callback(null, {
       statusCode: 403,
-      body: e.message
+      body: e.message,
     })
   }
 
@@ -38,14 +36,13 @@ exports.handler = (event, context, callback) => {
     text: body.details,
   }
 
-  sendMail(descriptor, (e) => {
+  sendMail(descriptor, e => {
     if (e) {
       callback(null, {
         statusCode: 500,
-        body: e.message
+        body: e.message,
       })
-    }
-    else {
+    } else {
       callback(null, {
         statusCode: 200,
         body: '',

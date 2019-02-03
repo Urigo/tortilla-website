@@ -6,15 +6,10 @@ import HomePage from '../components/HomePage'
 export default props => {
   const tutorials = props.data.allTortillaTutorial.edges.map(({ node }) => node)
 
-  return (
-    <HomePage
-      tutorials={tutorials}
-      location={props.location}
-    />
-  )
+  return <HomePage tutorials={tutorials} location={props.location} />
 }
 
-export const query = graphql `
+export const query = graphql`
   {
     allTortillaTutorial {
       edges {

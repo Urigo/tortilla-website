@@ -13,8 +13,8 @@ import { GithubAuthor } from './tutorial/GithubAuthor'
 import MainNavBar from './tutorial/MainNavBar'
 import VersionsBar from './tutorial/VersionsBar'
 
-const topBarHeight = '215px';
-const contentHeight = '100%';
+const topBarHeight = '215px'
+const contentHeight = '100%'
 
 const Container = styled.div`
   display: flex;
@@ -71,7 +71,7 @@ const TopBarSubTitle = styled.h3`
   margin-bottom: 20px;
   display: inline-block;
   font-size: 17px;
-  color: ${({ theme }) => theme.blueGray}
+  color: ${({ theme }) => theme.blueGray};
 `
 
 const MainContentContainer = styled.div`
@@ -103,21 +103,39 @@ class TutorialPage extends React.Component {
       <Layout>
         <Container>
           <Display>
-            <MainContentContainer ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
+            <MainContentContainer
+              ref={ref => (this.container = ReactDOM.findDOMNode(ref))}
+            >
               <MainNavBar backHandler={this.navHome} />
               <TopBar>
                 {featuredTutorial && (
-                  <TutorialImage src={featuredTutorial.imageSrc} style={{
-                    backgroundColor: `rgb(${featuredTutorial.backgroundColor})`,
-                    boxShadow: `10px 10px 20px 0 rgba(${featuredTutorial.backgroundColor},.2)`,
-                  }} />
+                  <TutorialImage
+                    src={featuredTutorial.imageSrc}
+                    style={{
+                      backgroundColor: `rgb(${
+                        featuredTutorial.backgroundColor
+                      })`,
+                      boxShadow: `10px 10px 20px 0 rgba(${
+                        featuredTutorial.backgroundColor
+                      },.2)`,
+                    }}
+                  />
                 )}
-                <div style={{
-                  display: 'inline-block',
-                  width: `calc(100% - ${featuredTutorial ? 130 : 0}px)`,
-                }}>
-                  <GithubAuthor link={this.props.tutorial.repoUrl} author={this.props.tutorial.author} />
-                  <TopBarTitle>{featuredTutorial ? featuredTutorial.title : this.props.tutorial.title}</TopBarTitle>
+                <div
+                  style={{
+                    display: 'inline-block',
+                    width: `calc(100% - ${featuredTutorial ? 130 : 0}px)`,
+                  }}
+                >
+                  <GithubAuthor
+                    link={this.props.tutorial.repoUrl}
+                    author={this.props.tutorial.author}
+                  />
+                  <TopBarTitle>
+                    {featuredTutorial
+                      ? featuredTutorial.title
+                      : this.props.tutorial.title}
+                  </TopBarTitle>
                   <TopBarSeparator>__</TopBarSeparator>
                   <TopBarSubTitle>
                     <FaIcon icon={faHistory} size={20} />
@@ -132,9 +150,7 @@ class TutorialPage extends React.Component {
                   />
                 </div>
               </TopBar>
-              <MainContent>
-                {this.renderContent()}
-              </MainContent>
+              <MainContent>{this.renderContent()}</MainContent>
             </MainContentContainer>
           </Display>
         </Container>
@@ -171,11 +187,12 @@ class TutorialPage extends React.Component {
             resetScroller={this.resetScroller}
           />
         )
-      default: return null
+      default:
+        return null
     }
   }
 
-  activateStep = (version) => {
+  activateStep = version => {
     const link = stepRoute({
       tutorialName: this.props.common.tutorialName,
       version: version.number,

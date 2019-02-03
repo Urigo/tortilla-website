@@ -101,7 +101,7 @@ class VersionsBar extends React.Component {
   }
 
   state = {
-    hoveredCube: null
+    hoveredCube: null,
   }
 
   render() {
@@ -114,7 +114,9 @@ class VersionsBar extends React.Component {
                 <Line className={this.getLineClassName(targetVersion)} />
                 <Cube
                   onClick={this.activateDiff.bind(this, index)}
-                  onMouseEnter={() => this.setState({ hoveredCube: targetVersion })}
+                  onMouseEnter={() =>
+                    this.setState({ hoveredCube: targetVersion })
+                  }
                   onMouseLeave={() => this.setState({ hoveredCube: null })}
                   src={this.getDiffCubeSrc(targetVersion)}
                 />
@@ -140,17 +142,17 @@ class VersionsBar extends React.Component {
   }
 
   getLineClassName(version) {
-    return (
-      this.props.contentType === 'diffs' &&
+    return this.props.contentType === 'diffs' &&
       version.number === this.props.activeVersion
-    ) ? '_active' : ''
+      ? '_active'
+      : ''
   }
 
   getVersionClassName(version) {
-    return (
-      this.props.contentType === 'steps' &&
+    return this.props.contentType === 'steps' &&
       version.number === this.props.activeVersion
-    ) ? '_active' : ''
+      ? '_active'
+      : ''
   }
 
   activateStep(versionIndex) {
@@ -168,15 +170,11 @@ class VersionsBar extends React.Component {
   }
 
   getDiffCubeSrc(version) {
-    return (
-      (
-        this.state.hoveredCube &&
-        this.state.hoveredCube.number === version.number
-      ) || (
-        this.props.contentType === 'diffs' &&
-        version.number === this.props.activeVersion
-      )
-    ) ? withPrefix('icns_30/icns-30-diff-clicked.svg')
+    return (this.state.hoveredCube &&
+      this.state.hoveredCube.number === version.number) ||
+      (this.props.contentType === 'diffs' &&
+        version.number === this.props.activeVersion)
+      ? withPrefix('icns_30/icns-30-diff-clicked.svg')
       : withPrefix('icns_30/icns-30-diff.svg')
   }
 }

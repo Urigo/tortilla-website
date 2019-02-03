@@ -62,12 +62,7 @@ const FeatureCardsSection = styled.div`
   }
 `
 
-export default ({
-  title,
-  subtitle,
-  children,
-  style,
-}) => (
+export default ({ title, subtitle, children, style }) => (
   <FeatureCardsSection style={style}>
     <div className="_title">{title}</div>
     {subtitle && <div className="_subtitle">{subtitle}</div>}

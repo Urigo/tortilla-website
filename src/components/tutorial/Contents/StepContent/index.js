@@ -1,4 +1,7 @@
-import { faShoePrints, faExternalLinkSquareAlt } from '@fortawesome/fontawesome-free-solid'
+import {
+  faShoePrints,
+  faExternalLinkSquareAlt,
+} from '@fortawesome/fontawesome-free-solid'
 import { push } from 'gatsby'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -27,7 +30,7 @@ const MenuContainer = styled.div`
 const ShowStepsButton = styled(FaIcon).attrs({
   icon: faShoePrints,
   size: 40,
-}) `
+})`
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -93,7 +96,7 @@ const Right = styled.div`
 
 const Html = styled.div`
   padding: 25px;
-  color: ${({theme}) => theme.lightBlack};
+  color: ${({ theme }) => theme.lightBlack};
   font-weight: normal;
   font-size: 14px;
   flex: 0 1 auto;
@@ -148,26 +151,31 @@ const Html = styled.div`
     margin-right: auto;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-weight: normal;
   }
 `
 
 export default class extends React.Component {
   get contentContainerStyle() {
-    return this.state.stepsMenuOpen ? {
-      width: `calc(100% - ${MenuWidth}px)`,
-      marginLeft: `${MenuWidth}px`,
-    } : {
-      width: '100%',
-      marginLeft: 0,
-    }
+    return this.state.stepsMenuOpen
+      ? {
+          width: `calc(100% - ${MenuWidth}px)`,
+          marginLeft: `${MenuWidth}px`,
+        }
+      : {
+          width: '100%',
+          marginLeft: 0,
+        }
   }
 
   htmlRef = React.createRef()
 
   state = {
-    stepsMenuOpen: storage.getItem('steps-menu-position') || true
+    stepsMenuOpen: storage.getItem('steps-menu-position') || true,
   }
 
   componentDidMount() {
@@ -194,27 +202,28 @@ export default class extends React.Component {
   changeStep(id) {
     const route = stepRoute({
       tutorialName: this.props.tutorial.name,
-      version: (
+      version:
         isVersionSpecific(this.props.location.pathname) &&
-        this.props.tutorial.version.number
-      ),
+        this.props.tutorial.version.number,
       step: id,
-    });
+    })
 
-    push(route);
+    push(route)
 
     this.props.resetScroller()
   }
 
   render() {
     return (
-      <div ref={ref => this.container = ReactDOM.findDOMNode(ref)}>
+      <div ref={ref => (this.container = ReactDOM.findDOMNode(ref))}>
         <SocialHelmet
           description={`${this.props.tutorialTitle} - ${this.props.step.name}`}
           image={this.props.tutorialImage}
         />
         {this.state.stepsMenuOpen && (
-          <MenuContainer ref={ref => this.stepsMenu = ReactDOM.findDOMNode(ref)}>
+          <MenuContainer
+            ref={ref => (this.stepsMenu = ReactDOM.findDOMNode(ref))}
+          >
             <StepsHeader
               opened={this.state.stepsMenuOpen}
               style={{ width: `${MenuWidth}px`, float: 'left' }}
@@ -226,7 +235,7 @@ export default class extends React.Component {
               TODO: Softcode
             */}
             <StepsMenu
-              ref={ref => this.stepsMenuScroller = ReactDOM.findDOMNode(ref)}
+              ref={ref => (this.stepsMenuScroller = ReactDOM.findDOMNode(ref))}
               tutorialName={this.props.tutorial.name}
               tutorialVersion={this.props.tutorial.version}
               activeStep={this.props.step}
@@ -239,13 +248,13 @@ export default class extends React.Component {
         <ContentContainer style={this.contentContainerStyle}>
           {this.renderBar(Header)}
           <Html
-            ref={ref => this.htmlEl = ReactDOM.findDOMNode(ref)}
+            ref={ref => (this.htmlEl = ReactDOM.findDOMNode(ref))}
             dangerouslySetInnerHTML={{ __html: this.props.step.html }}
           />
           {this.renderBar(Footer)}
         </ContentContainer>
       </div>
-    );
+    )
   }
 
   renderBar(BarType, props = {}) {
@@ -273,7 +282,8 @@ export default class extends React.Component {
             <Stepper
               limit={stepsNum}
               current={step.id - 1}
-              onChange={i => this.changeStep(i + 1)} />
+              onChange={i => this.changeStep(i + 1)}
+            />
           </Info>
         </Right>
       </BarType>
@@ -283,15 +293,17 @@ export default class extends React.Component {
   // TODO: Apply during build
   appendDiffs = async (diff, anchor, file) => {
     if (!diff) {
-      return Promise.all(this.props.step.diffs.map((diff) => {
-        return this.appendDiffs(diff)
-      }))
+      return Promise.all(
+        this.props.step.diffs.map(diff => {
+          return this.appendDiffs(diff)
+        })
+      )
     }
 
     if (!anchor) {
       const title = `Step ${diff.index}`
 
-      anchor = Array.from(this.htmlEl.childNodes).find((node) => {
+      anchor = Array.from(this.htmlEl.childNodes).find(node => {
         return (
           node.tagName === 'H4' &&
           node.innerText.match(title) &&
@@ -303,37 +315,45 @@ export default class extends React.Component {
 
       // We'll make it the user's responsibility
       const files = parseDiff(diff.value, {
-        showLong: true
+        showLong: true,
       })
 
       // First we need to collect the anchors before making modification, otherwise the
       // DOM tree would change and nextSibling would result in different elements
       const anchors = files.map(() => {
-        return anchor = anchor.nextElementSibling
+        return (anchor = anchor.nextElementSibling)
       })
 
-      return Promise.all(files.map((file) => {
-        return this.appendDiffs(diff, anchors.shift(), file)
-      }))
+      return Promise.all(
+        files.map(file => {
+          return this.appendDiffs(diff, anchors.shift(), file)
+        })
+      )
     }
 
     const container = document.createElement('span')
 
     this.htmlEl.insertBefore(container, anchor.nextSibling)
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       ReactDOM.render(
-        <SimpleDiffView file={file} title={anchor.innerHTML} key={`${file.oldPath}_${file.newPath}`} />
-      , container, () => {
-        anchor.remove()
-        resolve()
-      })
+        <SimpleDiffView
+          file={file}
+          title={anchor.innerHTML}
+          key={`${file.oldPath}_${file.newPath}`}
+        />,
+        container,
+        () => {
+          anchor.remove()
+          resolve()
+        }
+      )
     })
   }
 
   // TODO: Apply during build
   fixImages = () => {
-    this.htmlEl.querySelectorAll('img').forEach((el) => {
+    this.htmlEl.querySelectorAll('img').forEach(el => {
       // Replace blob URLs with raw URLs
       if (el.src) {
         el.src = el.src.replace(/(.+?github\.com\/[^/]+\/[^/]+\/)blob/, '$1raw')
@@ -348,44 +368,51 @@ export default class extends React.Component {
       containerElement.classList.add('_img-container')
       containerElement.appendChild(el)
       parentElement.insertBefore(containerElement, nextElementSibling)
-
     })
   }
 
   // TODO: Apply during build
   fixStepsRefs = () => {
-    this.htmlEl.querySelectorAll('h4 > a').forEach((aEl) => {
+    this.htmlEl.querySelectorAll('h4 > a').forEach(aEl => {
       const h4El = aEl.parentNode
       h4El.innerHTML = aEl.innerHTML + ' '
       h4El.appendChild(aEl)
 
-      ReactDOM.render(
-        <FaIcon icon={faExternalLinkSquareAlt} />
-      , aEl)
+      ReactDOM.render(<FaIcon icon={faExternalLinkSquareAlt} />, aEl)
     })
   }
 
   openStepsMenu = () => {
-    this.setState({
-      stepsMenuOpen: true
-    }, () => {
-      window.addEventListener('scroll', this.resetStepsMenuDimensions, true)
-      storage.setItem('steps-menu-opened', true)
-      this.resetStepsMenuDimensions()
-    })
+    this.setState(
+      {
+        stepsMenuOpen: true,
+      },
+      () => {
+        window.addEventListener('scroll', this.resetStepsMenuDimensions, true)
+        storage.setItem('steps-menu-opened', true)
+        this.resetStepsMenuDimensions()
+      }
+    )
   }
 
   closeStepsMenu = () => {
-    this.setState({
-      stepsMenuOpen: false
-    }, () => {
-      window.removeEventListener('scroll', this.resetStepsMenuDimensions, true)
-      storage.setItem('steps-menu-opened', false)
-      this.resetStepsMenuDimensions()
-    })
+    this.setState(
+      {
+        stepsMenuOpen: false,
+      },
+      () => {
+        window.removeEventListener(
+          'scroll',
+          this.resetStepsMenuDimensions,
+          true
+        )
+        storage.setItem('steps-menu-opened', false)
+        this.resetStepsMenuDimensions()
+      }
+    )
   }
 
-  resetStepsMenuDimensions = (e) => {
+  resetStepsMenuDimensions = e => {
     if (!this.container) return
     if (!this.stepsMenu) return
     if (e && !e.target.contains(this.stepsMenu)) return

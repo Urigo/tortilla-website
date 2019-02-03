@@ -5,7 +5,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import styled, { css } from 'styled-components'
 
-import { parseDiff, Diff as ReactDiffView } from '../../../../libs/react-diff-view'
+import {
+  parseDiff,
+  Diff as ReactDiffView,
+} from '../../../../libs/react-diff-view'
 import Thread from '../../../../utils/Thread'
 import DiffHeader from './DiffHeader'
 
@@ -87,7 +90,8 @@ const Container = styled.div`
     border: none;
   }
 
-  .diff-binary, .diff-long {
+  .diff-binary,
+  .diff-long {
     width: 100%;
     padding: 0;
     padding-top: 20px;
@@ -164,13 +168,15 @@ class DiffsList extends React.Component {
     this.parsedFilesDiffs = []
 
     // Split diff into file-specific diffs
-    this.rawFilesDiffs = !props.diff ? [] : props.diff
-      // Fix inline hunks
-      .replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
-      .split('\ndiff --git')
-      .map((fileDiff, i) => {
-        return i ? '\ndiff --git' + fileDiff : fileDiff
-      })
+    this.rawFilesDiffs = !props.diff
+      ? []
+      : props.diff
+          // Fix inline hunks
+          .replace(/\n(@@[^@]+@@)([^\n]+)\n/g, '\n$1\n$2\n')
+          .split('\ndiff --git')
+          .map((fileDiff, i) => {
+            return i ? '\ndiff --git' + fileDiff : fileDiff
+          })
   }
 
   componentDidMount() {
@@ -189,15 +195,18 @@ class DiffsList extends React.Component {
       rebuild = true
     }
 
-    if (props.hasOwnProperty('diffType') && props.diffType !== this.props.diffType) {
+    if (
+      props.hasOwnProperty('diffType') &&
+      props.diffType !== this.props.diffType
+    ) {
       this.resetDiffTypeParams(props)
       rebuild = true
     }
 
-    rebuild = rebuild || (
-      props.paths.some(path => !this.recentPaths.includes(path)) ||
-      this.recentPaths.some(path => !props.paths.includes(path))
-    )
+    rebuild =
+      rebuild ||
+      (props.paths.some(path => !this.recentPaths.includes(path)) ||
+        this.recentPaths.some(path => !props.paths.includes(path)))
 
     if (rebuild) {
       this.buildFilesDiffs(props.paths)
@@ -238,13 +247,18 @@ class DiffsList extends React.Component {
     // If paths provided, filter accordingly
     if (paths && paths.length) {
       // Takes diffs which match the paths
-      rawFilesDiffs = this.rawFilesDiffs.filter((fileDiff) => {
+      rawFilesDiffs = this.rawFilesDiffs.filter(fileDiff => {
         // Gotta match because of the way we split the file diffs
         const [oldPath, newPath] = fileDiff
           .match(/diff --git ([^\s]+) ([^\s]+)/)
           .slice(1)
           // Remove /a /b
-          .map(path => path.split('/').slice(1).join('/'))
+          .map(path =>
+            path
+              .split('/')
+              .slice(1)
+              .join('/')
+          )
 
         return paths.includes(oldPath) || paths.includes(newPath)
       })
@@ -257,75 +271,101 @@ class DiffsList extends React.Component {
     // Will be used to indicate weather view should be cleaned or not
     let reset = true
     // Parse and render diff views in series
-    rawFilesDiffs.reduce((rendered, rendering, i) => rendered.then(() => {
-      const rawFileDiff = rawFilesDiffs[i]
-      let parsedFileDiff = this.parsedFilesDiffs.find(parsedFileDiff =>
-        [parsedFileDiff.oldPath, parsedFileDiff.newPath].includes(paths[i])
-      )
+    rawFilesDiffs.reduce(
+      (rendered, rendering, i) =>
+        rendered.then(() => {
+          const rawFileDiff = rawFilesDiffs[i]
+          let parsedFileDiff = this.parsedFilesDiffs.find(parsedFileDiff =>
+            [parsedFileDiff.oldPath, parsedFileDiff.newPath].includes(paths[i])
+          )
 
-      // If cache not exist
-      if (!parsedFileDiff) {
-        parsedFileDiff = parseDiff(rawFileDiff)[0]
-        this.parsedFilesDiffs.push(parsedFileDiff)
-      }
-
-      return new Promise(resolve => {
-        const thread = this.restartThread()
-
-        // Here we use setImmediate so we won't clog the execution thread
-        setTimeout(thread.wrap(() => {
-          const diffFileView = document.createElement('span')
-          let diffFileViewChildren
-
-          // Will re-render the diff, in case we hide it or reveal it.
-          // We can also force-render diffs which are normally too long to show.
-          const forceUpdate = (reparse) => {
-            if (reparse) {
-              parsedFileDiff = parseDiff(rawFileDiff, { showLong: !parsedFileDiff.tooLong })[0]
-            }
-
-            diffFileViewChildren = this.renderDiffFile(parsedFileDiff, forceUpdate)
-
-            ReactDOM.render(diffFileViewChildren, diffFileView)
+          // If cache not exist
+          if (!parsedFileDiff) {
+            parsedFileDiff = parseDiff(rawFileDiff)[0]
+            this.parsedFilesDiffs.push(parsedFileDiff)
           }
 
-          diffFileViewChildren = this.renderDiffFile(parsedFileDiff, forceUpdate)
-          const { path } = diffFileViewChildren.props
+          return new Promise(resolve => {
+            const thread = this.restartThread()
 
-          diffFileView.addEventListener('scroll', this.onScroll)
-          diffFileView.addEventListener('mousedown', this.onMouseDown)
-          diffFileView.addEventListener('mouseup', this.onMouseUp)
+            // Here we use setImmediate so we won't clog the execution thread
+            setTimeout(
+              thread.wrap(() => {
+                const diffFileView = document.createElement('span')
+                let diffFileViewChildren
 
-          ReactDOM.render(diffFileViewChildren, diffFileView, thread.wrap(() => {
-            if (!this.diffContainer) return
+                // Will re-render the diff, in case we hide it or reveal it.
+                // We can also force-render diffs which are normally too long to show.
+                const forceUpdate = reparse => {
+                  if (reparse) {
+                    parsedFileDiff = parseDiff(rawFileDiff, {
+                      showLong: !parsedFileDiff.tooLong,
+                    })[0]
+                  }
 
-            if (reset) {
-              reset = false
-              // Reset the view itself only after building the first diff so we won't see
-              // a stutter side effect
-              this.diffContainer.innerHTML = ''
-              this.allPaths = []
-            }
+                  diffFileViewChildren = this.renderDiffFile(
+                    parsedFileDiff,
+                    forceUpdate
+                  )
 
-            // Insert view in the right order
-            this.allPaths = this.allPaths.concat(path).sort(this.props.sortCb)
+                  ReactDOM.render(diffFileViewChildren, diffFileView)
+                }
 
-            const nextDiffFileIndex = this.allPaths.indexOf(path)
-            const nextDiffFileView = this.diffContainer.children[nextDiffFileIndex]
+                diffFileViewChildren = this.renderDiffFile(
+                  parsedFileDiff,
+                  forceUpdate
+                )
+                const { path } = diffFileViewChildren.props
 
-            this.diffContainer.insertBefore(diffFileView, nextDiffFileView)
+                diffFileView.addEventListener('scroll', this.onScroll)
+                diffFileView.addEventListener('mousedown', this.onMouseDown)
+                diffFileView.addEventListener('mouseup', this.onMouseUp)
 
-            resolve()
-          }))
-        }), 10)
-      })
-    }), Promise.resolve())
+                ReactDOM.render(
+                  diffFileViewChildren,
+                  diffFileView,
+                  thread.wrap(() => {
+                    if (!this.diffContainer) return
+
+                    if (reset) {
+                      reset = false
+                      // Reset the view itself only after building the first diff so we won't see
+                      // a stutter side effect
+                      this.diffContainer.innerHTML = ''
+                      this.allPaths = []
+                    }
+
+                    // Insert view in the right order
+                    this.allPaths = this.allPaths
+                      .concat(path)
+                      .sort(this.props.sortCb)
+
+                    const nextDiffFileIndex = this.allPaths.indexOf(path)
+                    const nextDiffFileView = this.diffContainer.children[
+                      nextDiffFileIndex
+                    ]
+
+                    this.diffContainer.insertBefore(
+                      diffFileView,
+                      nextDiffFileView
+                    )
+
+                    resolve()
+                  })
+                )
+              }),
+              10
+            )
+          })
+        }),
+      Promise.resolve()
+    )
   }
 
   restartThread() {
     this.stopThread()
 
-    return this.thread = new Thread()
+    return (this.thread = new Thread())
   }
 
   resumeThread() {
@@ -341,7 +381,11 @@ class DiffsList extends React.Component {
   }
 
   render() {
-    return <Container ref={ref => this.diffContainer = ReactDOM.findDOMNode(ref)} />
+    return (
+      <Container
+        ref={ref => (this.diffContainer = ReactDOM.findDOMNode(ref))}
+      />
+    )
   }
 
   renderDiffFile(diffState, forceUpdate) {
@@ -361,13 +405,13 @@ class DiffsList extends React.Component {
     const maxLineNum = hunks.reduce((maxLineNum, hunk) => {
       return Math.max(
         2,
-        (maxLineNum).toString().length,
+        maxLineNum.toString().length,
         (hunk.newStart + hunk.newLines).toString().length,
-        (hunk.oldStart + hunk.oldLines).toString().length,
+        (hunk.oldStart + hunk.oldLines).toString().length
       )
     }, 0)
 
-    const hunkContentLengths = hunks.map((hunk => hunk.content.length))
+    const hunkContentLengths = hunks.map(hunk => hunk.content.length)
     const maxHunkContentLength = Math.max(...hunkContentLengths)
 
     const maxLineLength = hunks.reduce((maxContentLength, hunk) => {
@@ -384,26 +428,41 @@ class DiffsList extends React.Component {
     if (Number(oldRevision) !== 0) {
       keyPath = oldPath
 
-      header.push(this.srcBaseUrl
-        ? <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>{oldPath}</Path>
-        : <NullPath key={0}>{oldPath}</NullPath>
+      header.push(
+        this.srcBaseUrl ? (
+          <Path key={0} href={`${this.srcBaseUrl}/${oldPath}`}>
+            {oldPath}
+          </Path>
+        ) : (
+          <NullPath key={0}>{oldPath}</NullPath>
+        )
       )
     }
 
     if (Number(newRevision) !== 0) {
       // File changed
       if (newPath === oldPath) {
-        header = [this.destBaseUrl
-          ? <Path key={0} href={`${this.destBaseUrl}/${oldPath}`}>{oldPath}</Path>
-          : <NullPath key={0}>{oldPath}</NullPath>
+        header = [
+          this.destBaseUrl ? (
+            <Path key={0} href={`${this.destBaseUrl}/${oldPath}`}>
+              {oldPath}
+            </Path>
+          ) : (
+            <NullPath key={0}>{oldPath}</NullPath>
+          ),
         ]
-      // File renamed, moved or added
+        // File renamed, moved or added
       } else {
         keyPath = keyPath || newPath
 
-        header.push(this.destBaseUrl
-          ? <Path key={header.length} href={`${this.destBaseUrl}/${newPath}`}>{newPath}</Path>
-          : <NullPath key={header.length}>{newPath}</NullPath>
+        header.push(
+          this.destBaseUrl ? (
+            <Path key={header.length} href={`${this.destBaseUrl}/${newPath}`}>
+              {newPath}
+            </Path>
+          ) : (
+            <NullPath key={header.length}>{newPath}</NullPath>
+          )
         )
       }
     }
@@ -412,14 +471,13 @@ class DiffsList extends React.Component {
       header.splice(1, 0, <span key={0.5}>→</span>)
       // Custom file mode
       header.unshift('move ')
-    }
-    else {
+    } else {
       header.unshift(`${type} `)
     }
 
     /* Adding 2 for padding of 1ch in each side */
-    const gutterWidth = maxLineNum + 2;
-    const lineWidth = maxLineLength + 1;
+    const gutterWidth = maxLineNum + 2
+    const lineWidth = maxLineLength + 1
 
     const Container = styled.span`
       margin: 20px;
@@ -432,7 +490,7 @@ class DiffsList extends React.Component {
       }
 
       .diff-hunk-header-gutter {
-        width: ${gutterWidth * this.gutterProduct - (0.4 * this.gutterProduct)}ch;
+        width: ${gutterWidth * this.gutterProduct - 0.4 * this.gutterProduct}ch;
       }
 
       .diff-gutter {
@@ -443,29 +501,33 @@ class DiffsList extends React.Component {
         width: ${lineWidth * (2 / this.gutterProduct) + gutterWidth}ch;
       }
 
-      .diff-code, .diff-hunk-header-content {
-        ${this.props.diffType === 'split' ? css`
-          width: calc(50% - ${gutterWidth * this.gutterProduct}ch);
-          overflow-wrap: break-word;
-          white-space: pre-wrap;
-        ` : css`
-          min-width: calc(100% - ${gutterWidth * this.gutterProduct}ch);
-          width: ${lineWidth}ch;
-        `}
+      .diff-code,
+      .diff-hunk-header-content {
+        ${this.props.diffType === 'split'
+          ? css`
+              width: calc(50% - ${gutterWidth * this.gutterProduct}ch);
+              overflow-wrap: break-word;
+              white-space: pre-wrap;
+            `
+          : css`
+              min-width: calc(100% - ${gutterWidth * this.gutterProduct}ch);
+              width: ${lineWidth}ch;
+            `}
       }
 
-      ${this.props.diffType === 'split' && css`
-        .diff-hunk {
-          contain: content;
-        }
+      ${this.props.diffType === 'split' &&
+        css`
+          .diff-hunk {
+            contain: content;
+          }
 
-        .diff-hunk-header-content {
-          width: calc(100% - ${gutterWidth * this.gutterProduct}ch);
-        }
-      `}
+          .diff-hunk-header-content {
+            width: calc(100% - ${gutterWidth * this.gutterProduct}ch);
+          }
+        `}
     `
 
-    const onHideChange = (isHidden) => {
+    const onHideChange = isHidden => {
       diffState.isHidden = isHidden
       forceUpdate()
     }
@@ -477,21 +539,34 @@ class DiffsList extends React.Component {
 
     return (
       <Container path={keyPath}>
-        <DiffHeader hidden={isHidden} onHideChange={onHideChange}>{header}</DiffHeader>
-        {!isHidden && (
-          isBinary ? (
-            <div className={`diff-binary ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
+        <DiffHeader hidden={isHidden} onHideChange={onHideChange}>
+          {header}
+        </DiffHeader>
+        {!isHidden &&
+          (isBinary ? (
+            <div
+              className={`diff-binary ${
+                newPath ? 'diff-code-insert' : 'diff-code-delete'
+              }`}
+            >
               BINARY
             </div>
           ) : tooLong ? (
-            <div className={`diff-long ${newPath ? 'diff-code-insert' : 'diff-code-delete'}`}>
-              <div className="_title" onClick={loadLongDiff}>Load diff</div>
-              <div className="_subtitle">Large diffs are not rendered by default.</div>
+            <div
+              className={`diff-long ${
+                newPath ? 'diff-code-insert' : 'diff-code-delete'
+              }`}
+            >
+              <div className="_title" onClick={loadLongDiff}>
+                Load diff
+              </div>
+              <div className="_subtitle">
+                Large diffs are not rendered by default.
+              </div>
             </div>
           ) : (
             <ReactDiffView hunks={hunks} viewType={this.props.diffType} />
-          )
-        )}
+          ))}
       </Container>
     )
   }

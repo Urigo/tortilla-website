@@ -79,21 +79,13 @@ const FeaturedTutorial = styled.div`
   }
 `
 
-export default ({
-  imgSrc,
-  title,
-  description,
-  style,
-  link,
-}) => (
+export default ({ imgSrc, title, description, style, link }) => (
   <FeaturedTutorial size={164} imgSize={80}>
     <Link to={link} className="_box" style={style}>
       <img src={imgSrc} alt={title} />
       <div className="_title">{title}</div>
     </Link>
 
-    {device.desktop.active && (
-      <div className="_description">{description}</div>
-    )}
+    {device.desktop.active && <div className="_description">{description}</div>}
   </FeaturedTutorial>
 )

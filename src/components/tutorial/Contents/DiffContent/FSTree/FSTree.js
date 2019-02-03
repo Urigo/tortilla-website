@@ -32,7 +32,7 @@ class FSTree extends React.Component {
     this.depth = Number(props.depth) || 0
 
     this.state = {
-      tree: props.tree
+      tree: props.tree,
     }
 
     this._nodes = []
@@ -45,9 +45,7 @@ class FSTree extends React.Component {
   }
 
   getNodes() {
-    return this._nodes
-      .filter(Boolean)
-      .map(({ target }) => target)
+    return this._nodes.filter(Boolean).map(({ target }) => target)
   }
 
   render() {
@@ -56,7 +54,7 @@ class FSTree extends React.Component {
     return (
       <Style>
         <ul className="_nodes-list">
-          {tree.map((node) => (
+          {tree.map(node => (
             <li key={node.name} className="_nodes-list-item">
               <exports.FSNode
                 ref={ref => this._nodes.push(ref)}
@@ -75,7 +73,7 @@ class FSTree extends React.Component {
   }
 
   deselect() {
-    this.getNodes().forEach((node) => {
+    this.getNodes().forEach(node => {
       node.deselect()
     })
   }
@@ -94,25 +92,25 @@ class FSTree extends React.Component {
 
   onDeselect = (node, component) => {
     if (typeof this.props.onDeselect === 'function') {
-      this.props.onDeselect(node, component);
+      this.props.onDeselect(node, component)
     }
   }
 
   onSelect = (node, component) => {
     if (typeof this.props.onSelect === 'function') {
-      this.props.onSelect(node, component);
+      this.props.onSelect(node, component)
     }
   }
 
   onCollapse = (node, component) => {
     if (typeof this.props.onCollapse === 'function') {
-      this.props.onCollapse(node, component);
+      this.props.onCollapse(node, component)
     }
   }
 
   onExpand = (node, component) => {
     if (typeof this.props.onExpand === 'function') {
-      this.props.onExpand(node, component);
+      this.props.onExpand(node, component)
     }
   }
 }

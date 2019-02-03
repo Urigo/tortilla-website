@@ -390,7 +390,7 @@ class HomePage extends React.Component {
 
   // SSR media queries fix - will force initial render
   state = {
-    deviceType: null
+    deviceType: null,
   }
 
   contactFormRef = React.createRef()
@@ -399,12 +399,12 @@ class HomePage extends React.Component {
     // TODO: Make it a decorator
     this.stopObservingLayout = device.onLayoutChange(() => {
       this.setState({
-        deviceType: device.type
+        deviceType: device.type,
       })
     })
 
     this.setState({
-      deviceType: device.type
+      deviceType: device.type,
     })
   }
 
@@ -429,43 +429,57 @@ class HomePage extends React.Component {
     return (
       <Layout key={this.state.deviceType}>
         <Header>
-          {device.mobile.active && (
-            <div className="_fill-up" />
-          )}
+          {device.mobile.active && <div className="_fill-up" />}
           <DesktopImg src={withPrefix('img/group-19.svg')} class="Group-19" />
           <IntroDiv>
-            {device.desktop.active ? <>
-              <img className="_logo" src={withPrefix('Logo/logo.svg')} alt="tortilla" />
-            </> : <>
-              <img
-                className="_logo"
-                src={withPrefix('Logo/logo-tortilla-ondark.svg')}
-                alt="tortilla"
-              />
-              <div className="_logo-title">tortilla</div>
-              <br />
-            </>}
+            {device.desktop.active ? (
+              <>
+                <img
+                  className="_logo"
+                  src={withPrefix('Logo/logo.svg')}
+                  alt="tortilla"
+                />
+              </>
+            ) : (
+              <>
+                <img
+                  className="_logo"
+                  src={withPrefix('Logo/logo-tortilla-ondark.svg')}
+                  alt="tortilla"
+                />
+                <div className="_logo-title">tortilla</div>
+                <br />
+              </>
+            )}
             <div className="_title">
               A great framework for creating awesome tutorials!
             </div>
             <div className="_subtitle">
-              Create tutorials from real code, based on git steps with easy CLI to keep your tutorial on to date with versioning support, rendering everywhere, multiple language translations and much more…
+              Create tutorials from real code, based on git steps with easy CLI
+              to keep your tutorial on to date with versioning support,
+              rendering everywhere, multiple language translations and much
+              more…
             </div>
-            {device.desktop.active && <>
-              <div className="_start-btn" onClick={this.getStarted}>
-                Get Started
-              </div>
-            </>}
+            {device.desktop.active && (
+              <>
+                <div className="_start-btn" onClick={this.getStarted}>
+                  Get Started
+                </div>
+              </>
+            )}
           </IntroDiv>
           <GitFollowBtn href={process.env.GATSBY_GITHUB_URL}>
             <div className="_icon">
-              <img src={withPrefix('icns_30/icns-30-github.svg')} alt="Github" />
+              <img
+                src={withPrefix('icns_30/icns-30-github.svg')}
+                alt="Github"
+              />
             </div>
-            {device.desktop.active && <>
-              <div className="_text">
-                Follow on Github
-              </div>
-            </>}
+            {device.desktop.active && (
+              <>
+                <div className="_text">Follow on Github</div>
+              </>
+            )}
           </GitFollowBtn>
         </Header>
 
@@ -475,7 +489,9 @@ class HomePage extends React.Component {
           </Hump>
           <FeatureCardsSection
             title={'Respect the developer time'}
-            subtitle={"Don't learn a new tutorial every time a dependency gets updated. Our framework will keep tutorials up to date and provides git-diff code changes to help you keep up to date."}
+            subtitle={
+              "Don't learn a new tutorial every time a dependency gets updated. Our framework will keep tutorials up to date and provides git-diff code changes to help you keep up to date."
+            }
           >
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-update.svg')}
@@ -501,7 +517,9 @@ class HomePage extends React.Component {
           <FeatureCardsSection
             style={device.desktop.active ? { marginTop: 150 } : {}}
             title={"Respect the teacher's time"}
-            subtitle={"Creators are the most important people in the chain. We need to help them save every minute we can."}
+            subtitle={
+              'Creators are the most important people in the chain. We need to help them save every minute we can.'
+            }
           >
             <FeatureCard
               imgSrc={withPrefix('Icons_116/icons-116-framework.svg')}
@@ -528,19 +546,24 @@ class HomePage extends React.Component {
             style={device.desktop.active ? { marginTop: 150 } : {}}
             title="Check out some of our courses"
           >
-            {Object.entries(featuredTutorials).map(([name, data]) => name && (
-              <FeaturedTutorial
-                key={name}
-                imgSrc={withPrefix(data.imageSrc)}
-                link={`/tutorial/${name}/step/1`}
-                title={data.title}
-                description={data.description}
-                style={{
-                  backgroundColor: `rgb(${data.backgroundColor})`,
-                  boxShadow: `10px 10px 20px 0 rgba(${data.backgroundColor},.2)`
-                }}
-              />
-            ))}
+            {Object.entries(featuredTutorials).map(
+              ([name, data]) =>
+                name && (
+                  <FeaturedTutorial
+                    key={name}
+                    imgSrc={withPrefix(data.imageSrc)}
+                    link={`/tutorial/${name}/step/1`}
+                    title={data.title}
+                    description={data.description}
+                    style={{
+                      backgroundColor: `rgb(${data.backgroundColor})`,
+                      boxShadow: `10px 10px 20px 0 rgba(${
+                        data.backgroundColor
+                      },.2)`,
+                    }}
+                  />
+                )
+            )}
           </FeatureCardsSection>
 
           <TechSection>
@@ -548,26 +571,53 @@ class HomePage extends React.Component {
             <div className="_title">technologies…”</div>
             <div className="_tech-icns">
               <img src={withPrefix('icns_30/icns-30-react.svg')} alt="react" />
-              <img src={withPrefix('icns_30/icns-30-angular.svg')} alt="angular" />
-              <img src={withPrefix('icns_30/icns-30-graphql.svg')} alt="graphql" />
+              <img
+                src={withPrefix('icns_30/icns-30-angular.svg')}
+                alt="angular"
+              />
+              <img
+                src={withPrefix('icns_30/icns-30-graphql.svg')}
+                alt="graphql"
+              />
               <img src={withPrefix('icns_30/icns-30-apolo.svg')} alt="apolo" />
-              <img src={withPrefix('icns_30/icns-30-meteor.svg')} alt="meteor" />
-              <img src={withPrefix('icns_30/icns-30-webpack.svg')} alt="webpack" />
+              <img
+                src={withPrefix('icns_30/icns-30-meteor.svg')}
+                alt="meteor"
+              />
+              <img
+                src={withPrefix('icns_30/icns-30-webpack.svg')}
+                alt="webpack"
+              />
               <img src={withPrefix('icns_30/icns-30-js.svg')} alt="js" />
               <img src={withPrefix('icns_30/icns-30-node.svg')} alt="node" />
-              {device.desktop.active && <>
-                <img src={withPrefix('icns_30/icns-30-post.svg')} alt="post" />
-                <img src={withPrefix('icns_30/icns-30-post-copy.svg')} alt="copy" />
-                <img src={withPrefix('icns_30/icns-30-c.svg')} alt="c" />
-                <img src={withPrefix('icns_30/icns-30-sequelize.svg')} alt="sequelize" />
-              </>}
+              {device.desktop.active && (
+                <>
+                  <img
+                    src={withPrefix('icns_30/icns-30-post.svg')}
+                    alt="post"
+                  />
+                  <img
+                    src={withPrefix('icns_30/icns-30-post-copy.svg')}
+                    alt="copy"
+                  />
+                  <img src={withPrefix('icns_30/icns-30-c.svg')} alt="c" />
+                  <img
+                    src={withPrefix('icns_30/icns-30-sequelize.svg')}
+                    alt="sequelize"
+                  />
+                </>
+              )}
             </div>
           </TechSection>
         </Body>
 
         <Footer>
           <div className="_background" />
-          <img className="_food-truck" src={withPrefix('img/group-16.svg')} alt="" />
+          <img
+            className="_food-truck"
+            src={withPrefix('img/group-16.svg')}
+            alt=""
+          />
           <ContactForm className="_contact-form" ref={this.contactFormRef} />
         </Footer>
 
@@ -575,12 +625,22 @@ class HomePage extends React.Component {
         <Rocket src={withPrefix('img/group-17.svg')} alt="" />
 
         <UnderBar>
-          <img className="_logo" src={withPrefix('Logo/logo-tortilla-ondark.svg')} alt="tortilla" />
-          {device.desktop.active && <>
-            <span className="_logo-text">tortilla</span>
-            <span className="_copyright">Copyright © 2018 Tortilla, Inc.</span>
-          </>}
-          <span className="_terms">Terms  •  Privacy Policy and Cookie Policy</span>
+          <img
+            className="_logo"
+            src={withPrefix('Logo/logo-tortilla-ondark.svg')}
+            alt="tortilla"
+          />
+          {device.desktop.active && (
+            <>
+              <span className="_logo-text">tortilla</span>
+              <span className="_copyright">
+                Copyright © 2018 Tortilla, Inc.
+              </span>
+            </>
+          )}
+          <span className="_terms">
+            Terms • Privacy Policy and Cookie Policy
+          </span>
         </UnderBar>
       </Layout>
     )

@@ -4,18 +4,14 @@ const { stepRoute } = require('../utils/routes')
 
 const tutorialTemplate = path.resolve('src/templates/tutorial.js')
 
-module.exports = async ({
-  createPage,
-  common,
-  params: { step },
-}) => {
+module.exports = async ({ createPage, common, params: { step } }) => {
   const paths = [
     // With version prefix
     stepRoute({
       tutorialName: common.tutorialName,
       version: common.versionNumber,
       step: step.id,
-    })
+    }),
   ]
 
   if (common.tutorialVersion == common.versionNumber) {
@@ -28,16 +24,18 @@ module.exports = async ({
     )
   }
 
-  return Promise.all(paths.map((path) => {
-    return createPage({
-      path,
-      component: tutorialTemplate,
-      context: {
-        ...common,
-        common,
-        contentType: 'steps',
-        contentData: { step },
-      },
+  return Promise.all(
+    paths.map(path => {
+      return createPage({
+        path,
+        component: tutorialTemplate,
+        context: {
+          ...common,
+          common,
+          contentType: 'steps',
+          contentData: { step },
+        },
+      })
     })
-  }))
+  )
 }

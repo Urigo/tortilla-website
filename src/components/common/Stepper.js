@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { faChevronRight, faChevronLeft } from '@fortawesome/fontawesome-free-solid'
+import {
+  faChevronRight,
+  faChevronLeft,
+} from '@fortawesome/fontawesome-free-solid'
 
 import Button from './OutlineIconButton'
 
@@ -57,7 +60,7 @@ export default class extends React.Component {
   static getDerivedStateFromProps(props) {
     if (props.hasOwnProperty('current')) {
       return {
-        current: props.current
+        current: props.current,
       }
     }
 
@@ -65,7 +68,7 @@ export default class extends React.Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       current: props.current || 0,
@@ -74,18 +77,18 @@ export default class extends React.Component {
 
   set(i) {
     if (i >= this.props.limit) {
-      i = this.props.limit - 1;
+      i = this.props.limit - 1
     } else if (i < 0) {
-      i = 0;
+      i = 0
     }
 
     if (this.state.current !== i) {
-      this.props.onChange(i);
+      this.props.onChange(i)
     }
 
     this.setState({
       current: i,
-    });
+    })
   }
 
   hasPrev() {
@@ -93,14 +96,14 @@ export default class extends React.Component {
   }
 
   prev() {
-    this.set(this.state.current - 1);
+    this.set(this.state.current - 1)
   }
 
   hasNext() {
     return this.state.current + 1 < this.props.limit
   }
   next() {
-    this.set(this.state.current + 1);
+    this.set(this.state.current + 1)
   }
 
   render() {
@@ -110,7 +113,8 @@ export default class extends React.Component {
           className="nav-button"
           icon={faChevronLeft}
           disabled={!this.hasPrev()}
-          onClick={() => this.prev()} />
+          onClick={() => this.prev()}
+        />
         <Count>
           {this.props.current + 1} / {this.props.limit}
         </Count>
@@ -118,8 +122,9 @@ export default class extends React.Component {
           className="nav-button"
           icon={faChevronRight}
           disabled={!this.hasNext()}
-          onClick={() => this.next()} />
+          onClick={() => this.next()}
+        />
       </Container>
-    );
+    )
   }
 }

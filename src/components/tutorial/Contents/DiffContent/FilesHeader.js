@@ -1,6 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { faList, faTimes, faAngleDown } from '@fortawesome/fontawesome-free-solid'
+import {
+  faList,
+  faTimes,
+  faAngleDown,
+} from '@fortawesome/fontawesome-free-solid'
 import FaIcon from '../../../common/FaIcon'
 
 const FilebarHeight = 63
@@ -12,7 +16,7 @@ const ListIcon = styled(FaIcon).attrs({
 })`
   float: left;
   margin: 10px;
-  color: ${({theme}) => theme.primaryBlue};
+  color: ${({ theme }) => theme.primaryBlue};
 `
 
 const CloseBtn = styled(FaIcon).attrs({
@@ -22,7 +26,7 @@ const CloseBtn = styled(FaIcon).attrs({
   cursor: pointer;
   float: right;
   margin: 10px;
-  color: ${({theme}) => theme.primaryBlue};
+  color: ${({ theme }) => theme.primaryBlue};
 `
 
 const OpenBtn = styled(FaIcon).attrs({
@@ -32,7 +36,7 @@ const OpenBtn = styled(FaIcon).attrs({
   cursor: pointer;
   float: right;
   margin: 10px;
-  color: ${({theme}) => theme.primaryBlue};
+  color: ${({ theme }) => theme.primaryBlue};
 `
 
 const Filebar = styled.div`
@@ -51,7 +55,7 @@ const Filebar = styled.div`
       font-stretch: normal;
       line-height: normal;
       letter-spacing: normal;
-      color: ${({theme}) => theme.primaryBlue};
+      color: ${({ theme }) => theme.primaryBlue};
     }
   }
 `
@@ -61,7 +65,7 @@ const Fileline = styled.div`
   border-radius: 6px;
   margin-top: ${-FilelineHeight / 2}px;
   height: ${FilelineHeight}px;
-  background-color: ${({theme}) => theme.primaryBlue};
+  background-color: ${({ theme }) => theme.primaryBlue};
 `
 
 class FilesHeader extends React.Component {

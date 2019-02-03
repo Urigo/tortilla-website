@@ -9,15 +9,21 @@ class FileTree extends React.Component {
   static propTypes = {
     diff: PropTypes.string.isRequired,
     showFiles: PropTypes.func.isRequired,
-    includePattern: PropTypes.oneOfType([PropTypes.instanceOf(RegExp), PropTypes.string]),
-    excludePattern: PropTypes.oneOfType([PropTypes.instanceOf(RegExp), PropTypes.string]),
+    includePattern: PropTypes.oneOfType([
+      PropTypes.instanceOf(RegExp),
+      PropTypes.string,
+    ]),
+    excludePattern: PropTypes.oneOfType([
+      PropTypes.instanceOf(RegExp),
+      PropTypes.string,
+    ]),
     cache: PropTypes.object,
     sortCb: PropTypes.func,
     style: PropTypes.object,
   }
 
   static defaultProps = {
-    sortCb: (a, b) => a.name < b.name ? -1 : 1,
+    sortCb: (a, b) => (a.name < b.name ? -1 : 1),
     includePattern: '',
     excludePattern: '',
     // Will be used to persist data in case component is unmounted
@@ -30,13 +36,13 @@ class FileTree extends React.Component {
     this.constructChildren()
 
     this.state = {
-      children: this.reduceChildren()
+      children: this.reduceChildren(),
     }
   }
 
   render() {
     return (
-      <div className={this.props.className} style={this.props.style} >
+      <div className={this.props.className} style={this.props.style}>
         <FSTree
           tree={this.state.children}
           onSelect={onSelect.bind(this)}
@@ -56,13 +62,14 @@ class FileTree extends React.Component {
       reduceChildren = true
     }
 
-    reduceChildren = reduceChildren || (
-      props.hasOwnProperty('includePattern') &&
-      props.includePattern.toString() !== this.props.includePattern.toString()
-    ) || (
-      props.hasOwnProperty('excludePattern') &&
-      props.excludePattern.toString() !== this.props.excludePattern.toString()
-    )
+    reduceChildren =
+      reduceChildren ||
+      (props.hasOwnProperty('includePattern') &&
+        props.includePattern.toString() !==
+          this.props.includePattern.toString()) ||
+      (props.hasOwnProperty('excludePattern') &&
+        props.excludePattern.toString() !==
+          this.props.excludePattern.toString())
 
     let children
 
@@ -98,36 +105,36 @@ class FileTree extends React.Component {
     }
 
     props.cache[internal] = {
-      children: this.children = []
+      children: (this.children = []),
     }
 
     // In SSR this is gonna be empty
     if (!props.diff) return
 
     // Compose children out of given diff, assuming the schema is correct
-    props.diff.match(/\n--- [^\s]+\n\+\+\+ [^\s]+\n/g).forEach((header) => {
+    props.diff.match(/\n--- [^\s]+\n\+\+\+ [^\s]+\n/g).forEach(header => {
       const files = header
         .match(/--- ([^\s]+)\n\+\+\+ ([^\s]+)/)
         .slice(1)
         .map(path => ({
           rawPath: path,
           // Slice initial /a /b parts
-          path: path.split('/').slice(1).join('/')
+          path: path
+            .split('/')
+            .slice(1)
+            .join('/'),
         }))
 
       if (files[0].path === files[1].path) {
         files.pop()
         files[0].mode = 'modified'
-      }
-      else if (files[0].rawPath === '/dev/null') {
+      } else if (files[0].rawPath === '/dev/null') {
         files.shift()
         files[0].mode = 'added'
-      }
-      else if (files[1].rawPath === '/dev/null') {
+      } else if (files[1].rawPath === '/dev/null') {
         files.pop()
         files[0].mode = 'deleted'
-      }
-      else {
+      } else {
         files[0].mode = 'deleted'
         files[1].mode = 'added'
       }
@@ -140,7 +147,7 @@ class FileTree extends React.Component {
             node.children = []
           }
 
-          let childNode = node.children.find((candi) => {
+          let childNode = node.children.find(candi => {
             return candi.name === name
           })
 
@@ -239,15 +246,14 @@ function onSelect(node, component) {
 
   deselecting.then(() => {
     this.setState({
-      selectedNode: component
+      selectedNode: component,
     })
 
     if (node.children) {
       const paths = pickLeaves(node.children).map(node => node.path)
 
       this.props.showFiles(paths)
-    }
-    else {
+    } else {
       this.props.showFiles([node.path])
     }
   })
@@ -257,7 +263,7 @@ function onDeselect(node, component) {
   if (!this.state.selectedNode) return
 
   this.setState({
-    selectedNode: null
+    selectedNode: null,
   })
 
   this.props.showFiles([])

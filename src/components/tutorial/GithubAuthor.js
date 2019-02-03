@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { faGithubSquare } from '@fortawesome/fontawesome-free-brands';
+import { faGithubSquare } from '@fortawesome/fontawesome-free-brands'
 
 import FaIcon from '../common/FaIcon'
 import SocialButton from '../common/SocialButton'
@@ -15,9 +15,11 @@ const GithubContainer = styled.div`
   padding-bottom: 0;
   width: 300px;
 
-  ${props => props.link && css`
-    border: 1px solid ${props => props.theme.separator};
-  `}
+  ${props =>
+    props.link &&
+    css`
+      border: 1px solid ${props => props.theme.separator};
+    `}
 `
 
 const GithubAvatar = styled.img`
@@ -38,7 +40,7 @@ const GithubUsername = styled.a`
 
   :after {
     display: block;
-    content: "author";
+    content: 'author';
     line-height: 0;
     font-size: 12px;
     color: ${props => props.theme.blueGray};
@@ -56,7 +58,7 @@ const GithubLink = styled.a`
   font-weight: 300;
   font-style: italic;
   text-decoration: none;
-  color: ${({theme}) => theme.primaryBlue};
+  color: ${({ theme }) => theme.primaryBlue};
   width: calc(100% - 30px);
 `
 
@@ -70,7 +72,7 @@ const GithubLogo = styled(FaIcon).attrs({
   transform: translateY(-8px);
 `
 
-const SocialButtons = styled.div `
+const SocialButtons = styled.div`
   float: right;
 
   > * {
@@ -79,18 +81,28 @@ const SocialButtons = styled.div `
   }
 `
 
-export const GithubAuthor = (props) => (
+export const GithubAuthor = props => (
   <GithubContainer {...props}>
-    <GithubAvatar src={`${props.author.avatar}?s=30`} width="30" alt={props.author.username} />
-    <GithubUsername href={`https://github.com/${props.author.username}`}>{props.author.username}</GithubUsername>
-    {props.link && <>
-      <SocialButtons>
-        <SocialButton media="facebook" scale={0.5} />
-        <SocialButton media="twitter" scale={0.5} />
-      </SocialButtons>
-      <br />
-      <GithubLogo />
-      <GithubLink href={props.link} target="_BLANK">{props.link}</GithubLink>
-    </>}
+    <GithubAvatar
+      src={`${props.author.avatar}?s=30`}
+      width="30"
+      alt={props.author.username}
+    />
+    <GithubUsername href={`https://github.com/${props.author.username}`}>
+      {props.author.username}
+    </GithubUsername>
+    {props.link && (
+      <>
+        <SocialButtons>
+          <SocialButton media="facebook" scale={0.5} />
+          <SocialButton media="twitter" scale={0.5} />
+        </SocialButtons>
+        <br />
+        <GithubLogo />
+        <GithubLink href={props.link} target="_BLANK">
+          {props.link}
+        </GithubLink>
+      </>
+    )}
   </GithubContainer>
 )
