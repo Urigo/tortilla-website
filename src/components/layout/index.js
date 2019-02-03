@@ -8,6 +8,7 @@ import Theme from '../../themes/home'
 import Modal from '../common/Modal'
 import SocialHelmet from '../common/SocialHelmet'
 
+import 'sweetalert2/dist/sweetalert2.css'
 import './index.css'
 
 Modal.setAppElement('#___gatsby')

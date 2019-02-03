@@ -331,14 +331,14 @@ class ContactForm extends React.Component {
       body: JSON.stringify(this.state),
     }).then((res) => {
       if (res.status >= 400) {
-        swal({
+        swal.fire({
           title: 'Oy vey...',
           text: 'Message wasn\'t sent due to internal server error :-(',
           type: 'error',
         })
       }
       else {
-        swal({
+        swal.fire({
           title: 'Message successfully sent',
           text: 'If relevant, we will notice you shortly :-)',
           type: 'success',
