@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import {
   faChevronRight,
   faChevronLeft,
-} from '@fortawesome/fontawesome-free-solid'
+} from '@fortawesome/free-solid-svg-icons'
 
 import Button from './OutlineIconButton'
 

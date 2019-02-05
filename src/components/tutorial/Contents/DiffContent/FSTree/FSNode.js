@@ -8,7 +8,7 @@ import {
   faFolderOpen,
   faCaretDown,
   faCaretRight,
-} from '@fortawesome/fontawesome-free-solid'
+} from '@fortawesome/free-solid-svg-icons'
 
 import FaIcon from './../../../../common/FaIcon'
 import { exports } from './module'

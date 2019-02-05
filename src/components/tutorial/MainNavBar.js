@@ -1,4 +1,4 @@
-import { faArrowLeft } from '@fortawesome/fontawesome-free-solid'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { withPrefix } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'

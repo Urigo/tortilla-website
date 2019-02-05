@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { faPencilAlt } from '@fortawesome/fontawesome-free-solid'
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 
 import Button from '../common/Button'
 import FaIcon from '../common/FaIcon'

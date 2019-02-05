@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { faGithubSquare } from '@fortawesome/fontawesome-free-brands'
+import { faGithubSquare } from '@fortawesome/free-brands-svg-icons'
 
 import FaIcon from '../common/FaIcon'
 import SocialButton from '../common/SocialButton'

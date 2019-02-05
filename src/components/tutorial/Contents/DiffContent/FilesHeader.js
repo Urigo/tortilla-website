@@ -4,7 +4,7 @@ import {
   faList,
   faTimes,
   faAngleDown,
-} from '@fortawesome/fontawesome-free-solid'
+} from '@fortawesome/free-solid-svg-icons'
 import FaIcon from '../../../common/FaIcon'
 
 const FilebarHeight = 63

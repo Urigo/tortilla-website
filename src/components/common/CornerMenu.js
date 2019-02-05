@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { faEllipsisV } from '@fortawesome/fontawesome-free-solid'
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 
 export default styled(FontAwesomeIcon).attrs({
   icon: faEllipsisV,

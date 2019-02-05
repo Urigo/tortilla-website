@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { faChevronDown, faChevronUp } from '@fortawesome/fontawesome-free-solid'
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import FaIcon from '../../../common/FaIcon'
 
 const Container = styled.div`

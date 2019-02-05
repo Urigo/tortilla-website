@@ -1,7 +1,7 @@
 import {
   faShoePrints,
   faExternalLinkSquareAlt,
-} from '@fortawesome/fontawesome-free-solid'
+} from '@fortawesome/free-solid-svg-icons'
 import { push } from 'gatsby'
 import React from 'react'
 import ReactDOM from 'react-dom'
