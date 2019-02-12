@@ -32,7 +32,10 @@ module.exports = async ({ tutorial, createPage }) => {
       // Note that load() will not be invoked twice for 'default' because of the way it's
       // implemented
       await Promise.all([
-        featuredTutorials[tutorial.name].load(staticDirPath),
+        (
+          featuredTutorials[tutorial.name] &&
+          featuredTutorials[tutorial.name].load(staticDirPath)
+        ),
         featuredTutorials.default.load(staticDirPath),
       ])
 
