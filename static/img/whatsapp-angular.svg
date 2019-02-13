@@ -1,0 +1,18 @@
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+ <style type="text/css">.st0{fill:#FFFFFF;}</style>
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="3.374981" height="3.374981" id="canvas_background" fill="none"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <style type="text/css">.st0{fill:#FFFFFF;}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:#FFFFFF;}</style>
+  <g id="svg_1">
+   <path class="st0" d="m11.2,1.7c5,0 9,4 9,9s-4,9 -9,9c-1.5,0 -3,-0.4 -4.4,-1.1l-0.3,-0.2l-0.3,0.1l-3.9,1.2l1.3,-3.7l0.1,-0.4l-0.2,-0.3c-0.8,-1.4 -1.3,-3 -1.3,-4.6c0,-4.9 4,-9 9,-9m0,-0.8c-5.4,0 -9.8,4.4 -9.8,9.8c0,1.8 0.5,3.5 1.4,5.1l-1.8,5.3l5.4,-1.7c1.5,0.8 3.1,1.2 4.8,1.2c5.4,0 9.8,-4.4 9.8,-9.8c0,-5.5 -4.4,-9.9 -9.8,-9.9l0,0z" id="svg_3" fill="#ffffff"/>
+   <path class="st2" d="m11.00737,6.00639l-4.28683,9.61223l0,0l1.59835,0l0,0l0.86179,-2.15078l3.63865,0l0.86179,2.15078l0,0l1.59835,0l0,0l-4.2721,-9.61223l0,0l0,0l0,0l0,0zm1.25217,6.13562l-2.50433,0l1.25217,-3.01257l1.25217,3.01257l-0.00001,0z" id="svg_9" stroke="null"/>
+  </g>
+ </g>
+</svg>

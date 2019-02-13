@@ -8,10 +8,16 @@ const featuredMap = {
     imageSrc: '/img/love.svg',
     backgroundColor: [133, 133, 255],
   },
-  whatsapp: {
-    title: 'An angular based Whatsapp clone',
+  'whatsapp-angular': {
+    title: 'An Angular based Whatsapp clone',
     description: 'Using Angular, GraphQL, Apollo, PostgreSQL and TypeORM',
-    imageSrc: '/img/whatsapp.svg',
+    imageSrc: '/img/whatsapp-angular.svg',
+    backgroundColor: [39, 224, 192],
+  },
+  'whatsapp-react': {
+    title: 'A React based Whatsapp clone',
+    description: 'Using React, GraphQL, Apollo, PostgreSQL and TypeORM',
+    imageSrc: '/img/whatsapp-react.svg',
     backgroundColor: [39, 224, 192],
   },
   'node-addon': {
