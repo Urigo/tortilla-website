@@ -47,7 +47,7 @@
     "svg2png": "4.1.1",
     "sweetalert2": "^8.0.0",
     "tortilla": "0.0.1-alpha.42",
-    "typescript-styled-plugin": "^0.13.0"
+    "typescript-styled-plugin": "^0.14.0"
   },
   "devDependencies": {
     "babel-plugin-macros": "2.4.5",
