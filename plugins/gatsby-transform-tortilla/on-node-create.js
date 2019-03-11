@@ -204,9 +204,8 @@ function createStepScope(tutorial) {
 
 function getSteps(release) {
   return release.manuals
-    .filter((m, i) => i > 0)
     .map((manual, i) => ({
-      id: i + 1,
+      id: i,
       name: manual.manualTitle.replace(/step [0-9]+\:[\ ]*/i, ''),
       content: manual.manualView,
       revision: manual.stepRevision,
