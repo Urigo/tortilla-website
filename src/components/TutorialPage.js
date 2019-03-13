@@ -196,7 +196,7 @@ class TutorialPage extends React.Component {
     const link = stepRoute({
       tutorialName: this.props.common.tutorialName,
       version: version.number,
-      step: 1,
+      step: 0,
     })
 
     push(link)
