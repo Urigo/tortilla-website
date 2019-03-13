@@ -196,6 +196,7 @@ export default class extends React.Component {
       this.appendDiffs()
       this.fixImages()
       this.fixStepsRefs()
+      this.props.resetScroller()
     }
   }
 
@@ -209,8 +210,6 @@ export default class extends React.Component {
     })
 
     push(route)
-
-    this.props.resetScroller()
   }
 
   render() {
