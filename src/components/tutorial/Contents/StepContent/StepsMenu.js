@@ -107,12 +107,8 @@ export default class extends React.Component {
 
   push(link) {
     this.save()
-    push(link)
 
-    // Will scroll the content back to the top
-    if (typeof this.props.resetScroller === 'function') {
-      this.props.resetScroller()
-    }
+    push(link)
   }
 
   save() {

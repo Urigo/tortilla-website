@@ -76,8 +76,8 @@ export default class extends React.Component {
   }
 
   set(i) {
-    if (i >= this.props.limit) {
-      i = this.props.limit - 1
+    if (i > this.props.limit) {
+      i = this.props.limit
     } else if (i < 0) {
       i = 0
     }
@@ -92,7 +92,7 @@ export default class extends React.Component {
   }
 
   hasPrev() {
-    return this.state.current - 1 >= 0
+    return this.state.current > 0
   }
 
   prev() {
@@ -100,7 +100,7 @@ export default class extends React.Component {
   }
 
   hasNext() {
-    return this.state.current + 1 < this.props.limit
+    return this.state.current < this.props.limit
   }
   next() {
     this.set(this.state.current + 1)
@@ -116,7 +116,7 @@ export default class extends React.Component {
           onClick={() => this.prev()}
         />
         <Count>
-          {this.props.current + 1} / {this.props.limit}
+          {this.props.current} / {this.props.limit}
         </Count>
         <Button
           className="nav-button"

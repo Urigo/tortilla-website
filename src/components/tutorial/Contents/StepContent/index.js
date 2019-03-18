@@ -239,7 +239,6 @@ export default class extends React.Component {
               tutorialVersion={this.props.tutorial.version}
               activeStep={this.props.step}
               pathname={this.props.location.pathname}
-              resetScroller={this.props.resetScroller}
               style={{ height: 'calc(100% - 65px)' }}
             />
           </MenuContainer>
@@ -279,9 +278,9 @@ export default class extends React.Component {
           )}
           <Info>
             <Stepper
-              limit={stepsNum}
-              current={step.id - 1}
-              onChange={i => this.changeStep(i + 1)}
+              limit={stepsNum - 1}
+              current={step.id}
+              onChange={i => this.changeStep(i)}
             />
           </Info>
         </Right>

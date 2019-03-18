@@ -96,6 +96,13 @@ class TutorialPage extends React.Component {
     tutorial: PropTypes.object.isRequired,
   }
 
+  componentDidUpdate() {
+    if (this.pendingScrollerReset) {
+      this.container.scrollTop = 0
+      delete this.pendingScrollerReset
+    }
+  }
+
   render() {
     const featuredTutorial = featuredTutorials[this.props.tutorial.name]
 
@@ -217,9 +224,8 @@ class TutorialPage extends React.Component {
   }
 
   resetScroller = () => {
-    if (this.container) {
-      this.container.scrollTop = 0
-    }
+    // Will be invoked in componentDidUpdate()
+    this.pendingScrollerReset = true
   }
 }
 
