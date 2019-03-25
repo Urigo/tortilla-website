@@ -96,6 +96,9 @@ const Right = styled.div`
 
 const Html = styled.div`
   padding: 25px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
   color: ${({ theme }) => theme.lightBlack};
   font-weight: normal;
   font-size: 14px;

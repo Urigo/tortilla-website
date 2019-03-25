@@ -14,6 +14,9 @@ import DiffHeader from './DiffHeader'
 
 const Container = styled.div`
   clear: both;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
 
   .diff {
     font-size: 1em;
