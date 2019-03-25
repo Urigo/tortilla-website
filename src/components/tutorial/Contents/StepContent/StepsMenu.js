@@ -15,7 +15,7 @@ const Steps = styled.div`
 `
 
 const Number = styled.div`
-  width: 30px;
+  min-width: 30px;
   font-size: 17px;
   font-weight: 800;
   line-height: 30px;
