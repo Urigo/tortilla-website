@@ -3336,10 +3336,10 @@ command-exists@^1.2.2:
   resolved "https://registry.yarnpkg.com/command-exists/-/command-exists-1.2.7.tgz#16828f0c3ff2b0c58805861ef211b64fc15692a8"
   integrity sha512-doWDvhXCcW5LK0cIUWrOQ8oMFXJv3lEQCkJpGVjM8v9SV0uhqYXB943538tEA2CiaWqSyuYUGAm5ezDwEx9xlw==
 
-commander@2.18.0:
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.18.0.tgz#2bf063ddee7c7891176981a2cc798e5754bc6970"
-  integrity sha512-6CYPa+JP2ftfRU2qkDK+UTVeQYosOg/2GbcjIcKPHfinyOLPVGXu/ovN86RP49Re5ndJK1N0kuiidFFuepc4ZQ==
+commander@2.20.0:
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.0.tgz#d58bb2b5c1ee8f87b0d340027e9e94e222c5a422"
+  integrity sha512-7j2y+40w61zy6YC2iRNpUe/NwhNyoXrYpHMrSunaMG64nRnaf96zO/KMQR4OyN/UnE5KLyEBnKHd4aG3rskjpQ==
 
 commander@^2.11.0:
   version "2.16.0"
@@ -11439,10 +11439,10 @@ topo@2.x.x:
   dependencies:
     hoek "4.x.x"
 
-tortilla@0.0.1-alpha.42:
-  version "0.0.1-alpha.42"
-  resolved "https://registry.yarnpkg.com/tortilla/-/tortilla-0.0.1-alpha.42.tgz#367b4e072709fdbe1267603ab5dfab62f2ec7961"
-  integrity sha512-9INGnArTDPIOf/hKSGFVpj8tsMpoFwNyKDmuza3Y1rcQ48ZfbAyIxowT8mV+2O6CdqPurA3MNTd3wzEQxdowJQ==
+tortilla@0.0.1-alpha.48:
+  version "0.0.1-alpha.48"
+  resolved "https://registry.yarnpkg.com/tortilla/-/tortilla-0.0.1-alpha.48.tgz#96f9bc7ee9ecb01fff5770024fa7469c50233142"
+  integrity sha512-UbNTtSiYrNv+H+G3tcJX7dcyJ3ojw9Zp/4sda6G9ruHGkjEK6cMWqBLPdGeQhQ/gKiadT8gKg/oNMVdTlSovtA==
   dependencies:
     "@types/fs-extra" "5.0.4"
     "@types/handlebars" "4.0.39"
@@ -11452,7 +11452,7 @@ tortilla@0.0.1-alpha.42:
     "@types/node" "9.6.31"
     "@types/semver" "5.5.0"
     "@types/tmp" "0.0.33"
-    commander "2.18.0"
+    commander "2.20.0"
     fs-extra "7.0.0"
     handlebars "4.0.12"
     i18next "11.7.0"
