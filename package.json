@@ -22,7 +22,7 @@
     "@fortawesome/react-fontawesome": "^0.1.0",
     "babel-plugin-styled-components": "^1.5.1",
     "babel-polyfill": "^6.26.0",
-    "canvas": "2.3.1",
+    "canvas": "2.5.0",
     "classnames": "^2.2.6",
     "gatsby": "next",
     "gatsby-plugin-postcss": "^2.0.0",
