@@ -1,6 +1,7 @@
 import {
   faShoePrints,
-  faExternalLinkSquareAlt,
+  faLink,
+  faQuestion,
 } from '@fortawesome/free-solid-svg-icons'
 import { push } from 'gatsby'
 import React from 'react'
@@ -120,9 +121,12 @@ const Html = styled.div`
   }
 
   h4 > a {
-    font-size: 10px;
-    transform: translateY(-5px);
-    display: inline-block;
+    margin-left: 15px;
+    float: right;
+    color: ${props => props.theme.blueGray};
+    // font-size: 10px;
+    // transform: translateY(-5px);
+    // display: inline-block;
   }
 
   a:hover {
@@ -372,14 +376,24 @@ export default class extends React.Component {
     })
   }
 
-  // TODO: Apply during build
+  // TODO: Apply during build. It's not critical because of SSR, so effect would be
+  // almost the same
   fixStepsRefs = () => {
-    this.htmlEl.querySelectorAll('h4 > a').forEach(aEl => {
-      const h4El = aEl.parentNode
-      h4El.innerHTML = aEl.innerHTML + ' '
-      h4El.appendChild(aEl)
+    this.htmlEl.querySelectorAll('h4 > a').forEach(commitEl => {
+      const titleEl = commitEl.parentNode
+      const stepTitle = commitEl.innerHTML
+      // e.g. Client Step 1.1
+      // Tortilla was updated to render the submodule name prior to the step
+      const [prefix] = stepTitle.match(/^([\w-]+ )?[Ss]tep \d+(\.\d+)?/) || []
+      const questionEl = document.createElement('a')
 
-      ReactDOM.render(<FaIcon icon={faExternalLinkSquareAlt} />, aEl)
+      ReactDOM.render(<FaIcon icon={faLink} />, commitEl)
+      ReactDOM.render(<FaIcon icon={faQuestion} />, questionEl)
+
+      questionEl.href = `${this.props.tutorial.repoUrl}/issues/new?title=[${prefix}]`
+      titleEl.innerHTML = stepTitle + ' '
+      titleEl.appendChild(commitEl)
+      titleEl.appendChild(questionEl)
     })
   }
 
