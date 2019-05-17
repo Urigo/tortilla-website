@@ -1,7 +1,8 @@
 import {
   faShoePrints,
-  faLink,
+  faCode,
   faQuestion,
+  faDownload,
 } from '@fortawesome/free-solid-svg-icons'
 import { push } from 'gatsby'
 import React from 'react'
@@ -386,14 +387,18 @@ export default class extends React.Component {
       // Tortilla was updated to render the submodule name prior to the step
       const [prefix] = stepTitle.match(/^([\w-]+ )?[Ss]tep \d+(\.\d+)?/) || []
       const questionEl = document.createElement('a')
+      const downloadEl = document.createElement('a')
 
-      ReactDOM.render(<FaIcon icon={faLink} />, commitEl)
+      ReactDOM.render(<FaIcon icon={faCode} />, commitEl)
       ReactDOM.render(<FaIcon icon={faQuestion} />, questionEl)
+      ReactDOM.render(<FaIcon icon={faDownload} />, downloadEl)
 
       questionEl.href = `${this.props.tutorial.repoUrl}/issues/new?title=[${prefix}]`
+      downloadEl.href = commitEl.href.replace('commit', 'archive') + '.zip'
       titleEl.innerHTML = stepTitle + ' '
       titleEl.appendChild(commitEl)
       titleEl.appendChild(questionEl)
+      titleEl.appendChild(downloadEl)
     })
   }
 
