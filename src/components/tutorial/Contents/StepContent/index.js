@@ -393,7 +393,9 @@ export default class extends React.Component {
       ReactDOM.render(<FaIcon icon={faQuestion} />, questionEl)
       ReactDOM.render(<FaIcon icon={faDownload} />, downloadEl)
 
+      commitEl.target= '_blank'
       questionEl.href = `${this.props.tutorial.repoUrl}/issues/new?title=[${prefix}]`
+      questionEl.target= '_blank'
       downloadEl.href = commitEl.href.replace('commit', 'archive') + '.zip'
       titleEl.innerHTML = stepTitle + ' '
       titleEl.appendChild(commitEl)
