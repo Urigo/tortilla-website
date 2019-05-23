@@ -3,7 +3,7 @@ const path = require('path')
 const createTutorial = require('./create-tutorial')
 
 module.exports = async ({ graphql, actions }) => {
-  const { createPage } = actions
+  const { createPage, createRedirect } = actions
 
   const result = await graphql(`
     {
@@ -12,6 +12,7 @@ module.exports = async ({ graphql, actions }) => {
           node {
             name
             title
+            repo
             repoUrl
             branch
             currentVersion
@@ -52,6 +53,7 @@ module.exports = async ({ graphql, actions }) => {
       return createTutorial({
         tutorial,
         createPage,
+        createRedirect,
       })
     })
   )

@@ -1,33 +1,33 @@
 const FeaturedTutorial = require('./FeaturedTutorial')
 
 const featuredMap = {
-  chatty: {
+  'srtucker22/chatty/master': {
     title: 'A chat app with React Native',
     description:
       'Chat clone using React Native, GraphQL, Apollo, SQL and Sequelize',
     imageSrc: '/img/love.svg',
     backgroundColor: [133, 133, 255],
   },
-  'whatsapp-angular': {
+  'Urigo/whatsapp-textrepo-angularcli-express/master': {
     title: 'An Angular based Whatsapp clone',
     description: 'Using Angular, GraphQL, Apollo, PostgreSQL and TypeORM',
     imageSrc: '/img/whatsapp-angular.svg',
     backgroundColor: [39, 224, 192],
   },
-  'whatsapp-react': {
+  'Urigo/WhatsApp-Clone-Tutorial/final': {
     title: 'A React based Whatsapp clone',
     description: 'Using React, GraphQL, Apollo, PostgreSQL and TypeORM',
     imageSrc: '/img/whatsapp-react.svg',
     backgroundColor: [39, 224, 192],
   },
-  'node-addon': {
+  'DAB0mB/node-distance-addon/master': {
     title: 'Building a native Node.JS addon',
     description:
       'Native NodeJS add-on creation tutorial using C++ for improved performance',
     imageSrc: '/img/destination.svg',
     backgroundColor: [255, 210, 4],
   },
-  'radial-snake': {
+  'DAB0mB/radial-snake/master': {
     title: 'A Tron-style snake game',
     description: 'How to implement a game engine in JS and build a style game',
     imageSrc: '/img/snake-1.svg',
