@@ -1,0 +1,204 @@
+[
+  {
+    "repoUrl": "",
+    "branchName": "master",
+    "historyBranchName": "master-history",
+    "releases": [
+      {
+        "releaseVersion": "14.0.0",
+        "releaseDate": "2019-05-23 10:04:17 +0800",
+        "tagName": "master@14.0.0",
+        "tagRevision": "932f77bc9f6b4a68746d20ad8f2365ae46537fda",
+        "historyRevision": "ff6c96790eb5457aeec72b7b801bc42db380a896",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "964f2552aa53cf356fc71d8cd05f1b11740b5974",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "13.0.0",
+        "releaseDate": "2019-05-23 10:00:54 +0800",
+        "tagName": "master@13.0.0",
+        "tagRevision": "05927633266af71ca2228fa977fd79bc996e0d83",
+        "historyRevision": "8c18139c47a459092fb346b63b889b632a942dd2",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "0fd6500a967902d00bbef2da66493178d9195ca1",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "12.0.0",
+        "releaseDate": "2019-05-23 09:58:26 +0800",
+        "tagName": "master@12.0.0",
+        "tagRevision": "da821e4ce2de6eee8d3474953c2707bd365e664a",
+        "historyRevision": "24bb060180a0123429a0173762f7394b892b5ffd",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "976122ffb9cf2f6e2cb7bb4a53f91446bf57a2e6",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "11.0.0",
+        "releaseDate": "2019-05-23 08:53:07 +0800",
+        "tagName": "master@11.0.0",
+        "tagRevision": "091627534e6b383b024ffb1a54ef898ac54b62c1",
+        "historyRevision": "aa348cc69066bf6b28e7478d5b3aeff9f0e91108",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "bfb9b32580525e2fdb14ea0637cc906379f3051c",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "10.0.0",
+        "releaseDate": "2019-05-23 08:47:27 +0800",
+        "tagName": "master@10.0.0",
+        "tagRevision": "9761ff2dc5dc06d1029bdad3a0dd5ea8d910e076",
+        "historyRevision": "b27aeb9683bcefb52149c497a3e48341e3827841",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "2886dc1b707db18894eed1bc00a3b6571f65baab",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "9.0.0",
+        "releaseDate": "2019-05-23 08:06:54 +0800",
+        "tagName": "master@9.0.0",
+        "tagRevision": "754eee13c119ac30fe2b47b84f8bf545be4c8b13",
+        "historyRevision": "be3b410ad62d7e692ab6ee911465ce1a97d71de3",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "ecb593577f45ddee13e73114d01d82d2542afce4",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "7.0.0",
+        "releaseDate": "2019-05-23 07:57:12 +0800",
+        "tagName": "master@7.0.0",
+        "tagRevision": "a62cd00e319d21355d72bff45da2679febb9f998",
+        "historyRevision": "da441e49c6851fc774e384fe9b281113172edea3",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "d14d7af7d350a206234353dcce624d3ba5dbd467",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "6.0.0",
+        "releaseDate": "2019-05-23 07:54:13 +0800",
+        "tagName": "master@6.0.0",
+        "tagRevision": "e2b75e88068fc4453c2a67ed0cbf24763aaa2661",
+        "historyRevision": "23df12bfb6d22db2ba5ab9561e948b89098928e1",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "c07b1e4770e09af604bdcfd26106b366f11f9f73",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "5.0.0",
+        "releaseDate": "2019-05-23 07:43:17 +0800",
+        "tagName": "master@5.0.0",
+        "tagRevision": "95d98a4dd8a440019b2cc27eb8d19c15e6e5ae2c",
+        "historyRevision": "795874b0583a3fb355fe2a601adc7d9ec776fc28",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "dd6488107509b17026ec4fe0e623832b59efe81e",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "4.0.0",
+        "releaseDate": "2019-05-23 07:32:20 +0800",
+        "tagName": "master@4.0.0",
+        "tagRevision": "f90525f824b574d09b9db7dbbaa22d961005ae81",
+        "historyRevision": "2db1d532c4edb322d51bb5a527b202ee8bdb0719",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "9b76ffe1c38712cd7104e08d7244b99b7e26230d",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "3.0.0",
+        "releaseDate": "2019-05-22 06:00:14 +0800",
+        "tagName": "master@3.0.0",
+        "tagRevision": "377ba8106fe83832e4048870414fec38c4bb99fa",
+        "historyRevision": "00ce785e1a62db47e326d89634baa3337a79f2dd",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "7ba0e96d6f89e555e9f2771e9539a746f6e5bec3",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "2.0.0",
+        "releaseDate": "2019-05-22 05:57:33 +0800",
+        "tagName": "master@2.0.0",
+        "tagRevision": "e373f4014346c95ea20f5691f4bf9ce06466545d",
+        "historyRevision": "a2fac13eb891abccc64114a9ef0c9a477edfbe5e",
+        "changesDiff": "",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "9116cc4cd37e1bca12d53a0791b49b9a00500a83",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      },
+      {
+        "releaseVersion": "1.0.0",
+        "releaseDate": "2019-05-22 05:45:47 +0800",
+        "tagName": "master@1.0.0",
+        "tagRevision": "8c1790c29ca2ea1a5d79f32b52c395aa9e4b528a",
+        "historyRevision": "b3fe66fa155d93c22ee4c12a26df58c3cbd73038",
+        "changesDiff": "diff --git a/.gitignore b/.gitignore\nnew file mode 100644\nindex 0000000..5171c54\n--- /dev/null\n+++ b/.gitignore\n@@ -0,0 +1,2 @@\n+node_modules\n+npm-debug.log\n\\ No newline at end of file\ndiff --git a/.tortilla/manuals/templates/root.tmpl b/.tortilla/manuals/templates/root.tmpl\nnew file mode 100644\nindex 0000000..37c481e\n--- /dev/null\n+++ b/.tortilla/manuals/templates/root.tmpl\n@@ -0,0 +1 @@\n+A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla.\n\\ No newline at end of file\ndiff --git a/package.json b/package.json\nnew file mode 100644\nindex 0000000..54b5082\n--- /dev/null\n+++ b/package.json\n@@ -0,0 +1,5 @@\n+{\n+  \"name\": \"test-tortilla-tutorial\",\n+  \"description\": \"A newly created Tortilla project\",\n+  \"private\": true\n+}\n",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "1f4818658465f51eea93798adb65a3b66742f1ce",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      }
+    ]
+  }
+]
