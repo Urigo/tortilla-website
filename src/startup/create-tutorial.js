@@ -28,13 +28,15 @@ module.exports = async ({ tutorial, createPage }) => {
     recentMajorVersions.map(async (version, index) => {
       if (version.mostRecent) return
 
+      const tutorialKey = `${tutorial.author.username}/${tutorial.repo}/${tutorial.branch}`
+
       // Load image data URLs.
       // Note that load() will not be invoked twice for 'default' because of the way it's
       // implemented
       await Promise.all([
         (
-          featuredTutorials[tutorial.name] &&
-          featuredTutorials[tutorial.name].load(staticDirPath)
+          featuredTutorials[tutorialKey] &&
+          featuredTutorials[tutorialKey].load(staticDirPath)
         ),
         featuredTutorials.default.load(staticDirPath),
       ])
@@ -45,9 +47,12 @@ module.exports = async ({ tutorial, createPage }) => {
         {},
         featuredTutorials.default,
         tutorial,
-        featuredTutorials[tutorial.name]
+        featuredTutorials[tutorialKey]
       )
 
+      const tutorialRepo = tutorial.repo
+      const tutorialAuthor = tutorial.author
+      const tutorialBranch = tutorial.branch
       const tutorialName = tutorial.name
       const tutorialTitle = featuredTutorial.title || tutorial.name
       const tutorialDescription = featuredTutorial.description
@@ -64,7 +69,10 @@ module.exports = async ({ tutorial, createPage }) => {
       )
 
       const common = {
+        tutorialAuthor,
+        tutorialRepo,
         tutorialName,
+        tutorialBranch,
         tutorialTitle,
         tutorialVersion,
         tutorialImage,

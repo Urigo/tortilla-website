@@ -19,6 +19,7 @@ export const tutorialPageQuery = graphql`
       name
       title
       currentVersion
+      repo
       repoUrl
       branch
       author {

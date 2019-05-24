@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { push } from 'gatsby'
 
-import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
+import { stepRoute } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
 
 const Steps = styled.div`
@@ -74,8 +74,10 @@ const ActiveStep = styled(Step) `
 
 const propsToLink = (props, step) =>
   stepRoute({
-    tutorialName: props.tutorialName,
-    version: isVersionSpecific(props.pathname) && props.tutorialVersion.number,
+    repo: props.tutorialRepo,
+    owner: props.tutorialAuthor.username,
+    branch: props.tutorialBranch,
+    version: props.tutorialVersion.number,
     step: step.id,
   })
 

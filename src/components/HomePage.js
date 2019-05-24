@@ -546,13 +546,14 @@ class HomePage extends React.Component {
             style={device.desktop.active ? { marginTop: 150 } : {}}
             title="Check out some of our courses"
           >
+            {/*Fix link to include version*/}
             {Object.entries(featuredTutorials).map(
-              ([name, data]) =>
-                name && (
+              ([tutorialKey, data]) =>
+                tutorialKey && (
                   <FeaturedTutorial
-                    key={name}
+                    key={tutorialKey}
                     imgSrc={withPrefix(data.imageSrc)}
-                    link={`/tutorial/${name}/step/0`}
+                    link={`/${tutorialKey}/latest/step/0`}
                     title={data.title}
                     description={data.description}
                     style={{

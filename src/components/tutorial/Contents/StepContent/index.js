@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
 import { parseDiff } from '../../../../libs/react-diff-view'
-import { stepRoute, isVersionSpecific } from '../../../../utils/routes'
+import { stepRoute } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
 import FaIcon from '../../../common/FaIcon'
 import SocialHelmet from '../../../common/SocialHelmet'
@@ -210,10 +210,10 @@ export default class extends React.Component {
 
   changeStep(id) {
     const route = stepRoute({
-      tutorialName: this.props.tutorial.name,
-      version:
-        isVersionSpecific(this.props.location.pathname) &&
-        this.props.tutorial.version.number,
+      owner: this.props.tutorial.author.username,
+      repo: this.props.tutorial.repo,
+      branch: this.props.tutorial.branch,
+      version: this.props.tutorial.version.number,
       step: id,
     })
 
@@ -243,7 +243,9 @@ export default class extends React.Component {
             */}
             <StepsMenu
               ref={ref => (this.stepsMenuScroller = ReactDOM.findDOMNode(ref))}
-              tutorialName={this.props.tutorial.name}
+              tutorialAuthor={this.props.tutorial.author}
+              tutorialRepo={this.props.tutorial.repo}
+              tutorialBranch={this.props.tutorial.branch}
               tutorialVersion={this.props.tutorial.version}
               activeStep={this.props.step}
               pathname={this.props.location.pathname}

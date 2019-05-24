@@ -7,6 +7,7 @@ const tutorialTemplate = path.resolve('src/templates/tutorial.js')
 
 module.exports = async ({
   createPage,
+  createRedirect,
   common,
   params: {
     srcVersionNumber,
@@ -16,21 +17,26 @@ module.exports = async ({
     tutorialChunk,
   },
 }) => {
-  const paths = [
-    // Source version prefix
+  const paths = []
+
+  paths.push(
     diffRoute({
-      tutorialName: common.tutorialName,
+      owner: common.tutorialAuthor.username,
+      repo: common.tutorialRepo,
+      branch: common.tutorialBranch,
       srcVersion: srcVersionNumber,
       destVersion: destVersionNumber,
-    }),
-  ]
+    })
+  )
 
-  // No version prefix
-  if (destVersionNumber == common.tutorialVersion) {
+  if (common.tutorialVersion == common.versionNumber) {
     paths.push(
       diffRoute({
-        tutorialName: common.tutorialName,
-        srcVersion: srcVersionNumber,
+        owner: common.tutorialAuthor.username,
+        repo: common.tutorialRepo,
+        branch: common.tutorialBranch,
+        srcVersion: 'latest',
+        destVersion: destVersionNumber,
       })
     )
   }
@@ -41,24 +47,22 @@ module.exports = async ({
     srcVersionNumber
   )
 
-  return Promise.all(
-    paths.map(path => {
-      return createPage({
-        path,
-        component: tutorialTemplate,
-        context: {
-          ...common,
-          common,
-          contentType: 'diffs',
-          contentData: {
-            srcVersionNumber,
-            srcVersionHistory,
-            destVersionNumber,
-            destVersionHistory,
-            versionsDiff,
-          },
+  return Promise.all(paths.map(path =>
+    createPage({
+      path,
+      component: tutorialTemplate,
+      context: {
+        ...common,
+        common,
+        contentType: 'diffs',
+        contentData: {
+          srcVersionNumber,
+          srcVersionHistory,
+          destVersionNumber,
+          destVersionHistory,
+          versionsDiff,
         },
-      })
+      },
     })
-  )
+  ))
 }

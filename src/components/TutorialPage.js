@@ -104,7 +104,8 @@ class TutorialPage extends React.Component {
   }
 
   render() {
-    const featuredTutorial = featuredTutorials[this.props.tutorial.name]
+    const tutorialKey = `${this.props.tutorial.author.username}/${this.props.tutorial.repo}/${this.props.tutorial.branch}`
+    const featuredTutorial = featuredTutorials[tutorialKey]
 
     return (
       <Layout>
@@ -201,7 +202,9 @@ class TutorialPage extends React.Component {
 
   activateStep = version => {
     const link = stepRoute({
-      tutorialName: this.props.common.tutorialName,
+      repo: this.props.common.tutorialRepo,
+      owner: this.props.common.tutorialAuthor.username,
+      branch: this.props.common.tutorialBranch,
       version: version.number,
       step: 0,
     })
@@ -211,7 +214,9 @@ class TutorialPage extends React.Component {
 
   activateDiff = (srcVersion, destVersion) => {
     const link = diffRoute({
-      tutorialName: this.props.common.tutorialName,
+      owner: this.props.common.tutorialAuthor.username,
+      branch: this.props.common.tutorialBranch,
+      repo: this.props.common.tutorialRepo,
       srcVersion: srcVersion.number,
       destVersion: destVersion.number,
     })

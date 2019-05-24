@@ -122,6 +122,12 @@ module.exports = (
     title: {
       type: GraphQLString,
     },
+    owner: {
+      type: GraphQLString,
+    },
+    repo: {
+      type: GraphQLString,
+    },
     repoUrl: {
       type: GraphQLString,
     },

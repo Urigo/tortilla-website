@@ -147,10 +147,10 @@ module.exports = async function onCreateNode({
     createParentChildLink
   } = actions
 
-  // accept only json files
-  if (node.internal.mediaType !== 'application/json') {
-    return
-  }
+  // Ensure that this was a tutorial node that was parsed by gatsby-source-filesystem
+  if (node.sourceInstanceName !== 'tutorial') return
+  // Accept only json files
+  if (node.internal.mediaType !== 'application/json') return
 
   // load content and parse it
   const content = await loadNodeContent(node)
@@ -168,6 +168,21 @@ module.exports = async function onCreateNode({
       )
     })
   )
+
+  /* Add computed fields */
+
+  {
+    // The name of the file (without the extension) represents the repo name
+    const repo = node.name
+    // The first parent folder represents the owner name
+    const username = node.dir.split('/').pop()
+    tutorial.repo = repo
+    tutorial.repoUrl = `https://github.com/${username}/${repo}`
+    tutorial.author = {
+      username,
+      avatar: `https://avatars.githubusercontent.com/${username}`,
+    }
+  }
 
   // create a tutorial node
   const tutorialNode = {
@@ -278,33 +293,6 @@ function getTutorialBranch(doc) {
   return doc.branchName;
 }
 
-// Plucking author details from url and not from package.json since it's more reliable.
-// We know that this is a Github username and this way we can easily match a
-// corresponding avatar
-function getTutorialAuthor(doc) {
-  const unknownAuthor = {
-    username: 'unknown',
-    avatar: 'https://avatars.githubusercontent.com/404',
-  }
-
-  if (!doc.repoUrl) {
-    return unknownAuthor
-  }
-
-  const match = doc.repoUrl.match(/github.com\/([^/]+)/)
-
-  if (!match) {
-    return unknownAuthor
-  }
-
-  const username = match[1]
-
-  return {
-    username,
-    avatar: `https://avatars.githubusercontent.com/${username}`
-  }
-}
-
 function getTutorialTitle(doc) {
   return doc.releases[0].manuals[0].manualTitle;
 }
@@ -315,7 +303,6 @@ function getCurrentVersion(doc) {
 
 function fromDumpToTutorial(doc, node) {
   const repoUrl = getTutorialRepoUrl(doc);
-  const author = getTutorialAuthor(doc);
   const branch = getTutorialBranch(doc);
   const versions = getVersions(doc);
   const title = getTutorialTitle(doc);
@@ -324,7 +311,6 @@ function fromDumpToTutorial(doc, node) {
   return {
     name: node.name,
     repoUrl,
-    author,
     branch,
     title,
     currentVersion,
