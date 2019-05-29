@@ -1,0 +1,24 @@
+[
+  {
+    "repoUrl": "",
+    "branchName": "master",
+    "historyBranchName": "master-history",
+    "releases": [
+      {
+        "releaseVersion": "14.0.0",
+        "releaseDate": "2019-05-23 10:04:17 +0800",
+        "tagName": "master@14.0.0",
+        "tagRevision": "932f77bc9f6b4a68746d20ad8f2365ae46537fda",
+        "historyRevision": "ff6c96790eb5457aeec72b7b801bc42db380a896",
+        "changesDiff": "diff --git a/.gitignore b/.gitignore\nnew file mode 100644\nindex 0000000..5171c54\n--- /dev/null\n+++ b/.gitignore\n@@ -0,0 +1,2 @@\n+node_modules\n+npm-debug.log\n\\ No newline at end of file\ndiff --git a/.tortilla/manuals/templates/root.tmpl b/.tortilla/manuals/templates/root.tmpl\nnew file mode 100644\nindex 0000000..37c481e\n--- /dev/null\n+++ b/.tortilla/manuals/templates/root.tmpl\n@@ -0,0 +1 @@\n+A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla.\n\\ No newline at end of file\ndiff --git a/package.json b/package.json\nnew file mode 100644\nindex 0000000..54b5082\n--- /dev/null\n+++ b/package.json\n@@ -0,0 +1,5 @@\n+{\n+  \"name\": \"test-tortilla-tutorial\",\n+  \"description\": \"A newly created Tortilla project\",\n+  \"private\": true\n+}\n",
+        "manuals": [
+          {
+            "manualTitle": "Test Tortilla Tutorial",
+            "stepRevision": "964f2552aa53cf356fc71d8cd05f1b11740b5974",
+            "manualView": "A newly created Tortilla project. For more information, see https://github.com/Urigo/tortilla."
+          }
+        ]
+      }
+    ]
+  }
+]
