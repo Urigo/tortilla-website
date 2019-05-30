@@ -49,12 +49,20 @@ const extractDiffs = (exports) => {
         return
       }
 
+      let parentNode = node
       let diffTitleNode = node.children[0]
 
       if (!diffTitleNode) return
 
       if (diffTitleNode.type === 'link' && diffTitleNode.children) {
+        parentNode = diffTitleNode
         diffTitleNode = diffTitleNode.children[0]
+      }
+
+      if (!diffTitleNode) return
+
+      if (diffTitleNode.type === 'strong') {
+        diffTitleNode = parentNode.children[1]
       }
 
       if (!diffTitleNode || diffTitleNode.type !== 'text') return
