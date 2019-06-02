@@ -14,7 +14,7 @@ const featuredMap = {
     imageSrc: '/img/whatsapp-angular.svg',
     backgroundColor: [39, 224, 192],
   },
-  'Urigo/WhatsApp-Clone-Tutorial/final': {
+  'Urigo/WhatsApp-Clone-Tutorial/master': {
     title: 'A React based Whatsapp clone',
     description: 'Using React, GraphQL, Apollo, PostgreSQL and TypeORM',
     imageSrc: '/img/whatsapp-react.svg',
