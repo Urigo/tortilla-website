@@ -23,7 +23,7 @@ const processMd = (doc, options = {}) => {
     .use(remarkGitHub, options)
     .use(html)
     .process(doc)
-    .then(html => ({ html, diffs }))
+    .then(html => ({ html: html.contents, diffs }))
 }
 
 // // A plugin that will extract all tortilla {{{diffStep}}}s given an ast by simply

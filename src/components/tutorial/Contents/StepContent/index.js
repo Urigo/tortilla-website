@@ -4,7 +4,7 @@ import {
   faQuestion,
   faDownload,
 } from '@fortawesome/free-solid-svg-icons'
-import { push } from 'gatsby'
+import { navigate } from 'gatsby'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
@@ -217,7 +217,7 @@ export default class extends React.Component {
       step: id,
     })
 
-    push(route)
+    navigate(route)
   }
 
   render() {

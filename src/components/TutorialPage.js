@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { push } from 'gatsby'
+import { navigate } from 'gatsby'
 import { faHistory } from '@fortawesome/free-solid-svg-icons'
 import featuredTutorials from '../featured-tutorials'
 import { stepRoute, diffRoute } from '../utils/routes'
@@ -209,7 +209,7 @@ class TutorialPage extends React.Component {
       step: 0,
     })
 
-    push(link)
+    navigate(link)
   }
 
   activateDiff = (srcVersion, destVersion) => {
@@ -221,11 +221,11 @@ class TutorialPage extends React.Component {
       destVersion: destVersion.number,
     })
 
-    push(link)
+    navigate(link)
   }
 
   navHome = () => {
-    push('/')
+    navigate('/')
   }
 
   resetScroller = () => {
