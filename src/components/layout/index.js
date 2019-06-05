@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components'
 import featuredTutorials from '../../featured-tutorials'
 import Theme from '../../themes/home'
 import Modal from '../common/Modal'
+import SeoHelmet from '../common/SeoHelmet'
 import SocialHelmet from '../common/SocialHelmet'
 
 import 'sweetalert2/dist/sweetalert2.css'
@@ -63,6 +64,7 @@ class Layout extends React.Component {
     return (
       <ThemeProvider theme={Theme}>
         <div style={{ position: 'relative' }}>
+          <SeoHelmet />
           <Helmet
             title={`tortilla.academy | ${description}`}
             meta={meta}

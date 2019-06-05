@@ -13,6 +13,7 @@ import { parseDiff } from '../../../../libs/react-diff-view'
 import { stepRoute } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
 import FaIcon from '../../../common/FaIcon'
+import SeoHelmet from '../../../common/SeoHelmet'
 import SocialHelmet from '../../../common/SocialHelmet'
 import Stepper from '../../../common/Stepper'
 import ImproveButton from '../../ImproveButton'
@@ -223,6 +224,7 @@ export default class extends React.Component {
   render() {
     return (
       <div ref={ref => (this.container = ReactDOM.findDOMNode(ref))}>
+        <SeoHelmet keywords={this.props.step.keywords} />
         <SocialHelmet
           description={`${this.props.tutorialTitle} - ${this.props.step.name}`}
           image={this.props.tutorialImage}

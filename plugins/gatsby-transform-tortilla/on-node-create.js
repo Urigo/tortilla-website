@@ -234,6 +234,7 @@ function getSteps(release) {
       name: manual.manualTitle.replace(/step [0-9]+\:[\ ]*/i, ''),
       content: manual.manualView,
       revision: manual.stepRevision,
+      keywords: manual.keywords || []
     }));
 }
 

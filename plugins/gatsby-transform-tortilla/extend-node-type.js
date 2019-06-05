@@ -53,9 +53,12 @@ module.exports = (
       revision: {
         type: GraphQLString,
       },
+      keywords: {
+        type: new GraphQLList(GraphQLString),
+      },
       diffs: {
         type: new GraphQLList(diffType),
-      },
+      }
     },
   })
 
