@@ -553,7 +553,7 @@ class HomePage extends React.Component {
                   <FeaturedTutorial
                     key={tutorialKey}
                     imgSrc={withPrefix(data.imageSrc)}
-                    link={`/${tutorialKey}/latest/step/0`}
+                    link={tutorialKey}
                     title={data.title}
                     description={data.description}
                     style={{

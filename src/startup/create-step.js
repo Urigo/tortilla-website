@@ -17,14 +17,12 @@ module.exports = async ({ createPage, createRedirect, common, params: { step } }
     })
   )
 
-  if (common.tutorialVersion == common.versionNumber) {
+  if (common.tutorialVersion == common.versionNumber && !step.id) {
     paths.push(
       stepRoute({
         repo: common.tutorialRepo,
         owner: common.tutorialAuthor.username,
-        branch: common.tutorialBranch,
-        version: 'latest',
-        step: step.id,
+        branch: common.tutorialBranch
       })
     )
   }

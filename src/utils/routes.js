@@ -1,7 +1,14 @@
 // @ts-check
 
-exports.stepRoute = ({ owner, repo, branch, version, step }) =>
-  `/${owner}/${repo}/${branch}/${version}/step/${step}`
+exports.stepRoute = ({ owner, repo, branch, version, step }) => {
+  let route = `/${owner}/${repo}/${branch}`
+
+  if (version) {
+    route += `/${version}/step/${step}`
+  }
+
+  return route
+}
 
 exports.diffRoute = ({ owner, repo, branch, srcVersion, destVersion }) =>
   `/${owner}/${repo}/${branch}/${destVersion}/diff/${srcVersion}`
