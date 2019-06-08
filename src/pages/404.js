@@ -1,10 +1,18 @@
-import React from 'react'
+import { navigate } from 'gatsby'
 
-const NotFoundPage = () => (
-  <div>
-    <h1>NOT FOUND</h1>
-    <p>You just hit a route that doesn't exist... the sadness.</p>
-  </div>
-)
+const NotFoundPage = (props) => {
+  const split = props['*'].split('/')
+
+  if (typeof window !== 'undefined') {
+    if (split.length > 3) {
+      navigate(split.slice(0, 3).join('/'))
+    }
+    else {
+      navigate('/')
+    }
+  }
+
+  return null
+}
 
 export default NotFoundPage

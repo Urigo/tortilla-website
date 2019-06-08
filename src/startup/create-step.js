@@ -1,10 +1,10 @@
-const path = require('path')
+const { resolve } = require('path')
 const { kebabCase } = require('lodash')
 const { stepRoute } = require('../utils/routes')
 
-const tutorialTemplate = path.resolve('src/templates/tutorial.js')
+const tutorialTemplate = resolve('src/templates/tutorial.js')
 
-module.exports = async ({ createPage, createRedirect, common, params: { step } }) => {
+module.exports = async ({ createPage, common, params: { step } }) => {
   const paths = []
 
   paths.push(
@@ -18,13 +18,13 @@ module.exports = async ({ createPage, createRedirect, common, params: { step } }
   )
 
   if (common.tutorialVersion == common.versionNumber && !step.id) {
-    paths.push(
-      stepRoute({
-        repo: common.tutorialRepo,
-        owner: common.tutorialAuthor.username,
-        branch: common.tutorialBranch
-      })
-    )
+    const alias = stepRoute({
+      repo: common.tutorialRepo,
+      owner: common.tutorialAuthor.username,
+      branch: common.tutorialBranch
+    })
+
+    paths.push(alias)
   }
 
   return Promise.all(paths.map(path =>

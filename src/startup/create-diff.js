@@ -1,13 +1,12 @@
 const { kebabCase } = require('lodash')
-const path = require('path')
+const { resolve } = require('path')
 const { diffReleases } = require('tortilla')
 const { diffRoute } = require('../utils/routes')
 
-const tutorialTemplate = path.resolve('src/templates/tutorial.js')
+const tutorialTemplate = resolve('src/templates/tutorial.js')
 
 module.exports = async ({
   createPage,
-  createRedirect,
   common,
   params: {
     srcVersionNumber,
@@ -17,29 +16,13 @@ module.exports = async ({
     tutorialChunk,
   },
 }) => {
-  const paths = []
-
-  paths.push(
-    diffRoute({
-      owner: common.tutorialAuthor.username,
-      repo: common.tutorialRepo,
-      branch: common.tutorialBranch,
-      srcVersion: srcVersionNumber,
-      destVersion: destVersionNumber,
-    })
-  )
-
-  if (common.tutorialVersion == common.versionNumber) {
-    paths.push(
-      diffRoute({
-        owner: common.tutorialAuthor.username,
-        repo: common.tutorialRepo,
-        branch: common.tutorialBranch,
-        srcVersion: 'latest',
-        destVersion: destVersionNumber,
-      })
-    )
-  }
+  const path = diffRoute({
+    owner: common.tutorialAuthor.username,
+    repo: common.tutorialRepo,
+    branch: common.tutorialBranch,
+    srcVersion: srcVersionNumber,
+    destVersion: destVersionNumber,
+  })
 
   const versionsDiff = await diffReleases(
     tutorialChunk,
@@ -47,22 +30,20 @@ module.exports = async ({
     srcVersionNumber
   )
 
-  return Promise.all(paths.map(path =>
-    createPage({
-      path,
-      component: tutorialTemplate,
-      context: {
-        ...common,
-        common,
-        contentType: 'diffs',
-        contentData: {
-          srcVersionNumber,
-          srcVersionHistory,
-          destVersionNumber,
-          destVersionHistory,
-          versionsDiff,
-        },
+  return createPage({
+    path,
+    component: tutorialTemplate,
+    context: {
+      ...common,
+      common,
+      contentType: 'diffs',
+      contentData: {
+        srcVersionNumber,
+        srcVersionHistory,
+        destVersionNumber,
+        destVersionHistory,
+        versionsDiff,
       },
-    })
-  ))
+    },
+  })
 }
