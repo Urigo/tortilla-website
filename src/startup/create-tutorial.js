@@ -8,7 +8,7 @@ const createStep = require('./create-step')
 
 const staticDirPath = path.resolve(process.cwd(), 'static')
 
-module.exports = async ({ tutorial, createPage }) => {
+module.exports = async ({ tutorial, createPage, createRedirect }) => {
   // Will be used later on to compose diff between versions.
   // Note that the transformation is done because we need to match the data in to
   // Tortilla's schema
@@ -110,6 +110,7 @@ module.exports = async ({ tutorial, createPage }) => {
         ...version.steps.map(step => {
           createStep({
             createPage,
+            createRedirect,
             common,
             params: { step },
           })

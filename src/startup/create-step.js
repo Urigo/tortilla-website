@@ -4,7 +4,9 @@ const { stepRoute } = require('../utils/routes')
 
 const tutorialTemplate = resolve('src/templates/tutorial.js')
 
-module.exports = async ({ createPage, common, params: { step } }) => {
+const aliasMap = {}
+
+module.exports = async ({ createRedirect, createPage, common, params: { step } }) => {
   const paths = []
 
   paths.push(
@@ -18,13 +20,28 @@ module.exports = async ({ createPage, common, params: { step } }) => {
   )
 
   if (common.tutorialVersion == common.versionNumber && !step.id) {
-    const alias = stepRoute({
+    const branchedAlias = stepRoute({
       repo: common.tutorialRepo,
       owner: common.tutorialAuthor.username,
       branch: common.tutorialBranch
     })
 
-    paths.push(alias)
+    paths.push(branchedAlias)
+
+    const branchlessAlias = stepRoute({
+      repo: common.tutorialRepo,
+      owner: common.tutorialAuthor.username
+    })
+
+    // Will only work in production
+    // /Urigo/WhatsApp -> /Urigo/WhatsApp/master
+    if (!aliasMap[branchlessAlias]) {
+      createRedirect({
+        fromPath: branchlessAlias,
+        toPath: branchedAlias,
+        isPermanent: true
+      })
+    }
   }
 
   return Promise.all(paths.map(path =>

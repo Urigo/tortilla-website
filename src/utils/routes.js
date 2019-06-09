@@ -1,7 +1,11 @@
 // @ts-check
 
 exports.stepRoute = ({ owner, repo, branch, version, step }) => {
-  let route = `/${owner}/${repo}/${branch}`
+  let route = `/${owner}/${repo}`
+
+  if (branch) {
+    route += `/${branch}`
+  }
 
   if (version) {
     route += `/${version}/step/${step}`
