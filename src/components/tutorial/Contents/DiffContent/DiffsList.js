@@ -9,6 +9,7 @@ import {
   parseDiff,
   Diff as ReactDiffView,
 } from '../../../../libs/react-diff-view'
+import CopyButton from '../../../common/CopyButton'
 import Thread from '../../../../utils/Thread'
 import DiffHeader from './DiffHeader'
 
@@ -544,6 +545,7 @@ class DiffsList extends React.Component {
       <Container path={keyPath}>
         <DiffHeader hidden={isHidden} onHideChange={onHideChange}>
           {header}
+          <CopyButton text={keyPath} />
         </DiffHeader>
         {!isHidden &&
           (isBinary ? (

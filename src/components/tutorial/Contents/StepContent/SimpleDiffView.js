@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Diff as ReactDiffView } from '../../../../libs/react-diff-view'
+import CopyButton from '../../../common/CopyButton'
 
 const baseStyle = `
   margin: 20px;
@@ -93,6 +94,8 @@ const DiffHeader = styled.div`
   margin: 10px;
   display: block;
   width: 100%;
+  display: flex;
+  align-items: center;
 `
 
 const SimpleDiffView = ({ file, title }) => {
@@ -144,7 +147,10 @@ const SimpleDiffView = ({ file, title }) => {
 
   return (
     <Container>
-      <DiffHeader>{projectTitle(title)}</DiffHeader>
+      <DiffHeader>
+        <div>{projectTitle(title)}</div>
+        <CopyButton text={title.split(' ').pop()} />
+      </DiffHeader>
       <ReactDiffView hunks={hunks} viewType="unified" />
     </Container>
   )
