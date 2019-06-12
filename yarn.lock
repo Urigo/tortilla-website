@@ -9913,6 +9913,11 @@ remark-html@^9.0.0:
     mdast-util-to-hast "^4.0.0"
     xtend "^4.0.1"
 
+remark-iframes@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/remark-iframes/-/remark-iframes-3.0.8.tgz#21765d0d269dea690ebc4b163441b9147865bd6c"
+  integrity sha512-KleBQQorAQHXtfoAyatzFrLBsyq/MDGcYvjymX93TpXy3C68fYm1FhtKewPg28ro3k8r0P1COOFBrZGwk7MQAg==
+
 remark-parse@^6.0.0:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/remark-parse/-/remark-parse-6.0.3.tgz#c99131052809da482108413f87b0ee7f52180a3a"

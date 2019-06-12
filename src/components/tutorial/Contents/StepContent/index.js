@@ -165,6 +165,12 @@ const Html = styled.div`
   h4 {
     font-weight: normal;
   }
+
+  iframe {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 `
 
 export default class extends React.Component {

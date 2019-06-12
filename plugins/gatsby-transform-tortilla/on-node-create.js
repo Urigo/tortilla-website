@@ -3,6 +3,7 @@
 const crypto = require('crypto')
 const remark = require('remark')
 const html = require('remark-html')
+const remarkIframes = require('remark-iframes')
 const lljs = require('lowlight')
 const highlight = require('remark-highlight.js')
 const remarkGitHub = require('../remark-github')
@@ -24,6 +25,25 @@ const processMd = (doc, options = {}) => {
     .use(highlight)
     .use(remarkGitHub, options)
     .use(html)
+    .use(remarkIframes, {
+      // Adds custom iframes syntax so we can play YouTube videos
+      // !(https://www.youtube.com/watch?v=8TQIvdFl4aU)
+     'www.youtube.com': {
+        tag: 'iframe',
+        width: 560,
+        height: 315,
+        disabled: false,
+        replace: [
+          ['watch?v=', 'embed/'],
+          ['http://', 'https://'],
+        ],
+        thumbnail: {
+          format: 'http://img.youtube.com/vi/{id}/0.jpg',
+          id: '.+/(.+)$'
+        },
+        removeAfter: '&'
+      }
+    })
     .process(doc)
     .then(html => ({ html: html.contents, diffs }))
 }

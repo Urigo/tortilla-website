@@ -43,6 +43,7 @@
     "react-modal": "^3.8.1",
     "react-rating": "^1.7.2",
     "remark-highlight.js": "^5.1.0",
+    "remark-iframes": "^3.0.8",
     "sendmail": "^1.4.1",
     "setimmediate": "^1.0.5",
     "styled-components": "^4.2.1",
