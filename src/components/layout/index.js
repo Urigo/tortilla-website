@@ -11,8 +11,6 @@ import SeoHelmet from '../common/SeoHelmet'
 import 'sweetalert2/dist/sweetalert2.css'
 import './index.css'
 
-const description = 'Full JavaScript tutorials for free'
-
 Modal.setAppElement('#___gatsby')
 
 const link = [
@@ -38,7 +36,6 @@ const meta = [
   },
   { name: 'twitter:card', content: 'summary' },
   { property: 'og:type', content: 'website' },
-  { name: 'Description', content: description }
 ]
 
 const script = [
@@ -64,13 +61,12 @@ class Layout extends React.Component {
       <ThemeProvider theme={Theme}>
         <div style={{ position: 'relative' }}>
           <Helmet
-            title={`tortilla.academy | ${description}`}
             meta={meta}
             link={link}
             script={script}
           />
           <SeoHelmet
-            url={process.env.GATSBY_ORIGIN}
+            url="/"
             title={featuredTutorials.default.title}
             description={featuredTutorials.default.description}
             image={withPrefix('Logo/logo.cover.png')}

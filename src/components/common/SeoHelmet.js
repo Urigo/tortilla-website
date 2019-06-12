@@ -17,13 +17,15 @@ const normalizeUrl = url => {
 const SeoHelmet = props => {
   const meta = []
   const keywords = ['tortilla', 'tutorial', 'guide', 'tutor', 'tutoring', 'step by step']
+  const optional = {}
 
   if (props.url) {
-    meta.push({ property: 'og:url', content: props.url })
+    meta.push({ property: 'og:url', content: normalizeUrl(props.url) })
   }
 
   if (props.title) {
-    meta.push({ property: 'og:title', content: props.title })
+    optional.title = `tortilla.academy | ${props.title}`
+    meta.push({ property: 'og:title', content: optional.title })
   }
 
   if (props.description) {
@@ -41,7 +43,7 @@ const SeoHelmet = props => {
 
   meta.push({ name: 'keywords', contnet: keywords.join(', ') })
 
-  return <Helmet meta={meta} />
+  return <Helmet meta={meta} {...optional} />
 }
 
 export default SeoHelmet

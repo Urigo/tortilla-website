@@ -41,7 +41,7 @@ Object.defineProperty(featuredMap, 'default', {
   configurable: true,
   writable: true,
   value: {
-    title: 'tortilla.academy | Full JavaScript tutorials for free',
+    title: 'Full JavaScript tutorials for free',
     description:
       'The best JavaScript tutorial-base in the world for absolutely FREE',
     imageSrc: '/Logo/logo.svg',

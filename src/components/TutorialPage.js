@@ -7,6 +7,7 @@ import { faHistory } from '@fortawesome/free-solid-svg-icons'
 import featuredTutorials from '../featured-tutorials'
 import { stepRoute, diffRoute } from '../utils/routes'
 import FaIcon from './common/FaIcon'
+import SeoHelmet from './common/SeoHelmet'
 import Layout from './layout'
 import { DiffContent, StepContent } from './tutorial/Contents'
 import { GithubAuthor } from './tutorial/GithubAuthor'
@@ -109,6 +110,9 @@ class TutorialPage extends React.Component {
 
     return (
       <Layout>
+        <SeoHelmet
+          title={featuredTutorial ? featuredTutorial.title : this.props.tutorial.title}
+        />
         <Container>
           <Display>
             <MainContentContainer

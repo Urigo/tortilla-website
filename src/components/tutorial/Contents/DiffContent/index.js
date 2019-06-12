@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
 import storage from '../../../../utils/storage'
+import { diffRoute } from '../../../../utils/routes'
 import Button from '../../../common/Button'
 import SeoHelmet from '../../../common/SeoHelmet'
 import DiffsList from './DiffsList'
@@ -212,6 +213,17 @@ export default class extends React.Component {
       this.props.scrollerStyle.height = this.props.scrollerHeight
     }
 
+    // This is different than fetching the current location directly from history,
+    // because a manual composed route will always result in the same value while the
+    // current location is subject to change due to redirections and aliases.
+    const url = diffRoute({
+      owner: this.props.tutorial.author.username,
+      repo: this.props.tutorial.repo,
+      branch: this.props.tutorial.branch,
+      srcVersion: this.props.srcVersion,
+      destVersion: this.props.destVersion
+    })
+
     return (
       <Container ref={ref => (this.container = ReactDOM.findDOMNode(ref))}>
         <SeoHelmet
@@ -219,6 +231,7 @@ export default class extends React.Component {
             this.props.srcVersion
           }`}
           image={this.props.tutorialImage}
+          url={url}
         />
         {this.state.pickingFiles && (
           <>

@@ -221,12 +221,24 @@ export default class extends React.Component {
   }
 
   render() {
+    // This is different than fetching the current location directly from history,
+    // because a manual composed route will always result in the same value while the
+    // current location is subject to change due to redirections and aliases.
+    const url = stepRoute({
+      owner: this.props.tutorial.author.username,
+      repo: this.props.tutorial.repo,
+      branch: this.props.tutorial.branch,
+      version: this.props.tutorial.version.number,
+      step: this.props.step.id,
+    })
+
     return (
       <div ref={ref => (this.container = ReactDOM.findDOMNode(ref))}>
         <SeoHelmet
           description={`${this.props.tutorialTitle} - ${this.props.step.name}`}
           keywords={this.props.step.keywords}
           image={this.props.tutorialImage}
+          url={url}
         />
         {this.state.stepsMenuOpen && (
           <MenuContainer
