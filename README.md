@@ -1,5 +1,7 @@
 # tortilla-website
 
+[![CircleCI](https://circleci.com/gh/Urigo/tortilla-website.svg?style=svg&circle-token=f7610ce3a32422af6ba8b56ba27d881adc454001)](https://circleci.com/gh/Urigo/tortilla-website)
+
 To run the app (port 8000):
 
     yarn app
