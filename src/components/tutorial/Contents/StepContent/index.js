@@ -14,7 +14,6 @@ import { stepRoute } from '../../../../utils/routes'
 import storage from '../../../../utils/storage'
 import FaIcon from '../../../common/FaIcon'
 import SeoHelmet from '../../../common/SeoHelmet'
-import SocialHelmet from '../../../common/SocialHelmet'
 import Stepper from '../../../common/Stepper'
 import ImproveButton from '../../ImproveButton'
 import SimpleDiffView from './SimpleDiffView'
@@ -224,9 +223,9 @@ export default class extends React.Component {
   render() {
     return (
       <div ref={ref => (this.container = ReactDOM.findDOMNode(ref))}>
-        <SeoHelmet keywords={this.props.step.keywords} />
-        <SocialHelmet
+        <SeoHelmet
           description={`${this.props.tutorialTitle} - ${this.props.step.name}`}
+          keywords={this.props.step.keywords}
           image={this.props.tutorialImage}
         />
         {this.state.stepsMenuOpen && (

@@ -7,7 +7,6 @@ import featuredTutorials from '../../featured-tutorials'
 import Theme from '../../themes/home'
 import Modal from '../common/Modal'
 import SeoHelmet from '../common/SeoHelmet'
-import SocialHelmet from '../common/SocialHelmet'
 
 import 'sweetalert2/dist/sweetalert2.css'
 import './index.css'
@@ -64,14 +63,13 @@ class Layout extends React.Component {
     return (
       <ThemeProvider theme={Theme}>
         <div style={{ position: 'relative' }}>
-          <SeoHelmet />
           <Helmet
             title={`tortilla.academy | ${description}`}
             meta={meta}
             link={link}
             script={script}
           />
-          <SocialHelmet
+          <SeoHelmet
             url={process.env.GATSBY_ORIGIN}
             title={featuredTutorials.default.title}
             description={featuredTutorials.default.description}

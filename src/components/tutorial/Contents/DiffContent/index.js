@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import storage from '../../../../utils/storage'
 import Button from '../../../common/Button'
-import SocialHelmet from '../../../common/SocialHelmet'
+import SeoHelmet from '../../../common/SeoHelmet'
 import DiffsList from './DiffsList'
 
 const filesTreeBarHeight = '63px'
@@ -214,7 +214,7 @@ export default class extends React.Component {
 
     return (
       <Container ref={ref => (this.container = ReactDOM.findDOMNode(ref))}>
-        <SocialHelmet
+        <SeoHelmet
           description={`${this.props.tutorialTitle} - What's new in v${
             this.props.srcVersion
           }`}

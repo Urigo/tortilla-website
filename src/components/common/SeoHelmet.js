@@ -1,16 +1,47 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 
-const SeoHelmet = ({ keywords }) => {
-  keywords = [...keywords, 'tortilla', 'tutorial', 'guide', 'tutor', 'tutoring', 'step by step']
-
-  return <Helmet meta={[
-    { name: 'keywords', content: keywords }
-  ]} />
+const normalizeUrl = url => {
+  return (
+    process.env.GATSBY_ORIGIN +
+    '/' +
+    url
+      .split('/')
+      .filter(Boolean)
+      .join('/')
+  )
 }
 
-SeoHelmet.defaultProps = {
-  keywords: []
+// This will update all the metadata which is relevant for all social medias using
+// a single set of props
+const SeoHelmet = props => {
+  const meta = []
+  const keywords = ['tortilla', 'tutorial', 'guide', 'tutor', 'tutoring', 'step by step']
+
+  if (props.url) {
+    meta.push({ property: 'og:url', content: props.url })
+  }
+
+  if (props.title) {
+    meta.push({ property: 'og:title', content: props.title })
+  }
+
+  if (props.description) {
+    meta.push({ property: 'og:description', content: props.description })
+  }
+
+  if (props.image) {
+    meta.push({ property: 'og:image', content: normalizeUrl(props.image) })
+    meta.push({ name: 'twitter:image', content: normalizeUrl(props.image) })
+  }
+
+  if (props.keywords) {
+    keywords.push(...props.keywords)
+  }
+
+  meta.push({ name: 'keywords', contnet: keywords.join(', ') })
+
+  return <Helmet meta={meta} />
 }
 
 export default SeoHelmet
