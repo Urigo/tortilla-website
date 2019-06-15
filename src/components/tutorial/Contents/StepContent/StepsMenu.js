@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { navigate } from 'gatsby'
 
 import { stepRoute } from '../../../../utils/routes'
-import storage from '../../../../utils/storage'
+import session from '../../../../utils/session'
 
 const Steps = styled.div`
   display: block;
@@ -14,7 +14,7 @@ const Steps = styled.div`
   width: 100%;
 `
 
-const Number = styled.div`
+const StepNumber = styled.div`
   min-width: 30px;
   font-size: 17px;
   font-weight: 800;
@@ -58,7 +58,7 @@ const ActiveStep = styled(Step) `
     outline-offset: -2px;
   }
 
-  ${Number} {
+  ${StepNumber} {
     color: ${({ theme }) => theme.primaryBlue};
     background-color: white;
     border-color: ${({ theme }) => theme.primaryBlue};
@@ -93,17 +93,23 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    this.scrollToActive()
+    // For some reason, probably because of the way Gatsby works, the view will be painted
+    // only in the next event phase.
+    setImmediate(() => {
+      this.scrollToActive()
+    })
   }
 
   scrollToActive() {
-    // XXX: We can change this behavior later
     const pos = this.read()
 
-    if (this.activeRef) {
+    if (isNaN(pos)) {
+      if (this.containerRef) {
+        this.containerRef.scrollTop = pos
+      }
+    }
+    else if (this.activeRef) {
       this.activeRef.scrollIntoView(false)
-    } else {
-      this.containerRef.parentElement.scrollTop = pos
     }
   }
 
@@ -114,18 +120,18 @@ export default class extends React.Component {
   }
 
   save() {
-    storage.setItem(
+    session.setItem(
       'steps-menu-position',
-      this.containerRef.parentElement.scrollTop
+      this.containerRef.scrollTop
     )
   }
 
   read() {
-    const pos = storage.getItem('steps-menu-position')
+    const pos = session.getItem('steps-menu-position')
 
-    storage.removeItem('steps-menu-position')
+    session.removeItem('steps-menu-position')
 
-    return pos || 0
+    return Number(pos) || 0
   }
 
   render() {
@@ -139,14 +145,14 @@ export default class extends React.Component {
           if (active) {
             return (
               <ActiveStep key={step.id} ref={this.setActiveRef}>
-                <Number>{step.id}</Number>
+                <StepNumber>{step.id}</StepNumber>
                 <Name>{step.name}</Name>
               </ActiveStep>
             )
           }
           return (
             <Step key={step.id} onClick={() => this.navigate(link)}>
-              <Number>{step.id}</Number>
+              <StepNumber>{step.id}</StepNumber>
               <Name>{step.name}</Name>
             </Step>
           )
