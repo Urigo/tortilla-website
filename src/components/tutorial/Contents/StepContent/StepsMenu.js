@@ -93,6 +93,9 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
+    this.pos = this.read()
+    this.initial = isNaN(this.pos)
+
     // For some reason, probably because of the way Gatsby works, the view will be painted
     // only in the next event phase.
     setImmediate(() => {
@@ -101,15 +104,13 @@ export default class extends React.Component {
   }
 
   scrollToActive() {
-    const pos = this.read()
-
-    if (isNaN(pos)) {
-      if (this.containerRef) {
-        this.containerRef.scrollTop = pos
+    if (this.initial) {
+      if (this.activeRef) {
+        this.activeRef.scrollIntoView(false)
       }
     }
-    else if (this.activeRef) {
-      this.activeRef.scrollIntoView(false)
+    else if (this.containerRef) {
+      this.containerRef.scrollTop = this.pos
     }
   }
 
@@ -140,7 +141,6 @@ export default class extends React.Component {
         {this.props.tutorialVersion.steps.map(step => {
           const active =
             this.props.activeStep && step.id === this.props.activeStep.id
-          const link = propsToLink(this.props, step)
 
           if (active) {
             return (
@@ -151,7 +151,7 @@ export default class extends React.Component {
             )
           }
           return (
-            <Step key={step.id} onClick={() => this.navigate(link)}>
+            <Step key={step.id} onClick={() => this.onChangeStep(step)}>
               <StepNumber>{step.id}</StepNumber>
               <Name>{step.name}</Name>
             </Step>
@@ -159,5 +159,20 @@ export default class extends React.Component {
         })}
       </Steps>
     )
+  }
+
+  onChangeStep = (step) => {
+    const onChangeStep = typeof this.props.onChangeStep === 'function'
+      ? this.props.onChangeStep : () => {}
+
+    const promise = Promise.resolve(onChangeStep(step))
+
+    promise.then(() => this.navigateToStep(step))
+  }
+
+  navigateToStep = (step) => {
+    const link = propsToLink(this.props, step)
+
+    this.navigate(link)
   }
 }

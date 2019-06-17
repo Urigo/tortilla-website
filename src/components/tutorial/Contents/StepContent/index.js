@@ -269,10 +269,11 @@ export default class extends React.Component {
               activeStep={this.props.step}
               pathname={this.props.location.pathname}
               style={{ height: 'calc(100% - 65px)' }}
+              onChangeStep={this.onChangeStep}
             />
           </MenuContainer>
         )}
-        <ContentContainer style={this.contentContainerStyle}>
+        <ContentContainer style={this.contentContainerStyle} ref={ref => this.contentEl = ref && ReactDOM.findDOMNode(ref)}>
           {this.renderBar(Header)}
           <Html
             ref={ref => (this.htmlEl = ReactDOM.findDOMNode(ref))}
@@ -467,5 +468,11 @@ export default class extends React.Component {
     // Note that position: sticky doesn't work and if so has poor comparability
     this.stepsMenu.style.top = top
     this.stepsMenu.style.height = `calc(100% - ${top})`
+  }
+
+  onChangeStep = (step) => {
+    const animation = this.contentEl.animate([{ opacity: 1 }, { opacity: 0 }], 500)
+
+    return animation.finished
   }
 }
