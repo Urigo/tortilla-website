@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
 
 import Button from '../common/Button'
 import FaIcon from '../common/FaIcon'
@@ -14,7 +14,7 @@ const IconContainer = styled.div`
   color: ${({ theme }) => theme.blueGray};
 `
 const Icon = styled(FaIcon).attrs({
-  icon: faPencilAlt,
+  icon: faDownload,
   size: 17,
 })``
 
@@ -26,7 +26,7 @@ const Text = styled.a`
   text-align: center;
 `
 
-const ImproveButton = styled(Button) `
+const DownloadButton = styled(Button) `
   height: 40px;
   padding: 5px;
   display: flex;
@@ -37,15 +37,12 @@ const ImproveButton = styled(Button) `
   border: 1px solid ${({ theme }) => theme.separator};
 `
 
-const getEditHref = ({ url, branch, step }) =>
-  `${url}/edit/${branch}/.tortilla/manuals/templates/step${step}.tmpl`
-
 export default props => (
-  <ImproveButton style={props.style}>
+  <DownloadButton>
     <IconContainer>
-      <Text href={getEditHref(props)}>
+      <Text href={props.url}>
         <Icon />
       </Text>
     </IconContainer>
-  </ImproveButton>
+  </DownloadButton>
 )

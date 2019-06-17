@@ -15,6 +15,7 @@ import storage from '../../../../utils/storage'
 import FaIcon from '../../../common/FaIcon'
 import SeoHelmet from '../../../common/SeoHelmet'
 import Stepper from '../../../common/Stepper'
+import DownloadButton from '../../DownloadButton'
 import ImproveButton from '../../ImproveButton'
 import SimpleDiffView from './SimpleDiffView'
 import StepsHeader from './StepsHeader'
@@ -298,13 +299,17 @@ export default class extends React.Component {
           {!this.state.stepsMenuOpen && (
             <ShowStepsButton onClick={this.openStepsMenu} />
           )}
-          {this.props.tutorial.repo && (
+          {this.props.tutorial.repo && <React.Fragment>
             <ImproveButton
               step={step.id}
+              style={{ marginRight: '10px' }}
               url={this.props.tutorial.repo}
               branch={this.props.tutorial.branch}
             />
-          )}
+            <DownloadButton
+              url={`https://github.com/${this.props.tutorial.author.username}/${this.props.tutorial.repo}/archive/${step.revision}.zip`}
+            />
+          </React.Fragment>}
           <Info>
             <Stepper
               limit={stepsNum - 1}
