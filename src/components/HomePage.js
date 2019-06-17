@@ -416,15 +416,6 @@ class HomePage extends React.Component {
     // Safety stub
   }
 
-  getStarted = () => {
-    const contactForm = this.contactFormRef.current
-
-    if (contactForm) {
-      window.scrollTo(0, 99999)
-      contactForm.focus()
-    }
-  }
-
   render() {
     return (
       <Layout key={this.state.deviceType}>
@@ -462,9 +453,9 @@ class HomePage extends React.Component {
             </div>
             {device.desktop.active && (
               <>
-                <div className="_start-btn" onClick={this.getStarted}>
+                <a className="_start-btn" href={'https://www.npmjs.com/package/tortilla'}>
                   Get Started
-                </div>
+                </a>
               </>
             )}
           </IntroDiv>
