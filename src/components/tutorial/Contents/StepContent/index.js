@@ -303,7 +303,7 @@ export default class extends React.Component {
             <ImproveButton
               step={step.id}
               style={{ marginRight: '10px' }}
-              url={this.props.tutorial.repo}
+              url={`https://github.com/${this.props.tutorial.author.username}/${this.props.tutorial.repo}`}
               branch={this.props.tutorial.branch}
             />
             <DownloadButton

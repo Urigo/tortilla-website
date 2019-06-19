@@ -37,8 +37,11 @@ const ImproveButton = styled(Button) `
   border: 1px solid ${({ theme }) => theme.separator};
 `
 
-const getEditHref = ({ url, branch, step }) =>
-  `${url}/edit/${branch}/.tortilla/manuals/templates/step${step}.tmpl`
+const getEditHref = ({ url, branch, step }) => {
+  const templateName = step ? `step${step}` : 'root'
+
+  return `${url}/edit/${branch}/.tortilla/manuals/templates/${templateName}.tmpl`
+}
 
 export default props => (
   <ImproveButton style={props.style}>
