@@ -411,7 +411,12 @@ export default class extends React.Component {
       const stepTitle = commitEl.innerHTML
       // e.g. Client Step 1.1
       // Tortilla was updated to render the submodule name prior to the step
-      const [prefix] = stepTitle.match(/^([\w-]+ )?[Ss]tep \d+(\.\d+)?/) || []
+      let prefix = ''
+      {
+        const [, submodule, stepIndex] = stepTitle.match(/^(?:<strong>([\w-]+)<\/strong> )?[Ss]tep (\d+(?:\.\d+)?)/) || []
+        if (stepIndex) prefix = stepIndex
+        if (submodule) prefix = `${submodule} ${prefix}`
+      }
       const questionEl = document.createElement('a')
       const downloadEl = document.createElement('a')
 
