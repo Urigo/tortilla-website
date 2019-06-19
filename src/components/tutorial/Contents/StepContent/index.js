@@ -7,7 +7,7 @@ import {
 import { navigate } from 'gatsby'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 
 import { parseDiff } from '../../../../libs/react-diff-view'
 import { stepRoute } from '../../../../utils/routes'
@@ -17,11 +17,12 @@ import SeoHelmet from '../../../common/SeoHelmet'
 import Stepper from '../../../common/Stepper'
 import DownloadButton from '../../DownloadButton'
 import ImproveButton from '../../ImproveButton'
+import Theme from '../../../../themes/home'
 import SimpleDiffView from './SimpleDiffView'
 import StepsHeader from './StepsHeader'
 import StepsMenu from './StepsMenu'
 
-const occupied = Symbol('occupied')
+const internal = Symbol('internal')
 const MenuWidth = 300
 
 const MenuContainer = styled.div`
@@ -197,9 +198,9 @@ export default class extends React.Component {
     window.addEventListener('scroll', this.resetStepsMenuDimensions, true)
 
     this.resetStepsMenuDimensions()
-    this.appendDiffs()
     this.fixImages()
     this.fixStepsRefs()
+    this.appendDiffs()
   }
 
   componentWillUnmount() {
@@ -208,9 +209,9 @@ export default class extends React.Component {
 
   componentDidUpdate(props) {
     if (props.step.id !== this.props.step.id) {
-      this.appendDiffs()
       this.fixImages()
       this.fixStepsRefs()
+      this.appendDiffs()
       this.props.resetScroller()
     }
   }
@@ -323,7 +324,7 @@ export default class extends React.Component {
   }
 
   // TODO: Apply during build
-  appendDiffs = async (diff, anchor, file) => {
+  appendDiffs = async (diff, anchor, file, rawUrl, submodule) => {
     if (!diff) {
       return Promise.all(
         this.props.step.diffs.map(diff => {
@@ -339,11 +340,22 @@ export default class extends React.Component {
         return (
           node.tagName === 'H4' &&
           node.innerText.match(title) &&
-          !node[occupied]
+          !node[internal].occupied
         )
       })
 
-      anchor[occupied] = true
+      const commitHref = anchor[internal].hrefs.commit
+      const submodule = anchor[internal].submodule
+      anchor[internal] = anchor[internal] || {}
+      anchor[internal].occupied = true
+
+      let rawUrl = ''
+      if (commitHref) {
+        const [owner, repo, , hash] = commitHref.split('/').slice(-4)
+        if (owner && repo && hash) {
+          rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${hash}`
+        }
+      }
 
       // We'll make it the user's responsibility
       const files = parseDiff(diff.value, {
@@ -358,7 +370,7 @@ export default class extends React.Component {
 
       return Promise.all(
         files.map(file => {
-          return this.appendDiffs(diff, anchors.shift(), file)
+          return this.appendDiffs(diff, anchors.shift(), file, rawUrl, submodule)
         })
       )
     }
@@ -369,11 +381,17 @@ export default class extends React.Component {
 
     return new Promise(resolve => {
       ReactDOM.render(
-        <SimpleDiffView
-          file={file}
-          title={anchor.innerHTML}
-          key={`${file.oldPath}_${file.newPath}`}
-        />,
+        <ThemeProvider theme={Theme}>
+          <SimpleDiffView
+            file={file}
+            submodule={submodule}
+            title={anchor.innerHTML}
+            tutorial={this.props.tutorial}
+            step={this.props.step}
+            rawUrl={rawUrl}
+            key={`${file.oldPath}_${file.newPath}`}
+          />
+        </ThemeProvider>,
         container,
         () => {
           anchor.remove()
@@ -412,11 +430,10 @@ export default class extends React.Component {
       // e.g. Client Step 1.1
       // Tortilla was updated to render the submodule name prior to the step
       let prefix = ''
-      {
-        const [, submodule, stepIndex] = stepTitle.match(/^(?:<strong>([\w-]+)<\/strong> )?[Ss]tep (\d+(?:\.\d+)?)/) || []
-        if (stepIndex) prefix = stepIndex
-        if (submodule) prefix = `${submodule} ${prefix}`
-      }
+      const [, submodule, stepIndex] = stepTitle.match(/^(?:<strong>([\w-]+)<\/strong> )?[Ss]tep (\d+(?:\.\d+)?)/) || []
+      if (stepIndex) prefix = stepIndex
+      if (submodule) prefix = `${submodule} ${prefix}`
+
       const questionEl = document.createElement('a')
       const downloadEl = document.createElement('a')
 
@@ -428,6 +445,14 @@ export default class extends React.Component {
       questionEl.href = `${this.props.tutorial.repoUrl}/issues/new?title=[${prefix}]`
       questionEl.target= '_blank'
       downloadEl.href = commitEl.href.replace('commit', 'archive') + '.zip'
+
+      titleEl[internal] = titleEl[internal] || {}
+      titleEl[internal].submodule = submodule
+      titleEl[internal].hrefs = {
+        commit: commitEl.href,
+        question: questionEl.href,
+        download: downloadEl.href,
+      }
       titleEl.innerHTML = stepTitle + ' '
       titleEl.appendChild(commitEl)
       titleEl.appendChild(questionEl)
