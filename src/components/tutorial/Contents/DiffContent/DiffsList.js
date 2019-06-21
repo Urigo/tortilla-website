@@ -185,9 +185,9 @@ class DiffsList extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('scroll', this.onScroll)
-    document.addEventListener('mousedown', this.onMouseDown)
-    document.addEventListener('mouseup', this.onMouseUp)
+    document.addEventListener('scroll', this.onScroll, true)
+    document.addEventListener('mousedown', this.onMouseDown, true)
+    document.addEventListener('mouseup', this.onMouseUp, true)
     this.buildFilesDiffs(this.props.paths)
   }
 
@@ -219,9 +219,9 @@ class DiffsList extends React.Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('scroll', this.onScroll)
-    document.removeEventListener('mousedown', this.onMouseDown)
-    document.removeEventListener('mouseup', this.onMouseUp)
+    document.removeEventListener('scroll', this.onScroll, true)
+    document.removeEventListener('mousedown', this.onMouseDown, true)
+    document.removeEventListener('mouseup', this.onMouseUp, true)
     this.stopThread()
   }
 
