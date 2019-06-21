@@ -174,23 +174,19 @@ const SimpleDiffView = ({ file, title, tutorial, step, rawUrl, submodule }) => {
     setEditText('')
   }, [setEditing, setEditText])
 
-  const submitFileChanges = useCallback((newFileContent) => {
+  const submitFileChanges = useCallback(({ contents, purpose }) => {
     setEditing(false)
     setEditText('')
 
     const filePath = title.split(' ').pop()
-    const issueTitle = `[${submodule} ${step.id}] update ${filePath}`
+    const issueTitle = `[${submodule} Step ${step.id}] change ${filePath}`
 
     const body = freeText(`
-      **${issueTitle}**
+      ==>${purpose}<==
 
       \`\`\`${extension}
-      ==>${newFileContent}<==
+      ==>${contents}<==
       \`\`\`
-
-      **Description**
-
-      Write a short summary that describes your changes to the file...
     `)
 
     const a = document.createElement('a')

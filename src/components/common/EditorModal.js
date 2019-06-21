@@ -25,26 +25,46 @@ const Container = (() => {
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
 
     .CodeMirror {
-      width: calc(100% - ${margin * 2}px);
-      height: calc(100% - ${margin * 2}px - 30px);
-      margin: ${margin}px;
-      margin-bottom: 22.5px;
-      border: 1px solid gray;
-      border-radius: 2px;
+      width: 100%;
+      height: 100%;
+      margin-top: 10px;
+      border: 1px solid silver;
+
+      // In production it's not white
+      pre {
+        background-color: white;
+      }
     }
   `
 })()
 
-const TextArea = (() => {
+const PurposeInput = styled.input.attrs({
+  type: 'text',
+  placeholder: 'Purpose of changes...',
+}) `
+  border: 1px solid silver;
+  padding-left: 5px;
+  padding-right: 5px;
+`
+
+const ContentsInput = styled.textarea `
+  flex: 1;
+  margin-top: 10px;
+  border: 1px solid silver;
+  padding-left: 5px;
+  resize: none;
+`
+
+const InputFields = (() => {
   const margin = 50
 
-  return styled.textarea `
-    display: block;
+  return styled.div `
+    display: flex;
+    flex-direction: column;
     width: calc(100% - ${margin * 2}px);
     height: calc(100% - ${margin * 2}px - 30px);
     margin: ${margin}px;
     margin-bottom: 22.5px;
-    resize: none;
   `
 })()
 
@@ -76,27 +96,32 @@ const EditorModal = ({ extension, text, onSubmit, onClose }) => {
   onSubmit = useMemo(() => typeof onSubmit === 'function' ? onSubmit : () => {}, [onSubmit])
   onClose = useMemo(() => typeof onClose === 'function' ? onClose : () => {}, [onClose])
   const [CodeMirror, setCodeMirror] = useState(null)
-  const [value, setValue] = useState('')
+  const [purpose, setPurpose] = useState('')
+  const [contents, setContents] = useState('')
   const [editor, setEditor] = useState(null)
   const [modeImported, setModeImported] = useState(false)
   const loading = useMemo(() => !text || !CodeMirror || !modeImported, [text, CodeMirror, modeImported])
   const mode = useMemo(() => ((CodeMirror && CodeMirror.findModeByExtension(extension)) || {}).mode, [extension, CodeMirror])
-  const textareaRef = useRef(null)
+  const contentsRef = useRef(null)
   const shimRef = useRef(null)
 
   const close = useCallback(() => {
     onClose()
   }, [onClose])
 
-  const updateValue = useCallback((e) => {
-    setValue(e.target.value)
-  }, [setValue])
+  const updatePurpose = useCallback((e) => {
+    setPurpose(e.target.value)
+  }, [setPurpose])
+
+  const updateContents = useCallback((e) => {
+    setContents(e.target.value)
+  }, [setContents])
 
   const submit = useCallback(() => {
     if (loading) return
 
-    onSubmit(value)
-  }, [loading, value, onSubmit])
+    onSubmit({ contents, purpose })
+  }, [loading, contents, purpose, onSubmit])
 
   const onShimClick = useCallback((e) => {
     if (!shimRef.current) return
@@ -106,25 +131,25 @@ const EditorModal = ({ extension, text, onSubmit, onClose }) => {
   }, [shimRef.current, close])
 
   useEffect(() => {
-    setValue(loading ? 'Loading...' : text)
+    setContents(loading ? 'Loading...' : text)
   }, [text, loading])
 
   useEffect(() => {
-    if (!textareaRef.current) return
+    if (!contentsRef.current) return
     if (loading) return
     if (editor) return
 
-    setEditor(CodeMirror.fromTextArea(textareaRef.current, {
+    setEditor(CodeMirror.fromTextArea(contentsRef.current, {
       lineNumbers: true,
       mode,
     }))
-  }, [textareaRef.current, CodeMirror, loading, editor, mode])
+  }, [contentsRef.current, CodeMirror, loading, editor, mode])
 
   useEffect(() => {
     if (!editor) return
 
     const onChange = (e) => {
-      setValue(editor.getDoc().getValue())
+      setContents(editor.getDoc().getValue())
     }
 
     editor.getDoc().setValue(text)
@@ -133,7 +158,7 @@ const EditorModal = ({ extension, text, onSubmit, onClose }) => {
     return () => {
       editor.off('change', onChange)
     }
-  }, [editor, text, setValue])
+  }, [editor, text, setContents])
 
   useEffect(() => {
     const onKeyPress = (e) => {
@@ -178,8 +203,11 @@ const EditorModal = ({ extension, text, onSubmit, onClose }) => {
     <Shim onClick={onShimClick} ref={shimRef}>
       <Container>
         <CloseButton onClick={close}>x</CloseButton>
-        <TextArea onChange={updateValue} disabled={loading} value={value} resizable={false} ref={textareaRef} tabIndex={0} />
-        <SubmitButton onClick={submit} disabled={loading}>submit</SubmitButton>
+        <InputFields>
+          <PurposeInput onChange={updatePurpose} value={purpose} tabIndex={0} />
+          <ContentsInput onChange={updateContents} disabled={loading} value={contents} resizable={false} ref={contentsRef} tabIndex={1} />
+        </InputFields>
+        <SubmitButton onClick={submit} disabled={loading} tabIndex={2}>submit</SubmitButton>
       </Container>
     </Shim>
   )

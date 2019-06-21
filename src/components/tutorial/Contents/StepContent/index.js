@@ -431,7 +431,7 @@ export default class extends React.Component {
       // Tortilla was updated to render the submodule name prior to the step
       let prefix = ''
       const [, submodule, stepIndex] = stepTitle.match(/^(?:<strong>([\w-]+)<\/strong> )?[Ss]tep (\d+(?:\.\d+)?)/) || []
-      if (stepIndex) prefix = stepIndex
+      if (stepIndex) prefix = `Step ${stepIndex}`
       if (submodule) prefix = `${submodule} ${prefix}`
 
       const questionEl = document.createElement('a')
@@ -442,7 +442,7 @@ export default class extends React.Component {
       ReactDOM.render(<FaIcon icon={faDownload} />, downloadEl)
 
       commitEl.target= '_blank'
-      questionEl.href = `${this.props.tutorial.repoUrl}/issues/new?title=[${prefix}]`
+      questionEl.href = `${this.props.tutorial.repoUrl}/issues/new?title=[${prefix}]&labels=question`
       questionEl.target= '_blank'
       downloadEl.href = commitEl.href.replace('commit', 'archive') + '.zip'
 
