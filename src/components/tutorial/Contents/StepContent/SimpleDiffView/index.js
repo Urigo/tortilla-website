@@ -194,7 +194,7 @@ const SimpleDiffView = ({ file, title, tutorial, step, rawUrl, submodule }) => {
     `)
 
     const a = document.createElement('a')
-    a.href = `https://github.com/${tutorial.author.username}/${tutorial.repo}/issues/new?title=${escape(issueTitle)}&body=${escape(body)}`
+    a.href = `https://github.com/${tutorial.author.username}/${tutorial.repo}/issues/new?title=${escape(issueTitle)}&body=${escape(body)}&labels=${escape('change request')}`
     a.target = '_blank'
     a.click()
   }, [setEditing, setEditText])
