@@ -28,6 +28,7 @@ const Container = (() => {
       width: calc(100% - ${margin * 2}px);
       height: calc(100% - ${margin * 2}px - 30px);
       margin: ${margin}px;
+      margin-bottom: 22.5px;
       border: 1px solid gray;
       border-radius: 2px;
     }
@@ -38,9 +39,11 @@ const TextArea = (() => {
   const margin = 50
 
   return styled.textarea `
+    display: block;
     width: calc(100% - ${margin * 2}px);
     height: calc(100% - ${margin * 2}px - 30px);
     margin: ${margin}px;
+    margin-bottom: 22.5px;
     resize: none;
   `
 })()
@@ -62,7 +65,6 @@ const SubmitButton = styled.button `
   padding: 5px 20px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -27.5px;
   color: ${({ theme }) => theme.primaryBlue};
   border: 1px solid ${({ theme }) => theme.primaryBlue};
   border-radius: 3px;
