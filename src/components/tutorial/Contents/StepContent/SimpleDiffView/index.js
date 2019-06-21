@@ -102,7 +102,7 @@ const DiffHeader = styled.div`
   align-items: center;
 `
 
-const SimpleDiffView = ({ file, title, tutorial, step, rawUrl, submodule }) => {
+const SimpleDiffView = ({ file, title, tutorial, rawUrl, prefix }) => {
   const { hunks } = file
   const [editing, setEditing] = useState(false)
   const [editText, setEditText] = useState('')
@@ -180,7 +180,7 @@ const SimpleDiffView = ({ file, title, tutorial, step, rawUrl, submodule }) => {
     setEditText('')
 
     const filePath = title.split(' ').pop()
-    const issueTitle = `[${submodule} Step ${step.id}] change ${filePath}`
+    const issueTitle = `[${prefix}] change ${filePath}`
 
     const body = freeText(`
       ==>${purpose}<==

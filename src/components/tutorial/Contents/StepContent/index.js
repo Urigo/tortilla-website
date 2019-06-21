@@ -324,7 +324,7 @@ export default class extends React.Component {
   }
 
   // TODO: Apply during build
-  appendDiffs = async (diff, anchor, file, rawUrl, submodule) => {
+  appendDiffs = async (diff, anchor, file, rawUrl, prefix) => {
     if (!diff) {
       return Promise.all(
         this.props.step.diffs.map(diff => {
@@ -345,7 +345,7 @@ export default class extends React.Component {
       })
 
       const commitHref = anchor[internal].hrefs.commit
-      const submodule = anchor[internal].submodule
+      const prefix = anchor[internal].prefix
       anchor[internal] = anchor[internal] || {}
       anchor[internal].occupied = true
 
@@ -370,7 +370,7 @@ export default class extends React.Component {
 
       return Promise.all(
         files.map(file => {
-          return this.appendDiffs(diff, anchors.shift(), file, rawUrl, submodule)
+          return this.appendDiffs(diff, anchors.shift(), file, rawUrl, prefix)
         })
       )
     }
@@ -384,10 +384,9 @@ export default class extends React.Component {
         <ThemeProvider theme={Theme}>
           <SimpleDiffView
             file={file}
-            submodule={submodule}
+            prefix={prefix}
             title={anchor.innerHTML}
             tutorial={this.props.tutorial}
-            step={this.props.step}
             rawUrl={rawUrl}
             key={`${file.oldPath}_${file.newPath}`}
           />
@@ -447,7 +446,7 @@ export default class extends React.Component {
       downloadEl.href = commitEl.href.replace('commit', 'archive') + '.zip'
 
       titleEl[internal] = titleEl[internal] || {}
-      titleEl[internal].submodule = submodule
+      titleEl[internal].prefix = prefix
       titleEl[internal].hrefs = {
         commit: commitEl.href,
         question: questionEl.href,
