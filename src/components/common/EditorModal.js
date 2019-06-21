@@ -30,9 +30,8 @@ const Container = (() => {
       margin-top: 10px;
       border: 1px solid silver;
 
-      // In production it's not white
       pre {
-        background-color: white;
+        background: transparent;
       }
     }
   `
