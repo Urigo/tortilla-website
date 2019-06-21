@@ -46,7 +46,7 @@ const getEditHref = ({ url, branch, step }) => {
 export default props => (
   <ImproveButton style={props.style}>
     <IconContainer>
-      <Text href={getEditHref(props)}>
+      <Text href={getEditHref(props)} target="_blank">
         <Icon />
       </Text>
     </IconContainer>
