@@ -18,14 +18,6 @@ const Icon = styled(FaIcon).attrs({
   size: 17,
 })``
 
-const Text = styled.a`
-  color: inherit;
-  text-decoration: inherit;
-  flex: 1 1 auto;
-  line-height: 30px;
-  text-align: center;
-`
-
 const DownloadButton = styled(Button) `
   height: 40px;
   padding: 5px;
@@ -38,11 +30,9 @@ const DownloadButton = styled(Button) `
 `
 
 export default props => (
-  <DownloadButton>
+  <DownloadButton href={props.url}>
     <IconContainer>
-      <Text href={props.url}>
-        <Icon />
-      </Text>
+      <Icon />
     </IconContainer>
   </DownloadButton>
 )

@@ -18,14 +18,6 @@ const Icon = styled(FaIcon).attrs({
   size: 17,
 })``
 
-const Text = styled.a`
-  color: inherit;
-  text-decoration: inherit;
-  flex: 1 1 auto;
-  line-height: 30px;
-  text-align: center;
-`
-
 const ImproveButton = styled(Button) `
   height: 40px;
   padding: 5px;
@@ -44,11 +36,9 @@ const getEditHref = ({ url, branch, step }) => {
 }
 
 export default props => (
-  <ImproveButton style={props.style}>
+  <ImproveButton style={props.style} href={getEditHref(props)} target="_blank">
     <IconContainer>
-      <Text href={getEditHref(props)} target="_blank">
-        <Icon />
-      </Text>
+      <Icon />
     </IconContainer>
   </ImproveButton>
 )

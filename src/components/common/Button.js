@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const Button = styled.button`
+const Button = styled.a`
   padding: 5px 15px;
   border: solid 1px ${props => props.theme.primaryGray};
   border-radius: 3px;
