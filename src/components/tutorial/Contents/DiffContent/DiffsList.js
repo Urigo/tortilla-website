@@ -24,6 +24,7 @@ const Container = styled.div`
     display: block;
     min-width: 100%;
     margin: 0;
+    overflow-y: hidden;
     overflow-x: auto;
   }
 
