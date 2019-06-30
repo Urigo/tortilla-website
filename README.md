@@ -21,3 +21,12 @@ Or alternatively you can clean the cache and run the app:
 To build:
 
     yarn build
+
+## How to deploy a new version of the tutorial
+
+1. Open an issue on tortilla-website repo with the title `dump Urigo/WhatsApp-Clone-Tutorial/master`
+2. Label the issue with a `tortilla` label
+3. A PR will be automatically opened with a new dump file from the release
+4. After all checks on the CI has been done, you will get a link to a temporary deployed version of the website
+5. Merge the PR and it will deploy it to the main website
+
