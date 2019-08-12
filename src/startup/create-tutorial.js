@@ -20,9 +20,12 @@ module.exports = async ({ tutorial, createPage, createRedirect }) => {
   }
 
   // We don't wanna spam the versions nav bar :-)
+  /*
   const recentMajorVersions = tutorial.versions.filter(
     ({ isRecentMajor }) => isRecentMajor
   )
+  */
+  const recentMajorVersions = tutorial.versions;
 
   return Promise.all(
     recentMajorVersions.map(async (version, index) => {
