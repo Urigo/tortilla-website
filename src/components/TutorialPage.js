@@ -39,6 +39,7 @@ const TutorialImage = styled.img`
   padding: 0 10px;
   margin-right: 20px;
   transform: translateY(3px);
+  vertical-align: middle;
 `
 
 const TopBar = styled.div`
