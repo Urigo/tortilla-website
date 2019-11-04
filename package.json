@@ -49,7 +49,7 @@
     "setimmediate": "^1.0.5",
     "styled-components": "^4.2.1",
     "svg2png": "4.1.1",
-    "sweetalert2": "^8.11.7",
+    "sweetalert2": "^9.0.0",
     "tortilla": "^0.0.1-alpha.62",
     "typescript-styled-plugin": "^0.15.0",
     "unist-util-select": "^2.0.2"
