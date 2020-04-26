@@ -3,7 +3,7 @@ import { graphql } from 'gatsby'
 
 import TutorialPage from '../components/TutorialPage'
 
-export default props => (
+export default (props) => (
   <TutorialPage
     location={props.location}
     common={props.pageContext.common}

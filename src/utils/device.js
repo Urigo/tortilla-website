@@ -14,12 +14,12 @@ const sizes = {
 const device = Object.keys(sizes).reduce((acc, label) => {
   acc[label] = (...args) => css`
     @media only screen and (max-width: ${sizes[label] /
-        16}em) and (orientation: portrait) {
+      16}em) and (orientation: portrait) {
       ${css(...args)}
     }
 
     @media only screen and (max-height: ${sizes[label] /
-        16}em) and (orientation: landscape) {
+      16}em) and (orientation: landscape) {
       ${css(...args)}
     }
   `
@@ -27,7 +27,7 @@ const device = Object.keys(sizes).reduce((acc, label) => {
   return acc
 }, {})
 
-device.onLayoutChange = callback => {
+device.onLayoutChange = (callback) => {
   layoutChangeCallbacks.add(callback)
 
   // Dispose method
@@ -36,13 +36,13 @@ device.onLayoutChange = callback => {
   }
 }
 
-device.only = (...whitelist) => Component => {
+device.only = (...whitelist) => (Component) => {
   const componentDidMount = Component.prototype.componentDidMount || Function
   const componentWillUnmount =
     Component.prototype.componentWillUnmount || Function
   const render = Component.prototype.render || Function
 
-  Component.prototype.componentDidMount = function(...args) {
+  Component.prototype.componentDidMount = function (...args) {
     const ithis = (this[internals] = {})
 
     ithis.stopObservingLayout = device.onLayoutChange(() => {
@@ -65,7 +65,7 @@ device.only = (...whitelist) => Component => {
     return componentDidMount.apply(this, args)
   }
 
-  Component.prototype.componentWillUnmount = function(...args) {
+  Component.prototype.componentWillUnmount = function (...args) {
     const ithis = this[internals]
 
     // Safety mechanism
@@ -76,7 +76,7 @@ device.only = (...whitelist) => Component => {
     return componentWillUnmount.apply(this, args)
   }
 
-  Component.prototype.render = function(...args) {
+  Component.prototype.render = function (...args) {
     const istate = (this.state && this.state[internals]) || {}
 
     let children

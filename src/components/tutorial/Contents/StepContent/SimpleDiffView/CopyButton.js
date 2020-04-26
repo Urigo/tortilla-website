@@ -4,31 +4,31 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import FaIcon from '../../../../common/FaIcon'
 
-const Wrap = styled.span `
+const Wrap = styled.span`
   margin-left: 10px;
 `
 
 const CopyIcon = styled(FaIcon).attrs({
-  icon: faCopy
-}) `
+  icon: faCopy,
+})`
   cursor: pointer;
 `
 
-const CheckWrap = styled.div `
+const CheckWrap = styled.div`
   font-weight: bold;
   display: inline;
 `
 
 const CheckIcon = styled(FaIcon).attrs({
-  icon: faCheck
-}) `
+  icon: faCheck,
+})`
   color: lightgreen;
   display: inline;
 `
 
 class CopyButton extends React.Component {
   static propTypes = {
-    text: PropTypes.string
+    text: PropTypes.string,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -75,13 +75,16 @@ class CopyButton extends React.Component {
     document.execCommand('copy')
     document.body.removeChild(el)
 
-    this.setState({
-      copied: true
-    }, () => {
-      setTimeout(() => {
-        this.setState({ copied: false })
-      }, 2000)
-    })
+    this.setState(
+      {
+        copied: true,
+      },
+      () => {
+        setTimeout(() => {
+          this.setState({ copied: false })
+        }, 2000)
+      }
+    )
   }
 }
 

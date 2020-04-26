@@ -111,12 +111,16 @@ class TutorialPage extends React.Component {
     return (
       <Layout>
         <SeoHelmet
-          title={featuredTutorial ? featuredTutorial.title : this.props.tutorial.title}
+          title={
+            featuredTutorial
+              ? featuredTutorial.title
+              : this.props.tutorial.title
+          }
         />
         <Container>
           <Display>
             <MainContentContainer
-              ref={ref => (this.container = ReactDOM.findDOMNode(ref))}
+              ref={(ref) => (this.container = ReactDOM.findDOMNode(ref))}
             >
               <MainNavBar backHandler={this.navHome} />
               <TopBar>
@@ -124,12 +128,8 @@ class TutorialPage extends React.Component {
                   <TutorialImage
                     src={featuredTutorial.imageSrc}
                     style={{
-                      backgroundColor: `rgb(${
-                        featuredTutorial.backgroundColor
-                      })`,
-                      boxShadow: `10px 10px 20px 0 rgba(${
-                        featuredTutorial.backgroundColor
-                      },.2)`,
+                      backgroundColor: `rgb(${featuredTutorial.backgroundColor})`,
+                      boxShadow: `10px 10px 20px 0 rgba(${featuredTutorial.backgroundColor},.2)`,
                     }}
                   />
                 )}
@@ -204,7 +204,7 @@ class TutorialPage extends React.Component {
     }
   }
 
-  activateStep = version => {
+  activateStep = (version) => {
     const link = stepRoute({
       repo: this.props.common.tutorialRepo,
       owner: this.props.common.tutorialAuthor.username,

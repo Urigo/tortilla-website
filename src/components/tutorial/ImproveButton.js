@@ -18,7 +18,7 @@ const Icon = styled(FaIcon).attrs({
   size: 17,
 })``
 
-const ImproveButton = styled(Button) `
+const ImproveButton = styled(Button)`
   height: 40px;
   padding: 5px;
   display: flex;
@@ -35,7 +35,7 @@ const getEditHref = ({ url, branch, step }) => {
   return `${url}/edit/${branch}/.tortilla/manuals/templates/${templateName}.tmpl`
 }
 
-export default props => (
+export default (props) => (
   <ImproveButton style={props.style} href={getEditHref(props)} target="_blank">
     <IconContainer>
       <Icon />

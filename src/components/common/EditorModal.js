@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import FaIcon from './FaIcon'
 
-const Shim = styled.div `
+const Shim = styled.div`
   position: fixed;
   left: 0;
   top: 0;
@@ -14,7 +14,7 @@ const Shim = styled.div `
 const Container = (() => {
   const margin = 50
 
-  return styled.div `
+  return styled.div`
     position: fixed;
     top: ${margin}px;
     left: ${margin}px;
@@ -40,13 +40,13 @@ const Container = (() => {
 const PurposeInput = styled.input.attrs({
   type: 'text',
   placeholder: 'Purpose of changes...',
-}) `
+})`
   border: 1px solid silver;
   padding-left: 5px;
   padding-right: 5px;
 `
 
-const ContentsInput = styled.textarea `
+const ContentsInput = styled.textarea`
   flex: 1;
   margin-top: 10px;
   border: 1px solid silver;
@@ -57,7 +57,7 @@ const ContentsInput = styled.textarea `
 const InputFields = (() => {
   const margin = 50
 
-  return styled.div `
+  return styled.div`
     display: flex;
     flex-direction: column;
     width: calc(100% - ${margin * 2}px);
@@ -79,7 +79,7 @@ const CloseButton = styled(FaIcon).attrs({
   color: ${({ theme }) => theme.primaryBlue};
 `
 
-const SubmitButton = styled.button `
+const SubmitButton = styled.button`
   display: block;
   padding: 5px 20px;
   margin-left: auto;
@@ -92,15 +92,29 @@ const SubmitButton = styled.button `
 `
 
 const EditorModal = ({ extension, text, onSubmit, onClose }) => {
-  onSubmit = useMemo(() => typeof onSubmit === 'function' ? onSubmit : () => {}, [onSubmit])
-  onClose = useMemo(() => typeof onClose === 'function' ? onClose : () => {}, [onClose])
+  onSubmit = useMemo(
+    () => (typeof onSubmit === 'function' ? onSubmit : () => {}),
+    [onSubmit]
+  )
+  onClose = useMemo(
+    () => (typeof onClose === 'function' ? onClose : () => {}),
+    [onClose]
+  )
   const [CodeMirror, setCodeMirror] = useState(null)
   const [purpose, setPurpose] = useState('')
   const [contents, setContents] = useState('')
   const [editor, setEditor] = useState(null)
   const [modeImported, setModeImported] = useState(false)
-  const loading = useMemo(() => !text || !CodeMirror || !modeImported, [text, CodeMirror, modeImported])
-  const mode = useMemo(() => ((CodeMirror && CodeMirror.findModeByExtension(extension)) || {}).mode, [extension, CodeMirror])
+  const loading = useMemo(() => !text || !CodeMirror || !modeImported, [
+    text,
+    CodeMirror,
+    modeImported,
+  ])
+  const mode = useMemo(
+    () =>
+      ((CodeMirror && CodeMirror.findModeByExtension(extension)) || {}).mode,
+    [extension, CodeMirror]
+  )
   const contentsRef = useRef(null)
   const shimRef = useRef(null)
 
@@ -108,13 +122,19 @@ const EditorModal = ({ extension, text, onSubmit, onClose }) => {
     onClose()
   }, [onClose])
 
-  const updatePurpose = useCallback((e) => {
-    setPurpose(e.target.value)
-  }, [setPurpose])
+  const updatePurpose = useCallback(
+    (e) => {
+      setPurpose(e.target.value)
+    },
+    [setPurpose]
+  )
 
-  const updateContents = useCallback((e) => {
-    setContents(e.target.value)
-  }, [setContents])
+  const updateContents = useCallback(
+    (e) => {
+      setContents(e.target.value)
+    },
+    [setContents]
+  )
 
   const submit = useCallback(() => {
     if (loading) return
@@ -122,12 +142,15 @@ const EditorModal = ({ extension, text, onSubmit, onClose }) => {
     onSubmit({ contents, purpose })
   }, [loading, contents, purpose, onSubmit])
 
-  const onShimClick = useCallback((e) => {
-    if (!shimRef.current) return
-    if (e.target !== shimRef.current) return
+  const onShimClick = useCallback(
+    (e) => {
+      if (!shimRef.current) return
+      if (e.target !== shimRef.current) return
 
-    close()
-  }, [shimRef.current, close])
+      close()
+    },
+    [shimRef.current, close]
+  )
 
   useEffect(() => {
     setContents(loading ? 'Loading...' : text)
@@ -138,10 +161,12 @@ const EditorModal = ({ extension, text, onSubmit, onClose }) => {
     if (loading) return
     if (editor) return
 
-    setEditor(CodeMirror.fromTextArea(contentsRef.current, {
-      lineNumbers: true,
-      mode,
-    }))
+    setEditor(
+      CodeMirror.fromTextArea(contentsRef.current, {
+        lineNumbers: true,
+        mode,
+      })
+    )
   }, [contentsRef.current, CodeMirror, loading, editor, mode])
 
   useEffect(() => {
@@ -204,9 +229,18 @@ const EditorModal = ({ extension, text, onSubmit, onClose }) => {
         <CloseButton onClick={close}>x</CloseButton>
         <InputFields>
           <PurposeInput onChange={updatePurpose} value={purpose} tabIndex={0} />
-          <ContentsInput onChange={updateContents} disabled={loading} value={contents} resizable={false} ref={contentsRef} tabIndex={1} />
+          <ContentsInput
+            onChange={updateContents}
+            disabled={loading}
+            value={contents}
+            resizable={false}
+            ref={contentsRef}
+            tabIndex={1}
+          />
         </InputFields>
-        <SubmitButton onClick={submit} disabled={loading} tabIndex={2}>submit</SubmitButton>
+        <SubmitButton onClick={submit} disabled={loading} tabIndex={2}>
+          submit
+        </SubmitButton>
       </Container>
     </Shim>
   )

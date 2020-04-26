@@ -18,7 +18,7 @@ const Icon = styled(FaIcon).attrs({
   size: 17,
 })``
 
-const DownloadButton = styled(Button) `
+const DownloadButton = styled(Button)`
   height: 40px;
   padding: 5px;
   display: flex;
@@ -29,7 +29,7 @@ const DownloadButton = styled(Button) `
   border: 1px solid ${({ theme }) => theme.separator};
 `
 
-export default props => (
+export default (props) => (
   <DownloadButton href={props.url}>
     <IconContainer>
       <Icon />

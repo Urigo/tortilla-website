@@ -54,10 +54,10 @@ class FSTree extends React.Component {
     return (
       <Style>
         <ul className="_nodes-list">
-          {tree.map(node => (
+          {tree.map((node) => (
             <li key={node.name} className="_nodes-list-item">
               <exports.FSNode
-                ref={ref => this._nodes.push(ref)}
+                ref={(ref) => this._nodes.push(ref)}
                 node={node}
                 depth={this.depth + 1}
                 onSelect={this.onSelect}
@@ -73,7 +73,7 @@ class FSTree extends React.Component {
   }
 
   deselect() {
-    this.getNodes().forEach(node => {
+    this.getNodes().forEach((node) => {
       node.deselect()
     })
   }

@@ -7,7 +7,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${props => props.theme.white};
+  background-color: ${(props) => props.theme.white};
   padding: 15px 25px;
   box-shadow: 0 2px 4px 0 rgba(87, 71, 81, 0.2);
 `

@@ -67,7 +67,7 @@ const Header = styled.div`
   width: 100%;
 `
 
-const Footer = styled(Header) `
+const Footer = styled(Header)`
   border-top: 1px solid ${({ theme }) => theme.separator};
   width: 100%;
 `
@@ -126,7 +126,7 @@ const Html = styled.div`
   h4 > a {
     margin-left: 15px;
     float: right;
-    color: ${props => props.theme.blueGray};
+    color: ${(props) => props.theme.blueGray};
     // font-size: 10px;
     // transform: translateY(-5px);
     // display: inline-block;
@@ -151,7 +151,7 @@ const Html = styled.div`
 
   h4 {
     font-size: 24px;
-    color: ${props => props.theme.blueGray};
+    color: ${(props) => props.theme.blueGray};
   }
 
   img {
@@ -241,7 +241,7 @@ export default class extends React.Component {
     })
 
     return (
-      <div ref={ref => (this.container = ReactDOM.findDOMNode(ref))}>
+      <div ref={(ref) => (this.container = ReactDOM.findDOMNode(ref))}>
         <SeoHelmet
           description={`${this.props.tutorialTitle} - ${this.props.step.name}`}
           keywords={this.props.step.keywords}
@@ -250,7 +250,7 @@ export default class extends React.Component {
         />
         {this.state.stepsMenuOpen && (
           <MenuContainer
-            ref={ref => (this.stepsMenu = ReactDOM.findDOMNode(ref))}
+            ref={(ref) => (this.stepsMenu = ReactDOM.findDOMNode(ref))}
           >
             <StepsHeader
               opened={this.state.stepsMenuOpen}
@@ -263,7 +263,9 @@ export default class extends React.Component {
               TODO: Softcode
             */}
             <StepsMenu
-              ref={ref => (this.stepsMenuScroller = ReactDOM.findDOMNode(ref))}
+              ref={(ref) =>
+                (this.stepsMenuScroller = ReactDOM.findDOMNode(ref))
+              }
               tutorialAuthor={this.props.tutorial.author}
               tutorialRepo={this.props.tutorial.repo}
               tutorialBranch={this.props.tutorial.branch}
@@ -277,7 +279,7 @@ export default class extends React.Component {
         <ContentContainer style={this.contentContainerStyle}>
           {this.renderBar(Header)}
           <Html
-            ref={ref => (this.htmlEl = ReactDOM.findDOMNode(ref))}
+            ref={(ref) => (this.htmlEl = ReactDOM.findDOMNode(ref))}
             dangerouslySetInnerHTML={{ __html: this.props.step.html }}
           />
           {this.renderBar(Footer)}
@@ -300,22 +302,24 @@ export default class extends React.Component {
           {!this.state.stepsMenuOpen && (
             <ShowStepsButton onClick={this.openStepsMenu} />
           )}
-          {this.props.tutorial.repo && <React.Fragment>
-            <ImproveButton
-              step={step.id}
-              style={{ marginRight: '10px' }}
-              url={`https://github.com/${this.props.tutorial.author.username}/${this.props.tutorial.repo}`}
-              branch={this.props.tutorial.branch}
-            />
-            <DownloadButton
-              url={`https://github.com/${this.props.tutorial.author.username}/${this.props.tutorial.repo}/archive/${step.revision}.zip`}
-            />
-          </React.Fragment>}
+          {this.props.tutorial.repo && (
+            <React.Fragment>
+              <ImproveButton
+                step={step.id}
+                style={{ marginRight: '10px' }}
+                url={`https://github.com/${this.props.tutorial.author.username}/${this.props.tutorial.repo}`}
+                branch={this.props.tutorial.branch}
+              />
+              <DownloadButton
+                url={`https://github.com/${this.props.tutorial.author.username}/${this.props.tutorial.repo}/archive/${step.revision}.zip`}
+              />
+            </React.Fragment>
+          )}
           <Info>
             <Stepper
               limit={stepsNum - 1}
               current={step.id}
-              onChange={i => this.changeStep(i)}
+              onChange={(i) => this.changeStep(i)}
             />
           </Info>
         </Right>
@@ -327,7 +331,7 @@ export default class extends React.Component {
   appendDiffs = async (diff, anchor, file, rawUrl, prefix) => {
     if (!diff) {
       return Promise.all(
-        this.props.step.diffs.map(diff => {
+        this.props.step.diffs.map((diff) => {
           return this.appendDiffs(diff)
         })
       )
@@ -336,7 +340,7 @@ export default class extends React.Component {
     if (!anchor) {
       const title = `Step ${diff.index}`
 
-      anchor = Array.from(this.htmlEl.childNodes).find(node => {
+      anchor = Array.from(this.htmlEl.childNodes).find((node) => {
         return (
           node.tagName === 'H4' &&
           node.innerText.match(title) &&
@@ -369,7 +373,7 @@ export default class extends React.Component {
       })
 
       return Promise.all(
-        files.map(file => {
+        files.map((file) => {
           return this.appendDiffs(diff, anchors.shift(), file, rawUrl, prefix)
         })
       )
@@ -379,7 +383,7 @@ export default class extends React.Component {
 
     this.htmlEl.insertBefore(container, anchor.nextSibling)
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       ReactDOM.render(
         <ThemeProvider theme={Theme}>
           <SimpleDiffView
@@ -402,7 +406,7 @@ export default class extends React.Component {
 
   // TODO: Apply during build
   fixImages = () => {
-    this.htmlEl.querySelectorAll('img').forEach(el => {
+    this.htmlEl.querySelectorAll('img').forEach((el) => {
       // Replace blob URLs with raw URLs
       if (el.src) {
         el.src = el.src.replace(/(.+?github\.com\/[^/]+\/[^/]+\/)blob/, '$1raw')
@@ -423,13 +427,16 @@ export default class extends React.Component {
   // TODO: Apply during build. It's not critical because of SSR, so effect would be
   // almost the same
   fixStepsRefs = () => {
-    this.htmlEl.querySelectorAll('h4 > a').forEach(commitEl => {
+    this.htmlEl.querySelectorAll('h4 > a').forEach((commitEl) => {
       const titleEl = commitEl.parentNode
       const stepTitle = commitEl.innerHTML
       // e.g. Client Step 1.1
       // Tortilla was updated to render the submodule name prior to the step
       let prefix = ''
-      const [, submodule, stepIndex] = stepTitle.match(/^(?:<strong>([\w-]+)<\/strong> )?[Ss]tep (\d+(?:\.\d+)?)/) || []
+      const [, submodule, stepIndex] =
+        stepTitle.match(
+          /^(?:<strong>([\w-]+)<\/strong> )?[Ss]tep (\d+(?:\.\d+)?)/
+        ) || []
       if (stepIndex) prefix = `Step ${stepIndex}`
       if (submodule) prefix = `${submodule} ${prefix}`
 
@@ -440,9 +447,9 @@ export default class extends React.Component {
       ReactDOM.render(<FaIcon icon={faQuestion} />, questionEl)
       ReactDOM.render(<FaIcon icon={faDownload} />, downloadEl)
 
-      commitEl.target= '_blank'
+      commitEl.target = '_blank'
       questionEl.href = `${this.props.tutorial.repoUrl}/issues/new?title=[${prefix}]&labels=question`
-      questionEl.target= '_blank'
+      questionEl.target = '_blank'
       downloadEl.href = commitEl.href.replace('commit', 'archive') + '.zip'
 
       titleEl[internal] = titleEl[internal] || {}
@@ -489,7 +496,7 @@ export default class extends React.Component {
     )
   }
 
-  resetStepsMenuDimensions = e => {
+  resetStepsMenuDimensions = (e) => {
     if (!this.container) return
     if (!this.stepsMenu) return
     if (e && !e.target.contains(this.stepsMenu)) return

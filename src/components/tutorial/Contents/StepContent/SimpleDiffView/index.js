@@ -106,66 +106,78 @@ const SimpleDiffView = ({ file, title, tutorial, rawUrl, prefix }) => {
   const { hunks } = file
   const [editing, setEditing] = useState(false)
   const [editText, setEditText] = useState('')
-  const extension = useMemo(() => (title.match(/\w+\.(\w+)$/) || []).pop() || '', [title])
+  const extension = useMemo(
+    () => (title.match(/\w+\.(\w+)$/) || []).pop() || '',
+    [title]
+  )
 
-  const maxLineNum = useMemo(() =>
-    hunks.reduce((maxLineNum, hunk) => {
-      return Math.max(
-        2,
-        maxLineNum.toString().length,
-        (hunk.newStart + hunk.newLines).toString().length,
-        (hunk.oldStart + hunk.oldLines).toString().length
-      )
-    }, 0)
-  , [hunks])
+  const maxLineNum = useMemo(
+    () =>
+      hunks.reduce((maxLineNum, hunk) => {
+        return Math.max(
+          2,
+          maxLineNum.toString().length,
+          (hunk.newStart + hunk.newLines).toString().length,
+          (hunk.oldStart + hunk.oldLines).toString().length
+        )
+      }, 0),
+    [hunks]
+  )
 
-  const hunkContentLengths = useMemo(() =>
-    hunks.map(hunk => hunk.content.length)
-  , [hunks])
+  const hunkContentLengths = useMemo(
+    () => hunks.map((hunk) => hunk.content.length),
+    [hunks]
+  )
 
-  const maxHunkContentLength = useMemo(() =>
-    Math.max(...hunkContentLengths)
-  , [hunkContentLengths])
+  const maxHunkContentLength = useMemo(() => Math.max(...hunkContentLengths), [
+    hunkContentLengths,
+  ])
 
-  const maxLineLength = useMemo(() =>
-    hunks.reduce((maxContentLength, hunk) => {
-      return hunk.changes.reduce((maxContentLength, change) => {
-        return Math.max(maxContentLength, change.content.length)
-      }, maxContentLength)
-    }, maxHunkContentLength)
-  , [hunks, maxHunkContentLength])
-
+  const maxLineLength = useMemo(
+    () =>
+      hunks.reduce((maxContentLength, hunk) => {
+        return hunk.changes.reduce((maxContentLength, change) => {
+          return Math.max(maxContentLength, change.content.length)
+        }, maxContentLength)
+      }, maxHunkContentLength),
+    [hunks, maxHunkContentLength]
+  )
 
   /* Adding 2 for padding of 1ch in each side */
   const gutterWidth = useMemo(() => maxLineNum + 2, [maxLineNum])
   const lineWidth = useMemo(() => maxLineLength + 1, [maxLineLength])
 
-  const Container = useMemo(() => styled.div`
-    ${baseStyle}
+  const Container = useMemo(
+    () => styled.div`
+      ${baseStyle}
 
-    .diff-hunk-header-gutter {
-      width: ${gutterWidth * 2 - 0.8}ch;
-    }
+      .diff-hunk-header-gutter {
+        width: ${gutterWidth * 2 - 0.8}ch;
+      }
 
-    .diff-gutter {
-      width: ${gutterWidth}ch;
-    }
+      .diff-gutter {
+        width: ${gutterWidth}ch;
+      }
 
-    .diff-code,
-    .diff-hunk-header-content {
-      min-width: calc(100% - ${gutterWidth * 2}ch);
-      width: ${lineWidth}ch;
-    }
+      .diff-code,
+      .diff-hunk-header-content {
+        min-width: calc(100% - ${gutterWidth * 2}ch);
+        width: ${lineWidth}ch;
+      }
 
-    .diff-hunk-header-content {
-      width: ${lineWidth + gutterWidth}ch;
-    }
-  `, [gutterWidth, lineWidth])
+      .diff-hunk-header-content {
+        width: ${lineWidth + gutterWidth}ch;
+      }
+    `,
+    [gutterWidth, lineWidth]
+  )
 
   const filePath = useMemo(() => title.split(' ').pop(), [title])
 
   const editFile = useCallback(() => {
-    fetch(`${rawUrl}/${filePath}`).then(r => r.text()).then(setEditText)
+    fetch(`${rawUrl}/${filePath}`)
+      .then((r) => r.text())
+      .then(setEditText)
 
     setEditing(true)
   }, [rawUrl, filePath, setEditText, setEditing])
@@ -175,14 +187,15 @@ const SimpleDiffView = ({ file, title, tutorial, rawUrl, prefix }) => {
     setEditText('')
   }, [setEditing, setEditText])
 
-  const submitFileChanges = useCallback(({ contents, purpose }) => {
-    setEditing(false)
-    setEditText('')
+  const submitFileChanges = useCallback(
+    ({ contents, purpose }) => {
+      setEditing(false)
+      setEditText('')
 
-    const filePath = title.split(' ').pop()
-    const issueTitle = `[${prefix}] change ${filePath}`
+      const filePath = title.split(' ').pop()
+      const issueTitle = `[${prefix}] change ${filePath}`
 
-    const body = freeText(`
+      const body = freeText(`
       ==>${purpose}<==
 
       \`\`\`${extension}
@@ -190,11 +203,17 @@ const SimpleDiffView = ({ file, title, tutorial, rawUrl, prefix }) => {
       \`\`\`
     `)
 
-    const a = document.createElement('a')
-    a.href = `https://github.com/${tutorial.author.username}/${tutorial.repo}/issues/new?title=${escape(issueTitle)}&body=${escape(body)}&labels=${escape('change request')}`
-    a.target = '_blank'
-    a.click()
-  }, [setEditing, setEditText])
+      const a = document.createElement('a')
+      a.href = `https://github.com/${tutorial.author.username}/${
+        tutorial.repo
+      }/issues/new?title=${escape(issueTitle)}&body=${escape(
+        body
+      )}&labels=${escape('change request')}`
+      a.target = '_blank'
+      a.click()
+    },
+    [setEditing, setEditText]
+  )
 
   return (
     <Container>
@@ -217,7 +236,7 @@ const SimpleDiffView = ({ file, title, tutorial, rawUrl, prefix }) => {
 }
 
 // TODO: Hardcore in dump
-const projectTitle = title => {
+const projectTitle = (title) => {
   return title
     .replace(/^Changed?/, 'modify')
     .replace(/^Removed?/, 'deleted')

@@ -3,7 +3,7 @@ import { graphql } from 'gatsby'
 
 import HomePage from '../components/HomePage'
 
-export default props => {
+export default (props) => {
   const tutorials = props.data.allTortillaTutorial.edges.map(({ node }) => node)
 
   return <HomePage tutorials={tutorials} location={props.location} />

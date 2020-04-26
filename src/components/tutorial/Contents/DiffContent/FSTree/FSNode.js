@@ -133,7 +133,7 @@ class FSNode extends React.Component {
             {node.children && !node.collapsed && (
               <exports.FSTree
                 className="_fstree"
-                ref={ref => (this.children = ref)}
+                ref={(ref) => (this.children = ref)}
                 tree={node.children}
                 depth={this.depth}
                 onSelect={this.onSelect}
@@ -159,7 +159,7 @@ class FSNode extends React.Component {
       return Promise.resolve()
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.setState(
         {
           node: Object.assign(this.state.node, {
@@ -190,7 +190,7 @@ class FSNode extends React.Component {
       return Promise.resolve()
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.setState(
         {
           node: Object.assign(this.state.node, {

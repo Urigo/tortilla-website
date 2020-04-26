@@ -421,7 +421,10 @@ class HomePage extends React.Component {
       <Layout key={this.state.deviceType}>
         <Header>
           {device.mobile.active && <div className="_fill-up" />}
-          <DesktopImg src={withPrefix('img/group-19.svg')} className="Group-19" />
+          <DesktopImg
+            src={withPrefix('img/group-19.svg')}
+            className="Group-19"
+          />
           <IntroDiv>
             {device.desktop.active ? (
               <>
@@ -453,7 +456,10 @@ class HomePage extends React.Component {
             </div>
             {device.desktop.active && (
               <>
-                <a className="_start-btn" href={'https://www.npmjs.com/package/tortilla'}>
+                <a
+                  className="_start-btn"
+                  href={'https://www.npmjs.com/package/tortilla'}
+                >
                   Get Started
                 </a>
               </>
@@ -543,15 +549,13 @@ class HomePage extends React.Component {
                 tutorialKey && (
                   <FeaturedTutorial
                     key={tutorialKey}
-                    imgSrc={withPrefix(data.imageSrc)}
+                    imgSrc={data.imageSrc}
                     link={tutorialKey}
                     title={data.title}
                     description={data.description}
                     style={{
                       backgroundColor: `rgb(${data.backgroundColor})`,
-                      boxShadow: `10px 10px 20px 0 rgba(${
-                        data.backgroundColor
-                      },.2)`,
+                      boxShadow: `10px 10px 20px 0 rgba(${data.backgroundColor},.2)`,
                     }}
                   />
                 )

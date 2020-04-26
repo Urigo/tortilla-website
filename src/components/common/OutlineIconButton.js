@@ -30,7 +30,7 @@ const Button = styled.button`
   }
 `
 
-export default props => (
+export default (props) => (
   <Button {...props}>
     <Icon icon={props.icon} />
   </Button>

@@ -222,7 +222,7 @@ class ContactForm extends React.Component {
             })}
             placeholder="your.email@domain.com"
             onChange={this.setEmail}
-            ref={ref => (this.emailInput = ReactDOM.findDOMNode(ref))}
+            ref={(ref) => (this.emailInput = ReactDOM.findDOMNode(ref))}
           />
           {device.desktop.active && this.renderSendBtn()}
           <br />
@@ -286,7 +286,7 @@ class ContactForm extends React.Component {
     )
   }
 
-  setEmail = e => {
+  setEmail = (e) => {
     this.setState({
       errorTarget: '',
       errorMessage: '',
@@ -294,7 +294,7 @@ class ContactForm extends React.Component {
     })
   }
 
-  setDetails = e => {
+  setDetails = (e) => {
     this.setState({
       errorTarget: '',
       errorMessage: '',
@@ -344,18 +344,18 @@ class ContactForm extends React.Component {
       },
       body: JSON.stringify(this.state),
     })
-      .then(res => {
+      .then((res) => {
         if (res.status >= 400) {
           swal.fire({
             title: 'Oy vey...',
             text: "Message wasn't sent due to internal server error :-(",
-            type: 'error',
+            icon: 'error',
           })
         } else {
           swal.fire({
             title: 'Message successfully sent',
             text: 'If relevant, we will notice you shortly :-)',
-            type: 'success',
+            icon: 'success',
           })
         }
 

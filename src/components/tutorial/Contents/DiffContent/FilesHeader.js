@@ -1,10 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {
-  faList,
-  faTimes,
-  faAngleDown,
-} from '@fortawesome/free-solid-svg-icons'
+import { faList, faTimes, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import FaIcon from '../../../common/FaIcon'
 
 const FilebarHeight = 63
