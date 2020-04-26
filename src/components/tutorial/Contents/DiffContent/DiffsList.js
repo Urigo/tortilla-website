@@ -1,4 +1,4 @@
-import 'react-diff-view/index.css'
+import 'react-diff-view/style/index.css'
 
 import PropTypes from 'prop-types'
 import React from 'react'
