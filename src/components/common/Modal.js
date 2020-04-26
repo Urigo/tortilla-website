@@ -50,4 +50,4 @@ function FakedModal() {
 
 FakedModal.setAppElement = () => {}
 
-export default (isBrowser ? Modal : FakedModal)
+export default isBrowser ? Modal : FakedModal

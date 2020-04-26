@@ -1,4 +1,4 @@
-const proxy = require('http-proxy-middleware')
+const { createProxyMiddleware } = require('http-proxy-middleware')
 
 const resolveTutorials = {
   resolve: 'gatsby-source-filesystem',
@@ -12,7 +12,7 @@ module.exports = {
   developMiddleware: (app) => {
     app.use(
       '/.netlify/functions/',
-      proxy({
+      createProxyMiddleware({
         target: 'http://localhost:9000',
         pathRewrite: {
           '/.netlify/functions/': '',

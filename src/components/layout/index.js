@@ -1,6 +1,6 @@
 import { withPrefix } from 'gatsby'
 import React from 'react'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 
 import featuredTutorials from '../../featured-tutorials'
@@ -60,16 +60,12 @@ class Layout extends React.Component {
     return (
       <ThemeProvider theme={Theme}>
         <div style={{ position: 'relative' }}>
-          <Helmet
-            meta={meta}
-            link={link}
-            script={script}
-          />
+          <Helmet meta={meta} link={link} script={script} />
           <SeoHelmet
             url="/"
             title={featuredTutorials.default.title}
             description={featuredTutorials.default.description}
-            image={withPrefix('Logo/logo.cover.png')}
+            image={'/Logo/logo.cover.png'}
           />
           <div>{this.props.children}</div>
         </div>

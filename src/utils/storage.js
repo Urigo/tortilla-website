@@ -4,4 +4,4 @@ const SSRStorage = {
   removeItem() {},
 }
 
-export default (typeof window !== 'undefined' ? localStorage : SSRStorage)
+export default typeof window !== 'undefined' ? localStorage : SSRStorage

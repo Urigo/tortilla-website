@@ -15,17 +15,17 @@ const GithubContainer = styled.div`
   padding-bottom: 0;
   width: 300px;
 
-  ${props =>
+  ${(props) =>
     props.link &&
     css`
-      border: 1px solid ${props => props.theme.separator};
+      border: 1px solid ${(props) => props.theme.separator};
     `}
 `
 
 const GithubAvatar = styled.img`
   display: inline-block;
   border-radius: 999px;
-  border: 2px solid ${props => props.theme.separator};
+  border: 2px solid ${(props) => props.theme.separator};
   margin: 0;
 `
 
@@ -43,7 +43,7 @@ const GithubUsername = styled.a`
     content: 'author';
     line-height: 0;
     font-size: 12px;
-    color: ${props => props.theme.blueGray};
+    color: ${(props) => props.theme.blueGray};
   }
 `
 
@@ -67,7 +67,7 @@ const GithubLogo = styled(FaIcon).attrs({
   size: 16,
 })`
   display: inline-block;
-  color: ${props => props.theme.blueGray};
+  color: ${(props) => props.theme.blueGray};
   margin-left: 5px;
   transform: translateY(-8px);
 `
@@ -81,7 +81,7 @@ const SocialButtons = styled.div`
   }
 `
 
-export const GithubAuthor = props => (
+export const GithubAuthor = (props) => (
   <GithubContainer {...props}>
     <GithubAvatar
       src={`${props.author.avatar}?s=30`}

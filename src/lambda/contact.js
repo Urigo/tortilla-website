@@ -36,7 +36,7 @@ exports.handler = (event, context, callback) => {
     text: body.details,
   }
 
-  sendMail(descriptor, e => {
+  sendMail(descriptor, (e) => {
     if (e) {
       callback(null, {
         statusCode: 500,

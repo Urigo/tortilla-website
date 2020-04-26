@@ -3,13 +3,13 @@ import React from 'react'
 import styled from 'styled-components'
 import FaIcon from '../../../../common/FaIcon'
 
-const Wrap = styled.span `
+const Wrap = styled.span`
   margin-left: 10px;
 `
 
 const EditIcon = styled(FaIcon).attrs({
-  icon: faEdit
-}) `
+  icon: faEdit,
+})`
   cursor: pointer;
 `
 

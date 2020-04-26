@@ -48,7 +48,7 @@ module.exports = async ({ graphql, actions }) => {
   `)
 
   return Promise.all(
-    result.data.allTortillaTutorial.edges.map(edge => {
+    result.data.allTortillaTutorial.edges.map((edge) => {
       const tutorial = edge.node
 
       return createTutorial({

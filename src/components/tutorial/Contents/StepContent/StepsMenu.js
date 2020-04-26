@@ -47,7 +47,7 @@ const Step = styled.a`
   cursor: pointer;
 `
 
-const ActiveStep = styled(Step) `
+const ActiveStep = styled(Step)`
   outline: 2px solid;
   outline-color: ${({ theme }) => theme.primaryBlue};
   outline-offset: -2px;
@@ -86,10 +86,10 @@ export default class extends React.Component {
     super()
 
     this.activeRef = null
-    this.setActiveRef = el => (this.activeRef = el)
+    this.setActiveRef = (el) => (this.activeRef = el)
 
     this.containerRef = null
-    this.setContainerRef = el => (this.containerRef = el)
+    this.setContainerRef = (el) => (this.containerRef = el)
   }
 
   componentDidMount() {
@@ -131,7 +131,7 @@ export default class extends React.Component {
   render() {
     return (
       <Steps style={this.props.style} ref={this.setContainerRef}>
-        {this.props.tutorialVersion.steps.map(step => {
+        {this.props.tutorialVersion.steps.map((step) => {
           const active =
             this.props.activeStep && step.id === this.props.activeStep.id
           const link = propsToLink(this.props, step)

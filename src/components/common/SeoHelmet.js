@@ -1,22 +1,24 @@
 import React from 'react'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet'
 
-const normalizeUrl = url => {
+const normalizeUrl = (url) => {
   return (
-    process.env.GATSBY_ORIGIN +
-    '/' +
-    url
-      .split('/')
-      .filter(Boolean)
-      .join('/')
+    process.env.GATSBY_ORIGIN + '/' + url.split('/').filter(Boolean).join('/')
   )
 }
 
 // This will update all the metadata which is relevant for all social medias using
 // a single set of props
-const SeoHelmet = props => {
+const SeoHelmet = (props) => {
   const meta = []
-  const keywords = ['tortilla', 'tutorial', 'guide', 'tutor', 'tutoring', 'step by step']
+  const keywords = [
+    'tortilla',
+    'tutorial',
+    'guide',
+    'tutor',
+    'tutoring',
+    'step by step',
+  ]
   const optional = {}
 
   if (props.url) {

@@ -13,22 +13,23 @@ const Container = styled.a`
   .resp-sharing-button__link {
     text-decoration: none;
     color: #fff;
-    margin: ${props => props.scale * 0.5}em;
+    margin: ${(props) => props.scale * 0.5}em;
   }
 
   .resp-sharing-button {
-    width: ${props => props.scale * 2.5}em;
-    height: ${props => props.scale * 2.5}em;
+    width: ${(props) => props.scale * 2.5}em;
+    height: ${(props) => props.scale * 2.5}em;
     border-radius: 5px;
     transition: 25ms ease-out;
-    padding: ${props => props.scale * 0.5}em ${props => props.scale * 0.75}em;
+    padding: ${(props) => props.scale * 0.5}em
+      ${(props) => props.scale * 0.75}em;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   }
 
   .resp-sharing-button__icon svg {
-    width: ${props => props.scale * 1}em;
-    height: ${props => props.scale * 1.5}em;
-    margin-right: ${props => props.scale * 0.4}em;
+    width: ${(props) => props.scale * 1}em;
+    height: ${(props) => props.scale * 1.5}em;
+    margin-right: ${(props) => props.scale * 0.4}em;
     vertical-align: top;
   }
 
@@ -38,7 +39,7 @@ const Container = styled.a`
   }
 
   .resp-sharing-button__icon {
-    height: ${props => props.scale * 1.5}em;
+    height: ${(props) => props.scale * 1.5}em;
     stroke: #fff;
     fill: none;
   }

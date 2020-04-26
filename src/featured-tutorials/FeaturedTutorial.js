@@ -9,11 +9,7 @@ class FeaturedTutorial {
 
     this.imageUrl =
       this.imageSrc &&
-      this.imageSrc
-        .split('.')
-        .slice(0, -1)
-        .concat(['cover', 'png'])
-        .join('.')
+      this.imageSrc.split('.').slice(0, -1).concat(['cover', 'png']).join('.')
   }
 }
 

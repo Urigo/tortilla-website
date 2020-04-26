@@ -23,7 +23,7 @@ const Button = styled.button`
   }
 `
 
-export default props => {
+export default (props) => {
   if (props.icon) {
     return (
       <Button {...props}>

@@ -4,7 +4,7 @@ import Link from 'gatsby'
 
 import Theme from '../../../themes/home'
 
-const colorTag = color => {
+const colorTag = (color) => {
   switch (color) {
     case 'blue':
       return Theme.primaryBlue
@@ -23,7 +23,7 @@ const Tag = styled(Link)`
   font-style: italic;
   text-decoration: none;
   color: ${({ theme }) => theme.white};
-  background-color: ${props => colorTag(props.color)};
+  background-color: ${(props) => colorTag(props.color)};
 `
 
 const Container = styled.div`
@@ -35,7 +35,7 @@ const Container = styled.div`
   }
 `
 
-export default props => (
+export default (props) => (
   <Container>
     {props.tags.map((tag, i) => (
       <Tag key={i} color={tag.color} to={tag.to}>

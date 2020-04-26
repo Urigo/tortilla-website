@@ -11,7 +11,7 @@ const imageSize = 80
 // baseUrl might change depending on the environment. During SSR we will need to
 // provide the static dir path. This method is currently only compatible with Node.JS,
 // but with few tweaks can be called on the client with ease.
-FeaturedTutorial.prototype.load = function(baseUrl = '') {
+FeaturedTutorial.prototype.load = function (baseUrl = '') {
   return (this.loading =
     this.loading ||
     (async () => {
@@ -22,9 +22,7 @@ FeaturedTutorial.prototype.load = function(baseUrl = '') {
           if (err) {
             reject(err)
           } else {
-            svg2png(buffer, { height: imageSize })
-              .then(resolve)
-              .catch(reject)
+            svg2png(buffer, { height: imageSize }).then(resolve).catch(reject)
           }
         })
       })

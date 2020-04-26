@@ -90,9 +90,9 @@ class FileTree extends React.Component {
   // modifications that have happened in children
   modifyFiles(children) {
     const allNodes = flattenNodes(children)
-    const selectedNode = allNodes.find(node => node.selected)
+    const selectedNode = allNodes.find((node) => node.selected)
     const targetNodes = selectedNode ? [selectedNode] : allNodes
-    const paths = pickLeaves(targetNodes).map(node => node.path)
+    const paths = pickLeaves(targetNodes).map((node) => node.path)
 
     this.props.showFiles(paths)
   }
@@ -112,17 +112,14 @@ class FileTree extends React.Component {
     if (!props.diff) return
 
     // Compose children out of given diff, assuming the schema is correct
-    props.diff.match(/\n--- [^\s]+\n\+\+\+ [^\s]+\n/g).forEach(header => {
+    props.diff.match(/\n--- [^\s]+\n\+\+\+ [^\s]+\n/g).forEach((header) => {
       const files = header
         .match(/--- ([^\s]+)\n\+\+\+ ([^\s]+)/)
         .slice(1)
-        .map(path => ({
+        .map((path) => ({
           rawPath: path,
           // Slice initial /a /b parts
-          path: path
-            .split('/')
-            .slice(1)
-            .join('/'),
+          path: path.split('/').slice(1).join('/'),
         }))
 
       if (files[0].path === files[1].path) {
@@ -147,7 +144,7 @@ class FileTree extends React.Component {
             node.children = []
           }
 
-          let childNode = node.children.find(candi => {
+          let childNode = node.children.find((candi) => {
             return candi.name === name
           })
 
@@ -199,11 +196,11 @@ class FileTree extends React.Component {
     }, [])
 
     const dirChildren = reducedChildren
-      .filter(node => node.children)
+      .filter((node) => node.children)
       .sort(props.sortCb)
 
     const fileChildren = reducedChildren
-      .filter(node => !node.children)
+      .filter((node) => !node.children)
       .sort(props.sortCb)
 
     // Ascending order. Dirs first
@@ -250,7 +247,7 @@ function onSelect(node, component) {
     })
 
     if (node.children) {
-      const paths = pickLeaves(node.children).map(node => node.path)
+      const paths = pickLeaves(node.children).map((node) => node.path)
 
       this.props.showFiles(paths)
     } else {

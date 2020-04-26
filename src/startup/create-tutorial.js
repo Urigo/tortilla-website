@@ -25,7 +25,7 @@ module.exports = async ({ tutorial, createPage, createRedirect }) => {
     ({ isRecentMajor }) => isRecentMajor
   )
   */
-  const recentMajorVersions = tutorial.versions;
+  const recentMajorVersions = tutorial.versions
 
   return Promise.all(
     recentMajorVersions.map(async (version, index) => {
@@ -37,10 +37,8 @@ module.exports = async ({ tutorial, createPage, createRedirect }) => {
       // Note that load() will not be invoked twice for 'default' because of the way it's
       // implemented
       await Promise.all([
-        (
-          featuredTutorials[tutorialKey] &&
-          featuredTutorials[tutorialKey].load(staticDirPath)
-        ),
+        featuredTutorials[tutorialKey] &&
+          featuredTutorials[tutorialKey].load(staticDirPath),
         featuredTutorials.default.load(staticDirPath),
       ])
 
@@ -110,7 +108,7 @@ module.exports = async ({ tutorial, createPage, createRedirect }) => {
 
       // Create step page for each step
       creatingPages.push(
-        ...version.steps.map(step => {
+        ...version.steps.map((step) => {
           createStep({
             createPage,
             createRedirect,

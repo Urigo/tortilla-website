@@ -6,7 +6,12 @@ const tutorialTemplate = resolve('src/templates/tutorial.js')
 
 const aliasMap = {}
 
-module.exports = async ({ createRedirect, createPage, common, params: { step } }) => {
+module.exports = async ({
+  createRedirect,
+  createPage,
+  common,
+  params: { step },
+}) => {
   const paths = []
 
   paths.push(
@@ -23,14 +28,14 @@ module.exports = async ({ createRedirect, createPage, common, params: { step } }
     const branchedAlias = stepRoute({
       repo: common.tutorialRepo,
       owner: common.tutorialAuthor.username,
-      branch: common.tutorialBranch
+      branch: common.tutorialBranch,
     })
 
     paths.push(branchedAlias)
 
     const branchlessAlias = stepRoute({
       repo: common.tutorialRepo,
-      owner: common.tutorialAuthor.username
+      owner: common.tutorialAuthor.username,
     })
 
     // Will only work in production
@@ -39,21 +44,23 @@ module.exports = async ({ createRedirect, createPage, common, params: { step } }
       createRedirect({
         fromPath: branchlessAlias,
         toPath: branchedAlias,
-        isPermanent: true
+        isPermanent: true,
       })
     }
   }
 
-  return Promise.all(paths.map(path =>
-    createPage({
-      path,
-      component: tutorialTemplate,
-      context: {
-        ...common,
-        common,
-        contentType: 'steps',
-        contentData: { step },
-      },
-    })
-  ))
+  return Promise.all(
+    paths.map((path) =>
+      createPage({
+        path,
+        component: tutorialTemplate,
+        context: {
+          ...common,
+          common,
+          contentType: 'steps',
+          contentData: { step },
+        },
+      })
+    )
+  )
 }
