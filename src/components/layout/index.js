@@ -69,7 +69,7 @@ class Layout extends React.Component {
             url="/"
             title={featuredTutorials.default.title}
             description={featuredTutorials.default.description}
-            image={withPrefix('Logo/logo.cover.png')}
+            image={'/Logo/logo.cover.png'}
           />
           <div>{this.props.children}</div>
         </div>
