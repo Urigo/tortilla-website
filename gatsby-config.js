@@ -30,5 +30,11 @@ module.exports = {
     'gatsby-plugin-styled-components',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-postcss',
+    {
+      resolve: 'gatsby-plugin-load-script',
+      options: {
+        src: 'https://the-guild.dev/static/banner.js'
+      },
+    }
   ],
 }
