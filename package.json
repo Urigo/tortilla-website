@@ -24,7 +24,7 @@
     "babel-polyfill": "^6.26.0",
     "canvas": "2.6.1",
     "classnames": "^2.2.6",
-    "codemirror": "5.53.2",
+    "codemirror": "5.54.0",
     "gatsby": "2.22.1",
     "gatsby-plugin-netlify": "2.3.2",
     "gatsby-plugin-postcss": "2.3.1",
