@@ -25,7 +25,7 @@
     "canvas": "2.6.1",
     "classnames": "2.2.6",
     "codemirror": "5.59.4",
-    "gatsby": "2.32.6",
+    "gatsby": "2.32.8",
     "gatsby-plugin-netlify": "2.11.0",
     "gatsby-plugin-postcss": "2.3.13",
     "gatsby-plugin-react-helmet": "3.10.0",
