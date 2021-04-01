@@ -23,7 +23,7 @@
     "babel-plugin-styled-components": "1.12.0",
     "babel-polyfill": "6.26.0",
     "canvas": "2.7.0",
-    "classnames": "2.2.6",
+    "classnames": "2.3.0",
     "codemirror": "5.60.0",
     "gatsby": "2.32.11",
     "gatsby-plugin-netlify": "2.11.1",
