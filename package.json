@@ -61,7 +61,7 @@
     "netlify-lambda": "1.6.3",
     "postcss-preset-env": "6.7.0",
     "prettier": "2.4.1",
-    "pretty-error": "2.1.2"
+    "pretty-error": "3.0.4"
   },
   "workspaces": [
     "plugins/gatsby-transform-tortilla",
