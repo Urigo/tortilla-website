@@ -52,7 +52,7 @@
     "svg2png": "4.1.1",
     "sweetalert2": "9.17.2",
     "tortilla": "0.0.1-alpha.66",
-    "typescript-styled-plugin": "0.18.1",
+    "typescript-styled-plugin": "0.18.2",
     "unist-util-select": "3.0.4"
   },
   "devDependencies": {
