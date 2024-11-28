@@ -44,7 +44,7 @@
     "react-helmet": "6.1.0",
     "react-modal": "3.14.4",
     "react-rating": "2.0.5",
-    "remark-highlight.js": "6.0.0",
+    "remark-highlight.js": "7.0.1",
     "remark-iframes": "4.0.5",
     "sendmail": "1.6.1",
     "setimmediate": "1.0.5",
