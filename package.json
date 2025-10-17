@@ -45,7 +45,7 @@
     "react-modal": "3.16.3",
     "react-rating": "2.0.5",
     "remark-highlight.js": "6.0.0",
-    "remark-iframes": "4.0.5",
+    "remark-iframes": "4.1.1",
     "sendmail": "1.6.1",
     "setimmediate": "1.0.5",
     "styled-components": "5.3.11",

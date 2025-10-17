@@ -13146,10 +13146,10 @@ remark-html@11.0.2:
     mdast-util-to-hast "^8.2.0"
     xtend "^4.0.1"
 
-remark-iframes@4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/remark-iframes/-/remark-iframes-4.0.5.tgz#87d8fd651d4a9198666be772ac9fbf32430937b7"
-  integrity sha512-rbQ1WNWNVAxA0wRdVz+kinayOutvw/Dn/8XQ8PvN8CxQT3/n4D/O1uvpAM+4Bx857IoCjIFOfyvnFoZBDvG6uQ==
+remark-iframes@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/remark-iframes/-/remark-iframes-4.1.1.tgz#62e4064d1303374c7351db61c2f8a5809995fb58"
+  integrity sha512-2hHfYYxNoHIIrKF4+j54nGdM8PllgHiQ1JGPR6t/kBen+c6L7wp5of/z8Gl1zfV4PG13zKHziu0FnYm0I5GJYA==
   dependencies:
     node-fetch "^2.6.0"
 
